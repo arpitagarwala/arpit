@@ -1,0 +1,91 @@
+/* Base */
+body {
+    margin: 0;
+    background: #121212;
+    font-family: 'Segoe UI', sans-serif;
+    color: #f1f1f1;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Grid Layout */
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 20px;
+    width: 90vw;
+    height: 90vh;
+  }
+  
+  /* Cards */
+  .card {
+    background: #1e1e1e;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-6px);
+  }
+  
+  /* Card Sizes */
+  .about {
+    grid-column: span 2;
+    grid-row: span 2;
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .about img {
+    width: 80px;
+    height: auto;
+    margin-left: 20px;
+  }
+  
+  .clock {
+    grid-column: span 2;
+  }
+  
+  #live-clock {
+    font-size: 2.5rem;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .game {
+    grid-column: span 2;
+  }
+  
+  .articles {
+    grid-column: span 2;
+  }
+  
+  .spacer {
+    grid-column: span 1;
+    background: transparent;
+    box-shadow: none;
+  }
+  
+  /* Typography */
+  .card h2 {
+    margin: 0 0 10px;
+    font-size: 1.2rem;
+  }
+  
+  .card p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  

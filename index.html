@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arpit Agarwala – Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        darkMode: 'class'
+      }
+    </script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+    </style>
+  </head>
+
+  <body class="min-h-screen flex items-center justify-center bg-slate-900 text-slate-100 dark:bg-rose-50 dark:text-rose-900 transition-colors duration-300">
+
+    <!-- Theme Toggle Button -->
+    <div class="fixed top-4 right-4 z-50">
+      <button onclick="toggleTheme()" class="bg-slate-700 text-slate-200 dark:bg-rose-200 dark:text-rose-900 p-2 rounded-full shadow hover:scale-105 transition">
+        <i id="theme-icon" class="ri-moon-line text-xl"></i>
+      </button>
+    </div>
+    
+    <!-- Main Grid -->
+    <main class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl w-full p-4">
+
+        <!-- About (3 columns, 2 rows) -->
+        <div class="bg-slate-800 dark:bg-rose-100 text-slate-100 dark:text-rose-900 p-6 rounded-lg border border-transparent hover:border-cyan-400 dark:hover:border-rose-400 transition-all duration-200 col-span-1 sm:col-span-2 lg:col-span-3 row-span-2 relative overflow-visible">
+          <div class="flex flex-col md:flex-row-reverse items-start md:items-center gap-6">
+            <div class="relative -mt-2 md:mt-0 md:mr-[-2rem] z-10 w-32 md:w-40 lg:w-48 drop-shadow-[0_10px_15px_rgba(0,0,0,0.3)]">
+              <img src="assets/images/my-miniature.png" alt="Arpit Miniature" class="w-full" />
+            </div>
+            <div class="flex-1">
+              <h2 class="text-2xl font-extrabold text-slate-100 dark:text-rose-800 mb-3">Hello there! 👋</h2>
+              <p class="text-base leading-relaxed text-slate-300 dark:text-rose-700 mt-4 md:mt-0">
+                I'm <strong>Arpit Agarwala</strong>, a BCom (Hons) student and aspiring Chartered Accountant passionate about productivity, digital tools, and finance-based problem solving.
+              </p>
+              <p class="text-base leading-relaxed text-slate-300 dark:text-rose-700 mt-2">
+                I love building unique web experiences, creating interactive games and experimenting with design & automation. This site is a growing hub of everything I enjoy.
+              </p>
+            </div>
+          </div>
+        </div>
+      
+        <!-- Blog (1 col, 2 rows) -->
+        <a href="blog.html" class="bg-slate-800 dark:bg-rose-100 p-6 rounded-lg border border-transparent hover:border-cyan-400 dark:hover:border-rose-400 transition-all duration-100 block w-full h-full col-span-1 row-span-2">
+          <h3 class="text-lg font-bold mb-2">Blog</h3>
+          <p class="text-sm text-slate-300 dark:text-rose-700">Coming soon...</p>
+        </a>
+      
+        <!-- Projects (1 col, 2 rows) -->
+        <a href="projects.html" class="bg-slate-800 dark:bg-rose-100 p-6 rounded-lg border border-transparent hover:border-cyan-400 dark:hover:border-rose-400 transition-all duration-100 block w-full h-full col-span-1 row-span-2">
+          <h3 class="text-lg font-bold mb-2">Projects</h3>
+          <p class="text-sm text-slate-300 dark:text-rose-700">Explore tools and experiments I've built.</p>
+        </a>
+      
+        <!-- Timer (2 col, 1 row) -->
+        <div class="bg-slate-800 dark:bg-rose-100 p-6 rounded-lg border border-transparent hover:border-cyan-400 dark:hover:border-rose-400 transition-all duration-100 flex flex-col justify-center items-center col-span-1 sm:col-span-2 lg:col-span-2 row-span-1">
+          <h3 class="text-lg font-semibold text-slate-200 dark:text-rose-800 mb-2">Time Zone</h3>
+          <div id="live-clock" class="text-4xl font-mono font-bold text-slate-50 dark:text-rose-900">--:--:--</div>
+        </div>
+      
+        <!-- Games (1 col, 1 row) -->
+        <a href="games.html" class="bg-slate-800 dark:bg-rose-100 p-6 rounded-lg border border-transparent hover:border-cyan-400 dark:hover:border-rose-400 transition-all duration-100 block w-full h-full col-span-1">
+          <h3 class="text-lg font-bold mb-2">Games</h3>
+          <p class="text-sm text-slate-300 dark:text-rose-700">Play fun finance games and learn money the smart way.</p>
+        </a>
+      
+        <!-- Articles (1 col, 1 row) -->
+        <a href="articles.html" class="bg-slate-800 dark:bg-rose-100 p-6 rounded-lg border border-transparent hover:border-cyan-400 dark:hover:border-rose-400 transition-all duration-100 block w-full h-full col-span-1">
+          <h3 class="text-lg font-bold mb-2">Articles</h3>
+          <p class="text-sm text-slate-300 dark:text-rose-700">Writings on finance, discipline, and productivity.</p>
+        </a>
+      
+        <!-- Contact (1 col, 1 row) -->
+        <a href="mailto:arpitagarwalms@email.com" class="bg-slate-800 dark:bg-rose-100 p-6 rounded-lg border border-transparent hover:border-cyan-400 dark:hover:border-rose-400 transition-all duration-100 block w-full h-full col-span-1">
+          <h3 class="text-lg font-bold mb-2">Contact</h3>
+          <p class="text-sm text-slate-300 dark:text-rose-700">arpitagarwalms@email.com</p>
+          <p class="text-sm text-slate-300 dark:text-rose-700">Kolkata, India</p>
+        </a>
+      
+        <!-- Social (1 col, 1 row, non-clickable container with individual icon links) -->
+        <div class="bg-slate-800 dark:bg-rose-100 p-6 rounded-lg border border-transparent hover:border-cyan-400 dark:hover:border-rose-400 transition-all duration-100 flex justify-center items-center col-span-1">
+          <div class="flex gap-6 text-4xl text-slate-300 dark:text-rose-700">
+            <a href="https://www.instagram.com/arpit.agarwala_/" target="_blank" class="hover:text-pink-500 transition">
+              <i class="ri-instagram-line"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/arpitagarwala/" target="_blank" class="hover:text-blue-500 transition">
+              <i class="ri-linkedin-box-line"></i>
+            </a>
+            <a href="https://github.com" target="_blank" class="hover:text-black dark:hover:text-rose-900 transition">
+              <i class="ri-github-line"></i>
+            </a>
+          </div>
+        </div>
+      
+        <!-- Footer (full width) -->
+        <div class="bg-slate-800 dark:bg-rose-100 p-6 rounded-lg col-span-1 lg:col-span-4 text-center text-xs text-slate-400 dark:text-rose-600">
+          © 2024 Arpit Agarwala. Engineered with ❤️
+        </div>
+      </main>
+      
+
+    <!-- Scripts -->
+    <script>
+      // Theme Persistence
+      if (localStorage.theme === 'dark' || (!('theme' in localStorage))) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+
+      function toggleTheme() {
+        const html = document.documentElement;
+        const icon = document.getElementById("theme-icon");
+        if (html.classList.contains("dark")) {
+          html.classList.remove("dark");
+          localStorage.theme = "light";
+          icon.className = "ri-moon-line text-xl";
+        } else {
+          html.classList.add("dark");
+          localStorage.theme = "dark";
+          icon.className = "ri-sun-line text-xl";
+        }
+      }
+
+      // Live Clock
+      function updateClock() {
+        const now = new Date();
+        document.getElementById("live-clock").innerText = now.toLocaleTimeString();
+      }
+      setInterval(updateClock, 1000);
+      updateClock();
+    </script>
+  </body>
+</html>

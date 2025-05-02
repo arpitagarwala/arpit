@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SIP Calculator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen p-6 font-sans">
+
+  <div class="max-w-5xl mx-auto space-y-6">
+    <h1 class="text-3xl font-bold text-center">📈 SIP Calculator</h1>
+
+    <!-- Toggle Compare Mode -->
+    <div class="text-center">
+      <label class="flex items-center gap-3 justify-center cursor-pointer">
+        <input type="checkbox" id="compareToggle" class="sr-only peer" />
+        <div class="w-11 h-6 bg-slate-600 rounded-full relative transition-colors duration-300 peer-checked:bg-blue-600">
+          <div class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>
+        </div>
+        <span class="text-sm text-slate-300">Compare Two SIPs</span>
+      </label>
+    </div>
+
+    <!-- Input Section -->
+    <div id="input-container" class="grid grid-cols-1 md:grid-cols-1 gap-6">
+      <!-- SIP A -->
+      <div class="bg-slate-800 p-6 rounded-lg space-y-6">
+        <h2 id="sip-a-title" class="text-lg font-semibold">SIP</h2>
+        <div>
+          <label class="text-sm mb-1 block">Monthly Investment (₹):</label>
+          <div class="flex items-center gap-3">
+            <input type="range" id="a-amount-range" min="500" max="100000" step="100" class="w-full">
+            <input type="number" id="a-amount-input" class="w-24 p-1 rounded bg-slate-700 border border-slate-600 text-sm" />
+          </div>
+        </div>
+        <div>
+          <label class="text-sm mb-1 block">Annual Return Rate (%):</label>
+          <div class="flex items-center gap-3">
+            <input type="range" id="a-rate-range" min="1" max="20" step="0.1" class="w-full">
+            <input type="number" id="a-rate-input" class="w-24 p-1 rounded bg-slate-700 border border-slate-600 text-sm" />
+          </div>
+        </div>
+        <div>
+          <label class="text-sm mb-1 block">Investment Duration (Years):</label>
+          <div class="flex items-center gap-3">
+            <input type="range" id="a-years-range" min="1" max="40" step="1" class="w-full">
+            <input type="number" id="a-years-input" class="w-24 p-1 rounded bg-slate-700 border border-slate-600 text-sm" />
+          </div>
+        </div>
+      </div>
+
+      <!-- SIP B -->
+      <div id="sip-b-panel" class="bg-slate-800 p-6 rounded-lg space-y-6 hidden">
+        <h2 class="text-lg font-semibold">SIP B</h2>
+        <div>
+          <label class="text-sm mb-1 block">Monthly Investment (₹):</label>
+          <div class="flex items-center gap-3">
+            <input type="range" id="b-amount-range" min="500" max="100000" step="100" class="w-full">
+            <input type="number" id="b-amount-input" class="w-24 p-1 rounded bg-slate-700 border border-slate-600 text-sm" />
+          </div>
+        </div>
+        <div>
+          <label class="text-sm mb-1 block">Annual Return Rate (%):</label>
+          <div class="flex items-center gap-3">
+            <input type="range" id="b-rate-range" min="1" max="20" step="0.1" class="w-full">
+            <input type="number" id="b-rate-input" class="w-24 p-1 rounded bg-slate-700 border border-slate-600 text-sm" />
+          </div>
+        </div>
+        <div>
+          <label class="text-sm mb-1 block">Investment Duration (Years):</label>
+          <div class="flex items-center gap-3">
+            <input type="range" id="b-years-range" min="1" max="40" step="1" class="w-full">
+            <input type="number" id="b-years-input" class="w-24 p-1 rounded bg-slate-700 border border-slate-600 text-sm" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="bg-slate-800 p-6 rounded-lg flex flex-col sm:flex-row sm:justify-between gap-8 text-center text-sm sm:text-base">
+      <div class="flex-1">
+        <h4 class="font-semibold text-slate-400 mb-2" id="a-label">SIP</h4>
+        <p>Total Invested: <span id="a-invested" class="text-green-400 font-bold">₹0</span></p>
+        <p>Maturity: <span id="a-maturity" class="text-blue-400 font-bold">₹0</span></p>
+        <p>Gains: <span id="a-gains" class="text-yellow-400 font-bold">₹0</span></p>
+      </div>
+      <div id="b-summary" class="hidden flex-1">
+        <h4 class="font-semibold text-slate-400 mb-2">SIP B</h4>
+        <p>Total Invested: <span id="b-invested" class="text-green-400 font-bold">₹0</span></p>
+        <p>Maturity: <span id="b-maturity" class="text-blue-400 font-bold">₹0</span></p>
+        <p>Gains: <span id="b-gains" class="text-yellow-400 font-bold">₹0</span></p>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="bg-slate-800 p-6 rounded-lg">
+      <canvas id="sipChart" class="w-full h-64"></canvas>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    const elements = (prefix) => ({
+      amountRange: document.getElementById(`${prefix}-amount-range`),
+      amountInput: document.getElementById(`${prefix}-amount-input`),
+      rateRange: document.getElementById(`${prefix}-rate-range`),
+      rateInput: document.getElementById(`${prefix}-rate-input`),
+      yearsRange: document.getElementById(`${prefix}-years-range`),
+      yearsInput: document.getElementById(`${prefix}-years-input`)
+    });
+
+    const a = elements("a");
+    const b = elements("b");
+
+    const aInvested = document.getElementById("a-invested");
+    const aMaturity = document.getElementById("a-maturity");
+    const aGains = document.getElementById("a-gains");
+
+    const bInvested = document.getElementById("b-invested");
+    const bMaturity = document.getElementById("b-maturity");
+    const bGains = document.getElementById("b-gains");
+
+    const sipBPanel = document.getElementById("sip-b-panel");
+    const bSummary = document.getElementById("b-summary");
+    const compareToggle = document.getElementById("compareToggle");
+    const sipATitle = document.getElementById("sip-a-title");
+    const inputContainer = document.getElementById("input-container");
+
+    let sipChart;
+
+    function formatINR(val) {
+      return "₹" + val.toLocaleString("en-IN", { maximumFractionDigits: 0 });
+    }
+
+    function calculateSIP(p, r, n) {
+      const months = n * 12;
+      const monthlyRate = r / 12 / 100;
+      const maturity = p * (((Math.pow(1 + monthlyRate, months) - 1) * (1 + monthlyRate)) / monthlyRate);
+      const invested = p * months;
+      const gains = maturity - invested;
+      return { invested, maturity, gains };
+    }
+
+    function getYearlyGrowth(p, r, n) {
+      const monthlyRate = r / 12 / 100;
+      let total = 0;
+      const yearly = [];
+      for (let i = 1; i <= n * 12; i++) {
+        total = total * (1 + monthlyRate) + p;
+        if (i % 12 === 0) yearly.push(Math.round(total));
+      }
+      return yearly;
+    }
+
+    function drawChart(dataA, labelA, dataB, labelB) {
+      const labels = dataA.map((_, i) => `Year ${i + 1}`);
+      if (sipChart) sipChart.destroy();
+
+      const ctx = document.getElementById("sipChart").getContext("2d");
+
+      sipChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: labelA,
+              data: dataA,
+              borderColor: '#3b82f6',
+              backgroundColor: 'rgba(59, 130, 246, 0.2)',
+              fill: true,
+              tension: 0.3
+            },
+            ...(dataB.length > 0 ? [{
+              label: labelB,
+              data: dataB,
+              borderColor: '#f97316',
+              backgroundColor: 'rgba(251, 191, 36, 0.2)',
+              fill: true,
+              tension: 0.3
+            }] : [])
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { labels: { color: "#e5e7eb" } } },
+          scales: {
+            x: { ticks: { color: "#94a3b8" } },
+            y: { ticks: { color: "#94a3b8" } }
+          }
+        }
+      });
+    }
+
+    function update() {
+      const pA = parseInt(a.amountInput.value);
+      const rA = parseFloat(a.rateInput.value);
+      const nA = parseInt(a.yearsInput.value);
+
+      const resultA = calculateSIP(pA, rA, nA);
+      aInvested.textContent = formatINR(resultA.invested);
+      aMaturity.textContent = formatINR(resultA.maturity);
+      aGains.textContent = formatINR(resultA.gains);
+
+      const growthA = getYearlyGrowth(pA, rA, nA);
+
+      if (compareToggle.checked) {
+        const pB = parseInt(b.amountInput.value);
+        const rB = parseFloat(b.rateInput.value);
+        const nB = parseInt(b.yearsInput.value);
+
+        const resultB = calculateSIP(pB, rB, nB);
+        bInvested.textContent = formatINR(resultB.invested);
+        bMaturity.textContent = formatINR(resultB.maturity);
+        bGains.textContent = formatINR(resultB.gains);
+
+        const growthB = getYearlyGrowth(pB, rB, nB);
+        drawChart(growthA, "SIP A", growthB, "SIP B");
+      } else {
+        drawChart(growthA, "SIP", [], "");
+      }
+    }
+
+    function sync(el1, el2) {
+      el1.addEventListener("input", () => {
+        el2.value = el1.value;
+        update();
+      });
+      el2.addEventListener("input", () => {
+        el1.value = el2.value;
+        update();
+      });
+    }
+
+    [a, b].forEach(set => {
+      sync(set.amountRange, set.amountInput);
+      sync(set.rateRange, set.rateInput);
+      sync(set.yearsRange, set.yearsInput);
+    });
+
+    compareToggle.addEventListener("change", () => {
+      const show = compareToggle.checked;
+      sipATitle.textContent = show ? "SIP A" : "SIP";
+      sipBPanel.classList.toggle("hidden", !show);
+      bSummary.classList.toggle("hidden", !show);
+      inputContainer.classList.toggle("md:grid-cols-2", show);
+      inputContainer.classList.toggle("md:grid-cols-1", !show);
+      update();
+    });
+
+    // Initial values
+    a.amountRange.value = a.amountInput.value = 5000;
+    a.rateRange.value = a.rateInput.value = 12;
+    a.yearsRange.value = a.yearsInput.value = 10;
+
+    b.amountRange.value = b.amountInput.value = 7000;
+    b.rateRange.value = b.rateInput.value = 10;
+    b.yearsRange.value = b.yearsInput.value = 15;
+
+    // Ensure correct layout on load
+    document.addEventListener("DOMContentLoaded", () => {
+      const show = compareToggle.checked;
+      sipATitle.textContent = show ? "SIP A" : "SIP";
+      sipBPanel.classList.toggle("hidden", !show);
+      bSummary.classList.toggle("hidden", !show);
+      inputContainer.classList.toggle("md:grid-cols-2", show);
+      inputContainer.classList.toggle("md:grid-cols-1", !show);
+      update();
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Budget Tracker</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans flex flex-col items-center min-h-screen p-6">
+
+  <div class="w-full max-w-xl">
+    <h1 class="text-3xl font-bold mb-4 text-center">💸 Budget Tracker</h1>
+
+    <p class="text-sm text-slate-400 text-center mb-2 italic">
+        Tracking budget for: <span class="font-semibold" id="user-label"></span>
+      </p>
+      
+    <!-- Balance Summary -->
+    <div class="bg-slate-800 p-4 rounded-lg mb-6 text-center">
+      <h2 class="text-xl font-semibold">Balance: ₹<span id="balance">0</span></h2>
+      <p class="text-green-400">Income: ₹<span id="income">0</span></p>
+      <p class="text-red-400">Expenses: ₹<span id="expenses">0</span></p>
+    </div>
+
+    <div class="bg-slate-800 p-4 rounded-lg mb-6">
+        <h3 class="text-lg font-semibold mb-2 text-center">Expenses by Category</h3>
+        <canvas id="categoryChart" class="w-full h-64"></canvas>
+      </div>
+      
+    <!-- Input Form -->
+    <form id="entry-form" class="mb-6 grid grid-cols-3 gap-2">
+        <input type="text" id="description" placeholder="Description" required class="col-span-2 p-2 rounded bg-slate-700 border border-slate-600">
+        <input type="number" id="amount" placeholder="Amount" required class="p-2 rounded bg-slate-700 border border-slate-600">
+      
+        <select id="type" class="col-span-1 p-2 rounded bg-slate-700 border border-slate-600">
+          <option value="income">Income</option>
+          <option value="expense">Expense</option>
+        </select>
+      
+        <select id="mode" class="col-span-1 p-2 rounded bg-slate-700 border border-slate-600">
+          <option value="cash">Cash</option>
+          <option value="bank">Bank</option>
+        </select>
+      
+        <select id="category" class="col-span-1 p-2 rounded bg-slate-700 border border-slate-600">
+          <option value="general">General</option>
+          <option value="food">Food</option>
+          <option value="travel">Travel</option>
+          <option value="leisure">Leisure</option>
+          <option value="education">Education</option>
+          <option value="investment">Investment</option>
+          <option value="health">Health</option>
+          <option value="rent">Rent</option>
+          <option value="utilities">Utilities</option>
+          <option value="others">Others</option>
+        </select>
+      
+        <button type="submit" class="col-span-3 bg-blue-600 hover:bg-blue-700 p-2 rounded">Add Entry</button>
+      </form>
+      
+      <div class="mb-4">
+        <label for="filter-category" class="text-sm text-slate-400 mr-2">Filter by Category:</label>
+        <select id="filter-category" class="p-2 rounded bg-slate-700 border border-slate-600 text-sm">
+          <option value="all">All</option>
+          <option value="food">Food</option>
+          <option value="travel">Travel</option>
+          <option value="leisure">Leisure</option>
+          <option value="education">Education</option>
+          <option value="investment">Investment</option>
+          <option value="health">Health</option>
+          <option value="rent">Rent</option>
+          <option value="utilities">Utilities</option>
+          <option value="others">Others</option>
+          <option value="general">General</option>
+        </select>
+      </div>
+      
+
+    <!-- Entries -->
+    <ul id="entries" class="space-y-2"></ul>
+  </div>
+
+  <script>
+    const form = document.getElementById('entry-form');
+    const entriesList = document.getElementById('entries');
+    const balanceEl = document.getElementById('balance');
+    const incomeEl = document.getElementById('income');
+    const expensesEl = document.getElementById('expenses');
+  
+    // 🌐 Get user from URL or prompt
+    let userKey = new URLSearchParams(window.location.search).get("user");
+  
+    if (!userKey || userKey.trim().toLowerCase() === "default") {
+      const name = prompt("Enter your name to track your budget:");
+      if (name && name.trim() !== "") {
+        const safeName = name.trim().toLowerCase().replace(/\s+/g, "-");
+        window.location.href = `${window.location.pathname}?user=${safeName}`;
+      } else {
+        userKey = "default";
+      }
+    } else {
+      userKey = userKey.trim().toLowerCase();
+    }
+  
+    const storageKey = `budget-${userKey}`;
+    let entries = JSON.parse(localStorage.getItem(storageKey)) || [];
+    let categoryChart;
+  
+    // 🧠 Update the chart
+    function updateChart(filterCategory = "all") {
+  const chartCanvas = document.getElementById('categoryChart');
+  if (!chartCanvas) return;
+
+  const expenseData = {};
+
+  entries.forEach(entry => {
+    if (
+      entry.type === 'expense' &&
+      (filterCategory === "all" || entry.category === filterCategory)
+    ) {
+      expenseData[entry.category] = (expenseData[entry.category] || 0) + entry.amount;
+    }
+  });
+
+  
+      const labels = Object.keys(expenseData);
+      const data = Object.values(expenseData);
+  
+      if (categoryChart) categoryChart.destroy();
+  
+      if (labels.length === 0) {
+        chartCanvas.style.display = "none";
+        return;
+      } else {
+        chartCanvas.style.display = "block";
+      }
+  
+      const ctx = chartCanvas.getContext('2d');
+      categoryChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels,
+          datasets: [{
+            data,
+            backgroundColor: [
+              '#f87171', '#facc15', '#34d399', '#60a5fa', '#c084fc',
+              '#fb923c', '#a3e635', '#f472b6', '#38bdf8', '#fcd34d'
+            ]
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              labels: {
+                color: '#f1f5f9',
+                font: { size: 14 }
+              }
+            }
+          }
+        }
+      });
+    }
+  
+    // 🧾 Update the UI
+    function updateUI() {
+  entriesList.innerHTML = '';
+  let balance = 0, income = 0, expenses = 0;
+
+  const selectedCategory = document.getElementById("filter-category")?.value || "all";
+
+  const filteredEntries = selectedCategory === "all"
+    ? entries
+    : entries.filter(entry => entry.category === selectedCategory);
+
+  filteredEntries.forEach((entry, index) => {
+    const li = document.createElement('li');
+    li.className = 'bg-slate-800 p-3 rounded flex justify-between items-center';
+
+    const sign = entry.type === 'income' ? '+' : '-';
+    li.innerHTML = `
+      <div>
+        <p class="font-medium">${entry.description}</p>
+        <p class="text-sm text-slate-400">
+          ${sign} ₹${entry.amount}
+          <span class="ml-2 text-xs text-slate-500 italic">
+            (${entry.mode} • ${entry.category})
+          </span>
+        </p>
+      </div>
+      <button onclick="deleteEntry(${index})" class="text-red-400 hover:text-red-300">🗑️</button>
+    `;
+
+    if (entry.type === 'income') {
+      income += entry.amount;
+    } else {
+      expenses += entry.amount;
+    }
+
+    entriesList.appendChild(li);
+  });
+
+  const total = income - expenses;
+  balanceEl.textContent = total;
+  incomeEl.textContent = income;
+  expensesEl.textContent = expenses;
+
+  updateChart(selectedCategory); // 🔥 chart also respects filter
+}
+
+  
+    function deleteEntry(index) {
+      entries.splice(index, 1);
+      localStorage.setItem(storageKey, JSON.stringify(entries));
+      updateUI();
+    }
+  
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const description = document.getElementById('description').value.trim();
+      const amount = parseFloat(document.getElementById('amount').value);
+      const type = document.getElementById('type').value;
+      const mode = document.getElementById('mode').value;
+      const category = document.getElementById('category').value;
+  
+      if (!description || isNaN(amount)) return;
+  
+      entries.push({ description, amount, type, mode, category });
+      localStorage.setItem(storageKey, JSON.stringify(entries));
+      form.reset();
+      updateUI();
+    });
+  
+    // 🚀 DOM loaded: show name + render everything
+    document.addEventListener("DOMContentLoaded", () => {
+      const label = document.getElementById("user-label");
+      if (label && userKey !== "default") {
+        const displayName = userKey
+          .split("-")
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" ");
+        label.textContent = displayName;
+      }
+  
+      updateUI();
+    });
+    document.getElementById("filter-category").addEventListener("change", () => {
+  updateUI();
+});
+
+  </script>
+</body>
+</html>
