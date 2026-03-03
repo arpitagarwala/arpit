@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Articles – Arpit Agarwala</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <script>
+    // Instant theme application
+    (function() {
+      const theme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const isDark = theme === 'dark' || (!theme && prefersDark);
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    })();
+  </script>
+  <script src="js/theme.js"></script>
+</head>
+<body class="bg-gray-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-300">
+
+  <!-- Back & Theme Buttons -->
+  <div class="fixed top-4 left-4 z-50">
+    <a href="index.html" class="bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 p-2 rounded-full shadow-lg inline-block border border-gray-200 dark:border-slate-600 transition-all duration-200">
+      <i class="ri-arrow-left-line text-xl"></i>
+    </a>
+  </div>
+
+  <div class="fixed top-4 right-4 z-50">
+    <button onclick="toggleTheme()" class="bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 p-2 rounded-full shadow-lg border border-gray-200 dark:border-slate-600 transition-all duration-200">
+      <i id="theme-icon" class="ri-sun-line text-xl"></i>
+    </button>
+  </div>
+
+  <!-- Main Container -->
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 py-12 pt-20">
+
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-3">
+        <i class="ri-article-line text-blue-600"></i> Articles
+      </h1>
+      <p class="text-slate-600 dark:text-slate-400 text-lg">Insights on Fintech, AI, and the Future of Finance</p>
+    </div>
+
+    <!-- Articles Grid -->
+    <div class="space-y-8">
+
+      <!-- Article 1: AI in Trading -->
+      <article class="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-200 dark:border-slate-700 hover:shadow-xl transition-all duration-200">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
+            <i class="ri-robot-line text-3xl text-white"></i>
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-2">
+              <i class="ri-calendar-line"></i>
+              <span>February 2026</span>
+              <span class="mx-2">•</span>
+              <span class="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full text-xs font-medium">AI & Trading</span>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">How AI is Revolutionizing Algorithmic Trading in 2026</h2>
+            <p class="text-slate-600 dark:text-slate-300 mb-4 leading-relaxed">Machine learning models are now processing millions of market data points in real-time, identifying patterns that human traders miss. From sentiment analysis of news feeds to predictive models for price movements, AI is reshaping how retail and institutional investors approach the markets. This deep dive explores the latest breakthroughs in trading algorithms and what they mean for individual investors.</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Machine Learning</span>
+              <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Algorithmic Trading</span>
+              <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Market Analysis</span>
+            </div>
+            <p class="text-sm text-slate-500 dark:text-slate-400 italic">8 min read</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article 2: DeFi & Traditional Finance -->
+      <article class="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-200 dark:border-slate-700 hover:shadow-xl transition-all duration-200">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center">
+            <i class="ri-coin-line text-3xl text-white"></i>
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-2">
+              <i class="ri-calendar-line"></i>
+              <span>January 2026</span>
+              <span class="mx-2">•</span>
+              <span class="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded-full text-xs font-medium">DeFi</span>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">The Convergence of DeFi and Traditional Finance</h2>
+            <p class="text-slate-600 dark:text-slate-300 mb-4 leading-relaxed">Decentralized Finance (DeFi) protocols are no longer fringe experiments—they're becoming integrated into mainstream financial services. Major banks are exploring blockchain-based settlement systems, while DeFi platforms are adding regulatory compliance features. This article examines how smart contracts, liquidity pools, and tokenized assets are bridging the gap between traditional banking and decentralized systems.</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Blockchain</span>
+              <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Smart Contracts</span>
+              <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Banking</span>
+            </div>
+            <p class="text-sm text-slate-500 dark:text-slate-400 italic">12 min read</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article 3: SIP Investing -->
+      <article class="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-200 dark:border-slate-700 hover:shadow-xl transition-all duration-200">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center">
+            <i class="ri-line-chart-line text-3xl text-white"></i>
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-2">
+              <i class="ri-calendar-line"></i>
+              <span>December 2025</span>
+              <span class="mx-2">•</span>
+              <span class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-2 py-0.5 rounded-full text-xs font-medium">Investing</span>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">The Mathematics of Wealth: Understanding SIP Returns</h2>
+            <p class="text-slate-600 dark:text-slate-300 mb-4 leading-relaxed">Systematic Investment Plans (SIPs) harness the power of compounding and rupee-cost averaging to build wealth over time. But how much do your monthly contributions really grow? This article breaks down the mathematical principles behind SIP investing, explores the impact of different return rates and time horizons, and provides practical strategies for optimizing your investment portfolio using real Indian market data.</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">SIP</span>
+              <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Mutual Funds</span>
+              <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Wealth Building</span>
+            </div>
+            <p class="text-sm text-slate-500 dark:text-slate-400 italic">10 min read</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article 4: Generative AI in Fintech -->
+      <article class="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-200 dark:border-slate-700 hover:shadow-xl transition-all duration-200">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center">
+            <i class="ri-brain-line text-3xl text-white"></i>
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-2">
+              <i class="ri-calendar-line"></i>
+              <span>November 2025</span>
+              <span class="mx-2">•</span>
+              <span class="bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 px-2 py-0.5 rounded-full text-xs font-medium">AI</span>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">Generative AI: The New Frontier in Financial Services</h2>
+            <p class="text-slate-600 dark:text-slate-300 mb-4 leading-relaxed">ChatGPT and similar large language models are transforming customer service, financial analysis, and automated reporting in the fintech industry. Banks are deploying AI assistants that can answer complex queries, generate personalized investment recommendations, and even draft regulatory compliance reports. Explore how generative AI is being integrated into financial platforms, the challenges of ensuring accuracy, and what this means for the future of financial advisors.</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Generative AI</span>
+              <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Automation</span>
+              <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Customer Service</span>
+            </div>
+            <p class="text-sm text-slate-500 dark:text-slate-400 italic">11 min read</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article 5: Retail Investor Rise -->
+      <article class="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-200 dark:border-slate-700 hover:shadow-xl transition-all duration-200">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center">
+            <i class="ri-group-line text-3xl text-white"></i>
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-2">
+              <i class="ri-calendar-line"></i>
+              <span>October 2025</span>
+              <span class="mx-2">•</span>
+              <span class="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-2 py-0.5 rounded-full text-xs font-medium">Market Trends</span>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">The Rise of the Retail Investor: India's Market Revolution</h2>
+            <p class="text-slate-600 dark:text-slate-300 mb-4 leading-relaxed">Over 10 crore Indians now actively trade in the stock market, a dramatic shift from just a decade ago. Mobile trading apps, zero-commission brokerages, and financial literacy content have democratized access to markets. This piece explores the sociological and technological factors driving this transformation, the impact on market dynamics, and what institutional players are doing to adapt to the new retail-dominated landscape.</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Retail Trading</span>
+              <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Indian Markets</span>
+              <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Democratization</span>
+            </div>
+            <p class="text-sm text-slate-500 dark:text-slate-400 italic">9 min read</p>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- Footer Note -->
+    <div class="mt-16 text-center">
+      <p class="text-slate-500 dark:text-slate-400 text-sm">
+        <i class="ri-mail-line"></i> Want to discuss these topics? Reach out via the home page.
+      </p>
+    </div>
+
+  </div>
+</body>
+</html>
