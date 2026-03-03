@@ -1,86 +1,85 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Projects – Arpit Agarwala</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      darkMode: 'class'
-    }
-  </script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
-    body {
-      font-family: 'Inter', sans-serif;
-    }
-    
-    /* Add smooth easing to all transitions */
-    * {
-      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    }
-  </style>
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects – Arpit Agarwala</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        darkMode: 'class'
+      }
+    </script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+      * {
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      }
+    </style>
+  </head>
 
-<body class="min-h-screen flex items-center justify-center bg-slate-900 text-slate-100 dark:bg-rose-50 dark:text-rose-900 transition-colors duration-300">
+  <body class="min-h-screen flex items-center justify-center bg-slate-900 text-slate-100 dark:bg-gray-50 dark:text-gray-900 transition-colors duration-300">
 
     <!-- Theme Toggle Button -->
     <div class="fixed top-4 right-4 z-50">
-      <button onclick="toggleTheme()" class="bg-slate-700 text-slate-200 dark:bg-rose-200 dark:text-rose-900 p-2 rounded-full shadow hover:scale-105 transition-all duration-100">
+      <button onclick="toggleTheme()" class="bg-slate-700 text-slate-200 dark:bg-white dark:text-gray-700 p-2 rounded-full shadow-md hover:scale-105 hover:shadow-lg transition-all duration-100 border border-slate-600 dark:border-gray-200">
         <i id="theme-icon" class="ri-sun-line text-xl"></i>
       </button>
     </div>
-  
+
+    <!-- Back Button -->
+    <a href="index.html" class="fixed top-4 left-4 z-50 bg-slate-700 text-slate-200 dark:bg-white dark:text-gray-700 p-2 rounded-full shadow-md hover:scale-105 hover:shadow-lg transition-all duration-100 border border-slate-600 dark:border-gray-200">
+      <i class="ri-arrow-left-line text-xl"></i>
+    </a>
+
     <!-- Project Grid -->
-    <main class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl w-full p-4">
-  
-      <!-- Project Card -->
-      <div class="bg-slate-800 dark:bg-rose-100 p-6 rounded-lg border border-transparent hover:border-cyan-400 dark:hover:border-rose-400 transition-all duration-100 col-span-full">
-        <h1 class="text-2xl font-bold mb-2">🚀 Projects</h1>
-        <p class="text-sm text-slate-300 dark:text-rose-700">
-          A collection of tools, experiments, and products I've worked on. Each project is built with care, utility, and a sprinkle of creativity.
-        </p>
+    <main class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl w-full p-4 pt-16">
+
+      <!-- Header Card -->
+      <div class="bg-slate-800 dark:bg-white text-slate-100 dark:text-gray-900 p-6 rounded-xl border border-slate-700/50 dark:border-gray-200 shadow-sm transition-all duration-100 col-span-full">
+        <h1 class="text-2xl font-bold mb-1">🚀 Projects</h1>
+        <p class="text-sm text-slate-400 dark:text-gray-500">A collection of tools, experiments, and products I've worked on. Each project is built with care, utility, and a sprinkle of creativity.</p>
       </div>
-      
-      <a href="notepad.html" class="bg-slate-800 dark:bg-rose-100 p-6 rounded-lg border border-transparent hover:border-cyan-400 dark:hover:border-rose-400 transition-all duration-100 block w-full h-full">
+
+      <!-- Notepad -->
+      <a href="notepad.html" class="bg-slate-800 dark:bg-white text-slate-100 dark:text-gray-900 p-6 rounded-xl border border-slate-700/50 dark:border-gray-200 hover:border-cyan-400 dark:hover:border-cyan-400 shadow-sm hover:shadow-md transition-all duration-100 block w-full h-full">
         <h3 class="text-lg font-bold mb-2">Notepad</h3>
-        <p class="text-sm text-slate-300 dark:text-rose-700">
-          A private local notepad built with pure HTML, CSS, and JS. Autosaves securely in your browser without any backend.
-        </p>
+        <p class="text-sm text-slate-400 dark:text-gray-500">A private local notepad built with pure HTML, CSS, and JS. Autosaves securely in your browser without any backend.</p>
       </a>
-      
-  
-      <a href="clock.html" class="bg-slate-800 dark:bg-rose-100 p-6 rounded-lg border border-transparent hover:border-cyan-400 dark:hover:border-rose-400 transition-all duration-100 block w-full h-full">
+
+      <!-- Live Clock -->
+      <a href="clock.html" class="bg-slate-800 dark:bg-white text-slate-100 dark:text-gray-900 p-6 rounded-xl border border-slate-700/50 dark:border-gray-200 hover:border-cyan-400 dark:hover:border-cyan-400 shadow-sm hover:shadow-md transition-all duration-100 block w-full h-full">
         <h3 class="text-lg font-bold mb-2">Live Clock</h3>
-        <p class="text-sm text-slate-300 dark:text-rose-700">A digital + analog clock with a floating settings panel and theme toggle.</p>
+        <p class="text-sm text-slate-400 dark:text-gray-500">A digital + analog clock with a floating settings panel and theme toggle.</p>
       </a>
-      
-      <a href="budget.html" class="bg-slate-800 dark:bg-rose-100 p-6 rounded-lg border border-transparent hover:border-cyan-400 dark:hover:border-rose-400 transition-all duration-100 block w-full h-full">
+
+      <!-- Budget Tracker -->
+      <a href="budget.html" class="bg-slate-800 dark:bg-white text-slate-100 dark:text-gray-900 p-6 rounded-xl border border-slate-700/50 dark:border-gray-200 hover:border-cyan-400 dark:hover:border-cyan-400 shadow-sm hover:shadow-md transition-all duration-100 block w-full h-full">
         <h3 class="text-lg font-bold mb-2">Budget Tracker</h3>
-        <p class="text-sm text-slate-300 dark:text-rose-700">Track income, expenses, visualize with pie charts and save per user.</p>
+        <p class="text-sm text-slate-400 dark:text-gray-500">Track income, expenses, visualize with pie charts and save per user.</p>
       </a>
-      
-      <a href="sip.html" class="bg-slate-800 dark:bg-rose-100 p-6 rounded-lg border border-transparent hover:border-cyan-400 dark:hover:border-rose-400 transition-all duration-100 block w-full h-full">
+
+      <!-- SIP Calculator -->
+      <a href="sip.html" class="bg-slate-800 dark:bg-white text-slate-100 dark:text-gray-900 p-6 rounded-xl border border-slate-700/50 dark:border-gray-200 hover:border-cyan-400 dark:hover:border-cyan-400 shadow-sm hover:shadow-md transition-all duration-100 block w-full h-full">
         <h3 class="text-lg font-bold mb-2">SIP Calculator</h3>
-        <p class="text-sm text-slate-300 dark:text-rose-700">Simulate SIPs, compare two investments, and visualize with Chart.js.</p>
+        <p class="text-sm text-slate-400 dark:text-gray-500">Simulate SIPs, compare two investments, and visualize with Chart.js.</p>
       </a>
-      
-      <a href="expense-splitter.html" class="bg-slate-800 dark:bg-rose-100 p-6 rounded-lg border border-transparent hover:border-cyan-400 dark:hover:border-rose-400 transition-all duration-100 block w-full h-full">
+
+      <!-- Expense Splitter -->
+      <a href="expense-splitter.html" class="bg-slate-800 dark:bg-white text-slate-100 dark:text-gray-900 p-6 rounded-xl border border-slate-700/50 dark:border-gray-200 hover:border-cyan-400 dark:hover:border-cyan-400 shadow-sm hover:shadow-md transition-all duration-100 block w-full h-full">
         <h3 class="text-lg font-bold mb-2">Expense Splitter</h3>
-        <p class="text-sm text-slate-300 dark:text-rose-700">Split bills with friends using custom ratios, edit history, and export.</p>
+        <p class="text-sm text-slate-400 dark:text-gray-500">Split bills with friends using custom ratios, edit history, and export.</p>
       </a>
-      
-  
+
     </main>
-  
-    <!-- Theme Toggle Script -->
+
     <script>
-      // Theme Persistence - Fixed icon logic
       const savedTheme = localStorage.getItem('theme');
       const icon = document.getElementById("theme-icon");
-      
       if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         document.documentElement.classList.add('dark');
         icon.className = "ri-sun-line text-xl";
@@ -88,11 +87,9 @@
         document.documentElement.classList.remove('dark');
         icon.className = "ri-moon-line text-xl";
       }
-  
       function toggleTheme() {
         const html = document.documentElement;
         const icon = document.getElementById("theme-icon");
-        
         if (html.classList.contains("dark")) {
           html.classList.remove("dark");
           localStorage.setItem("theme", "light");
@@ -104,6 +101,6 @@
         }
       }
     </script>
+
   </body>
-  
 </html>
