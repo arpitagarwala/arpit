@@ -4,16 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Projects – Arpit Agarwala</title>
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #0f172a; /* slate-900 */
-      color: #f1f5f9; /* slate-100 */
+    }
+    
+    /* Add smooth easing to all transitions */
+    * {
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     }
   </style>
 </head>
@@ -22,8 +28,8 @@
 
     <!-- Theme Toggle Button -->
     <div class="fixed top-4 right-4 z-50">
-      <button onclick="toggleTheme()" class="bg-slate-700 text-slate-200 dark:bg-slate-200 dark:text-slate-900 p-2 rounded-full shadow hover:scale-105 transition">
-        <i id="theme-icon" class="ri-moon-line text-xl"></i>
+      <button onclick="toggleTheme()" class="bg-slate-700 text-slate-200 dark:bg-rose-200 dark:text-rose-900 p-2 rounded-full shadow hover:scale-105 transition-all duration-100">
+        <i id="theme-icon" class="ri-sun-line text-xl"></i>
       </button>
     </div>
   
@@ -31,8 +37,7 @@
     <main class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl w-full p-4">
   
       <!-- Project Card -->
-      <div class="bg-slate-800 dark:bg-rose-100 p-6 rounded-lg border border-transparent hover:border-cyan-400 dark:hover:border-rose-400
-      transition-all duration-100 col-span-full">
+      <div class="bg-slate-800 dark:bg-rose-100 p-6 rounded-lg border border-transparent hover:border-cyan-400 dark:hover:border-rose-400 transition-all duration-100 col-span-full">
         <h1 class="text-2xl font-bold mb-2">🚀 Projects</h1>
         <p class="text-sm text-slate-300 dark:text-rose-700">
           A collection of tools, experiments, and products I've worked on. Each project is built with care, utility, and a sprinkle of creativity.
@@ -70,31 +75,31 @@
   
     </main>
   
-    <!-- AOS Init Script -->
-    <script>
-      AOS.init({ duration: 500 });
-    </script>
-  
     <!-- Theme Toggle Script -->
     <script>
-      if (localStorage.theme === 'dark' || (!('theme' in localStorage))) {
+      // Theme Persistence - Fixed icon logic
+      const savedTheme = localStorage.getItem('theme');
+      const icon = document.getElementById("theme-icon");
+      
+      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         document.documentElement.classList.add('dark');
+        icon.className = "ri-sun-line text-xl";
       } else {
         document.documentElement.classList.remove('dark');
+        icon.className = "ri-moon-line text-xl";
       }
-  
-      tailwind.config = { darkMode: 'class' };
   
       function toggleTheme() {
         const html = document.documentElement;
         const icon = document.getElementById("theme-icon");
+        
         if (html.classList.contains("dark")) {
           html.classList.remove("dark");
-          localStorage.theme = "light";
+          localStorage.setItem("theme", "light");
           icon.className = "ri-moon-line text-xl";
         } else {
           html.classList.add("dark");
-          localStorage.theme = "dark";
+          localStorage.setItem("theme", "dark");
           icon.className = "ri-sun-line text-xl";
         }
       }
