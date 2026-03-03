@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🎨 Arpit's Notepad</title>
 
-  <!-- Tailwind & Dark Mode -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -13,185 +12,445 @@
     };
   </script>
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    
+    * {
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    
+    .color-btn {
+      position: relative;
+      transition: all 0.1s ease;
+      cursor: pointer;
+    }
+    
+    .color-btn:hover {
+      transform: scale(1.2);
+    }
+    
+    .color-btn.active {
+      ring-width: 3px;
+      ring-color: white;
+      transform: scale(1.15);
+    }
+    
+    .note-card {
+      transition: all 0.1s ease;
+    }
+    
+    .note-card:hover {
+      transform: translateY(-3px);
+    }
+  </style>
 </head>
 
 <body class="min-h-screen flex items-center justify-center bg-slate-900 text-slate-100 dark:bg-rose-50 dark:text-rose-900 transition-colors duration-300 p-6">
 
   <!-- Theme Toggle -->
   <div class="fixed top-4 right-4 z-50">
-    <button onclick="toggleTheme()" class="bg-slate-700 text-slate-200 dark:bg-slate-200 dark:text-slate-900 p-2 rounded-full shadow hover:scale-105 transition">
-      <i id="theme-icon" class="ri-moon-line text-xl"></i>
+    <button onclick="toggleTheme()" class="bg-slate-700 text-slate-200 dark:bg-rose-200 dark:text-rose-900 p-2 rounded-full shadow hover:scale-105 transition-all duration-100">
+      <i id="theme-icon" class="ri-sun-line text-xl"></i>
     </button>
   </div>
 
+  <!-- Back Button -->
+  <div class="fixed top-4 left-4 z-50">
+    <a href="projects.html" class="bg-slate-700 text-slate-200 dark:bg-rose-200 dark:text-rose-900 p-2 rounded-full shadow hover:scale-105 transition-all duration-100 inline-block">
+      <i class="ri-arrow-left-line text-xl"></i>
+    </a>
+  </div>
+
   <!-- Notes App -->
-  <div class="max-w-3xl w-full space-y-6">
-    <h1 class="text-2xl font-bold text-center">📝 Colorful Notes</h1>
+  <div class="max-w-4xl w-full space-y-6">
+    <!-- Header -->
+    <div class="text-center">
+      <h1 class="text-3xl font-bold mb-2">📝 Colorful Notes</h1>
+      <p class="text-sm text-slate-400 dark:text-rose-600">
+        <span id="note-count">0</span> notes saved • Last edited: <span id="last-edited">Never</span>
+      </p>
+    </div>
 
     <!-- New Note Form -->
-    <div id="note-form" class="p-4 rounded-lg transition shadow bg-rose-100 dark:bg-rose-950 text-rose-900 dark:text-rose-100">
-      <input type="text" id="note-title" placeholder="Title" class="w-full p-2 mb-2 rounded bg-rose-50 dark:bg-rose-900 text-rose-900 dark:text-rose-100" />
-      <textarea id="note-body" placeholder="Write your note..." class="w-full p-2 h-32 rounded bg-rose-50 dark:bg-rose-900 text-rose-900 dark:text-rose-100"></textarea>
+    <div id="note-form" class="p-6 rounded-lg transition-all duration-100 shadow-lg bg-rose-100 dark:bg-rose-950 text-rose-900 dark:text-rose-100">
+      <input 
+        type="text" 
+        id="note-title" 
+        placeholder="Title (optional)" 
+        class="w-full p-3 mb-3 rounded-lg bg-rose-50 dark:bg-rose-900 text-rose-900 dark:text-rose-100 placeholder-rose-400 dark:placeholder-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-400 transition-all duration-100"
+        maxlength="50"
+      />
+      <textarea 
+        id="note-body" 
+        placeholder="Write your note..." 
+        class="w-full p-3 rounded-lg bg-rose-50 dark:bg-rose-900 text-rose-900 dark:text-rose-100 placeholder-rose-400 dark:placeholder-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-400 transition-all duration-100"
+      ></textarea>
 
-      <!-- Color Picker -->
-      <div class="flex items-center gap-3 mt-4">
-        <span class="text-sm font-semibold dark:text-rose-200">Pick a color:</span>
-        <div class="flex gap-2">
-          <button class="w-6 h-6 rounded-full bg-rose-400 ring-2 ring-white" onclick="setColor('rose')" title="Rose"></button>
-          <button class="w-6 h-6 rounded-full bg-blue-400" onclick="setColor('blue')" title="Blue"></button>
-          <button class="w-6 h-6 rounded-full bg-green-400" onclick="setColor('green')" title="Green"></button>
-          <button class="w-6 h-6 rounded-full bg-yellow-300" onclick="setColor('yellow')" title="Yellow"></button>
-          <button class="w-6 h-6 rounded-full bg-purple-400" onclick="setColor('purple')" title="Purple"></button>
+      <!-- Color Picker & Actions -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4">
+        <div class="flex items-center gap-3">
+          <span class="text-sm font-semibold dark:text-rose-200">Color:</span>
+          <div class="flex gap-2">
+            <button class="color-btn active w-7 h-7 rounded-full bg-rose-400 ring-2 ring-white shadow" onclick="setColor('rose')" title="Rose" data-color="rose"></button>
+            <button class="color-btn w-7 h-7 rounded-full bg-blue-400 shadow" onclick="setColor('blue')" title="Blue" data-color="blue"></button>
+            <button class="color-btn w-7 h-7 rounded-full bg-green-400 shadow" onclick="setColor('green')" title="Green" data-color="green"></button>
+            <button class="color-btn w-7 h-7 rounded-full bg-yellow-300 shadow" onclick="setColor('yellow')" title="Yellow" data-color="yellow"></button>
+            <button class="color-btn w-7 h-7 rounded-full bg-purple-400 shadow" onclick="setColor('purple')" title="Purple" data-color="purple"></button>
+            <button class="color-btn w-7 h-7 rounded-full bg-orange-400 shadow" onclick="setColor('orange')" title="Orange" data-color="orange"></button>
+          </div>
+        </div>
+
+        <div class="flex gap-2 w-full sm:w-auto">
+          <button 
+            id="add-note-btn" 
+            onclick="addNote()" 
+            class="flex-1 sm:flex-initial bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-semibold transition-all duration-100 shadow"
+          >
+            ➕ <span id="btn-text">Add Note</span>
+          </button>
+          <button 
+            onclick="cancelEdit()" 
+            class="px-6 py-2.5 rounded-lg bg-slate-600 dark:bg-rose-800 text-white hover:bg-slate-700 dark:hover:bg-rose-700 font-semibold transition-all duration-100 hidden shadow" 
+            id="cancel-btn"
+          >
+            Cancel
+          </button>
         </div>
       </div>
+    </div>
 
-      <button id="add-note-btn" onclick="addNote()" class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">➕ Add Note</button>
-
+    <!-- Search & Filter Bar -->
+    <div class="flex flex-col sm:flex-row gap-3">
+      <div class="flex-1 relative">
+        <i class="ri-search-line absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-rose-400"></i>
+        <input 
+          type="text" 
+          id="search-input" 
+          placeholder="Search notes by title or content..." 
+          oninput="searchNotes()"
+          class="w-full pl-11 pr-4 py-3 rounded-lg bg-slate-800 dark:bg-rose-100 text-slate-100 dark:text-rose-900 placeholder-slate-400 dark:placeholder-rose-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 dark:focus:ring-rose-400 transition-all duration-100"
+        />
+      </div>
+      <select 
+        id="color-filter" 
+        onchange="filterNotes()" 
+        class="px-4 py-3 rounded-lg bg-slate-800 dark:bg-rose-100 text-slate-100 dark:text-rose-900 focus:outline-none focus:ring-2 focus:ring-cyan-400 dark:focus:ring-rose-400 transition-all duration-100 cursor-pointer"
+      >
+        <option value="all">🎨 All Colors</option>
+        <option value="rose">🌹 Rose</option>
+        <option value="blue">🔵 Blue</option>
+        <option value="green">🟢 Green</option>
+        <option value="yellow">🟡 Yellow</option>
+        <option value="purple">🟣 Purple</option>
+        <option value="orange">🟠 Orange</option>
+      </select>
+      <button 
+        onclick="clearAllNotes()" 
+        class="px-6 py-3 rounded-lg bg-red-600 dark:bg-red-600 text-white hover:bg-red-700 dark:hover:bg-red-700 transition-all duration-100 font-semibold shadow"
+        title="Clear all notes"
+      >
+        🗑️ Clear All
+      </button>
     </div>
 
     <!-- Notes List -->
-    <div id="notes-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+    <div id="notes-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <!-- Notes will be rendered here -->
+    </div>
+
+    <!-- Empty State -->
+    <div id="empty-state" class="text-center py-12 hidden">
+      <p class="text-slate-400 dark:text-rose-600 text-lg">No notes found. Create one above!</p>
+    </div>
   </div>
 
 <script>
-  // Theme logic
-  if (localStorage.theme === 'dark' || !('theme' in localStorage)) {
+  // Theme logic with fixed icons
+  const savedTheme = localStorage.getItem('theme');
+  const icon = document.getElementById('theme-icon');
+  
+  if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
     document.documentElement.classList.add('dark');
+    icon.className = 'ri-sun-line text-xl';
   } else {
     document.documentElement.classList.remove('dark');
+    icon.className = 'ri-moon-line text-xl';
   }
 
   function toggleTheme() {
     const html = document.documentElement;
-    const icon = document.getElementById("theme-icon");
-    if (html.classList.contains("dark")) {
-      html.classList.remove("dark");
-      localStorage.theme = "light";
-      icon.className = "ri-moon-line text-xl";
+    const icon = document.getElementById('theme-icon');
+    
+    if (html.classList.contains('dark')) {
+      html.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+      icon.className = 'ri-moon-line text-xl';
     } else {
-      html.classList.add("dark");
-      localStorage.theme = "dark";
-      icon.className = "ri-sun-line text-xl";
+      html.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+      icon.className = 'ri-sun-line text-xl';
     }
   }
 
-  const storageKey = "arpit-colored-notes";
+  // Notes logic
+  const storageKey = 'arpit-colored-notes';
   let notes = JSON.parse(localStorage.getItem(storageKey)) || [];
-  let currentColor = "rose"; // default
+  let currentColor = 'rose';
+  let editingIndex = -1;
+  let currentFilter = 'all';
+  let searchQuery = '';
 
   const colorMap = {
     rose: {
-  form: "bg-rose-100 dark:bg-rose-800 text-rose-900 dark:text-rose-100",
-  input: "bg-rose-50 dark:bg-rose-500 text-rose-900 dark:text-rose-100",
-  note: "bg-rose-200 dark:bg-rose-900 text-rose-900 dark:text-rose-100",
-  button: "bg-rose-500 hover:bg-rose-600 text-white"
-},
-blue: {
-  form: "bg-blue-100 dark:bg-blue-950 text-blue-900 dark:text-blue-100",
-  input: "bg-blue-50 dark:bg-blue-900 text-blue-900 dark:text-blue-100",
-  note: "bg-blue-200 dark:bg-blue-900 text-blue-900 dark:text-blue-100",
-  button: "bg-blue-500 hover:bg-blue-600 text-white"
-},
-green: {
-  form: "bg-green-100 dark:bg-green-800 text-green-900 dark:text-green-100",
-  input: "bg-green-50 dark:bg-green-700 text-green-900 dark:text-green-100",
-  note: "bg-green-200 dark:bg-green-900 text-green-900 dark:text-green-100",
-  button: "bg-green-700 hover:bg-green-600 text-white"
-},
-yellow: {
-  form: "bg-yellow-50 dark:bg-yellow-800 text-yellow-900 dark:text-yellow-100",
-  input: "bg-yellow-100 dark:bg-yellow-700 text-yellow-900 dark:text-yellow-100",
-  note: "bg-yellow-200 dark:bg-yellow-900 text-yellow-900 dark:text-yellow-100",
-  button: "bg-yellow-500 hover:bg-yellow-600 text-black"
-},
-purple: {
-  form: "bg-purple-100 dark:bg-purple-950 text-purple-900 dark:text-purple-100",
-  input: "bg-purple-50 dark:bg-purple-900 text-purple-900 dark:text-purple-100",
-  note: "bg-purple-200 dark:bg-purple-900 text-purple-900 dark:text-purple-100",
-  button: "bg-purple-500 hover:bg-purple-600 text-white"
-}
-
+      form: 'bg-rose-100 dark:bg-rose-950 text-rose-900 dark:text-rose-100',
+      input: 'bg-rose-50 dark:bg-rose-900 text-rose-900 dark:text-rose-100 placeholder-rose-400 dark:placeholder-rose-400 focus:ring-rose-400',
+      note: 'bg-rose-200 dark:bg-rose-900 text-rose-900 dark:text-rose-100',
+      button: 'bg-rose-500 hover:bg-rose-600 text-white'
+    },
+    blue: {
+      form: 'bg-blue-100 dark:bg-blue-950 text-blue-900 dark:text-blue-100',
+      input: 'bg-blue-50 dark:bg-blue-900 text-blue-900 dark:text-blue-100 placeholder-blue-400 dark:placeholder-blue-400 focus:ring-blue-400',
+      note: 'bg-blue-200 dark:bg-blue-900 text-blue-900 dark:text-blue-100',
+      button: 'bg-blue-500 hover:bg-blue-600 text-white'
+    },
+    green: {
+      form: 'bg-green-100 dark:bg-green-950 text-green-900 dark:text-green-100',
+      input: 'bg-green-50 dark:bg-green-900 text-green-900 dark:text-green-100 placeholder-green-400 dark:placeholder-green-400 focus:ring-green-400',
+      note: 'bg-green-200 dark:bg-green-900 text-green-900 dark:text-green-100',
+      button: 'bg-green-600 hover:bg-green-700 text-white'
+    },
+    yellow: {
+      form: 'bg-yellow-50 dark:bg-yellow-950 text-yellow-900 dark:text-yellow-100',
+      input: 'bg-yellow-100 dark:bg-yellow-900 text-yellow-900 dark:text-yellow-100 placeholder-yellow-500 dark:placeholder-yellow-400 focus:ring-yellow-400',
+      note: 'bg-yellow-200 dark:bg-yellow-900 text-yellow-900 dark:text-yellow-100',
+      button: 'bg-yellow-500 hover:bg-yellow-600 text-black'
+    },
+    purple: {
+      form: 'bg-purple-100 dark:bg-purple-950 text-purple-900 dark:text-purple-100',
+      input: 'bg-purple-50 dark:bg-purple-900 text-purple-900 dark:text-purple-100 placeholder-purple-400 dark:placeholder-purple-400 focus:ring-purple-400',
+      note: 'bg-purple-200 dark:bg-purple-900 text-purple-900 dark:text-purple-100',
+      button: 'bg-purple-500 hover:bg-purple-600 text-white'
+    },
+    orange: {
+      form: 'bg-orange-100 dark:bg-orange-950 text-orange-900 dark:text-orange-100',
+      input: 'bg-orange-50 dark:bg-orange-900 text-orange-900 dark:text-orange-100 placeholder-orange-400 dark:placeholder-orange-400 focus:ring-orange-400',
+      note: 'bg-orange-200 dark:bg-orange-900 text-orange-900 dark:text-orange-100',
+      button: 'bg-orange-500 hover:bg-orange-600 text-white'
+    }
   };
 
   function setColor(color) {
-  currentColor = color;
-  const form = document.getElementById("note-form");
-  const input = document.getElementById("note-title");
-  const textarea = document.getElementById("note-body");
-  const addButton = document.getElementById("add-note-btn");
+    currentColor = color;
+    const form = document.getElementById('note-form');
+    const input = document.getElementById('note-title');
+    const textarea = document.getElementById('note-body');
+    const addButton = document.getElementById('add-note-btn');
 
-  form.className = `p-4 rounded-lg transition shadow ${colorMap[color].form}`;
-  input.className = `w-full p-2 mb-2 rounded ${colorMap[color].input}`;
-  textarea.className = `w-full p-2 h-32 rounded ${colorMap[color].input}`;
-  addButton.className = `mt-4 w-full px-4 py-2 rounded ${colorMap[color].button}`;
-}
-
-function deleteNote(index) {
-  if (confirm("Are you sure you want to delete this note?")) {
-    notes.splice(index, 1);
-    saveNotes();
-    renderNotes();
+    form.className = `p-6 rounded-lg transition-all duration-100 shadow-lg ${colorMap[color].form}`;
+    input.className = `w-full p-3 mb-3 rounded-lg focus:outline-none focus:ring-2 transition-all duration-100 ${colorMap[color].input}`;
+    textarea.className = `w-full p-3 rounded-lg focus:outline-none focus:ring-2 transition-all duration-100 ${colorMap[color].input}`;
+    addButton.className = `flex-1 sm:flex-initial px-6 py-2.5 rounded-lg font-semibold transition-all duration-100 shadow ${colorMap[color].button}`;
+    
+    // Update active state
+    document.querySelectorAll('.color-btn').forEach(btn => {
+      btn.classList.remove('active', 'ring-2', 'ring-white');
+      if (btn.dataset.color === color) {
+        btn.classList.add('active', 'ring-2', 'ring-white');
+      }
+    });
   }
-}
-
 
   function saveNotes() {
     localStorage.setItem(storageKey, JSON.stringify(notes));
+    updateStats();
+  }
+
+  function updateStats() {
+    document.getElementById('note-count').textContent = notes.length;
+    if (notes.length > 0) {
+      const lastEdit = new Date(notes[0].timestamp);
+      document.getElementById('last-edited').textContent = lastEdit.toLocaleString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } else {
+      document.getElementById('last-edited').textContent = 'Never';
+    }
   }
 
   function renderNotes() {
-  const container = document.getElementById("notes-container");
-  container.innerHTML = "";
+    const container = document.getElementById('notes-container');
+    const emptyState = document.getElementById('empty-state');
+    container.innerHTML = '';
 
-  if (notes.length === 0) {
-    container.innerHTML = '<p class="text-center text-slate-400 dark:text-rose-600 col-span-full">No notes yet!</p>';
-    return;
+    let filteredNotes = notes.filter(note => {
+      const matchesColor = currentFilter === 'all' || note.color === currentFilter;
+      const matchesSearch = searchQuery === '' || 
+        note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        note.body.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesColor && matchesSearch;
+    });
+
+    if (filteredNotes.length === 0) {
+      emptyState.classList.remove('hidden');
+      return;
+    }
+    
+    emptyState.classList.add('hidden');
+
+    filteredNotes.forEach((note) => {
+      const actualIndex = notes.indexOf(note);
+      const colorClass = colorMap[note.color]?.note || colorMap.rose.note;
+      const date = new Date(note.timestamp);
+      const timeAgo = getTimeAgo(date);
+      
+      const card = document.createElement('div');
+      card.className = `note-card p-5 rounded-lg relative shadow-lg transition-all duration-100 ${colorClass}`;
+      card.innerHTML = `
+        <h3 class="font-semibold text-lg pr-16 break-words">${note.title || 'Untitled'}</h3>
+        <p class="text-sm mt-2 whitespace-pre-wrap break-words leading-relaxed">${note.body}</p>
+        <div class="absolute top-3 right-3 flex gap-2">
+          <button onclick="editNote(${actualIndex})" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 transition-colors duration-100" title="Edit">
+            ✏️
+          </button>
+          <button onclick="deleteNote(${actualIndex})" class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-200 transition-colors duration-100" title="Delete">
+            🗑️
+          </button>
+        </div>
+        <div class="mt-3 pt-3 border-t border-current opacity-40 flex items-center justify-between text-xs">
+          <span>⏱️ ${timeAgo}</span>
+          <span>${note.body.length} chars</span>
+        </div>
+      `;
+      container.appendChild(card);
+    });
   }
 
-  notes.forEach((note, index) => {
-    const colorClass = colorMap[note.color]?.note || colorMap.rose.note;
-    const card = document.createElement("div");
-    card.className = `p-4 rounded-lg relative shadow transition ${colorClass}`;
-    card.innerHTML = `
-      <h3 class="font-semibold text-lg">${note.title || "Untitled"}</h3>
-      <p class="text-sm mt-1 whitespace-pre-wrap">${note.body}</p>
-      <div class="absolute top-2 right-2 flex gap-2 text-sm">
-        <button onclick="editNote(${index})" class="text-blue-400 hover:text-blue-600">✏️</button>
-        <button onclick="deleteNote(${index})" class="text-red-400 hover:text-red-600">🗑️</button>
-      </div>
-    `;
-    container.appendChild(card);
-  });
-}
-
+  function getTimeAgo(date) {
+    const seconds = Math.floor((new Date() - date) / 1000);
+    if (seconds < 60) return 'Just now';
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes}m ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours}h ago`;
+    const days = Math.floor(hours / 24);
+    if (days < 7) return `${days}d ago`;
+    return date.toLocaleDateString();
+  }
 
   function addNote() {
-    const title = document.getElementById("note-title").value.trim();
-    const body = document.getElementById("note-body").value.trim();
-    if (!body) return;
+    const title = document.getElementById('note-title').value.trim();
+    const body = document.getElementById('note-body').value.trim();
+    
+    if (!body) {
+      alert('Please write something in your note!');
+      return;
+    }
 
-    notes.unshift({ title, body, color: currentColor });
+    const note = {
+      title,
+      body,
+      color: currentColor,
+      timestamp: Date.now()
+    };
+
+    if (editingIndex >= 0) {
+      notes[editingIndex] = note;
+      editingIndex = -1;
+      document.getElementById('btn-text').textContent = 'Add Note';
+      document.getElementById('add-note-btn').innerHTML = '➕ <span id="btn-text">Add Note</span>';
+      document.getElementById('cancel-btn').classList.add('hidden');
+    } else {
+      notes.unshift(note);
+    }
+
     saveNotes();
     renderNotes();
-
-    document.getElementById("note-title").value = "";
-    document.getElementById("note-body").value = "";
+    clearForm();
   }
 
   function editNote(index) {
-  const note = notes[index];
-  document.getElementById("note-title").value = note.title;
-  document.getElementById("note-body").value = note.body;
-  currentColor = note.color;
-  setColor(currentColor);
+    const note = notes[index];
+    document.getElementById('note-title').value = note.title;
+    document.getElementById('note-body').value = note.body;
+    currentColor = note.color;
+    setColor(currentColor);
+    editingIndex = index;
+    
+    document.getElementById('add-note-btn').innerHTML = '💾 <span id="btn-text">Update Note</span>';
+    document.getElementById('cancel-btn').classList.remove('hidden');
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
-  // Remove the note temporarily until resubmitted
-  notes.splice(index, 1);
-  saveNotes();
-  renderNotes();
-}
+  function cancelEdit() {
+    editingIndex = -1;
+    clearForm();
+    document.getElementById('add-note-btn').innerHTML = '➕ <span id="btn-text">Add Note</span>';
+    document.getElementById('cancel-btn').classList.add('hidden');
+  }
 
+  function deleteNote(index) {
+    if (confirm('Delete this note? This cannot be undone.')) {
+      notes.splice(index, 1);
+      saveNotes();
+      renderNotes();
+    }
+  }
 
+  function clearAllNotes() {
+    if (notes.length === 0) {
+      alert('No notes to clear!');
+      return;
+    }
+    
+    if (confirm(`Delete all ${notes.length} notes? This cannot be undone!`)) {
+      notes = [];
+      saveNotes();
+      renderNotes();
+    }
+  }
+
+  function searchNotes() {
+    searchQuery = document.getElementById('search-input').value;
+    renderNotes();
+  }
+
+  function filterNotes() {
+    currentFilter = document.getElementById('color-filter').value;
+    renderNotes();
+  }
+
+  function clearForm() {
+    document.getElementById('note-title').value = '';
+    document.getElementById('note-body').value = '';
+  }
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      addNote();
+    }
+    if (e.key === 'Escape' && editingIndex >= 0) {
+      cancelEdit();
+    }
+  });
+
+  // Initialize
+  updateStats();
   renderNotes();
   setColor(currentColor);
 </script>
