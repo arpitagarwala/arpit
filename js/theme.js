@@ -1,33 +1,33 @@
 // Global Theme Manager for Arpit's Portfolio
-// Include this file on all pages for consistent theming
+// This script must be included in <head> with defer or loaded inline for instant theme application
 
 (function() {
   'use strict';
 
-  // Initialize theme on page load
-  function initTheme() {
+  // Apply theme immediately (call this inline in <head> for no-flash loading)
+  function applyTheme() {
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
     
-    // Apply dark class for light mode (Tailwind's dark mode)
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+    if (isDark) {
       document.documentElement.classList.add('dark');
-      updateIcon('sun');
     } else {
       document.documentElement.classList.remove('dark');
-      updateIcon('moon');
     }
+    
+    return isDark ? 'dark' : 'light';
   }
 
-  // Update theme icon if it exists
-  function updateIcon(type) {
+  // Update theme icon
+  function updateIcon(theme) {
     const icon = document.getElementById('theme-icon');
     if (!icon) return;
     
-    if (type === 'sun') {
-      icon.className = 'ri-sun-line text-xl';
-    } else {
+    if (theme === 'light') {
       icon.className = 'ri-moon-line text-xl';
+    } else {
+      icon.className = 'ri-sun-line text-xl';
     }
   }
 
@@ -40,20 +40,28 @@
       // Switch to light mode
       html.classList.remove('dark');
       localStorage.setItem('theme', 'light');
-      updateIcon('moon');
+      updateIcon('light');
     } else {
       // Switch to dark mode
       html.classList.add('dark');
       localStorage.setItem('theme', 'dark');
-      updateIcon('sun');
+      updateIcon('dark');
     }
   };
 
-  // Initialize immediately
-  initTheme();
-
-  // Re-initialize when DOM is fully loaded (in case script runs before icon loads)
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initTheme);
+  // Initialize on page load
+  function init() {
+    const currentTheme = applyTheme();
+    updateIcon(currentTheme);
   }
+
+  // Run initialization
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  // Also apply immediately if script runs in head
+  applyTheme();
 })();
