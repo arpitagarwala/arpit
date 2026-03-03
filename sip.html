@@ -2,7 +2,7 @@
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SIP Calculator</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -13,127 +13,251 @@
   </script>
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   <script src="js/theme.js"></script>
+  <style>
+    input[type=range] {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 6px;
+      border-radius: 9999px;
+      outline: none;
+      cursor: pointer;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #3b82f6;
+      cursor: pointer;
+      border: 2px solid white;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+      transition: transform 0.15s ease;
+    }
+    input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+    .range-blue { background: linear-gradient(to right, #3b82f6 var(--val, 50%), #cbd5e1 var(--val, 50%)); }
+    .range-orange { background: linear-gradient(to right, #f97316 var(--val, 50%), #cbd5e1 var(--val, 50%)); }
+    .dark .range-blue { background: linear-gradient(to right, #3b82f6 var(--val, 50%), #334155 var(--val, 50%)); }
+    .dark .range-orange { background: linear-gradient(to right, #f97316 var(--val, 50%), #334155 var(--val, 50%)); }
+    input[type=range].range-orange::-webkit-slider-thumb { background: #f97316; }
+    .card { transition: box-shadow 0.2s ease, transform 0.2s ease; }
+    .card:hover { transform: translateY(-1px); }
+    .stat-value { font-variant-numeric: tabular-nums; }
+  </style>
 </head>
+<body class="bg-gray-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 min-h-screen p-4 sm:p-6 font-sans transition-colors duration-300">
 
-<body class="bg-slate-900 dark:bg-gray-50 text-slate-100 dark:text-gray-900 min-h-screen p-6 font-sans transition-colors duration-300">
-
-  <!-- Back & Theme Toggle Buttons -->
+  <!-- Back & Theme Buttons -->
   <div class="fixed top-4 left-4 z-50">
-    <a href="projects.html" class="bg-slate-700 dark:bg-white text-slate-200 dark:text-gray-700 p-2 rounded-full shadow-md hover:scale-105 transition-all duration-100 border border-slate-600 dark:border-gray-200 inline-block">
+    <a href="projects.html" class="bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 p-2 rounded-full shadow-lg inline-block border border-gray-200 dark:border-slate-600 transition-all duration-200">
       <i class="ri-arrow-left-line text-xl"></i>
     </a>
   </div>
-  
+
   <div class="fixed top-4 right-4 z-50">
-    <button onclick="toggleTheme()" class="bg-slate-700 dark:bg-white text-slate-200 dark:text-gray-700 p-2 rounded-full shadow-md hover:scale-105 transition-all duration-100 border border-slate-600 dark:border-gray-200">
+    <button onclick="toggleTheme()" class="bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 p-2 rounded-full shadow-lg border border-gray-200 dark:border-slate-600 transition-all duration-200">
       <i id="theme-icon" class="ri-sun-line text-xl"></i>
     </button>
   </div>
 
-  <div class="max-w-5xl mx-auto space-y-6 pt-10">
-    <h1 class="text-3xl font-bold text-center">📈 SIP Calculator</h1>
+  <!-- Main Container -->
+  <div class="max-w-7xl mx-auto space-y-6 pt-10">
 
-    <!-- Toggle Compare Mode -->
-    <div class="text-center">
-      <label class="flex items-center gap-3 justify-center cursor-pointer">
-        <input type="checkbox" id="compareToggle" class="sr-only peer" />
-        <div class="w-11 h-6 bg-slate-600 dark:bg-gray-300 rounded-full relative transition-colors duration-300 peer-checked:bg-blue-600">
-          <div class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>
+    <!-- Header -->
+    <div class="text-center mb-6">
+      <h1 class="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-2 tracking-tight">
+        <i class="ri-line-chart-line text-blue-600"></i> SIP Calculator
+      </h1>
+      <p class="text-slate-500 dark:text-slate-400 text-sm">Plan your wealth with systematic investment planning</p>
+    </div>
+
+    <!-- Compare Toggle -->
+    <div class="text-center mb-4">
+      <label class="inline-flex items-center gap-3 cursor-pointer bg-white dark:bg-slate-800 px-5 py-3 rounded-2xl shadow-md border border-gray-200 dark:border-slate-700 hover:shadow-lg transition-all duration-200">
+        <input type="checkbox" id="compareToggle" class="sr-only peer">
+        <div class="relative w-12 h-6 bg-slate-200 dark:bg-slate-700 rounded-full peer-checked:bg-blue-500 transition-colors duration-300">
+          <div class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-300 peer-checked:translate-x-6"></div>
         </div>
-        <span class="text-sm text-slate-300 dark:text-gray-600">Compare Two SIPs</span>
+        <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Compare Two SIPs</span>
       </label>
     </div>
 
-    <!-- Input Section -->
+    <!-- Input Grid -->
     <div id="input-container" class="grid grid-cols-1 md:grid-cols-1 gap-6">
-      
-      <!-- SIP A -->
-      <div class="bg-slate-800 dark:bg-white p-6 rounded-xl space-y-6 shadow-sm border border-slate-700/50 dark:border-gray-200">
-        <h2 id="sip-a-title" class="text-lg font-semibold">SIP</h2>
-        
-        <div class="space-y-4">
+
+      <!-- SIP A Card -->
+      <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-lg border border-gray-200 dark:border-slate-700 card">
+        <h2 id="sip-a-title" class="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-6 flex items-center gap-2">
+          <i class="ri-bar-chart-fill text-blue-500"></i> SIP
+        </h2>
+
+        <div class="space-y-6">
+          <!-- Monthly Investment -->
           <div>
-            <label class="text-sm mb-1 block">Monthly Investment (₹):</label>
-            <div class="flex items-center gap-3">
-              <input type="range" id="a-amount-range" min="500" max="100000" step="100" class="w-full accent-blue-500">
-              <input type="number" id="a-amount-input" class="w-24 p-1 rounded bg-slate-700 dark:bg-gray-100 border border-slate-600 dark:border-gray-200 text-sm text-slate-100 dark:text-gray-900">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-sm font-medium text-slate-700 dark:text-slate-300">Monthly Investment</label>
+              <div class="flex items-center gap-2">
+                <span class="text-lg font-bold text-blue-600">₹</span>
+                <input type="number" id="a-amount-input" class="w-28 px-3 py-1.5 text-right font-semibold text-slate-900 dark:text-slate-100 bg-blue-50 dark:bg-slate-700 rounded-lg border border-blue-200 dark:border-slate-600 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+              </div>
+            </div>
+            <input type="range" id="a-amount-range" min="500" max="100000" step="100" class="w-full range-blue">
+            <div class="flex justify-between text-xs text-slate-500 dark:text-slate-400 mt-1">
+              <span>₹500</span>
+              <span>₹1,00,000</span>
             </div>
           </div>
 
+          <!-- Annual Return Rate -->
           <div>
-            <label class="text-sm mb-1 block">Annual Return Rate (%):</label>
-            <div class="flex items-center gap-3">
-              <input type="range" id="a-rate-range" min="1" max="20" step="0.1" class="w-full accent-blue-500">
-              <input type="number" id="a-rate-input" class="w-24 p-1 rounded bg-slate-700 dark:bg-gray-100 border border-slate-600 dark:border-gray-200 text-sm text-slate-100 dark:text-gray-900">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-sm font-medium text-slate-700 dark:text-slate-300">Expected Annual Return</label>
+              <div class="flex items-center gap-2">
+                <input type="number" id="a-rate-input" step="0.1" class="w-20 px-3 py-1.5 text-right font-semibold text-slate-900 dark:text-slate-100 bg-blue-50 dark:bg-slate-700 rounded-lg border border-blue-200 dark:border-slate-600 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                <span class="text-lg font-bold text-blue-600">%</span>
+              </div>
+            </div>
+            <input type="range" id="a-rate-range" min="1" max="20" step="0.1" class="w-full range-blue">
+            <div class="flex justify-between text-xs text-slate-500 dark:text-slate-400 mt-1">
+              <span>1%</span>
+              <span>20%</span>
             </div>
           </div>
 
+          <!-- Investment Duration -->
           <div>
-            <label class="text-sm mb-1 block">Investment Duration (Years):</label>
-            <div class="flex items-center gap-3">
-              <input type="range" id="a-years-range" min="1" max="40" step="1" class="w-full accent-blue-500">
-              <input type="number" id="a-years-input" class="w-24 p-1 rounded bg-slate-700 dark:bg-gray-100 border border-slate-600 dark:border-gray-200 text-sm text-slate-100 dark:text-gray-900">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-sm font-medium text-slate-700 dark:text-slate-300">Time Period</label>
+              <div class="flex items-center gap-2">
+                <input type="number" id="a-years-input" class="w-20 px-3 py-1.5 text-right font-semibold text-slate-900 dark:text-slate-100 bg-blue-50 dark:bg-slate-700 rounded-lg border border-blue-200 dark:border-slate-600 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                <span class="text-sm font-medium text-blue-600">Years</span>
+              </div>
+            </div>
+            <input type="range" id="a-years-range" min="1" max="40" step="1" class="w-full range-blue">
+            <div class="flex justify-between text-xs text-slate-500 dark:text-slate-400 mt-1">
+              <span>1 year</span>
+              <span>40 years</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- SIP B (Hidden initially) -->
-      <div id="sip-b-panel" class="bg-slate-800 dark:bg-white p-6 rounded-xl space-y-6 shadow-sm border border-slate-700/50 dark:border-gray-200 hidden">
-        <h2 class="text-lg font-semibold text-orange-400">SIP B</h2>
-        
-        <div class="space-y-4">
+      <!-- SIP B Card -->
+      <div id="sip-b-panel" class="hidden bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-lg border border-gray-200 dark:border-slate-700 card">
+        <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-6 flex items-center gap-2">
+          <i class="ri-bar-chart-fill text-orange-500"></i> SIP B
+        </h2>
+
+        <div class="space-y-6">
+          <!-- Monthly Investment -->
           <div>
-            <label class="text-sm mb-1 block">Monthly Investment (₹):</label>
-            <div class="flex items-center gap-3">
-              <input type="range" id="b-amount-range" min="500" max="100000" step="100" class="w-full accent-orange-500">
-              <input type="number" id="b-amount-input" class="w-24 p-1 rounded bg-slate-700 dark:bg-gray-100 border border-slate-600 dark:border-gray-200 text-sm text-slate-100 dark:text-gray-900">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-sm font-medium text-slate-700 dark:text-slate-300">Monthly Investment</label>
+              <div class="flex items-center gap-2">
+                <span class="text-lg font-bold text-orange-600">₹</span>
+                <input type="number" id="b-amount-input" class="w-28 px-3 py-1.5 text-right font-semibold text-slate-900 dark:text-slate-100 bg-orange-50 dark:bg-slate-700 rounded-lg border border-orange-200 dark:border-slate-600 focus:ring-2 focus:ring-orange-500 outline-none transition-all">
+              </div>
+            </div>
+            <input type="range" id="b-amount-range" min="500" max="100000" step="100" class="w-full range-orange">
+            <div class="flex justify-between text-xs text-slate-500 dark:text-slate-400 mt-1">
+              <span>₹500</span>
+              <span>₹1,00,000</span>
             </div>
           </div>
 
+          <!-- Annual Return Rate -->
           <div>
-            <label class="text-sm mb-1 block">Annual Return Rate (%):</label>
-            <div class="flex items-center gap-3">
-              <input type="range" id="b-rate-range" min="1" max="20" step="0.1" class="w-full accent-orange-500">
-              <input type="number" id="b-rate-input" class="w-24 p-1 rounded bg-slate-700 dark:bg-gray-100 border border-slate-600 dark:border-gray-200 text-sm text-slate-100 dark:text-gray-900">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-sm font-medium text-slate-700 dark:text-slate-300">Expected Annual Return</label>
+              <div class="flex items-center gap-2">
+                <input type="number" id="b-rate-input" step="0.1" class="w-20 px-3 py-1.5 text-right font-semibold text-slate-900 dark:text-slate-100 bg-orange-50 dark:bg-slate-700 rounded-lg border border-orange-200 dark:border-slate-600 focus:ring-2 focus:ring-orange-500 outline-none transition-all">
+                <span class="text-lg font-bold text-orange-600">%</span>
+              </div>
+            </div>
+            <input type="range" id="b-rate-range" min="1" max="20" step="0.1" class="w-full range-orange">
+            <div class="flex justify-between text-xs text-slate-500 dark:text-slate-400 mt-1">
+              <span>1%</span>
+              <span>20%</span>
             </div>
           </div>
 
+          <!-- Investment Duration -->
           <div>
-            <label class="text-sm mb-1 block">Investment Duration (Years):</label>
-            <div class="flex items-center gap-3">
-              <input type="range" id="b-years-range" min="1" max="40" step="1" class="w-full accent-orange-500">
-              <input type="number" id="b-years-input" class="w-24 p-1 rounded bg-slate-700 dark:bg-gray-100 border border-slate-600 dark:border-gray-200 text-sm text-slate-100 dark:text-gray-900">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-sm font-medium text-slate-700 dark:text-slate-300">Time Period</label>
+              <div class="flex items-center gap-2">
+                <input type="number" id="b-years-input" class="w-20 px-3 py-1.5 text-right font-semibold text-slate-900 dark:text-slate-100 bg-orange-50 dark:bg-slate-700 rounded-lg border border-orange-200 dark:border-slate-600 focus:ring-2 focus:ring-orange-500 outline-none transition-all">
+                <span class="text-sm font-medium text-orange-600">Years</span>
+              </div>
+            </div>
+            <input type="range" id="b-years-range" min="1" max="40" step="1" class="w-full range-orange">
+            <div class="flex justify-between text-xs text-slate-500 dark:text-slate-400 mt-1">
+              <span>1 year</span>
+              <span>40 years</span>
             </div>
           </div>
         </div>
       </div>
+
     </div>
 
-    <!-- Results Section -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <!-- Summary Card -->
-      <div class="bg-slate-800 dark:bg-white p-6 rounded-xl shadow-sm border border-slate-700/50 dark:border-gray-200 space-y-6">
-        <div id="a-summary">
-          <h4 class="font-bold mb-2 text-blue-400">SIP</h4>
-          <p class="text-sm text-slate-400 dark:text-gray-500">Total Invested: <span id="a-invested" class="text-slate-100 dark:text-gray-900 font-bold">₹0</span></p>
-          <p class="text-sm text-slate-400 dark:text-gray-500">Maturity: <span id="a-maturity" class="text-slate-100 dark:text-gray-900 font-bold">₹0</span></p>
-          <p class="text-sm text-slate-400 dark:text-gray-500">Gains: <span id="a-gains" class="text-green-400 dark:text-green-600 font-bold">₹0</span></p>
-        </div>
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 gap-6" id="summary-container">
 
-        <div id="b-summary" class="hidden border-t border-slate-700 dark:border-gray-100 pt-4">
-          <h4 class="font-bold mb-2 text-orange-400">SIP B</h4>
-          <p class="text-sm text-slate-400 dark:text-gray-500">Total Invested: <span id="b-invested" class="text-slate-100 dark:text-gray-900 font-bold">₹0</span></p>
-          <p class="text-sm text-slate-400 dark:text-gray-500">Maturity: <span id="b-maturity" class="text-slate-100 dark:text-gray-900 font-bold">₹0</span></p>
-          <p class="text-sm text-slate-400 dark:text-gray-500">Gains: <span id="b-gains" class="text-green-400 dark:text-green-600 font-bold">₹0</span></p>
+      <!-- SIP A Summary -->
+      <div class="bg-gradient-to-br from-blue-600 to-blue-700 dark:from-blue-700 dark:to-blue-900 p-6 rounded-3xl shadow-xl text-white card">
+        <h3 id="summary-a-title" class="text-lg font-semibold mb-5 flex items-center gap-2 opacity-90">
+          <i class="ri-trophy-line"></i> Results
+        </h3>
+        <div class="grid grid-cols-3 gap-4">
+          <div class="bg-white/10 rounded-2xl p-4 text-center">
+            <p class="text-xs font-medium opacity-80 mb-1 uppercase tracking-wide">Total Invested</p>
+            <p id="a-invested" class="text-xl font-bold stat-value">₹0</p>
+          </div>
+          <div class="bg-white/20 rounded-2xl p-4 text-center ring-2 ring-white/40">
+            <p class="text-xs font-medium opacity-80 mb-1 uppercase tracking-wide">Maturity Value</p>
+            <p id="a-maturity" class="text-xl font-bold stat-value">₹0</p>
+          </div>
+          <div class="bg-white/10 rounded-2xl p-4 text-center">
+            <p class="text-xs font-medium opacity-80 mb-1 uppercase tracking-wide">Est. Gains</p>
+            <p id="a-gains" class="text-xl font-bold text-green-300 stat-value">₹0</p>
+          </div>
         </div>
       </div>
 
-      <!-- Chart Card -->
-      <div class="bg-slate-800 dark:bg-white p-6 rounded-xl shadow-sm border border-slate-700/50 dark:border-gray-200">
-        <canvas id="sipChart"></canvas>
+      <!-- SIP B Summary -->
+      <div id="b-summary" class="hidden bg-gradient-to-br from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-900 p-6 rounded-3xl shadow-xl text-white card">
+        <h3 class="text-lg font-semibold mb-5 flex items-center gap-2 opacity-90">
+          <i class="ri-trophy-line"></i> SIP B Results
+        </h3>
+        <div class="grid grid-cols-3 gap-4">
+          <div class="bg-white/10 rounded-2xl p-4 text-center">
+            <p class="text-xs font-medium opacity-80 mb-1 uppercase tracking-wide">Total Invested</p>
+            <p id="b-invested" class="text-xl font-bold stat-value">₹0</p>
+          </div>
+          <div class="bg-white/20 rounded-2xl p-4 text-center ring-2 ring-white/40">
+            <p class="text-xs font-medium opacity-80 mb-1 uppercase tracking-wide">Maturity Value</p>
+            <p id="b-maturity" class="text-xl font-bold stat-value">₹0</p>
+          </div>
+          <div class="bg-white/10 rounded-2xl p-4 text-center">
+            <p class="text-xs font-medium opacity-80 mb-1 uppercase tracking-wide">Est. Gains</p>
+            <p id="b-gains" class="text-xl font-bold text-yellow-300 stat-value">₹0</p>
+          </div>
+        </div>
       </div>
+
     </div>
+
+    <!-- Chart Section -->
+    <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-lg border border-gray-200 dark:border-slate-700">
+      <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2">
+        <i class="ri-line-chart-line text-blue-500"></i> Growth Projection
+      </h3>
+      <canvas id="sipChart" class="w-full"></canvas>
+    </div>
+
   </div>
 
   <script>
@@ -146,24 +270,27 @@
       yearsInput: document.getElementById(`${prefix}-years-input`)
     });
 
-    const a = elements("a");
-    const b = elements("b");
-    const aInvested = document.getElementById("a-invested");
-    const aMaturity = document.getElementById("a-maturity");
-    const aGains = document.getElementById("a-gains");
-    const bInvested = document.getElementById("b-invested");
-    const bMaturity = document.getElementById("b-maturity");
-    const bGains = document.getElementById("b-gains");
-    const sipBPanel = document.getElementById("sip-b-panel");
-    const bSummary = document.getElementById("b-summary");
-    const compareToggle = document.getElementById("compareToggle");
-    const sipATitle = document.getElementById("sip-a-title");
-    const inputContainer = document.getElementById("input-container");
-
+    const a = elements('a');
+    const b = elements('b');
+    const aInvested = document.getElementById('a-invested');
+    const aMaturity = document.getElementById('a-maturity');
+    const aGains = document.getElementById('a-gains');
+    const bInvested = document.getElementById('b-invested');
+    const bMaturity = document.getElementById('b-maturity');
+    const bGains = document.getElementById('b-gains');
+    const sipBPanel = document.getElementById('sip-b-panel');
+    const bSummary = document.getElementById('b-summary');
+    const compareToggle = document.getElementById('compareToggle');
+    const sipATitle = document.getElementById('sip-a-title');
+    const summaryATitle = document.getElementById('summary-a-title');
+    const inputContainer = document.getElementById('input-container');
+    const summaryContainer = document.getElementById('summary-container');
     let sipChart;
 
     function formatINR(val) {
-      return "₹" + val.toLocaleString("en-IN", { maximumFractionDigits: 0 });
+      if (val >= 10000000) return `\u20b9${(val / 10000000).toFixed(2)} Cr`;
+      if (val >= 100000) return `\u20b9${(val / 100000).toFixed(2)} L`;
+      return `\u20b9${val.toLocaleString('en-IN', { maximumFractionDigits: 0 })}`;
     }
 
     function calculateSIP(p, r, n) {
@@ -186,15 +313,19 @@
       return yearly;
     }
 
-    function drawChart(dataA, labelA, dataB, labelB) {
-      const labels = dataA.map((_, i) => `Year ${i + 1}`);
-      if (sipChart) sipChart.destroy();
-      const ctx = document.getElementById("sipChart").getContext("2d");
-      
-      const isDark = document.documentElement.classList.contains('dark');
-      const textColor = isDark ? '#4b5563' : '#94a3b8';
-      const gridColor = isDark ? '#e5e7eb' : '#334155';
+    function setRangeProgress(rangeEl, min, max, val, cls) {
+      const pct = ((val - min) / (max - min)) * 100;
+      rangeEl.style.setProperty('--val', pct + '%');
+    }
 
+    function drawChart(dataA, labelA, dataB, labelB) {
+      const years = dataA.length;
+      const labels = Array.from({ length: years }, (_, i) => `Year ${i + 1}`);
+      if (sipChart) sipChart.destroy();
+      const ctx = document.getElementById('sipChart').getContext('2d');
+      const isDark = document.documentElement.classList.contains('dark');
+      const textColor = isDark ? '#94a3b8' : '#475569';
+      const gridColor = isDark ? '#1e293b' : '#f1f5f9';
       sipChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -204,61 +335,90 @@
               label: labelA,
               data: dataA,
               borderColor: '#3b82f6',
-              backgroundColor: 'rgba(59, 130, 246, 0.2)',
+              backgroundColor: 'rgba(59,130,246,0.1)',
+              borderWidth: 2.5,
               fill: true,
-              tension: 0.3
+              tension: 0.4,
+              pointRadius: 0,
+              pointHoverRadius: 5
             },
             ...(dataB.length > 0 ? [{
               label: labelB,
               data: dataB,
               borderColor: '#f97316',
-              backgroundColor: 'rgba(251, 191, 36, 0.2)',
+              backgroundColor: 'rgba(249,115,22,0.1)',
+              borderWidth: 2.5,
               fill: true,
-              tension: 0.3
+              tension: 0.4,
+              pointRadius: 0,
+              pointHoverRadius: 5
             }] : [])
           ]
         },
         options: {
           responsive: true,
+          interaction: { intersect: false, mode: 'index' },
           plugins: {
-            legend: { labels: { color: textColor } }
+            legend: {
+              labels: { color: textColor, font: { size: 13, weight: '600' }, padding: 20 }
+            },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => ` ${ctx.dataset.label}: ${formatINR(ctx.parsed.y)}`
+              }
+            }
           },
           scales: {
-            x: { ticks: { color: textColor }, grid: { color: gridColor } },
-            y: { ticks: { color: textColor }, grid: { color: gridColor } }
+            x: {
+              ticks: { color: textColor, font: { size: 11 } },
+              grid: { color: gridColor }
+            },
+            y: {
+              ticks: {
+                color: textColor,
+                font: { size: 11 },
+                callback: (v) => formatINR(v)
+              },
+              grid: { color: gridColor }
+            }
           }
         }
       });
     }
 
     function update() {
-      const pA = parseInt(a.amountInput.value);
-      const rA = parseFloat(a.rateInput.value);
-      const nA = parseInt(a.yearsInput.value);
+      const pA = parseInt(a.amountInput.value) || 5000;
+      const rA = parseFloat(a.rateInput.value) || 12;
+      const nA = parseInt(a.yearsInput.value) || 10;
       const resultA = calculateSIP(pA, rA, nA);
       aInvested.textContent = formatINR(resultA.invested);
       aMaturity.textContent = formatINR(resultA.maturity);
       aGains.textContent = formatINR(resultA.gains);
+      setRangeProgress(a.amountRange, 500, 100000, pA, 'range-blue');
+      setRangeProgress(a.rateRange, 1, 20, rA, 'range-blue');
+      setRangeProgress(a.yearsRange, 1, 40, nA, 'range-blue');
       const growthA = getYearlyGrowth(pA, rA, nA);
-
       if (compareToggle.checked) {
-        const pB = parseInt(b.amountInput.value);
-        const rB = parseFloat(b.rateInput.value);
-        const nB = parseInt(b.yearsInput.value);
+        const pB = parseInt(b.amountInput.value) || 7000;
+        const rB = parseFloat(b.rateInput.value) || 10;
+        const nB = parseInt(b.yearsInput.value) || 15;
         const resultB = calculateSIP(pB, rB, nB);
         bInvested.textContent = formatINR(resultB.invested);
         bMaturity.textContent = formatINR(resultB.maturity);
         bGains.textContent = formatINR(resultB.gains);
+        setRangeProgress(b.amountRange, 500, 100000, pB, 'range-orange');
+        setRangeProgress(b.rateRange, 1, 20, rB, 'range-orange');
+        setRangeProgress(b.yearsRange, 1, 40, nB, 'range-orange');
         const growthB = getYearlyGrowth(pB, rB, nB);
-        drawChart(growthA, "SIP A", growthB, "SIP B");
+        drawChart(growthA, 'SIP A', growthB, 'SIP B');
       } else {
-        drawChart(growthA, "SIP", [], "");
+        drawChart(growthA, 'SIP Growth', [], '');
       }
     }
 
-    function sync(el1, el2) {
-      el1.addEventListener("input", () => { el2.value = el1.value; update(); });
-      el2.addEventListener("input", () => { el1.value = el2.value; update(); });
+    function sync(el1, el2, isA) {
+      el1.addEventListener('input', () => { el2.value = el1.value; update(); });
+      el2.addEventListener('input', () => { el1.value = el2.value; update(); });
     }
 
     [a, b].forEach(set => {
@@ -267,13 +427,18 @@
       sync(set.yearsRange, set.yearsInput);
     });
 
-    compareToggle.addEventListener("change", () => {
+    compareToggle.addEventListener('change', () => {
       const show = compareToggle.checked;
-      sipATitle.textContent = show ? "SIP A" : "SIP";
-      sipBPanel.classList.toggle("hidden", !show);
-      bSummary.classList.toggle("hidden", !show);
-      inputContainer.classList.toggle("md:grid-cols-2", show);
-      inputContainer.classList.toggle("md:grid-cols-1", !show);
+      sipATitle.innerHTML = show
+        ? '<i class="ri-bar-chart-fill text-blue-500"></i> SIP A'
+        : '<i class="ri-bar-chart-fill text-blue-500"></i> SIP';
+      if (summaryATitle) summaryATitle.innerHTML = show
+        ? '<i class="ri-trophy-line"></i> SIP A Results'
+        : '<i class="ri-trophy-line"></i> Results';
+      sipBPanel.classList.toggle('hidden', !show);
+      bSummary.classList.toggle('hidden', !show);
+      inputContainer.className = `grid gap-6 ${show ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1 md:grid-cols-1'}`;
+      summaryContainer.className = `grid gap-6 ${show ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`;
       update();
     });
 
@@ -285,9 +450,8 @@
     b.rateRange.value = b.rateInput.value = 10;
     b.yearsRange.value = b.yearsInput.value = 15;
 
-    document.addEventListener("DOMContentLoaded", () => {
-      update();
-    });
+    document.addEventListener('DOMContentLoaded', () => { update(); });
+    window.addEventListener('load', () => { update(); });
   </script>
 </body>
 </html>
