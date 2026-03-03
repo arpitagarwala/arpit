@@ -55,7 +55,7 @@
   </style>
 </head>
 
-<body class="min-h-screen flex items-center justify-center bg-slate-900 text-slate-100 dark:bg-rose-50 dark:text-gray-900 transition-colors duration-300 p-6">
+<body class="min-h-screen flex items-center justify-center bg-slate-900 text-slate-100 dark:bg-gray-50 dark:text-gray-900 transition-colors duration-300 p-6">
 
   <!-- Theme Toggle -->
   <div class="fixed top-4 right-4 z-50">
@@ -76,7 +76,7 @@
     <!-- Header -->
     <div class="text-center">
       <h1 class="text-3xl font-bold mb-2">📝 Colorful Notes</h1>
-      <p class="text-sm text-slate-400 dark:text-rose-600">
+      <p class="text-sm text-slate-400 dark:text-gray-500">
         <span id="note-count">0</span> notes saved • Last edited: <span id="last-edited">Never</span>
       </p>
     </div>
@@ -99,7 +99,7 @@
       <!-- Color Picker & Actions -->
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4">
         <div class="flex items-center gap-3">
-          <span class="text-sm font-semibold dark:text-rose-200">Color:</span>
+          <span class="text-sm font-semibold dark:text-gray-200">Color:</span>
           <div class="flex gap-2">
             <button class="color-btn active w-7 h-7 rounded-full bg-rose-400 ring-2 ring-white shadow" onclick="setColor('rose')" title="Rose" data-color="rose"></button>
             <button class="color-btn w-7 h-7 rounded-full bg-blue-400 shadow" onclick="setColor('blue')" title="Blue" data-color="blue"></button>
@@ -132,7 +132,7 @@
     <!-- Search & Filter Bar -->
     <div class="flex flex-col sm:flex-row gap-3">
       <div class="flex-1 relative">
-        <i class="ri-search-line absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-rose-400"></i>
+        <i class="ri-search-line absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-gray-400"></i>
         <input 
           type="text" 
           id="search-input" 
