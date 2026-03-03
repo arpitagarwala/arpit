@@ -76,9 +76,9 @@
     <!-- Compare Toggle -->
     <div class="text-center mb-4">
       <label class="inline-flex items-center gap-3 cursor-pointer bg-white dark:bg-slate-800 px-5 py-3 rounded-2xl shadow-md border border-gray-200 dark:border-slate-700 hover:shadow-lg transition-all duration-200">
-        <input type="checkbox" id="compareToggle" class="sr-only peer">
-        <div class="relative w-12 h-6 bg-slate-200 dark:bg-slate-700 rounded-full peer-checked:bg-blue-500 transition-colors duration-300">
-          <div class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-300 peer-checked:translate-x-6"></div>
+        <input type="checkbox" id="compareToggle" class="sr-only">
+        <div id="toggle-track" class="relative w-12 h-6 bg-slate-200 dark:bg-slate-700 rounded-full transition-colors duration-300">
+          <div id="toggle-thumb" class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-300"></div>
         </div>
         <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Compare Two SIPs</span>
       </label>
@@ -285,6 +285,8 @@
     const summaryATitle = document.getElementById('summary-a-title');
     const inputContainer = document.getElementById('input-container');
     const summaryContainer = document.getElementById('summary-container');
+    const toggleThumb = document.getElementById('toggle-thumb');
+    const toggleTrack = document.getElementById('toggle-track');
     let sipChart;
 
     function formatINR(val) {
@@ -429,6 +431,18 @@
 
     compareToggle.addEventListener('change', () => {
       const show = compareToggle.checked;
+      
+      // Toggle visual state
+      if (show) {
+        toggleThumb.style.transform = 'translateX(1.5rem)';
+        toggleTrack.classList.add('bg-blue-500');
+        toggleTrack.classList.remove('bg-slate-200', 'dark:bg-slate-700');
+      } else {
+        toggleThumb.style.transform = 'translateX(0)';
+        toggleTrack.classList.remove('bg-blue-500');
+        toggleTrack.classList.add('bg-slate-200', 'dark:bg-slate-700');
+      }
+      
       sipATitle.innerHTML = show
         ? '<i class="ri-bar-chart-fill text-blue-500"></i> SIP A'
         : '<i class="ri-bar-chart-fill text-blue-500"></i> SIP';
