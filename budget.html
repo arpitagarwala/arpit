@@ -1,83 +1,101 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Budget Tracker</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <script src="js/theme.js"></script>
 </head>
-<body class="bg-slate-900 text-slate-100 font-sans flex flex-col items-center min-h-screen p-6">
+
+<body class="bg-slate-900 dark:bg-gray-50 text-slate-100 dark:text-gray-900 font-sans flex flex-col items-center min-h-screen p-6 transition-colors duration-300">
+
+  <!-- Back & Theme Toggle Buttons -->
+  <div class="fixed top-4 left-4 z-50">
+    <a href="projects.html" class="bg-slate-700 dark:bg-white text-slate-200 dark:text-gray-700 p-2 rounded-full shadow-md hover:scale-105 transition-all duration-100 border border-slate-600 dark:border-gray-200 inline-block">
+      <i class="ri-arrow-left-line text-xl"></i>
+    </a>
+  </div>
+  
+  <div class="fixed top-4 right-4 z-50">
+    <button onclick="toggleTheme()" class="bg-slate-700 dark:bg-white text-slate-200 dark:text-gray-700 p-2 rounded-full shadow-md hover:scale-105 transition-all duration-100 border border-slate-600 dark:border-gray-200">
+      <i id="theme-icon" class="ri-sun-line text-xl"></i>
+    </button>
+  </div>
 
   <div class="w-full max-w-xl">
     <h1 class="text-3xl font-bold mb-4 text-center">💸 Budget Tracker</h1>
 
-    <p class="text-sm text-slate-400 text-center mb-2 italic">
-        Tracking budget for: <span class="font-semibold" id="user-label"></span>
-      </p>
-      
+    <p class="text-sm text-slate-400 dark:text-gray-500 text-center mb-2 italic">
+      Tracking budget for: <span class="font-semibold" id="user-label"></span>
+    </p>
+
     <!-- Balance Summary -->
-    <div class="bg-slate-800 p-4 rounded-lg mb-6 text-center">
-      <h2 class="text-xl font-semibold">Balance: ₹<span id="balance">0</span></h2>
-      <p class="text-green-400">Income: ₹<span id="income">0</span></p>
-      <p class="text-red-400">Expenses: ₹<span id="expenses">0</span></p>
+    <div class="bg-slate-800 dark:bg-white p-4 rounded-lg mb-6 text-center shadow-sm border border-slate-700/50 dark:border-gray-200">
+      <h2 class="text-xl font-semibold">Balance: <span id="balance">0</span></h2>
+      <p class="text-green-400 dark:text-green-600">Income: <span id="income">0</span></p>
+      <p class="text-red-400 dark:text-red-600">Expenses: <span id="expenses">0</span></p>
     </div>
 
-    <div class="bg-slate-800 p-4 rounded-lg mb-6">
-        <h3 class="text-lg font-semibold mb-2 text-center">Expenses by Category</h3>
-        <canvas id="categoryChart" class="w-full h-64"></canvas>
-      </div>
-      
+    <!-- Expenses by Category Chart -->
+    <div class="bg-slate-800 dark:bg-white p-4 rounded-lg mb-6 shadow-sm border border-slate-700/50 dark:border-gray-200">
+      <h3 class="text-lg font-semibold mb-2 text-center">Expenses by Category</h3>
+      <canvas id="categoryChart" class="w-full h-64"></canvas>
+    </div>
+
     <!-- Input Form -->
     <form id="entry-form" class="mb-6 grid grid-cols-3 gap-2">
-        <input type="text" id="description" placeholder="Description" required class="col-span-2 p-2 rounded bg-slate-700 border border-slate-600">
-        <input type="number" id="amount" placeholder="Amount" required class="p-2 rounded bg-slate-700 border border-slate-600">
-      
-        <select id="type" class="col-span-1 p-2 rounded bg-slate-700 border border-slate-600">
-          <option value="income">Income</option>
-          <option value="expense">Expense</option>
-        </select>
-      
-        <select id="mode" class="col-span-1 p-2 rounded bg-slate-700 border border-slate-600">
-          <option value="cash">Cash</option>
-          <option value="bank">Bank</option>
-        </select>
-      
-        <select id="category" class="col-span-1 p-2 rounded bg-slate-700 border border-slate-600">
-          <option value="general">General</option>
-          <option value="food">Food</option>
-          <option value="travel">Travel</option>
-          <option value="leisure">Leisure</option>
-          <option value="education">Education</option>
-          <option value="investment">Investment</option>
-          <option value="health">Health</option>
-          <option value="rent">Rent</option>
-          <option value="utilities">Utilities</option>
-          <option value="others">Others</option>
-        </select>
-      
-        <button type="submit" class="col-span-3 bg-blue-600 hover:bg-blue-700 p-2 rounded">Add Entry</button>
-      </form>
-      
-      <div class="mb-4">
-        <label for="filter-category" class="text-sm text-slate-400 mr-2">Filter by Category:</label>
-        <select id="filter-category" class="p-2 rounded bg-slate-700 border border-slate-600 text-sm">
-          <option value="all">All</option>
-          <option value="food">Food</option>
-          <option value="travel">Travel</option>
-          <option value="leisure">Leisure</option>
-          <option value="education">Education</option>
-          <option value="investment">Investment</option>
-          <option value="health">Health</option>
-          <option value="rent">Rent</option>
-          <option value="utilities">Utilities</option>
-          <option value="others">Others</option>
-          <option value="general">General</option>
-        </select>
-      </div>
-      
+      <input type="text" id="description" placeholder="Description" required class="col-span-2 p-2 rounded bg-slate-700 dark:bg-gray-100 border border-slate-600 dark:border-gray-200 text-slate-100 dark:text-gray-900 placeholder-slate-400 dark:placeholder-gray-400">
+      <input type="number" id="amount" placeholder="Amount" required class="p-2 rounded bg-slate-700 dark:bg-gray-100 border border-slate-600 dark:border-gray-200 text-slate-100 dark:text-gray-900 placeholder-slate-400 dark:placeholder-gray-400">
+      <select id="type" class="col-span-1 p-2 rounded bg-slate-700 dark:bg-gray-100 border border-slate-600 dark:border-gray-200 text-slate-100 dark:text-gray-900">
+        <option value="income">Income</option>
+        <option value="expense">Expense</option>
+      </select>
+      <select id="mode" class="col-span-1 p-2 rounded bg-slate-700 dark:bg-gray-100 border border-slate-600 dark:border-gray-200 text-slate-100 dark:text-gray-900">
+        <option value="cash">Cash</option>
+        <option value="bank">Bank</option>
+      </select>
+      <select id="category" class="col-span-1 p-2 rounded bg-slate-700 dark:bg-gray-100 border border-slate-600 dark:border-gray-200 text-slate-100 dark:text-gray-900">
+        <option value="general">General</option>
+        <option value="food">Food</option>
+        <option value="travel">Travel</option>
+        <option value="leisure">Leisure</option>
+        <option value="education">Education</option>
+        <option value="investment">Investment</option>
+        <option value="health">Health</option>
+        <option value="rent">Rent</option>
+        <option value="utilities">Utilities</option>
+        <option value="others">Others</option>
+      </select>
+      <button type="submit" class="col-span-3 bg-blue-600 hover:bg-blue-700 dark:bg-cyan-600 dark:hover:bg-cyan-700 text-white p-2 rounded font-semibold transition-all duration-100">Add Entry</button>
+    </form>
 
-    <!-- Entries -->
+    <!-- Filter -->
+    <div class="mb-4 text-center">
+      <label class="text-sm text-slate-400 dark:text-gray-500">Filter by Category:</label>
+      <select id="filter-category" class="p-2 rounded bg-slate-700 dark:bg-gray-100 border border-slate-600 dark:border-gray-200 text-sm text-slate-100 dark:text-gray-900 ml-2">
+        <option value="all">All</option>
+        <option value="food">Food</option>
+        <option value="travel">Travel</option>
+        <option value="leisure">Leisure</option>
+        <option value="education">Education</option>
+        <option value="investment">Investment</option>
+        <option value="health">Health</option>
+        <option value="rent">Rent</option>
+        <option value="utilities">Utilities</option>
+        <option value="others">Others</option>
+        <option value="general">General</option>
+      </select>
+    </div>
+
+    <!-- Entries List -->
     <ul id="entries" class="space-y-2"></ul>
   </div>
 
@@ -87,14 +105,12 @@
     const balanceEl = document.getElementById('balance');
     const incomeEl = document.getElementById('income');
     const expensesEl = document.getElementById('expenses');
-  
-    // 🌐 Get user from URL or prompt
+
     let userKey = new URLSearchParams(window.location.search).get("user");
-  
     if (!userKey || userKey.trim().toLowerCase() === "default") {
       const name = prompt("Enter your name to track your budget:");
       if (name && name.trim() !== "") {
-        const safeName = name.trim().toLowerCase().replace(/\s+/g, "-");
+        const safeName = name.trim().toLowerCase().replace(/\\s+/g, "-");
         window.location.href = `${window.location.pathname}?user=${safeName}`;
       } else {
         userKey = "default";
@@ -102,40 +118,37 @@
     } else {
       userKey = userKey.trim().toLowerCase();
     }
-  
+
     const storageKey = `budget-${userKey}`;
     let entries = JSON.parse(localStorage.getItem(storageKey)) || [];
     let categoryChart;
-  
-    // 🧠 Update the chart
+
     function updateChart(filterCategory = "all") {
-  const chartCanvas = document.getElementById('categoryChart');
-  if (!chartCanvas) return;
+      const chartCanvas = document.getElementById('categoryChart');
+      if (!chartCanvas) return;
 
-  const expenseData = {};
+      const expenseData = {};
+      entries.forEach(entry => {
+        if (
+          entry.type === 'expense' &&
+          (filterCategory === "all" || entry.category === filterCategory)
+        ) {
+          expenseData[entry.category] = (expenseData[entry.category] || 0) + entry.amount;
+        }
+      });
 
-  entries.forEach(entry => {
-    if (
-      entry.type === 'expense' &&
-      (filterCategory === "all" || entry.category === filterCategory)
-    ) {
-      expenseData[entry.category] = (expenseData[entry.category] || 0) + entry.amount;
-    }
-  });
-
-  
       const labels = Object.keys(expenseData);
       const data = Object.values(expenseData);
-  
+
       if (categoryChart) categoryChart.destroy();
-  
+
       if (labels.length === 0) {
         chartCanvas.style.display = "none";
         return;
       } else {
         chartCanvas.style.display = "block";
       }
-  
+
       const ctx = chartCanvas.getContext('2d');
       categoryChart = new Chart(ctx, {
         type: 'pie',
@@ -154,7 +167,7 @@
           plugins: {
             legend: {
               labels: {
-                color: '#f1f5f9',
+                color: document.documentElement.classList.contains('dark') ? '#374151' : '#f1f5f9',
                 font: { size: 14 }
               }
             }
@@ -162,60 +175,55 @@
         }
       });
     }
-  
-    // 🧾 Update the UI
+
     function updateUI() {
-  entriesList.innerHTML = '';
-  let balance = 0, income = 0, expenses = 0;
+      entriesList.innerHTML = '';
+      let balance = 0, income = 0, expenses = 0;
 
-  const selectedCategory = document.getElementById("filter-category")?.value || "all";
+      const selectedCategory = document.getElementById("filter-category")?.value || "all";
+      const filteredEntries = selectedCategory === "all" 
+        ? entries 
+        : entries.filter(entry => entry.category === selectedCategory);
 
-  const filteredEntries = selectedCategory === "all"
-    ? entries
-    : entries.filter(entry => entry.category === selectedCategory);
+      filteredEntries.forEach((entry, index) => {
+        const li = document.createElement('li');
+        li.className = 'bg-slate-800 dark:bg-white p-3 rounded flex justify-between items-center border border-slate-700/50 dark:border-gray-200 shadow-sm';
+        const sign = entry.type === 'income' ? '+' : '-';
+        li.innerHTML = `
+          <div>
+            <p class="font-medium">${entry.description}</p>
+            <p class="text-sm text-slate-400 dark:text-gray-500">
+              ${sign} ₹${entry.amount}
+              <span class="ml-2 text-xs text-slate-500 dark:text-gray-400 italic">
+                (${entry.mode} • ${entry.category})
+              </span>
+            </p>
+          </div>
+          <button onclick="deleteEntry(${index})" class="text-red-400 dark:text-red-600 hover:text-red-300 dark:hover:text-red-700">🗑️</button>
+        `;
 
-  filteredEntries.forEach((entry, index) => {
-    const li = document.createElement('li');
-    li.className = 'bg-slate-800 p-3 rounded flex justify-between items-center';
+        if (entry.type === 'income') {
+          income += entry.amount;
+        } else {
+          expenses += entry.amount;
+        }
+        entriesList.appendChild(li);
+      });
 
-    const sign = entry.type === 'income' ? '+' : '-';
-    li.innerHTML = `
-      <div>
-        <p class="font-medium">${entry.description}</p>
-        <p class="text-sm text-slate-400">
-          ${sign} ₹${entry.amount}
-          <span class="ml-2 text-xs text-slate-500 italic">
-            (${entry.mode} • ${entry.category})
-          </span>
-        </p>
-      </div>
-      <button onclick="deleteEntry(${index})" class="text-red-400 hover:text-red-300">🗑️</button>
-    `;
+      const total = income - expenses;
+      balanceEl.textContent = total;
+      incomeEl.textContent = income;
+      expensesEl.textContent = expenses;
 
-    if (entry.type === 'income') {
-      income += entry.amount;
-    } else {
-      expenses += entry.amount;
+      updateChart(selectedCategory);
     }
 
-    entriesList.appendChild(li);
-  });
-
-  const total = income - expenses;
-  balanceEl.textContent = total;
-  incomeEl.textContent = income;
-  expensesEl.textContent = expenses;
-
-  updateChart(selectedCategory); // 🔥 chart also respects filter
-}
-
-  
     function deleteEntry(index) {
       entries.splice(index, 1);
       localStorage.setItem(storageKey, JSON.stringify(entries));
       updateUI();
     }
-  
+
     form.addEventListener('submit', e => {
       e.preventDefault();
       const description = document.getElementById('description').value.trim();
@@ -223,16 +231,15 @@
       const type = document.getElementById('type').value;
       const mode = document.getElementById('mode').value;
       const category = document.getElementById('category').value;
-  
+
       if (!description || isNaN(amount)) return;
-  
+
       entries.push({ description, amount, type, mode, category });
       localStorage.setItem(storageKey, JSON.stringify(entries));
       form.reset();
       updateUI();
     });
-  
-    // 🚀 DOM loaded: show name + render everything
+
     document.addEventListener("DOMContentLoaded", () => {
       const label = document.getElementById("user-label");
       if (label && userKey !== "default") {
@@ -242,13 +249,13 @@
           .join(" ");
         label.textContent = displayName;
       }
-  
       updateUI();
     });
-    document.getElementById("filter-category").addEventListener("change", () => {
-  updateUI();
-});
 
+    document.getElementById("filter-category").addEventListener("change", () => {
+      updateUI();
+    });
   </script>
+
 </body>
 </html>
