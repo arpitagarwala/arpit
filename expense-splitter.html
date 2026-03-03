@@ -1,251 +1,314 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Advanced Expense Splitter</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Advanced Expense Splitter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script src="js/theme.js"></script>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen p-6 font-sans">
+<body class="bg-slate-900 dark:bg-gray-50 text-slate-100 dark:text-gray-900 min-h-screen p-6 font-sans transition-colors duration-300">
 
-  <div class="max-w-4xl mx-auto space-y-6">
-    <h1 class="text-3xl font-bold text-center">💸 Advanced Expense Splitter</h1>
-
-    <!-- People Setup -->
-    <div class="bg-slate-800 p-4 rounded-lg">
-      <h2 class="text-xl font-semibold mb-2">👥 People</h2>
-      <div class="flex gap-2 mb-2">
-        <input type="text" id="personName" placeholder="Add person" class="flex-1 p-2 rounded bg-slate-700 border border-slate-600" />
-        <button onclick="addPerson()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">Add</button>
-      </div>
-      <ul id="peopleList" class="space-y-1 text-sm"></ul>
+    <!-- Back & Theme Toggle Buttons -->
+    <div class="fixed top-4 left-4 z-50">
+        <a href="projects.html" class="bg-slate-700 dark:bg-white text-slate-200 dark:text-gray-700 p-2 rounded-full shadow-md hover:scale-105 transition-all duration-100 border border-slate-600 dark:border-gray-200 inline-block">
+            <i class="ri-arrow-left-line text-xl"></i>
+        </a>
+    </div>
+    <div class="fixed top-4 right-4 z-50">
+        <button onclick="toggleTheme()" class="bg-slate-700 dark:bg-white text-slate-200 dark:text-gray-700 p-2 rounded-full shadow-md hover:scale-105 transition-all duration-100 border border-slate-600 dark:border-gray-200">
+            <i id="theme-icon" class="ri-sun-line text-xl"></i>
+        </button>
     </div>
 
-    <!-- Add Expense -->
-    <div class="bg-slate-800 p-4 rounded-lg">
-      <h2 class="text-xl font-semibold mb-2">➕ Add Expense</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <input id="expenseTitle" type="text" placeholder="Expense title" class="p-2 rounded bg-slate-700 border border-slate-600" />
-        <input id="expenseAmount" type="number" placeholder="Amount" class="p-2 rounded bg-slate-700 border border-slate-600" />
+    <div class="max-w-4xl mx-auto space-y-6 pt-10">
+        <h1 class="text-3xl font-bold text-center">💸 Advanced Expense Splitter</h1>
 
-        <select id="paidBy" class="p-2 rounded bg-slate-700 border border-slate-600">
-          <option disabled selected>Paid by</option>
-        </select>
+        <!-- People Setup -->
+        <div class="bg-slate-800 dark:bg-white p-6 rounded-xl shadow-sm border border-slate-700/50 dark:border-gray-200">
+            <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">👥 People</h2>
+            <div class="flex gap-2 mb-4">
+                <input type="text" id="personName" placeholder="Add person" class="flex-1 p-2 rounded bg-slate-700 dark:bg-gray-100 border border-slate-600 dark:border-gray-200 text-slate-100 dark:text-gray-900 placeholder-slate-400 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button onclick="addPerson()" class="bg-blue-600 hover:bg-blue-700 dark:bg-cyan-600 dark:hover:bg-cyan-700 text-white px-6 py-2 rounded font-semibold transition-all">Add</button>
+            </div>
+            <ul id="peopleList" class="space-y-1 text-sm grid grid-cols-2 sm:grid-cols-3 gap-2"></ul>
+        </div>
 
-        <select id="splitType" onchange="updateSplitType()" class="p-2 rounded bg-slate-700 border border-slate-600">
-          <option value="equal">Split equally</option>
-          <option value="custom">Split by amount</option>
-        </select>
-      </div>
-      <div id="splitInputs" class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4"></div>
-      <button onclick="addExpense()" class="mt-4 bg-green-600 hover:bg-green-700 px-4 py-2 rounded w-full">Add Expense</button>
+        <!-- Add Expense -->
+        <div class="bg-slate-800 dark:bg-white p-6 rounded-xl shadow-sm border border-slate-700/50 dark:border-gray-200">
+            <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">➕ Add Expense</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input id="expenseTitle" type="text" placeholder="Expense title" class="p-2 rounded bg-slate-700 dark:bg-gray-100 border border-slate-600 dark:border-gray-200 text-slate-100 dark:text-gray-900 placeholder-slate-400 dark:placeholder-gray-400">
+                <input id="expenseAmount" type="number" placeholder="Amount" class="p-2 rounded bg-slate-700 dark:bg-gray-100 border border-slate-600 dark:border-gray-200 text-slate-100 dark:text-gray-900 placeholder-slate-400 dark:placeholder-gray-400">
+                
+                <select id="paidBy" class="p-2 rounded bg-slate-700 dark:bg-gray-100 border border-slate-600 dark:border-gray-200 text-slate-100 dark:text-gray-900">
+                    <option disabled selected>Paid by</option>
+                </select>
+
+                <select id="splitType" onchange="updateSplitType()" class="p-2 rounded bg-slate-700 dark:bg-gray-100 border border-slate-600 dark:border-gray-200 text-slate-100 dark:text-gray-900">
+                    <option value="equal">Split equally</option>
+                    <option value="custom">Split by amount</option>
+                </select>
+            </div>
+
+            <!-- Custom Split Inputs -->
+            <div id="splitInputs" class="mt-4 space-y-2 border-t border-slate-700 dark:border-gray-100 pt-4"></div>
+
+            <button onclick="addExpense()" class="w-full mt-4 bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 text-white p-3 rounded font-bold transition-all">Add Expense</button>
+        </div>
+
+        <div id="exportArea" class="space-y-6">
+            <!-- Transactions -->
+            <div class="bg-slate-800 dark:bg-white p-6 rounded-xl shadow-sm border border-slate-700/50 dark:border-gray-200">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold flex items-center gap-2">📜 Transactions</h2>
+                    <button onclick="exportImage()" class="text-xs bg-slate-700 dark:bg-gray-100 p-2 rounded hover:bg-slate-600 dark:hover:bg-gray-200 transition-colors">📸 Export Summary</button>
+                </div>
+                <ul id="transactionList" class="space-y-2"></ul>
+            </div>
+
+            <!-- Balances -->
+            <div class="bg-slate-800 dark:bg-white p-6 rounded-xl shadow-sm border border-slate-700/50 dark:border-gray-200">
+                <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">🧾 Balances</h2>
+                <ul id="balanceList" class="space-y-2 font-medium"></ul>
+            </div>
+        </div>
     </div>
-  
-   <!-- Transaction History -->
-    <div class="bg-slate-800 p-4 rounded-lg">
-      <h2 class="text-xl font-semibold mb-2">📜 Transactions</h2>
-      <ul id="transactionList" class="space-y-2 text-sm"></ul>
-    </div>
 
-    <!-- Export Button -->
-    <div class="text-center">
-    <button onclick="exportImage()" class="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded mb-2">
-      📸 Export Summary as Image
-    </button>
-    </div>  
+    <script>
+        let people = JSON.parse(localStorage.getItem("splitter-people") || "[]");
+        let transactions = JSON.parse(localStorage.getItem("splitter-transactions") || "[]");
 
-   <!-- Wrap content to export -->
-  <div id="exportArea">
-    <!-- Balance Ledger -->
-    <div class="bg-slate-800 p-4 rounded-lg">
-      <h2 class="text-xl font-semibold mb-2">🧾 Balances</h2>
-      <ul id="balanceList" class="space-y-1 text-sm"></ul>
-    </div>
-  </div>
+        function save() {
+            localStorage.setItem("splitter-people", JSON.stringify(people));
+            localStorage.setItem("splitter-transactions", JSON.stringify(transactions));
+        }
 
-<script>
-let people = JSON.parse(localStorage.getItem("splitter-people") || "[]");
-let transactions = JSON.parse(localStorage.getItem("splitter-transactions") || "[]");
+        function renderPeople() {
+            const list = document.getElementById("peopleList");
+            list.innerHTML = people.map((p, i) => `
+                <li class="flex justify-between items-center bg-slate-700 dark:bg-gray-100 px-3 py-2 rounded border border-slate-600 dark:border-gray-200">
+                    <span class="truncate">${p}</span>
+                    <div class="flex gap-2 shrink-0">
+                        <button onclick="editPerson(${i})" class="text-yellow-400 hover:text-yellow-300">✏️</button>
+                        <button onclick="deletePerson(${i})" class="text-red-400 hover:text-red-500">🗑️</button>
+                    </div>
+                </li>
+            `).join('');
 
-function save() {
-  localStorage.setItem("splitter-people", JSON.stringify(people));
-  localStorage.setItem("splitter-transactions", JSON.stringify(transactions));
-}
+            const paidBy = document.getElementById("paidBy");
+            paidBy.innerHTML = '<option disabled selected>Paid by</option>' + 
+                people.map(p => `<option value="${p}">${p}</option>`).join('');
+            
+            updateSplitInputs();
+        }
 
-function renderPeople() {
-  const list = document.getElementById("peopleList");
-  list.innerHTML = people.map((p, i) => `
-    <li class="flex justify-between items-center bg-slate-700 px-2 py-1 rounded">
-      <span>${p}</span>
-      <div class="flex gap-2">
-        <button onclick="editPerson(${i})" class="text-yellow-300 text-xs">✏️</button>
-        <button onclick="deletePerson(${i})" class="text-red-400 text-xs">🗑️</button>
-      </div>
-    </li>
-  `).join('');
+        function addPerson() {
+            const name = document.getElementById("personName").value.trim();
+            if (name && !people.includes(name)) {
+                people.push(name);
+                save();
+                renderPeople();
+                document.getElementById("personName").value = '';
+            }
+        }
 
-  const paidBy = document.getElementById("paidBy");
-  paidBy.innerHTML = '<option disabled selected>Paid by</option>' + people.map(p => `<option value="${p}">${p}</option>`).join('');
+        function editPerson(index) {
+            const newName = prompt("Edit name:", people[index]);
+            if (newName && newName.trim() !== "") {
+                const oldName = people[index];
+                people[index] = newName.trim();
+                transactions = transactions.map(tx => {
+                    if (tx.paidBy === oldName) tx.paidBy = newName;
+                    if (tx.splits[oldName] !== undefined) {
+                        tx.splits[newName] = tx.splits[oldName];
+                        delete tx.splits[oldName];
+                    }
+                    return tx;
+                });
+                save();
+                renderPeople();
+                renderTransactions();
+                renderBalances();
+            }
+        }
 
-  updateSplitInputs();
-}
+        function deletePerson(index) {
+            const name = people[index];
+            if (confirm(`Remove ${name}? This will delete related splits.`)) {
+                people.splice(index, 1);
+                transactions = transactions.filter(tx => tx.paidBy !== name);
+                transactions.forEach(tx => delete tx.splits[name]);
+                save();
+                renderPeople();
+                renderTransactions();
+                renderBalances();
+            }
+        }
 
-function addPerson() {
-  const name = document.getElementById("personName").value.trim();
-  if (name && !people.includes(name)) {
-    people.push(name);
-    save();
-    renderPeople();
-    document.getElementById("personName").value = '';
-  }
-}
+        function updateSplitInputs() {
+            const container = document.getElementById("splitInputs");
+            const type = document.getElementById("splitType").value;
+            
+            if (people.length === 0) {
+                container.innerHTML = '<p class="text-center text-slate-500 py-2">Add people first to split expenses</p>';
+                return;
+            }
 
-function editPerson(index) {
-  const newName = prompt("Edit name:", people[index]);
-  if (newName && newName.trim() !== "") {
-    const oldName = people[index];
-    people[index] = newName.trim();
-    transactions = transactions.map(tx => {
-      if (tx.paidBy === oldName) tx.paidBy = newName;
-      if (tx.splits[oldName] !== undefined) {
-        tx.splits[newName] = tx.splits[oldName];
-        delete tx.splits[oldName];
-      }
-      return tx;
-    });
-    save();
-    renderPeople();
-    renderTransactions();
-    renderBalances();
-  }
-}
+            container.innerHTML = people.map(p => {
+                const label = `<label class="font-medium text-sm">${p}</label>`;
+                let input;
+                if (type === "equal") {
+                    input = `<input type="checkbox" checked value="${p}" class="person-check w-5 h-5 accent-blue-500">`;
+                } else {
+                    input = `<input type="number" class="person-input p-1 w-24 bg-slate-700 dark:bg-gray-100 rounded border border-slate-600 dark:border-gray-200 text-sm" placeholder="₹ amount" data-person="${p}">`;
+                }
+                return `<div class="flex items-center justify-between p-1">${label}${input}</div>`;
+            }).join('');
+        }
 
-function deletePerson(index) {
-  const name = people[index];
-  if (confirm(`Remove ${name}? This will delete related splits.`)) {
-    people.splice(index, 1);
-    transactions = transactions.filter(tx => tx.paidBy !== name);
-    transactions.forEach(tx => delete tx.splits[name]);
-    save();
-    renderPeople();
-    renderTransactions();
-    renderBalances();
-  }
-}
+        function updateSplitType() {
+            updateSplitInputs();
+        }
 
-function updateSplitInputs() {
-  const container = document.getElementById("splitInputs");
-  const type = document.getElementById("splitType").value;
-  container.innerHTML = people.map(p => {
-    const label = `<label class="font-medium">${p}</label>`;
-    let input;
-    if (type === "equal") {
-      input = `<input type="checkbox" checked value="${p}" class="person-check">`;
-    } else {
-      input = `<input type="number" class="person-input p-1 bg-slate-700 rounded border border-slate-600" placeholder="${type === 'percent' ? '% share' : '₹ amount'}" data-person="${p}">`;
-    }
-    return `<div class="flex items-center justify-between">${label}${input}</div>`;
-  }).join('');
-}
+        function addExpense() {
+            const title = document.getElementById("expenseTitle").value.trim();
+            const amount = parseFloat(document.getElementById("expenseAmount").value);
+            const paidBy = document.getElementById("paidBy").value;
+            const type = document.getElementById("splitType").value;
 
-function updateSplitType() {
-  updateSplitInputs();
-}
+            if (!title || isNaN(amount) || paidBy === "Paid by") {
+                alert("Please fill all fields");
+                return;
+            }
 
-function addExpense() {
-  const title = document.getElementById("expenseTitle").value;
-  const amount = parseFloat(document.getElementById("expenseAmount").value);
-  const paidBy = document.getElementById("paidBy").value;
-  const type = document.getElementById("splitType").value;
+            let splits = {};
+            if (type === "equal") {
+                const checkboxes = document.querySelectorAll(".person-check:checked");
+                if (checkboxes.length === 0) {
+                    alert("Select at least one person to split with");
+                    return;
+                }
+                const share = parseFloat((amount / checkboxes.length).toFixed(2));
+                checkboxes.forEach(cb => splits[cb.value] = share);
+            } else {
+                const inputs = document.querySelectorAll(".person-input");
+                let totalInput = 0;
+                inputs.forEach(i => {
+                    const val = parseFloat(i.value || 0);
+                    splits[i.dataset.person] = val;
+                    totalInput += val;
+                });
+                
+                if (Math.abs(totalInput - amount) > 0.1) {
+                    alert(`Split total (₹${totalInput}) must equal expense amount (₹${amount})`);
+                    return;
+                }
+            }
 
-  let splits = {};
-    if (type === "equal") {
-  const checkboxes = document.querySelectorAll(".person-check:checked");
-  const share = parseFloat((amount / checkboxes.length).toFixed(2));
-  checkboxes.forEach(cb => splits[cb.value] = share);
-    } else {
-  const inputs = document.querySelectorAll(".person-input");
-  inputs.forEach(i => splits[i.dataset.person] = parseFloat(i.value || 0));
-    }
+            transactions.push({ title, amount, paidBy, splits, id: Date.now() });
+            save();
+            renderTransactions();
+            renderBalances();
+            document.getElementById("expenseTitle").value = "";
+            document.getElementById("expenseAmount").value = "";
+        }
 
-  transactions.push({ title, amount, paidBy, splits });
-  save();
-  renderTransactions();
-  renderBalances();
-  document.getElementById("expenseTitle").value = "";
-  document.getElementById("expenseAmount").value = "";
-}
+        function renderTransactions() {
+            const list = document.getElementById("transactionList");
+            if (transactions.length === 0) {
+                list.innerHTML = '<p class="text-center text-slate-500 py-4">No transactions yet</p>';
+                return;
+            }
 
-function renderTransactions() {
-  const list = document.getElementById("transactionList");
-  list.innerHTML = transactions.map((t, i) => {
-    const splitDetails = Object.entries(t.splits).map(([p, a]) => `${p}: ₹${a}`).join(', ');
-    return `<li class="bg-slate-700 p-2 rounded flex justify-between items-center">
-      <div>
-        <p><b>${t.title}</b> - ₹${t.amount} <span class="text-sm italic">(Paid by ${t.paidBy})</span></p>
-        <p class="text-xs text-slate-300">Split: ${splitDetails}</p>
-      </div>
-      <button onclick="deleteTransaction(${i})" class="text-red-400">🗑️</button>
-    </li>`;
-  }).join('');
-}
+            list.innerHTML = transactions.map((t, i) => {
+                const splitDetails = Object.entries(t.splits)
+                    .filter(([p, a]) => a > 0)
+                    .map(([p, a]) => `${p}: ₹${a}`).join(', ');
+                
+                return `
+                    <li class="bg-slate-700 dark:bg-gray-100 p-4 rounded border border-slate-600 dark:border-gray-200 flex justify-between items-start">
+                        <div class="flex-1 min-w-0">
+                            <p class="font-bold truncate">${t.title} - ₹${t.amount}</p>
+                            <p class="text-xs text-slate-400 dark:text-gray-500 mt-1 italic">Paid by ${t.paidBy}</p>
+                            <p class="text-xs text-slate-300 dark:text-gray-600 mt-2 bg-slate-800 dark:bg-gray-200 p-2 rounded break-words">Split: ${splitDetails}</p>
+                        </div>
+                        <button onclick="deleteTransaction(${i})" class="text-red-400 hover:text-red-600 ml-4">🗑️</button>
+                    </li>
+                `;
+            }).join('');
+        }
 
-function deleteTransaction(index) {
-  transactions.splice(index, 1);
-  save();
-  renderTransactions();
-  renderBalances();
-}
+        function deleteTransaction(index) {
+            if (confirm("Delete this transaction?")) {
+                transactions.splice(index, 1);
+                save();
+                renderTransactions();
+                renderBalances();
+            }
+        }
 
-function renderBalances() {
-  const balances = {};
-  people.forEach(p => balances[p] = 0);
-  transactions.forEach(t => {
-    Object.entries(t.splits).forEach(([person, amt]) => {
-      if (person !== t.paidBy) {
-        balances[person] -= amt;
-        balances[t.paidBy] += amt;
-      }
-    });
-  });
+        function renderBalances() {
+            const balances = {};
+            people.forEach(p => balances[p] = 0);
+            
+            transactions.forEach(t => {
+                Object.entries(t.splits).forEach(([person, amt]) => {
+                    if (person !== t.paidBy) {
+                        balances[person] -= amt;
+                        balances[t.paidBy] += amt;
+                    }
+                });
+            });
 
-  const list = document.getElementById("balanceList");
-  list.innerHTML = Object.entries(balances).map(([p, b]) => {
-    const color = b > 0 ? 'text-green-400' : b < 0 ? 'text-red-400' : 'text-slate-300';
-    return `<li>${p}: <span class="${color} font-medium">₹${b.toFixed(2)}</span></li>`;
-  }).join('');
-}
+            const list = document.getElementById("balanceList");
+            if (people.length === 0) {
+                list.innerHTML = '<p class="text-center text-slate-500 py-2">Add people to see balances</p>';
+                return;
+            }
 
-renderPeople();
-renderTransactions();
-renderBalances();
+            list.innerHTML = Object.entries(balances).map(([p, b]) => {
+                const color = b > 0 ? 'text-green-400 dark:text-green-600' : b < 0 ? 'text-red-400 dark:text-red-600' : 'text-slate-400 dark:text-gray-400';
+                const status = b > 0 ? 'is owed' : b < 0 ? 'owes' : 'is settled up';
+                const absVal = Math.abs(b).toFixed(2);
+                
+                return `
+                    <li class="flex justify-between items-center bg-slate-700 dark:bg-gray-100 p-3 rounded border border-slate-600 dark:border-gray-200">
+                        <span>${p}</span>
+                        <span class="${color}">${status} ₹${absVal}</span>
+                    </li>
+                `;
+            }).join('');
+        }
 
-function exportImage() {
-  const target = document.getElementById("exportArea");
-  html2canvas(target).then(canvas => {
-    const link = document.createElement("a");
-    link.download = "expense-summary.png";
-    link.href = canvas.toDataURL();
-    link.click();
-  });
-}
-function exportImage() {
-  // Load html2canvas dynamically
-  const script = document.createElement("script");
-  script.src = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
-  script.onload = () => {
-    const target = document.getElementById("exportArea");
-    html2canvas(target).then(canvas => {
-      const link = document.createElement("a");
-      link.download = "expense-summary.png";
-      link.href = canvas.toDataURL();
-      link.click();
-    });
-  };
-  document.body.appendChild(script);
-}
+        function exportImage() {
+            const script = document.createElement("script");
+            script.src = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
+            script.onload = () => {
+                const target = document.getElementById("exportArea");
+                html2canvas(target, {
+                    backgroundColor: document.documentElement.classList.contains('dark') ? '#f9fafb' : '#0f172a',
+                    scrollY: -window.scrollY
+                }).then(canvas => {
+                    const link = document.createElement("a");
+                    link.download = `expense-summary-${new Date().toLocaleDateString()}.png`;
+                    link.href = canvas.toDataURL();
+                    link.click();
+                });
+            };
+            document.body.appendChild(script);
+        }
 
-</script>
-
+        // Initialize
+        renderPeople();
+        renderTransactions();
+        renderBalances();
+    </script>
 </body>
 </html>
