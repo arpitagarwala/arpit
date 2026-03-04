@@ -1,5 +1,4 @@
-<!DOCTY
-PE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -38,7 +37,7 @@ PE html>
         .dark #history-panel::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 transition-colors duration-300 px-3 py-6 sm:p-6">
+<body class="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 transition-colors duration-300 px-4 py-6">
     <a href="projects.html" class="fixed top-4 left-4 z-50 bg-white dark:bg-slate-800 p-2 rounded-full shadow-md hover:scale-105 transition-all border border-slate-200 dark:border-slate-700">
         <i class="ri-arrow-left-line text-xl"></i>
     </a>
@@ -51,13 +50,13 @@ PE html>
         </button>
     </div>
 
-    <div class="w-full max-w-4xl flex flex-col lg:flex-row gap-6 items-start justify-center">
+    <div class="w-full max-w-5xl flex flex-col lg:flex-row gap-6 items-center lg:items-start justify-center">
         <!-- Main Calculator -->
-        <div class="w-full lg:w-2/3 glass rounded-[2.5rem] shadow-2xl p-4 sm:p-6 flex flex-col gap-6 relative overflow-hidden order-2 lg:order-1">
+        <div class="w-full max-w-[400px] glass rounded-[2.5rem] shadow-2xl p-4 sm:p-6 flex flex-col gap-6 relative overflow-hidden">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2">
                     <span class="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 dark:text-slate-500">Pro Calculator</span>
-                    <span class="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">v2.2</span>
+                    <span class="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">v2.3</span>
                 </div>
                 <div id="memory-indicator" class="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 hidden">M</div>
             </div>
@@ -68,32 +67,26 @@ PE html>
             </div>
 
             <div class="grid grid-cols-4 gap-3 sm:gap-4">
-                <!-- Memory & Special -->
                 <button onclick="memoryClear()" class="h-12 sm:h-14 rounded-2xl text-xs font-bold transition-all hover:bg-slate-200 dark:hover:bg-slate-800 active:scale-95">MC</button>
                 <button onclick="memoryRecall()" class="h-12 sm:h-14 rounded-2xl text-xs font-bold transition-all hover:bg-slate-200 dark:hover:bg-slate-800 active:scale-95">MR</button>
                 <button onclick="memoryAdd()" class="h-12 sm:h-14 rounded-2xl text-xs font-bold transition-all hover:bg-slate-200 dark:hover:bg-slate-800 active:scale-95">M+</button>
                 <button onclick="memorySubtract()" class="h-12 sm:h-14 rounded-2xl text-xs font-bold transition-all hover:bg-slate-200 dark:hover:bg-slate-800 active:scale-95">M-</button>
-
                 <button onclick="clearAll()" class="h-12 sm:h-14 rounded-2xl bg-rose-500/10 text-rose-600 dark:text-rose-400 font-bold transition-all hover:bg-rose-500/20 active:scale-95">AC</button>
                 <button onclick="showGT()" class="h-12 sm:h-14 rounded-2xl bg-slate-200/50 dark:bg-slate-800/50 font-bold transition-all hover:bg-slate-200 dark:hover:bg-slate-800 active:scale-95">GT</button>
                 <button onclick="calculateRoot()" class="h-12 sm:h-14 rounded-2xl bg-slate-200/50 dark:bg-slate-800/50 font-bold transition-all hover:bg-slate-200 dark:hover:bg-slate-800 active:scale-95">√</button>
                 <button onclick="appendOperator('/')" class="h-12 sm:h-14 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold transition-all hover:bg-amber-500/20 active:scale-95 text-xl">÷</button>
-
                 <button onclick="appendNumber('7')" class="h-12 sm:h-14 rounded-2xl bg-slate-100 dark:bg-slate-800/40 text-lg font-semibold transition-all hover:bg-white dark:hover:bg-slate-800 active:scale-95">7</button>
                 <button onclick="appendNumber('8')" class="h-12 sm:h-14 rounded-2xl bg-slate-100 dark:bg-slate-800/40 text-lg font-semibold transition-all hover:bg-white dark:hover:bg-slate-800 active:scale-95">8</button>
                 <button onclick="appendNumber('9')" class="h-12 sm:h-14 rounded-2xl bg-slate-100 dark:bg-slate-800/40 text-lg font-semibold transition-all hover:bg-white dark:hover:bg-slate-800 active:scale-95">9</button>
                 <button onclick="appendOperator('*')" class="h-12 sm:h-14 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold transition-all hover:bg-amber-500/20 active:scale-95 text-xl">×</button>
-
                 <button onclick="appendNumber('4')" class="h-12 sm:h-14 rounded-2xl bg-slate-100 dark:bg-slate-800/40 text-lg font-semibold transition-all hover:bg-white dark:hover:bg-slate-800 active:scale-95">4</button>
                 <button onclick="appendNumber('5')" class="h-12 sm:h-14 rounded-2xl bg-slate-100 dark:bg-slate-800/40 text-lg font-semibold transition-all hover:bg-white dark:hover:bg-slate-800 active:scale-95">5</button>
                 <button onclick="appendNumber('6')" class="h-12 sm:h-14 rounded-2xl bg-slate-100 dark:bg-slate-800/40 text-lg font-semibold transition-all hover:bg-white dark:hover:bg-slate-800 active:scale-95">6</button>
                 <button onclick="appendOperator('-')" class="h-12 sm:h-14 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold transition-all hover:bg-amber-500/20 active:scale-95 text-xl">−</button>
-
                 <button onclick="appendNumber('1')" class="h-12 sm:h-14 rounded-2xl bg-slate-100 dark:bg-slate-800/40 text-lg font-semibold transition-all hover:bg-white dark:hover:bg-slate-800 active:scale-95">1</button>
                 <button onclick="appendNumber('2')" class="h-12 sm:h-14 rounded-2xl bg-slate-100 dark:bg-slate-800/40 text-lg font-semibold transition-all hover:bg-white dark:hover:bg-slate-800 active:scale-95">2</button>
                 <button onclick="appendNumber('3')" class="h-12 sm:h-14 rounded-2xl bg-slate-100 dark:bg-slate-800/40 text-lg font-semibold transition-all hover:bg-white dark:hover:bg-slate-800 active:scale-95">3</button>
                 <button onclick="appendOperator('+')" class="h-12 sm:h-14 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold transition-all hover:bg-amber-500/20 active:scale-95 text-xl">+</button>
-
                 <button onclick="appendNumber('0')" class="h-12 sm:h-14 rounded-2xl bg-slate-100 dark:bg-slate-800/40 text-lg font-semibold transition-all hover:bg-white dark:hover:bg-slate-800 active:scale-95">0</button>
                 <button onclick="appendNumber('.')" class="h-12 sm:h-14 rounded-2xl bg-slate-100 dark:bg-slate-800/40 text-lg font-semibold transition-all hover:bg-white dark:hover:bg-slate-800 active:scale-95">.</button>
                 <button onclick="calculatePercentage()" class="h-12 sm:h-14 rounded-2xl bg-slate-100 dark:bg-slate-800/40 text-lg font-semibold transition-all hover:bg-white dark:hover:bg-slate-800 active:scale-95">%</button>
@@ -102,13 +95,16 @@ PE html>
         </div>
 
         <!-- History Sidebar -->
-        <div id="history-sidebar" class="w-full lg:w-1/3 glass rounded-3xl shadow-xl p-4 sm:p-6 flex flex-col gap-4 max-h-[320px] lg:max-h-[500px] overflow-hidden order-1 lg:order-2 transition-all duration-300 transform scale-0 lg:scale-100 origin-top h-0 lg:h-auto">
+        <div id="history-sidebar" class="hidden w-full lg:w-72 glass rounded-3xl shadow-xl p-4 sm:p-6 flex flex-col gap-4 max-h-[320px] lg:max-h-[500px] overflow-hidden transition-all duration-300">
             <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
                 <span class="font-bold flex items-center gap-2">
                     <i class="ri-history-line text-slate-400"></i>
                     History
                 </span>
-                <button onclick="clearHistory()" class="text-xs text-rose-500 hover:text-rose-600 font-medium">Clear</button>
+                <div class="flex gap-3">
+                    <button onclick="clearHistory()" class="text-xs text-rose-500 hover:text-rose-600 font-medium">Clear</button>
+                    <button onclick="toggleHistory()" class="lg:hidden text-xs text-slate-400 font-medium">Close</button>
+                </div>
             </div>
             <div id="history-panel" class="flex-1 overflow-y-auto pr-2 flex flex-col gap-3">
                 <div id="no-history" class="text-xs text-slate-400 italic text-center py-10">No calculations yet</div>
@@ -164,7 +160,7 @@ PE html>
             let result;
             const prev = parseFloat(previousInput);
             const current = parseFloat(currentInput);
-
+            
             switch (operator) {
                 case '+': result = prev + current; break;
                 case '-': result = prev - current; break;
@@ -216,13 +212,7 @@ PE html>
 
         window.toggleHistory = function() {
             const sidebar = document.getElementById('history-sidebar');
-            if (sidebar.classList.contains('scale-0')) {
-                sidebar.classList.remove('scale-0', 'h-0');
-                sidebar.classList.add('scale-100', 'h-auto');
-            } else {
-                sidebar.classList.add('scale-0', 'h-0');
-                sidebar.classList.remove('scale-100', 'h-auto');
-            }
+            sidebar.classList.toggle('hidden');
         };
 
         window.calculatePercentage = function() {
