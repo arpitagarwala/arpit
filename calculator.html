@@ -105,6 +105,7 @@
                 <button onclick="calculate()" class="h-12 sm:h-14 rounded-2xl bg-emerald-500 text-white font-bold transition-all hover:bg-emerald-600 shadow-lg shadow-emerald-500/20 active:scale-95 text-xl">=</button>
 
         </div>
+    </div>
         <div id="history-sidebar" class="hidden w-full lg:w-72 glass rounded-3xl shadow-xl p-4 sm:p-6 flex flex-col gap-4 max-h-[320px] lg:max-h-[500px] overflow-hidden transition-all duration-300">
             <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
                 <span class="font-bold flex items-center gap-2">
@@ -120,8 +121,8 @@
                 <div id="no-history" class="text-xs text-slate-400 italic text-center py-10">No calculations yet</div>
             </div>
         </div>
-    </div>
-
+        </div>
+    
     <script>
         let currentInput = '0';
         let previousInput = '';
@@ -279,12 +280,8 @@ if (justEvaluated) {
             updateDisplay();
         };
 
-        window.memoryRecall = function() {
-            currentInput = memory.toString();
-            shouldResetScreen = true;
-            updateDisplay();
-        };
-
+        window.memoryRecall = function() { if (mrcJustPressed) { memory = 0; mrcJustPressed = false; updateDisplay(); } else { currentInput = memory.toString(); shouldResetScreen = true; mrcJustPressed = true; updateDisplay(); } };
+            
         window.memoryClear = function() {
             memory = 0;
             updateDisplay();
