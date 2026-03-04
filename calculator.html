@@ -119,7 +119,7 @@
         let shouldResetScreen = false;
         let memory = 0;
         let grandTotal = 0;
-        let historyList = [];
+        let historyList = []; let lastOperator = null; let lastOperand = null; let justEvaluated = false;
 
         const display = document.getElementById('display');
         const historyCurrent = document.getElementById('history-current');
@@ -142,7 +142,7 @@
             updateDisplay();
         };
 
-        window.appendOperator = function(op) {
+        window.appendOperator = function(op) { justEvaluated = false;
             if (operator !== null && !shouldResetScreen) calculate();
             previousInput = currentInput;
             operator = op;
@@ -156,24 +156,44 @@
         }
 
         window.calculate = function() {
-            if (operator === null || shouldResetScreen) return;
-            let result;
+if (justEvaluated) {
+                if (lastOperator === null || lastOperand === null) return;
+                const cur = parseFloat(currentInput);
+                let res;
+                switch (lastOperator) {
+                    case '+': res = cur + lastOperand; break;
+                    case '-': res = cur - lastOperand; break;
+                    case '*': res = cur * lastOperand; break;
+                    case '/': res = lastOperand === 0 ? 'Error' : cur / lastOperand; break;
+                    default: return;
+                }
+                const cs = `${currentInput} ${getOpSymbol(lastOperator)} ${lastOperand}`;
+                addToHistory(cs, res);
+                historyCurrent.innerText = `${cs} =`;
+                grandTotal += (res !== 'Error') ? res : 0;
+                currentInput = res.toString();
+                updateDisplay();
+                return;
+            }
+            if (operator === null) return;
             const prev = parseFloat(previousInput);
-            const current = parseFloat(currentInput);
-            
+            let b = shouldResetScreen ? parseFloat(previousInput) : parseFloat(currentInput);
+            let result;
             switch (operator) {
-                case '+': result = prev + current; break;
-                case '-': result = prev - current; break;
-                case '*': result = prev * current; break;
-                case '/': result = current === 0 ? 'Error' : prev / current; break;
+                case '+': result = prev + b; break;
+                case '-': result = prev - b; break;
+                case '*': result = prev * b; break;
+                case '/': result = b === 0 ? 'Error' : prev / b; break;
                 default: return;
             }
-
-            const calculationStr = `${previousInput} ${getOpSymbol(operator)} ${currentInput}`;
+            const calculationStr = `${previousInput} ${getOpSymbol(operator)} ${b}`;
             addToHistory(calculationStr, result);
             historyCurrent.innerText = `${calculationStr} =`;
-            currentInput = result.toString();
             grandTotal += (result !== 'Error') ? result : 0;
+            lastOperator = operator;
+            lastOperand = b;
+            justEvaluated = true;
+            currentInput = result.toString();
             operator = null;
             shouldResetScreen = true;
             updateDisplay();
@@ -272,6 +292,9 @@
             previousInput = '';
             operator = null;
             grandTotal = 0;
+                        lastOperator = null;
+                        lastOperand = null;
+                        justEvaluated = false;
             historyCurrent.innerText = '';
             updateDisplay();
         };
