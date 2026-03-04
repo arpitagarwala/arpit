@@ -31,79 +31,95 @@
             background: rgba(15, 23, 42, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
+        /* Custom scrollbar for history */
+        #history-panel::-webkit-scrollbar { width: 4px; }
+        #history-panel::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+        .dark #history-panel::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 transition-colors duration-300 p-4">
     <a href="projects.html" class="fixed top-4 left-4 z-50 bg-white dark:bg-slate-800 p-2 rounded-full shadow-md hover:scale-105 transition-all border border-slate-200 dark:border-slate-700">
         <i class="ri-arrow-left-line text-xl"></i>
     </a>
-    <button onclick="toggleTheme()" class="fixed top-4 right-4 z-50 bg-white dark:bg-slate-800 p-2 rounded-full shadow-md hover:scale-105 transition-all border border-slate-200 dark:border-slate-700">
-        <i id="theme-icon" class="ri-moon-line text-xl"></i>
-    </button>
+    <div class="fixed top-4 right-4 z-50 flex gap-2">
+        <button onclick="toggleHistory()" class="bg-white dark:bg-slate-800 p-2 rounded-full shadow-md hover:scale-105 transition-all border border-slate-200 dark:border-slate-700">
+            <i class="ri-history-line text-xl"></i>
+        </button>
+        <button onclick="toggleTheme()" class="bg-white dark:bg-slate-800 p-2 rounded-full shadow-md hover:scale-105 transition-all border border-slate-200 dark:border-slate-700">
+            <i id="theme-icon" class="ri-moon-line text-xl"></i>
+        </button>
+    </div>
 
-    <div class="max-w-md w-full glass rounded-[2.5rem] shadow-2xl p-6 flex flex-col gap-6 relative overflow-hidden">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <span class="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 dark:text-slate-500">Pro Calculator</span>
-                <span class="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">v2.1</span>
+    <div class="max-w-md w-full flex flex-col md:flex-row gap-6 items-start justify-center">
+        <!-- Main Calculator -->
+        <div class="w-full glass rounded-[2.5rem] shadow-2xl p-6 flex flex-col gap-6 relative overflow-hidden order-2 md:order-1">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 dark:text-slate-500">Pro Calculator</span>
+                    <span class="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">v2.2</span>
+                </div>
+                <div id="memory-indicator" class="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 hidden">M</div>
             </div>
-            <div id="memory-indicator" class="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 hidden">M</div>
+
+            <div class="flex flex-col gap-1 text-right min-h-[120px] justify-end">
+                <div id="history-current" class="text-sm text-slate-400 dark:text-slate-500 h-6 overflow-hidden mono tracking-tighter"></div>
+                <div id="display" class="text-6xl font-semibold mono tabular-nums truncate tracking-tighter">0</div>
+            </div>
+
+            <div class="grid grid-cols-4 gap-3">
+                <button onclick="memoryClear()" class="h-12 rounded-xl bg-slate-200/50 dark:bg-slate-800/50 text-xs font-bold text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">MC</button>
+                <button onclick="memoryRecall()" class="h-12 rounded-xl bg-slate-200/50 dark:bg-slate-800/50 text-xs font-bold text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">MR</button>
+                <button onclick="memoryAdd()" class="h-12 rounded-xl bg-slate-200/50 dark:bg-slate-800/50 text-xs font-bold text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">M+</button>
+                <button onclick="memorySubtract()" class="h-12 rounded-xl bg-slate-200/50 dark:bg-slate-800/50 text-xs font-bold text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">M-</button>
+
+                <button onclick="clearAll()" class="h-14 rounded-2xl bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 font-bold hover:bg-amber-200 dark:hover:bg-amber-900/50 transition-colors">AC</button>
+                <button onclick="showGT()" class="h-14 rounded-2xl bg-slate-200/50 dark:bg-slate-800/50 text-sm font-bold text-emerald-600 dark:text-emerald-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">GT</button>
+                <button onclick="calculateRoot()" class="h-14 rounded-2xl bg-slate-200/50 dark:bg-slate-800/50 text-emerald-600 dark:text-emerald-400 font-bold text-xl hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">√</button>
+                <button onclick="appendOperator('/')" class="h-14 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-2xl hover:bg-emerald-500/20 transition-colors">÷</button>
+                
+                <button onclick="appendNumber('7')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">7</button>
+                <button onclick="appendNumber('8')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">8</button>
+                <button onclick="appendNumber('9')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">9</button>
+                <button onclick="appendOperator('*')" class="h-14 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-2xl hover:bg-emerald-500/20 transition-colors">×</button>
+                
+                <button onclick="appendNumber('4')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">4</button>
+                <button onclick="appendNumber('5')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">5</button>
+                <button onclick="appendNumber('6')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">6</button>
+                <button onclick="appendOperator('-')" class="h-14 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-3xl hover:bg-emerald-500/20 transition-colors">−</button>
+
+                <button onclick="appendNumber('1')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">1</button>
+                <button onclick="appendNumber('2')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">2</button>
+                <button onclick="appendNumber('3')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">3</button>
+                <button onclick="appendOperator('+')" class="h-14 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-3xl hover:bg-emerald-500/20 transition-colors">+</button>
+
+                <button onclick="appendNumber('0')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">0</button>
+                <button onclick="appendNumber('.')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">.</button>
+                <button onclick="calculatePercentage()" class="h-14 rounded-2xl bg-slate-200/50 dark:bg-slate-800/50 text-emerald-600 dark:text-emerald-400 font-bold hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors text-xl">%</button>
+                <button onclick="calculate()" class="h-14 rounded-2xl bg-emerald-500 text-slate-900 font-bold text-3xl shadow-lg shadow-emerald-500/30 hover:bg-emerald-400 transition-all active:scale-95">=</button>
+            </div>
         </div>
 
-        <div class="flex flex-col gap-1 text-right min-h-[120px] justify-end">
-            <div id="history" class="text-sm text-slate-400 dark:text-slate-500 h-6 overflow-hidden mono tracking-tighter"></div>
-            <div id="display" class="text-6xl font-semibold mono tabular-nums truncate tracking-tighter">0</div>
-        </div>
-
-        <div class="grid grid-cols-4 gap-3">
-            <!-- Row 1: Memory -->
-            <button onclick="memoryClear()" class="h-12 rounded-xl bg-slate-200/50 dark:bg-slate-800/50 text-xs font-bold text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">MC</button>
-            <button onclick="memoryRecall()" class="h-12 rounded-xl bg-slate-200/50 dark:bg-slate-800/50 text-xs font-bold text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">MR</button>
-            <button onclick="memoryAdd()" class="h-12 rounded-xl bg-slate-200/50 dark:bg-slate-800/50 text-xs font-bold text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">M+</button>
-            <button onclick="memorySubtract()" class="h-12 rounded-xl bg-slate-200/50 dark:bg-slate-800/50 text-xs font-bold text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">M-</button>
-
-            <!-- Row 2: Functions -->
-            <button onclick="clearAll()" class="h-14 rounded-2xl bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 font-bold hover:bg-amber-200 dark:hover:bg-amber-900/50 transition-colors">AC</button>
-            <button onclick="showGT()" class="h-14 rounded-2xl bg-slate-200/50 dark:bg-slate-800/50 text-sm font-bold text-emerald-600 dark:text-emerald-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">GT</button>
-            <button onclick="calculateRoot()" class="h-14 rounded-2xl bg-slate-200/50 dark:bg-slate-800/50 text-emerald-600 dark:text-emerald-400 font-bold text-xl hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">√</button>
-            <button onclick="appendOperator('/')" class="h-14 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-2xl hover:bg-emerald-500/20 transition-colors">÷</button>
-            
-            <!-- Row 3: 7-8-9 -->
-            <button onclick="appendNumber('7')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">7</button>
-            <button onclick="appendNumber('8')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">8</button>
-            <button onclick="appendNumber('9')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">9</button>
-            <button onclick="appendOperator('*')" class="h-14 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-2xl hover:bg-emerald-500/20 transition-colors">×</button>
-            
-            <!-- Row 4: 4-5-6 -->
-            <button onclick="appendNumber('4')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">4</button>
-            <button onclick="appendNumber('5')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">5</button>
-            <button onclick="appendNumber('6')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">6</button>
-            <button onclick="appendOperator('-')" class="h-14 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-3xl hover:bg-emerald-500/20 transition-colors">−</button>
-
-            <!-- Row 5: 1-2-3 -->
-            <button onclick="appendNumber('1')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">1</button>
-            <button onclick="appendNumber('2')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">2</button>
-            <button onclick="appendNumber('3')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">3</button>
-            <button onclick="appendOperator('+')" class="h-14 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-3xl hover:bg-emerald-500/20 transition-colors">+</button>
-
-            <!-- Row 6: 0-.-%-= -->
-            <button onclick="appendNumber('0')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">0</button>
-            <button onclick="appendNumber('.')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">.</button>
-            <button onclick="calculatePercentage()" class="h-14 rounded-2xl bg-slate-200/50 dark:bg-slate-800/50 text-emerald-600 dark:text-emerald-400 font-bold hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors text-xl">%</button>
-            <button onclick="calculate()" class="h-14 rounded-2xl bg-emerald-500 text-slate-900 font-bold text-3xl shadow-lg shadow-emerald-500/30 hover:bg-emerald-400 transition-all active:scale-95">=</button>
+        <!-- History Panel -->
+        <div id="history-sidebar" class="w-full md:w-64 glass rounded-3xl shadow-xl p-6 flex flex-col gap-4 max-h-[500px] overflow-hidden order-1 md:order-2 transition-all duration-300 transform scale-0 md:scale-100 origin-top h-0 md:h-auto">
+            <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-500">History</span>
+                <button onclick="clearHistory()" class="text-[10px] text-amber-600 hover:underline uppercase font-bold">Clear</button>
+            </div>
+            <div id="history-panel" class="flex flex-col gap-3 overflow-y-auto pr-2">
+                <!-- History items added here -->
+                <div id="no-history" class="text-xs text-slate-400 italic text-center py-10">No calculations yet</div>
+            </div>
         </div>
     </div>
 
     <script>
-        let currentInput = '0';
-        let previousInput = '';
-        let operator = null;
-        let shouldResetScreen = false;
-        let memory = 0;
-        let grandTotal = 0;
+        let currentInput = '0'; let previousInput = ''; let operator = null;
+        let shouldResetScreen = false; let memory = 0; let grandTotal = 0;
+        let historyList = [];
 
         const display = document.getElementById('display');
-        const historyDisplay = document.getElementById('history');
+        const historyCurrent = document.getElementById('history-current');
+        const historyPanel = document.getElementById('history-panel');
         const memoryIndicator = document.getElementById('memory-indicator');
 
         function updateDisplay() {
@@ -113,8 +129,7 @@
 
         window.appendNumber = function(number) {
             if (currentInput === '0' || shouldResetScreen) {
-                currentInput = number;
-                shouldResetScreen = false;
+                currentInput = number; shouldResetScreen = false;
             } else {
                 if (number === '.' && currentInput.includes('.')) return;
                 currentInput += number;
@@ -124,9 +139,8 @@
 
         window.appendOperator = function(op) {
             if (operator !== null && !shouldResetScreen) calculate();
-            previousInput = currentInput;
-            operator = op;
-            historyDisplay.innerText = `${previousInput} ${getOpSymbol(op)}`;
+            previousInput = currentInput; operator = op;
+            historyCurrent.innerText = `${previousInput} ${getOpSymbol(op)}`;
             shouldResetScreen = true;
         };
 
@@ -149,107 +163,96 @@
                 default: return;
             }
 
-            historyDisplay.innerText = `${previousInput} ${getOpSymbol(operator)} ${currentInput} =`;
+            const calculationStr = `${previousInput} ${getOpSymbol(operator)} ${currentInput}`;
+            addToHistory(calculationStr, result);
+
+            historyCurrent.innerText = `${calculationStr} =`;
             currentInput = result.toString();
             grandTotal += (result !== 'Error') ? result : 0;
-            operator = null;
+            operator = null; shouldResetScreen = true; updateDisplay();
+        };
+
+        function addToHistory(calc, result) {
+            const item = { calc, result };
+            historyList.unshift(item);
+            renderHistory();
+        }
+
+        function renderHistory() {
+            if (historyList.length === 0) {
+                historyPanel.innerHTML = '<div id=\"no-history\" class=\"text-xs text-slate-400 italic text-center py-10\">No calculations yet</div>';
+                return;
+            }
+            historyPanel.innerHTML = historyList.map(item => `
+                <div class=\"flex flex-col gap-0.5 items-end group cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 p-2 rounded-lg transition-colors\" onclick=\"useHistoryValue('${item.result}')\">
+                    <span class=\"text-[10px] text-slate-400 mono\">${item.calc} =</span>
+                    <span class=\"text-sm font-semibold mono\">${item.result}</span>
+                </div>
+            `).join('');
+        }
+
+        window.useHistoryValue = function(val) {
+            if (val === 'Error') return;
+            currentInput = val;
             shouldResetScreen = true;
             updateDisplay();
+        };
+
+        window.clearHistory = function() {
+            historyList = [];
+            renderHistory();
+        };
+
+        window.toggleHistory = function() {
+            const sidebar = document.getElementById('history-sidebar');
+            if (sidebar.classList.contains('scale-0')) {
+                sidebar.classList.remove('scale-0', 'h-0');
+                sidebar.classList.add('scale-100', 'h-auto');
+            } else {
+                sidebar.classList.add('scale-0', 'h-0');
+                sidebar.classList.remove('scale-100', 'h-auto');
+            }
         };
 
         window.calculatePercentage = function() {
             const current = parseFloat(currentInput);
             if (operator === '*' || operator === '/') {
-                // For 20 * 10%, result should be 20 * 0.1 = 2
-                currentInput = (current / 100).toString();
-                calculate();
+                currentInput = (current / 100).toString(); calculate();
             } else if (operator === '+' || operator === '-') {
-                // For 100 + 10%, result should be 100 + (100 * 0.1) = 110
                 const prev = parseFloat(previousInput);
-                currentInput = (prev * (current / 100)).toString();
-                calculate();
+                currentInput = (prev * (current / 100)).toString(); calculate();
             } else {
-                // Default standalone percentage
-                currentInput = (current / 100).toString();
-                updateDisplay();
+                currentInput = (current / 100).toString(); updateDisplay();
             }
         };
 
         window.calculateRoot = function() {
             const current = parseFloat(currentInput);
-            if (current < 0) {
-                currentInput = 'Error';
-            } else {
-                currentInput = Math.sqrt(current).toString();
-            }
-            shouldResetScreen = true;
-            updateDisplay();
+            currentInput = current < 0 ? 'Error' : Math.sqrt(current).toString();
+            shouldResetScreen = true; updateDisplay();
         };
 
-        window.memoryAdd = function() {
-            memory += parseFloat(currentInput);
-            shouldResetScreen = true;
-            updateDisplay();
-        };
-
-        window.memorySubtract = function() {
-            memory -= parseFloat(currentInput);
-            shouldResetScreen = true;
-            updateDisplay();
-        };
-
-        window.memoryRecall = function() {
-            currentInput = memory.toString();
-            shouldResetScreen = true;
-            updateDisplay();
-        };
-
-        window.memoryClear = function() {
-            memory = 0;
-            updateDisplay();
-        };
-
-        window.showGT = function() {
-            currentInput = grandTotal.toString();
-            historyDisplay.innerText = 'Grand Total';
-            shouldResetScreen = true;
-            updateDisplay();
-        };
-
-        window.clearAll = function() {
-            currentInput = '0';
-            previousInput = '';
-            operator = null;
-            grandTotal = 0;
-            historyDisplay.innerText = '';
-            updateDisplay();
-        };
-
-        window.deleteLast = function() {
-            currentInput = currentInput.length > 1 ? currentInput.slice(0, -1) : '0';
-            updateDisplay();
-        };
+        window.memoryAdd = function() { memory += parseFloat(currentInput); shouldResetScreen = true; updateDisplay(); };
+        window.memorySubtract = function() { memory -= parseFloat(currentInput); shouldResetScreen = true; updateDisplay(); };
+        window.memoryRecall = function() { currentInput = memory.toString(); shouldResetScreen = true; updateDisplay(); };
+        window.memoryClear = function() { memory = 0; updateDisplay(); };
+        window.showGT = function() { currentInput = grandTotal.toString(); historyCurrent.innerText = 'Grand Total'; shouldResetScreen = true; updateDisplay(); };
+        window.clearAll = function() { currentInput = '0'; previousInput = ''; operator = null; grandTotal = 0; historyCurrent.innerText = ''; updateDisplay(); };
+        window.deleteLast = function() { currentInput = currentInput.length > 1 ? currentInput.slice(0, -1) : '0'; updateDisplay(); };
 
         window.toggleTheme = function() {
-            const html = document.documentElement;
-            const icon = document.getElementById("theme-icon");
-            if (html.classList.contains("dark")) {
-                html.classList.remove("dark");
-                localStorage.setItem("theme", "light");
-                icon.className = "ri-moon-line text-xl";
+            const html = document.documentElement; const icon = document.getElementById(\"theme-icon\");
+            if (html.classList.contains(\"dark\")) {
+                html.classList.remove(\"dark\"); localStorage.setItem(\"theme\", \"light\"); icon.className = \"ri-moon-line text-xl\";
             } else {
-                html.classList.add("dark");
-                localStorage.setItem("theme", "dark");
-                icon.className = "ri-sun-line text-xl";
+                html.classList.add(\"dark\"); localStorage.setItem(\"theme\", \"dark\"); icon.className = \"ri-sun-line text-xl\";
             }
         };
 
         window.addEventListener('keydown', (e) => {
             if (e.key >= '0' && e.key <= '9') appendNumber(e.key);
-            if (e.key === '.') appendNumber('.');
-            if (e.key === '=' || e.key === 'Enter') calculate();
-            if (e.key === 'Backspace') deleteLast();
-            if (e.key === 'Escape') clearAll();
+            if (e.key === '.') appendNumber('.'); if (e.key === '=' || e.key === 'Enter') calculate();
+            if (e.key === 'Backspace') deleteLast(); if (e.key === 'Escape') clearAll();
             if (['+', '-', '*', '/'].includes(e.key)) appendOperator(e.key);
             if (e.key === '%') calculatePercentage();
         });
