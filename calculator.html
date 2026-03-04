@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Calculator</title>
+    <script>
+        (function() {
+            const theme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (theme === 'dark' || (!theme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@500&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .dark .glass {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 transition-colors duration-300 p-4">
+    <a href="projects.html" class="fixed top-4 left-4 z-50 bg-white dark:bg-slate-800 p-2 rounded-full shadow-md hover:scale-105 transition-all border border-slate-200 dark:border-slate-700">
+        <i class="ri-arrow-left-line text-xl"></i>
+    </a>
+    <button onclick="toggleTheme()" class="fixed top-4 right-4 z-50 bg-white dark:bg-slate-800 p-2 rounded-full shadow-md hover:scale-105 transition-all border border-slate-200 dark:border-slate-700">
+        <i id="theme-icon" class="ri-moon-line text-xl"></i>
+    </button>
+    <div class="max-w-xs w-full glass rounded-[2.5rem] shadow-2xl p-6 flex flex-col gap-6 relative overflow-hidden">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 dark:text-slate-500">Calculator</span>
+                <span class="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">v1.0</span>
+            </div>
+        </div>
+        <div class="flex flex-col gap-1 text-right min-h-[100px] justify-end">
+            <div id="history" class="text-sm text-slate-400 dark:text-slate-500 h-6 overflow-hidden mono tracking-tighter"></div>
+            <div id="display" class="text-5xl font-semibold mono tabular-nums truncate tracking-tighter">0</div>
+        </div>
+        <div class="grid grid-cols-4 gap-3">
+            <button onclick="clearAll()" class="h-14 rounded-2xl bg-slate-200/50 dark:bg-slate-800/50 text-amber-600 dark:text-amber-400 font-semibold hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">AC</button>
+            <button onclick="deleteLast()" class="h-14 rounded-2xl bg-slate-200/50 dark:bg-slate-800/50 text-amber-600 dark:text-amber-400 font-semibold hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">C</button>
+            <button onclick="appendOperator('%')" class="h-14 rounded-2xl bg-slate-200/50 dark:bg-slate-800/50 text-emerald-600 dark:text-emerald-400 font-semibold hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">%</button>
+            <button onclick="appendOperator('/')" class="h-14 rounded-2xl bg-slate-200/50 dark:bg-slate-800/50 text-emerald-600 dark:text-emerald-400 font-bold text-xl hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">÷</button>
+            <button onclick="appendNumber('7')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-lg font-medium">7</button>
+            <button onclick="appendNumber('8')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-lg font-medium">8</button>
+            <button onclick="appendNumber('9')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-lg font-medium">9</button>
+            <button onclick="appendOperator('*')" class="h-14 rounded-2xl bg-slate-200/50 dark:bg-slate-800/50 text-emerald-600 dark:text-emerald-400 font-bold text-xl hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">×</button>
+            <button onclick="appendNumber('4')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-lg font-medium">4</button>
+            <button onclick="appendNumber('5')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-lg font-medium">5</button>
+            <button onclick="appendNumber('6')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-lg font-medium">6</button>
+            <button onclick="appendOperator('-')" class="h-14 rounded-2xl bg-slate-200/50 dark:bg-slate-800/50 text-emerald-600 dark:text-emerald-400 font-bold text-2xl hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">−</button>
+            <button onclick="appendNumber('1')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-lg font-medium">1</button>
+            <button onclick="appendNumber('2')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-lg font-medium">2</button>
+            <button onclick="appendNumber('3')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-lg font-medium">3</button>
+            <button onclick="appendOperator('+')" class="h-14 rounded-2xl bg-slate-200/50 dark:bg-slate-800/50 text-emerald-600 dark:text-emerald-400 font-bold text-2xl hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">+</button>
+            <button onclick="toggleSign()" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-lg font-medium">+/-</button>
+            <button onclick="appendNumber('0')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-lg font-medium">0</button>
+            <button onclick="appendNumber('.')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-lg font-medium">.</button>
+            <button onclick="calculate()" class="h-14 rounded-2xl bg-emerald-500 text-slate-900 font-bold text-2xl shadow-lg shadow-emerald-500/30 hover:bg-emerald-400 transition-all active:scale-95">=</button>
+        </div>
+    </div>
+    <script>
+        let currentInput = '0'; let previousInput = ''; let operator = null; let shouldResetScreen = false;
+        const display = document.getElementById('display'); const historyDisplay = document.getElementById('history');
+        function updateDisplay() { display.innerText = currentInput; }
+        function appendNumber(number) {
+            if (currentInput === '0' || shouldResetScreen) { currentInput = number; shouldResetScreen = false; }
+            else { if (number === '.' && currentInput.includes('.')) return; currentInput += number; }
+            updateDisplay();
+        }
+        function appendOperator(op) {
+            if (operator !== null) calculate();
+            previousInput = currentInput; operator = op;
+            historyDisplay.innerText = `${previousInput} ${getOpSymbol(op)}`; shouldResetScreen = true;
+        }
+        function getOpSymbol(op) { switch(op) { case '*': return '×'; case '/': return '÷'; case '-': return '−'; default: return op; } }
+        function calculate() {
+            if (operator === null || shouldResetScreen) return;
+            let result; const prev = parseFloat(previousInput); const current = parseFloat(currentInput);
+            switch (operator) {
+                case '+': result = prev + current; break;
+                case '-': result = prev - current; break;
+                case '*': result = prev * current; break;
+                case '/': result = current === 0 ? 'Error' : prev / current; break;
+                case '%': result = prev % current; break;
+                default: return;
+            }
+            historyDisplay.innerText = `${previousInput} ${getOpSymbol(operator)} ${currentInput} =`;
+            currentInput = result.toString(); operator = null; shouldResetScreen = true; updateDisplay();
+        }
+        function clearAll() { currentInput = '0'; previousInput = ''; operator = null; historyDisplay.innerText = ''; updateDisplay(); }
+        function deleteLast() { currentInput = currentInput.length > 1 ? currentInput.slice(0, -1) : '0'; updateDisplay(); }
+        function toggleSign() { currentInput = (parseFloat(currentInput) * -1).toString(); updateDisplay(); }
+        function toggleTheme() {
+            const html = document.documentElement; const icon = document.getElementById(\"theme-icon\");
+            if (html.classList.contains(\"dark\")) {
+                html.classList.remove(\"dark\"); localStorage.setItem(\"theme\", \"light\"); icon.className = \"ri-moon-line text-xl\";
+            } else {
+                html.classList.add(\"dark\"); localStorage.setItem(\"theme\", \"dark\"); icon.className = \"ri-sun-line text-xl\";
+            }
+        }
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme'); const icon = document.getElementById(\"theme-icon\");
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                icon.className = \"ri-sun-line text-xl\";
+            } else { icon.className = \"ri-moon-line text-xl\"; }
+        });
+        window.addEventListener('keydown', (e) => {
+            if (e.key >= '0' && e.key <= '9') appendNumber(e.key);
+            if (e.key === '.') appendNumber('.'); if (e.key === '=' || e.key === 'Enter') calculate();
+            if (e.key === 'Backspace') deleteLast(); if (e.key === 'Escape') clearAll();
+            if (['+', '-', '*', '/', '%'].includes(e.key)) appendOperator(e.key);
+        });
+    </script>
+</body>
+</html>
