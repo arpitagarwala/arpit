@@ -130,7 +130,7 @@
         let shouldResetScreen = false;
         let memory = 0;
         let grandTotal = 0;
-        let historyList = []; let lastOperator = null; let lastOperand = null; let justEvaluated = false; let mrcJustPressed = false;
+        const MAX_HISTORY = 200; let historyList = JSON.parse(localStorage.getItem('calcHistory') || '[]'); let lastOperator = null; let lastOperand = null; let justEvaluated = false; let mrcJustPressed = false;
 
         const display = document.getElementById('display');
         const historyCurrent = document.getElementById('history-current');
@@ -334,6 +334,7 @@ if (justEvaluated) {
             if (['+', '-', '*', '/'].includes(e.key)) appendOperator(e.key);
             if (e.key === '%') calculatePercentage();
         });
+        updateDisplay(); renderHistory();
     </script>
 </body>
 </html>
