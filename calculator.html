@@ -66,35 +66,45 @@
                 <div id="display" class="w-full text-right text-5xl font-bold tracking-tighter truncate mono py-2">0</div>
             </div>
 
-            <div class="grid grid-cols-4 gap-3 sm:gap-4">
-                <button onclick="memoryClear()" class="h-12 sm:h-14 rounded-2xl text-xs font-bold transition-all hover:bg-slate-200 dark:hover:bg-slate-800 active:scale-95">MC</button>
-                <button onclick="memoryRecall()" class="h-12 sm:h-14 rounded-2xl text-xs font-bold transition-all hover:bg-slate-200 dark:hover:bg-slate-800 active:scale-95">MR</button>
+                    <div class="grid grid-cols-4 gap-3 sm:gap-4">
+
+                <!-- Row 1: Memory + AC -->
+                <button onclick="memoryRecall()" class="h-12 sm:h-14 rounded-2xl text-xs font-bold transition-all hover:bg-slate-200 dark:hover:bg-slate-800 active:scale-95">MRC</button>
                 <button onclick="memoryAdd()" class="h-12 sm:h-14 rounded-2xl text-xs font-bold transition-all hover:bg-slate-200 dark:hover:bg-slate-800 active:scale-95">M+</button>
-                <button onclick="memorySubtract()" class="h-12 sm:h-14 rounded-2xl text-xs font-bold transition-all hover:bg-slate-200 dark:hover:bg-slate-800 active:scale-95">M-</button> <div class="col-span-4 grid grid-cols-5 gap-3 sm:gap-4"> <button onclick="deleteLast()" class="h-12 sm:h-14 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold transition-all hover:bg-amber-500/20 active:scale-95"><i class="ri-delete-back-2-line text-xl"></i></button>
+                <button onclick="memorySubtract()" class="h-12 sm:h-14 rounded-2xl text-xs font-bold transition-all hover:bg-slate-200 dark:hover:bg-slate-800 active:scale-95">M-</button>
                 <button onclick="clearAll()" class="h-12 sm:h-14 rounded-2xl bg-rose-500/10 text-rose-600 dark:text-rose-400 font-bold transition-all hover:bg-rose-500/20 active:scale-95">AC</button>
+
+                <!-- Row 2: GT, Root, %, Divide -->
                 <button onclick="showGT()" class="h-12 sm:h-14 rounded-2xl bg-slate-200/50 dark:bg-slate-800/50 font-bold transition-all hover:bg-slate-200 dark:hover:bg-slate-800 active:scale-95">GT</button>
                 <button onclick="calculateRoot()" class="h-12 sm:h-14 rounded-2xl bg-slate-200/50 dark:bg-slate-800/50 font-bold transition-all hover:bg-slate-200 dark:hover:bg-slate-800 active:scale-95">√</button>
-                <button onclick="appendOperator('/')" class="h-12 sm:h-14 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold transition-all hover:bg-amber-500/20 active:scale-95 text-xl">÷</button> </div>
+                <button onclick="calculatePercentage()" class="h-12 sm:h-14 rounded-2xl bg-slate-200/50 dark:bg-slate-800/50 font-bold transition-all hover:bg-slate-200 dark:hover:bg-slate-800 active:scale-95">%</button>
+                <button onclick="appendOperator('/')" class="h-12 sm:h-14 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold transition-all hover:bg-amber-500/20 active:scale-95 text-xl">÷</button>
+
+                <!-- Row 3: 7 8 9 × -->
                 <button onclick="appendNumber('7')" class="h-12 sm:h-14 rounded-2xl bg-slate-100 dark:bg-slate-800/40 text-lg font-semibold transition-all hover:bg-white dark:hover:bg-slate-800 active:scale-95">7</button>
                 <button onclick="appendNumber('8')" class="h-12 sm:h-14 rounded-2xl bg-slate-100 dark:bg-slate-800/40 text-lg font-semibold transition-all hover:bg-white dark:hover:bg-slate-800 active:scale-95">8</button>
                 <button onclick="appendNumber('9')" class="h-12 sm:h-14 rounded-2xl bg-slate-100 dark:bg-slate-800/40 text-lg font-semibold transition-all hover:bg-white dark:hover:bg-slate-800 active:scale-95">9</button>
                 <button onclick="appendOperator('*')" class="h-12 sm:h-14 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold transition-all hover:bg-amber-500/20 active:scale-95 text-xl">×</button>
+
+                <!-- Row 4: 4 5 6 − -->
                 <button onclick="appendNumber('4')" class="h-12 sm:h-14 rounded-2xl bg-slate-100 dark:bg-slate-800/40 text-lg font-semibold transition-all hover:bg-white dark:hover:bg-slate-800 active:scale-95">4</button>
                 <button onclick="appendNumber('5')" class="h-12 sm:h-14 rounded-2xl bg-slate-100 dark:bg-slate-800/40 text-lg font-semibold transition-all hover:bg-white dark:hover:bg-slate-800 active:scale-95">5</button>
                 <button onclick="appendNumber('6')" class="h-12 sm:h-14 rounded-2xl bg-slate-100 dark:bg-slate-800/40 text-lg font-semibold transition-all hover:bg-white dark:hover:bg-slate-800 active:scale-95">6</button>
                 <button onclick="appendOperator('-')" class="h-12 sm:h-14 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold transition-all hover:bg-amber-500/20 active:scale-95 text-xl">−</button>
+
+                <!-- Row 5: 1 2 3 + -->
                 <button onclick="appendNumber('1')" class="h-12 sm:h-14 rounded-2xl bg-slate-100 dark:bg-slate-800/40 text-lg font-semibold transition-all hover:bg-white dark:hover:bg-slate-800 active:scale-95">1</button>
                 <button onclick="appendNumber('2')" class="h-12 sm:h-14 rounded-2xl bg-slate-100 dark:bg-slate-800/40 text-lg font-semibold transition-all hover:bg-white dark:hover:bg-slate-800 active:scale-95">2</button>
                 <button onclick="appendNumber('3')" class="h-12 sm:h-14 rounded-2xl bg-slate-100 dark:bg-slate-800/40 text-lg font-semibold transition-all hover:bg-white dark:hover:bg-slate-800 active:scale-95">3</button>
                 <button onclick="appendOperator('+')" class="h-12 sm:h-14 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold transition-all hover:bg-amber-500/20 active:scale-95 text-xl">+</button>
+
+                <!-- Row 6: ⌫ 0 . = -->
+                <button onclick="deleteLast()" class="h-12 sm:h-14 rounded-2xl bg-slate-200/50 dark:bg-slate-800/50 font-bold transition-all hover:bg-slate-200 dark:hover:bg-slate-800 active:scale-95"><i class="ri-delete-back-2-line text-xl"></i></button>
                 <button onclick="appendNumber('0')" class="h-12 sm:h-14 rounded-2xl bg-slate-100 dark:bg-slate-800/40 text-lg font-semibold transition-all hover:bg-white dark:hover:bg-slate-800 active:scale-95">0</button>
                 <button onclick="appendNumber('.')" class="h-12 sm:h-14 rounded-2xl bg-slate-100 dark:bg-slate-800/40 text-lg font-semibold transition-all hover:bg-white dark:hover:bg-slate-800 active:scale-95">.</button>
-                <button onclick="calculatePercentage()" class="h-12 sm:h-14 rounded-2xl bg-slate-100 dark:bg-slate-800/40 text-lg font-semibold transition-all hover:bg-white dark:hover:bg-slate-800 active:scale-95">%</button>
                 <button onclick="calculate()" class="h-12 sm:h-14 rounded-2xl bg-emerald-500 text-white font-bold transition-all hover:bg-emerald-600 shadow-lg shadow-emerald-500/20 active:scale-95 text-xl">=</button>
-            </div>
-        </div>
 
-        <!-- History Sidebar -->
+        </div>
         <div id="history-sidebar" class="hidden w-full lg:w-72 glass rounded-3xl shadow-xl p-4 sm:p-6 flex flex-col gap-4 max-h-[320px] lg:max-h-[500px] overflow-hidden transition-all duration-300">
             <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
                 <span class="font-bold flex items-center gap-2">
