@@ -45,7 +45,7 @@
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
                 <span class="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 dark:text-slate-500">Pro Calculator</span>
-                <span class="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">v2.0</span>
+                <span class="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">v2.1</span>
             </div>
             <div id="memory-indicator" class="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 hidden">M</div>
         </div>
@@ -55,40 +55,41 @@
             <div id="display" class="text-6xl font-semibold mono tabular-nums truncate tracking-tighter">0</div>
         </div>
 
-        <div class="grid grid-cols-5 gap-2">
-            <!-- Row 0: Memory & Advanced -->
+        <div class="grid grid-cols-4 gap-3">
+            <!-- Row 1: Memory -->
             <button onclick="memoryClear()" class="h-12 rounded-xl bg-slate-200/50 dark:bg-slate-800/50 text-xs font-bold text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">MC</button>
             <button onclick="memoryRecall()" class="h-12 rounded-xl bg-slate-200/50 dark:bg-slate-800/50 text-xs font-bold text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">MR</button>
             <button onclick="memoryAdd()" class="h-12 rounded-xl bg-slate-200/50 dark:bg-slate-800/50 text-xs font-bold text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">M+</button>
             <button onclick="memorySubtract()" class="h-12 rounded-xl bg-slate-200/50 dark:bg-slate-800/50 text-xs font-bold text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">M-</button>
-            <button onclick="showGT()" class="h-12 rounded-xl bg-slate-200/50 dark:bg-slate-800/50 text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">GT</button>
 
-            <!-- Row 1 -->
+            <!-- Row 2: Functions -->
             <button onclick="clearAll()" class="h-14 rounded-2xl bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 font-bold hover:bg-amber-200 dark:hover:bg-amber-900/50 transition-colors">AC</button>
-            <button onclick="deleteLast()" class="h-14 rounded-2xl bg-slate-200/50 dark:bg-slate-800/50 text-slate-600 dark:text-slate-400 font-bold hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">DEL</button>
+            <button onclick="showGT()" class="h-14 rounded-2xl bg-slate-200/50 dark:bg-slate-800/50 text-sm font-bold text-emerald-600 dark:text-emerald-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">GT</button>
             <button onclick="calculateRoot()" class="h-14 rounded-2xl bg-slate-200/50 dark:bg-slate-800/50 text-emerald-600 dark:text-emerald-400 font-bold text-xl hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">√</button>
-            <button onclick="appendOperator('%')" class="h-14 rounded-2xl bg-slate-200/50 dark:bg-slate-800/50 text-emerald-600 dark:text-emerald-400 font-bold hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">%</button>
             <button onclick="appendOperator('/')" class="h-14 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-2xl hover:bg-emerald-500/20 transition-colors">÷</button>
             
-            <!-- Row 2 -->
+            <!-- Row 3: 7-8-9 -->
             <button onclick="appendNumber('7')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">7</button>
             <button onclick="appendNumber('8')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">8</button>
             <button onclick="appendNumber('9')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">9</button>
             <button onclick="appendOperator('*')" class="h-14 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-2xl hover:bg-emerald-500/20 transition-colors">×</button>
-            <button onclick="appendNumber('4')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">4</button>
             
-            <!-- Row 3 -->
+            <!-- Row 4: 4-5-6 -->
+            <button onclick="appendNumber('4')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">4</button>
             <button onclick="appendNumber('5')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">5</button>
             <button onclick="appendNumber('6')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">6</button>
-            <button onclick="appendNumber('1')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">1</button>
             <button onclick="appendOperator('-')" class="h-14 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-3xl hover:bg-emerald-500/20 transition-colors">−</button>
+
+            <!-- Row 5: 1-2-3 -->
+            <button onclick="appendNumber('1')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">1</button>
             <button onclick="appendNumber('2')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">2</button>
-            
-            <!-- Row 4 -->
             <button onclick="appendNumber('3')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">3</button>
+            <button onclick="appendOperator('+')" class="h-14 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-3xl hover:bg-emerald-500/20 transition-colors">+</button>
+
+            <!-- Row 6: 0-.-%-= -->
             <button onclick="appendNumber('0')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">0</button>
             <button onclick="appendNumber('.')" class="h-14 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-xl font-medium">.</button>
-            <button onclick="appendOperator('+')" class="h-14 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-3xl hover:bg-emerald-500/20 transition-colors">+</button>
+            <button onclick="calculatePercentage()" class="h-14 rounded-2xl bg-slate-200/50 dark:bg-slate-800/50 text-emerald-600 dark:text-emerald-400 font-bold hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors text-xl">%</button>
             <button onclick="calculate()" class="h-14 rounded-2xl bg-emerald-500 text-slate-900 font-bold text-3xl shadow-lg shadow-emerald-500/30 hover:bg-emerald-400 transition-all active:scale-95">=</button>
         </div>
     </div>
@@ -122,7 +123,7 @@
         };
 
         window.appendOperator = function(op) {
-            if (operator !== null) calculate();
+            if (operator !== null && !shouldResetScreen) calculate();
             previousInput = currentInput;
             operator = op;
             historyDisplay.innerText = `${previousInput} ${getOpSymbol(op)}`;
@@ -145,16 +146,33 @@
                 case '-': result = prev - current; break;
                 case '*': result = prev * current; break;
                 case '/': result = current === 0 ? 'Error' : prev / current; break;
-                case '%': result = prev % current; break;
                 default: return;
             }
 
             historyDisplay.innerText = `${previousInput} ${getOpSymbol(operator)} ${currentInput} =`;
             currentInput = result.toString();
-            grandTotal += result !== 'Error' ? result : 0;
+            grandTotal += (result !== 'Error') ? result : 0;
             operator = null;
             shouldResetScreen = true;
             updateDisplay();
+        };
+
+        window.calculatePercentage = function() {
+            const current = parseFloat(currentInput);
+            if (operator === '*' || operator === '/') {
+                // For 20 * 10%, result should be 20 * 0.1 = 2
+                currentInput = (current / 100).toString();
+                calculate();
+            } else if (operator === '+' || operator === '-') {
+                // For 100 + 10%, result should be 100 + (100 * 0.1) = 110
+                const prev = parseFloat(previousInput);
+                currentInput = (prev * (current / 100)).toString();
+                calculate();
+            } else {
+                // Default standalone percentage
+                currentInput = (current / 100).toString();
+                updateDisplay();
+            }
         };
 
         window.calculateRoot = function() {
@@ -202,6 +220,7 @@
             currentInput = '0';
             previousInput = '';
             operator = null;
+            grandTotal = 0;
             historyDisplay.innerText = '';
             updateDisplay();
         };
@@ -231,7 +250,8 @@
             if (e.key === '=' || e.key === 'Enter') calculate();
             if (e.key === 'Backspace') deleteLast();
             if (e.key === 'Escape') clearAll();
-            if (['+', '-', '*', '/', '%'].includes(e.key)) appendOperator(e.key);
+            if (['+', '-', '*', '/'].includes(e.key)) appendOperator(e.key);
+            if (e.key === '%') calculatePercentage();
         });
     </script>
 </body>
