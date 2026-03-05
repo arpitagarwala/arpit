@@ -3,9 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Tic Tac Toe - Arpit's Games</title>
+    <script>
+        (function() {
+            const theme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (theme === 'dark' || (!theme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .dark .glass {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .cell-hover:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .dark .cell-hover:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+    </style>
 </head>
-<body>
+<body class="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 transition-colors duration-300 px-4 py-6">
+    <a href="projects.html" class="fixed top-4 left-4 z-50 bg-white dark:bg-slate-800 p-2 rounded-full shadow-md hover:scale-105 transition-all border border-slate-200 dark:border-slate-700">
+        <i class="ri-arrow-left-line text-xl"></i>
+    </a>
     
+    <div class="fixed top-4 right-4 z-50">
+        <button onclick="toggleTheme()" class="bg-white dark:bg-slate-800 p-2 rounded-full shadow-md hover:scale-105 transition-all border border-slate-200 dark:border-slate-700">
+            <i id="theme-icon" class="ri-moon-line text-xl"></i>
+        </button>
+    </div>
+
+    <div class="w-full max-w-md flex flex-col gap-8 items-center">
+        <div class="text-center space-y-2">
+            <h1 class="text-4xl font-extrabold tracking-tight">Tic Tac Toe</h1>
+            <p id="status" class="text-slate-500 dark:text-slate-400 font-medium">Player X's Turn</p>
+        </div>
+
+        <div class="glass rounded-[2rem] p-4 shadow-2xl w-full aspect-square grid grid-cols-3 gap-3">
+            <div onclick="makeMove(0)" class="cell flex items-center justify-center text-5xl font-bold rounded-2xl bg-white/50 dark:bg-slate-800/50 cursor-pointer cell-hover transition-all active:scale-95" id="cell-0"></div>
+            <div onclick="makeMove(1)" class="cell flex items-center justify-center text-5xl font-bold rounded-2xl bg-white/50 dark:bg-slate-800/50 cursor-pointer cell-hover transition-all active:scale-95" id="cell-1"></div>
+            <div onclick="makeMove(2)" class="cell flex items-center justify-center text-5xl font-bold rounded-2xl bg-white/50 dark:bg-slate-800/50 cursor-pointer cell-hover transition-all active:scale-95" id="cell-2"></div>
+            <div onclick="makeMove(3)" class="cell flex items-center justify-center text-5xl font-bold rounded-2xl bg-white/50 dark:bg-slate-800/50 cursor-pointer cell-hover transition-all active:scale-95" id="cell-3"></div>
+            <div onclick="makeMove(4)" class="cell flex items-center justify-center text-5xl font-bold rounded-2xl bg-white/50 dark:bg-slate-800/50 cursor-pointer cell-hover transition-all active:scale-95" id="cell-4"></div>
+            <div onclick="makeMove(5)" class="cell flex items-center justify-center text-5xl font-bold rounded-2xl bg-white/50 dark:bg-slate-800/50 cursor-pointer cell-hover transition-all active:scale-95" id="cell-5"></div>
+            <div onclick="makeMove(6)" class="cell flex items-center justify-center text-5xl font-bold rounded-2xl bg-white/50 dark:bg-slate-800/50 cursor-pointer cell-hover transition-all active:scale-95" id="cell-6"></div>
+            <div onclick="makeMove(7)" class="cell flex items-center justify-center text-5xl font-bold rounded-2xl bg-white/50 dark:bg-slate-800/50 cursor-pointer cell-hover transition-all active:scale-95" id="cell-7"></div>
+            <div onclick="makeMove(8)" class="cell flex items-center justify-center text-5xl font-bold rounded-2xl bg-white/50 dark:bg-slate-800/50 cursor-pointer cell-hover transition-all active:scale-95" id="cell-8"></div>
+        </div>
+
+        <button onclick="resetGame()" class="px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-2xl shadow-lg shadow-emerald-500/20 transition-all active:scale-95 flex items-center gap-2">
+            <i class="ri-refresh-line"></i> Reset Game
+        </button>
+    </div>
+
+    <script>
+        let board = ['', '', '', '', '', '', '', '', ''];
+        let currentPlayer = 'X';
+        let gameActive = true;
+
+        const statusDisplay = document.getElementById('status');
+        const winningConditions = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // Cols
+            [0, 4, 8], [2, 4, 6]             // Diagonals
+        ];
+
+        function makeMove(index) {
+            if (board[index] !== '' || !gameActive) return;
+
+            board[index] = currentPlayer;
+            const cell = document.getElementById(`cell-${index}`);
+            cell.innerText = currentPlayer;
+            cell.classList.add(currentPlayer === 'X' ? 'text-amber-500' : 'text-emerald-500');
+
+            checkResult();
+        }
+
+        function checkResult() {
+            let roundWon = false;
+            for (let i = 0; i < winningConditions.length; i++) {
+                const [a, b, c] = winningConditions[i];
+                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                    roundWon = true;
+                    break;
+                }
+            }
+
+            if (roundWon) {
+                statusDisplay.innerText = `Player ${currentPlayer} Wins!`;
+                statusDisplay.classList.replace('text-slate-500', 'text-emerald-500');
+                gameActive = false;
+                return;
+            }
+
+            if (!board.includes('')) {
+                statusDisplay.innerText = "It's a Draw!";
+                gameActive = false;
+                return;
+            }
+
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            statusDisplay.innerText = `Player ${currentPlayer}'s Turn`;
+        }
+
+        function resetGame() {
+            board = ['', '', '', '', '', '', '', '', ''];
+            currentPlayer = 'X';
+            gameActive = true;
+            statusDisplay.innerText = "Player X's Turn";
+            statusDisplay.classList.replace('text-emerald-500', 'text-slate-500');
+            document.querySelectorAll('.cell').forEach(cell => {
+                cell.innerText = '';
+                cell.classList.remove('text-amber-500', 'text-emerald-500');
+            });
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById("theme-icon");
+            if (html.classList.contains("dark")) {
+                html.classList.remove("dark");
+                localStorage.setItem("theme", "light");
+                icon.className = "ri-moon-line text-xl";
+            } else {
+                html.classList.add("dark");
+                localStorage.setItem("theme", "dark");
+                icon.className = "ri-sun-line text-xl";
+            }
+        }
+    </script>
 </body>
 </html>
