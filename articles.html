@@ -1,388 +1,552 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Articles - Arpit Agarwala</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class'
-        }
-    </script>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-    <script>
-        // Instant theme application
-        (function() {
-            const theme = localStorage.getItem('theme');
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const isDark = theme === 'dark' || (!theme && prefersDark);
-            if (isDark) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-        })();
-    </script>
-    <script src="js/theme.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Articles – Arpit Agarwala</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' }
+  </script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- ✅ FIX: Instant theme — matches index.html's convention exactly -->
+  <script>
+    (function () {
+      const theme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (theme === 'dark' || (!theme && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    })();
+  </script>
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    * { transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+
+    /* Search input focus ring */
+    .search-input:focus { outline: none; box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.15); }
+
+    /* Article card hover lift */
+    .article-card { transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease; }
+    .article-card:hover { transform: translateY(-2px); }
+
+    /* Filter pill active state */
+    .filter-pill.active {
+      background-color: #22d3ee;
+      color: #0f172a;
+      border-color: #22d3ee;
+    }
+    .dark .filter-pill.active {
+      background-color: #0891b2;
+      color: #fff;
+      border-color: #0891b2;
+    }
+
+    /* Modal animation */
+    .modal-backdrop { animation: fadeIn 0.2s ease; }
+    .modal-content { animation: slideUp 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(24px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+    /* Tag highlight on hover */
+    .article-tag { transition: background-color 0.1s ease, color 0.1s ease; }
+
+    /* Prose inside modals */
+    .modal-body h3 { font-size: 1.15rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.75rem; }
+    .modal-body p { line-height: 1.75; margin-bottom: 1rem; }
+
+    /* Empty state */
+    #no-results { display: none; }
+    #no-results.visible { display: flex; }
+
+    /* Scrollbar styling for modals */
+    .modal-scroll::-webkit-scrollbar { width: 6px; }
+    .modal-scroll::-webkit-scrollbar-track { background: transparent; }
+    .modal-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    .dark .modal-scroll::-webkit-scrollbar-thumb { background: #d1d5db; }
+  </style>
 </head>
-<body class="bg-gray-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-300">
 
-    <!-- Back & Theme Buttons -->
-    <div class="fixed top-4 left-4 z-50">
-        <a href="index.html" class="bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 p-2 rounded-full shadow-lg inline-block border border-gray-200 dark:border-slate-600 transition-all duration-200">
-            <i class="ri-arrow-left-line text-xl"></i>
-        </a>
+<!-- ✅ FIX: Matches index.html — slate-900 is DEFAULT (dark look), dark: classes = light look -->
+<body class="min-h-screen bg-slate-900 text-slate-100 dark:bg-gray-50 dark:text-gray-900 transition-colors duration-300">
+
+  <!-- Back Button -->
+  <div class="fixed top-4 left-4 z-50">
+    <a href="index.html"
+       class="bg-slate-800 dark:bg-white hover:bg-slate-700 dark:hover:bg-gray-100 text-slate-200 dark:text-gray-700 p-2 rounded-full shadow-lg inline-flex items-center border border-slate-700/50 dark:border-gray-200 hover:border-cyan-400 dark:hover:border-cyan-400 transition-all duration-200">
+      <i class="ri-arrow-left-line text-xl"></i>
+    </a>
+  </div>
+
+  <!-- Theme Toggle -->
+  <div class="fixed top-4 right-4 z-50">
+    <button onclick="toggleTheme()"
+            class="bg-slate-800 dark:bg-white hover:bg-slate-700 dark:hover:bg-gray-100 text-slate-200 dark:text-gray-700 p-2 rounded-full shadow-lg border border-slate-700/50 dark:border-gray-200 hover:border-cyan-400 dark:hover:border-cyan-400 transition-all duration-200">
+      <i id="theme-icon" class="ri-sun-line text-xl"></i>
+    </button>
+  </div>
+
+  <!-- Main Container -->
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 py-12 pt-20">
+
+    <!-- Header -->
+    <div class="text-center mb-10">
+      <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-100 dark:text-gray-900 mb-3 tracking-tight">
+        <i class="ri-article-line text-cyan-400 dark:text-cyan-600"></i> Articles
+      </h1>
+      <p class="text-slate-400 dark:text-gray-500 text-lg">Insights on Fintech, AI, and the Future of Finance</p>
     </div>
 
-    <div class="fixed top-4 right-4 z-50">
-        <button onclick="toggleTheme()" class="bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 p-2 rounded-full shadow-lg border border-gray-200 dark:border-slate-600 transition-all duration-200">
-            <i id="theme-icon" class="ri-sun-line text-xl"></i>
+    <!-- Search + Filter Bar -->
+    <div class="bg-slate-800 dark:bg-white rounded-2xl border border-slate-700/50 dark:border-gray-200 p-4 sm:p-5 mb-8 shadow-sm">
+
+      <!-- Search Input -->
+      <div class="relative mb-4">
+        <i class="ri-search-line absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-gray-400 text-lg pointer-events-none"></i>
+        <input
+          id="search-input"
+          type="text"
+          placeholder="Search articles by title, topic, or keyword…"
+          class="search-input w-full pl-10 pr-10 py-3 rounded-xl bg-slate-700 dark:bg-gray-100 text-slate-100 dark:text-gray-900 placeholder-slate-400 dark:placeholder-gray-400 border border-slate-600 dark:border-gray-200 focus:border-cyan-400 dark:focus:border-cyan-500 transition-colors duration-200 text-sm"
+          oninput="filterArticles()"
+        />
+        <button id="clear-search" onclick="clearSearch()"
+                class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-gray-400 hover:text-slate-200 dark:hover:text-gray-700 transition-colors hidden">
+          <i class="ri-close-circle-fill text-lg"></i>
         </button>
+      </div>
+
+      <!-- Filter Pills -->
+      <div class="flex flex-wrap gap-2 items-center">
+        <span class="text-xs font-semibold text-slate-400 dark:text-gray-500 uppercase tracking-wider mr-1">Filter:</span>
+        <button class="filter-pill active text-xs font-medium px-3 py-1.5 rounded-full border border-slate-600 dark:border-gray-300 text-slate-300 dark:text-gray-600 hover:border-cyan-400 transition-all duration-150" data-category="all" onclick="setFilter(this, 'all')">All Articles</button>
+        <button class="filter-pill text-xs font-medium px-3 py-1.5 rounded-full border border-slate-600 dark:border-gray-300 text-slate-300 dark:text-gray-600 hover:border-cyan-400 transition-all duration-150" data-category="AI & Trading" onclick="setFilter(this, 'AI & Trading')">
+          <i class="ri-robot-line mr-1"></i>AI & Trading
+        </button>
+        <button class="filter-pill text-xs font-medium px-3 py-1.5 rounded-full border border-slate-600 dark:border-gray-300 text-slate-300 dark:text-gray-600 hover:border-cyan-400 transition-all duration-150" data-category="DeFi" onclick="setFilter(this, 'DeFi')">
+          <i class="ri-coin-line mr-1"></i>DeFi
+        </button>
+        <button class="filter-pill text-xs font-medium px-3 py-1.5 rounded-full border border-slate-600 dark:border-gray-300 text-slate-300 dark:text-gray-600 hover:border-cyan-400 transition-all duration-150" data-category="Investing" onclick="setFilter(this, 'Investing')">
+          <i class="ri-line-chart-line mr-1"></i>Investing
+        </button>
+        <button class="filter-pill text-xs font-medium px-3 py-1.5 rounded-full border border-slate-600 dark:border-gray-300 text-slate-300 dark:text-gray-600 hover:border-cyan-400 transition-all duration-150" data-category="AI" onclick="setFilter(this, 'AI')">
+          <i class="ri-cpu-line mr-1"></i>AI
+        </button>
+        <button class="filter-pill text-xs font-medium px-3 py-1.5 rounded-full border border-slate-600 dark:border-gray-300 text-slate-300 dark:text-gray-600 hover:border-cyan-400 transition-all duration-150" data-category="Market Trends" onclick="setFilter(this, 'Market Trends')">
+          <i class="ri-bar-chart-line mr-1"></i>Market Trends
+        </button>
+
+        <!-- Result count (pushed right) -->
+        <span id="result-count" class="ml-auto text-xs text-slate-500 dark:text-gray-400 font-medium whitespace-nowrap"></span>
+      </div>
     </div>
 
-    <!-- Main Container -->
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-12 pt-20">
+    <!-- Articles List -->
+    <div id="articles-container" class="space-y-5">
+      <!-- Rendered by JS -->
+    </div>
 
-        <!-- Header -->
-        <div class="text-center mb-12">
-            <h1 class="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-3">
-                <i class="ri-article-line text-blue-600"></i> Articles
-            </h1>
-            <p class="text-slate-600 dark:text-slate-400 text-lg">Insights on Fintech, AI, and the Future of Finance</p>
+    <!-- Empty State -->
+    <div id="no-results" class="flex-col items-center justify-center py-20 text-center">
+      <i class="ri-search-eye-line text-5xl text-slate-600 dark:text-gray-300 mb-4"></i>
+      <h3 class="text-xl font-bold text-slate-400 dark:text-gray-500 mb-2">No articles found</h3>
+      <p class="text-slate-500 dark:text-gray-400 text-sm mb-4">Try a different search term or clear your filters.</p>
+      <button onclick="clearSearch(); setFilter(document.querySelector('[data-category=all]'), 'all')"
+              class="text-sm text-cyan-400 dark:text-cyan-600 hover:underline font-medium">
+        Clear all filters
+      </button>
+    </div>
+
+    <!-- Footer -->
+    <div class="text-center mt-14 pt-8 border-t border-slate-700/50 dark:border-gray-200">
+      <p class="text-slate-500 dark:text-gray-400 text-sm">Want to discuss these topics? Reach out via the <a href="index.html" class="text-cyan-400 dark:text-cyan-600 hover:underline">home page</a>.</p>
+    </div>
+  </div>
+
+  <!-- ===== MODAL CONTAINER ===== -->
+  <div id="modal-backdrop"
+       class="fixed inset-0 bg-black/75 z-[100] hidden items-center justify-center p-4 overflow-y-auto modal-backdrop"
+       onclick="handleBackdropClick(event)">
+    <div id="modal-box"
+         class="modal-content modal-scroll bg-slate-800 dark:bg-white rounded-2xl max-w-4xl w-full my-8 shadow-2xl border border-slate-700/50 dark:border-gray-200 max-h-[90vh] overflow-y-auto relative">
+
+      <!-- Modal Header (sticky) -->
+      <div class="sticky top-0 bg-slate-800 dark:bg-white border-b border-slate-700/50 dark:border-gray-200 px-6 py-4 flex items-start justify-between z-10 gap-4">
+        <div class="flex-1">
+          <div id="modal-meta" class="flex flex-wrap items-center gap-2 text-xs text-slate-400 dark:text-gray-500 mb-1.5"></div>
+          <h2 id="modal-title" class="text-xl sm:text-2xl font-bold text-slate-100 dark:text-gray-900 leading-snug"></h2>
         </div>
+        <button onclick="closeModal()" class="flex-shrink-0 text-slate-400 hover:text-slate-200 dark:text-gray-400 dark:hover:text-gray-700 transition-colors mt-1">
+          <i class="ri-close-line text-2xl"></i>
+        </button>
+      </div>
 
-        <!-- Articles Grid -->
-        <div class="space-y-8">
+      <!-- Modal Body -->
+      <div id="modal-body" class="modal-body px-6 py-8 text-slate-300 dark:text-gray-700"></div>
+    </div>
+  </div>
 
-            <!-- Article 1: AI in Trading -->
-            <article onclick="openModal('modal1')" class="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-200 dark:border-slate-700 hover:shadow-xl transition-all duration-200 cursor-pointer">
-                <div class="flex items-start gap-4">
-                    <div class="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
-                        <i class="ri-robot-line text-3xl text-white"></i>
-                    </div>
-                    <div class="flex-1">
-                        <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-2">
-                            <i class="ri-calendar-line"></i>
-                            <span>February 2026</span>
-                            <span class="mx-2">•</span>
-                            <span class="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full">AI & Trading</span>
-                        </div>
-                        <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">How AI is Revolutionizing Algorithmic Trading in 2026</h2>
-                        <p class="text-slate-600 dark:text-slate-300 mb-4 leading-relaxed">Machine learning models are now processing millions of market data points in real-time, identifying patterns that human traders miss. From sentiment analysis of news feeds to predictive models for price movements, AI is reshaping how retail and institutional investors approach the markets. This deep dive explores the latest breakthroughs in trading algorithms and what they mean for individual investors.</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Machine Learning</span>
-                            <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Algorithmic Trading</span>
-                            <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Market Analysis</span>
-                        </div>
-                        <p class="text-sm text-slate-500 dark:text-slate-400 italic">8 min read</p>
-                    </div>
+
+  <!-- ===== DATA + LOGIC ===== -->
+  <script>
+    // ─────────────────────────────────────────────
+    // ARTICLE DATA (single source of truth)
+    // ─────────────────────────────────────────────
+    const ARTICLES = [
+      {
+        id: 1,
+        title: 'How AI is Revolutionizing Algorithmic Trading in 2026',
+        date: 'February 2026',
+        category: 'AI & Trading',
+        categoryColor: 'blue',
+        icon: 'ri-robot-line',
+        iconGradient: 'from-blue-500 to-blue-600',
+        readTime: 8,
+        summary: 'Machine learning models are now processing millions of market data points in real-time, identifying patterns that human traders miss. From sentiment analysis of news feeds to predictive models for price movements, AI is reshaping how retail and institutional investors approach the markets.',
+        tags: ['Machine Learning', 'Algorithmic Trading', 'Market Analysis'],
+        content: `
+          <p class="text-base leading-relaxed mb-5 text-slate-300 dark:text-gray-600">The landscape of algorithmic trading has undergone a seismic shift with the advent of advanced artificial intelligence and machine learning technologies. In 2026, AI-powered trading systems are no longer just tools for institutional investors—they're reshaping how retail traders approach markets.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">The Evolution of Trading Algorithms</h3>
+          <p>Traditional trading algorithms relied on predetermined rules and technical indicators. Today's AI systems learn from millions of data points, adapting their strategies in real-time. Machine learning models can process news sentiment, social media trends, earnings reports, and market microstructure data simultaneously, identifying patterns invisible to human analysis.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">Sentiment Analysis at Scale</h3>
+          <p>Modern AI trading systems analyze thousands of news articles, social media posts, and analyst reports every second. Natural Language Processing (NLP) models can detect subtle sentiment shifts that precede major market movements. For Indian markets, these systems now process regional language content, capturing sentiment from vernacular news sources and social platforms.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">Predictive Models and Pattern Recognition</h3>
+          <p>Deep learning models have become remarkably proficient at identifying complex market patterns. These neural networks can detect order book imbalances, predict short-term price movements, and identify optimal entry and exit points with unprecedented accuracy. Retail platforms like Dhan, Zerodha, and Groww are beginning to integrate these AI capabilities into their trading interfaces.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">Risk Management and Position Sizing</h3>
+          <p>AI doesn't just identify trading opportunities—it also optimizes risk management. Modern systems calculate optimal position sizes based on volatility forecasts, portfolio correlation, and individual risk tolerance. They can automatically adjust stop-losses and take-profits based on changing market conditions.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">The Democratization of AI Trading</h3>
+          <p>What was once available only to hedge funds and institutional traders is now accessible to retail investors. Platforms are offering AI-powered trading signals, automated strategy builders, and backtesting tools. However, this democratization also means markets are becoming more efficient, making it harder to find alpha.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">Challenges and Ethical Considerations</h3>
+          <p>AI trading isn't without challenges. Model overfitting, black-box decision-making, and the potential for coordinated algorithmic behavior pose risks. Regulators like SEBI are working to establish guidelines for AI trading systems, focusing on transparency and market stability.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">The Future: Human-AI Collaboration</h3>
+          <p>The most successful traders in 2026 aren't purely algorithmic—they combine AI insights with human judgment. AI handles data processing and pattern recognition, while humans provide strategic oversight, adapt to unprecedented events, and make decisions during market anomalies. This hybrid approach represents the future of trading.</p>
+          <p>As AI continues to evolve, retail investors who understand these technologies and integrate them into their strategies will have a significant advantage. The key is not to rely blindly on algorithms, but to use them as powerful tools in a comprehensive trading approach.</p>
+        `
+      },
+      {
+        id: 2,
+        title: 'The Convergence of DeFi and Traditional Finance',
+        date: 'January 2026',
+        category: 'DeFi',
+        categoryColor: 'purple',
+        icon: 'ri-coin-line',
+        iconGradient: 'from-purple-500 to-purple-600',
+        readTime: 12,
+        summary: 'Decentralized Finance (DeFi) protocols are no longer fringe experiments—they\'re becoming integrated into mainstream financial services. Major banks are exploring blockchain-based settlement systems, while DeFi platforms are adding regulatory compliance features.',
+        tags: ['Blockchain', 'Smart Contracts', 'Banking'],
+        content: `
+          <p class="text-base leading-relaxed mb-5 text-slate-300 dark:text-gray-600">Decentralized Finance (DeFi) is no longer an experimental fringe of the financial world. In 2026, the lines between traditional banking and decentralized systems are blurring, creating a hybrid financial ecosystem that combines the security of regulated institutions with the innovation of blockchain technology.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">From Experimental to Mainstream</h3>
+          <p>Major banks like HDFC, ICICI, and Axis are piloting blockchain-based settlement systems. What started as skepticism has transformed into serious integration efforts. Cross-border payments that once took days now settle in minutes through blockchain rails, reducing costs by up to 80%.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">Smart Contracts in Banking</h3>
+          <p>Smart contracts are automating lending, insurance claims, and trade finance. A home loan approval that traditionally required weeks of paperwork now executes automatically when predefined conditions are met. DeFi protocols handle collateral management, interest calculations, and risk assessment without human intervention.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">Tokenization of Assets</h3>
+          <p>Real estate, bonds, and even company shares are being tokenized on blockchain networks. This tokenization enables fractional ownership, 24/7 trading, and instant settlement. Indian investors can now own fractions of commercial properties or government bonds, democratizing access to assets once reserved for the wealthy.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">Regulatory Compliance in DeFi</h3>
+          <p>The biggest challenge for DeFi has been regulatory compliance. New DeFi protocols now integrate KYC/AML checks, transaction monitoring, and regulatory reporting. SEBI and RBI are working on frameworks that allow innovation while protecting consumers. Licensed DeFi platforms in India must now maintain capital reserves and follow banking regulations.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">Liquidity Pools and Yield Farming</h3>
+          <p>Liquidity pools have become sophisticated financial instruments. Instead of keeping money in low-interest savings accounts, users can provide liquidity to DeFi protocols and earn yields of 8–15% annually. However, these higher returns come with risks like impermanent loss and smart contract vulnerabilities.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">The Future: A Hybrid Financial System</h3>
+          <p>The future isn't purely decentralized or centralized—it's hybrid. Traditional banks provide security, insurance, and regulatory compliance. DeFi provides efficiency, transparency, and innovation. The convergence of both systems creates a financial infrastructure that's more accessible, efficient, and resilient than either could be alone.</p>
+        `
+      },
+      {
+        id: 3,
+        title: 'The Mathematics of Wealth: Understanding SIP Returns',
+        date: 'December 2025',
+        category: 'Investing',
+        categoryColor: 'green',
+        icon: 'ri-line-chart-line',
+        iconGradient: 'from-green-500 to-green-600',
+        readTime: 10,
+        summary: 'Systematic Investment Plans (SIPs) harness the power of compounding and rupee-cost averaging to build wealth over time. This article breaks down the mathematical principles behind SIP investing and provides practical strategies for optimizing your portfolio using real Indian market data.',
+        tags: ['SIP', 'Mutual Funds', 'Wealth Building'],
+        content: `
+          <p class="text-base leading-relaxed mb-5 text-slate-300 dark:text-gray-600">Systematic Investment Plans (SIPs) are often called the retail investor's secret weapon. But what makes them so powerful? The answer lies in mathematics—specifically, the principles of compounding and rupee-cost averaging.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">The Power of Compounding</h3>
+          <p>Einstein allegedly called compound interest the eighth wonder of the world. In SIP investing, your returns generate their own returns. A monthly SIP of ₹5,000 at 12% annual returns becomes ₹11.7 lakhs after 10 years—₹6 lakhs from your contributions and ₹5.7 lakhs from compounding alone.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">Rupee-Cost Averaging Explained</h3>
+          <p>Markets fluctuate, but SIPs turn volatility into an advantage. When markets fall, your fixed monthly investment buys more units. When markets rise, you buy fewer units but at higher values. Over time, this averages out your purchase cost, reducing the impact of market timing.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">The Time Factor</h3>
+          <p>Time is the most critical variable in SIP investing. Starting a ₹5,000 monthly SIP at age 25 versus 35 means an extra 10 years of compounding. At 12% returns, that 10-year head start translates to an additional ₹1.2 crores by retirement at 60.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">Return Rate Sensitivity</h3>
+          <p>A ₹10,000 monthly SIP over 20 years yields vastly different results at different return rates: 8% returns = ₹59 lakhs, 12% returns = ₹1 crore, 15% returns = ₹1.5 crores. This highlights the importance of choosing the right mutual funds.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">SIP Step-Ups: Turbocharging Growth</h3>
+          <p>Increasing your SIP amount by 10% annually (step-up SIP) dramatically enhances wealth creation. A ₹5,000 SIP with 10% annual increases at 12% returns builds ₹60 lakhs over 15 years, compared to ₹25 lakhs without step-ups.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">Real Indian Market Data</h3>
+          <p>Historical Nifty 50 returns (1999–2024) average around 12–13% annually. Large-cap equity funds have delivered 11–12%, mid-cap funds 13–15%, and small-cap funds 14–16%. However, past performance doesn't guarantee future returns.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">Optimizing Your SIP Strategy</h3>
+          <p>Start early, stay consistent, and increase contributions with income. Diversify across large-cap, mid-cap, and index funds. Review performance annually but avoid frequent switching. Most importantly, stay invested during market downturns—that's when SIPs work their magic.</p>
+        `
+      },
+      {
+        id: 4,
+        title: 'Generative AI: The New Frontier in Financial Services',
+        date: 'November 2025',
+        category: 'AI',
+        categoryColor: 'orange',
+        icon: 'ri-cpu-line',
+        iconGradient: 'from-orange-500 to-orange-600',
+        readTime: 11,
+        summary: 'ChatGPT and similar large language models are transforming customer service, financial analysis, and automated reporting in the fintech industry. Explore how generative AI is being integrated into financial platforms and what it means for the future of financial advisors.',
+        tags: ['Generative AI', 'Automation', 'Customer Service'],
+        content: `
+          <p class="text-base leading-relaxed mb-5 text-slate-300 dark:text-gray-600">Generative AI, powered by large language models like ChatGPT, Claude, and Gemini, is fundamentally transforming financial services. In 2025–26, we're witnessing a revolution in how banks, fintechs, and financial advisors interact with customers and analyze data.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">AI-Powered Customer Service</h3>
+          <p>Banks are deploying AI chatbots that understand context, remember conversation history, and provide personalized responses. These systems can handle complex queries about loan eligibility, investment options, and account issues. HDFC Bank's EVA and ICICI's iPal can now resolve 80% of customer queries without human intervention.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">Automated Financial Analysis</h3>
+          <p>Generative AI can analyze financial statements, market reports, and economic data in seconds. It generates comprehensive investment analysis, identifies portfolio risks, and suggests rebalancing strategies. What took analysts days now takes minutes.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">Personalized Investment Recommendations</h3>
+          <p>AI systems analyze individual financial goals, risk tolerance, and market conditions to generate customized investment strategies. They explain recommendations in plain language, making sophisticated financial planning accessible to everyone.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">Regulatory Compliance and Reporting</h3>
+          <p>Financial institutions use generative AI to draft compliance reports, analyze regulatory changes, and ensure adherence to SEBI, RBI, and international guidelines. The technology can review thousands of transactions for suspicious patterns and generate detailed compliance documentation automatically.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">Content Generation and Education</h3>
+          <p>Fintech companies use AI to create personalized financial education content. Users receive customized explainers about SIPs, tax planning, or market trends based on their knowledge level and interests. This democratizes financial literacy.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">Challenges: Accuracy and Hallucinations</h3>
+          <p>The biggest risk with generative AI is "hallucinations"—confidently stated incorrect information. In finance, where accuracy is critical, this poses serious risks. Financial institutions implement multiple verification layers and human oversight to prevent AI-generated errors from reaching customers.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">The Future of Financial Advisors</h3>
+          <p>AI won't replace financial advisors—it will augment them. Advisors equipped with AI tools can serve more clients, provide deeper analysis, and focus on relationship building. The future belongs to advisors who embrace AI as a productivity multiplier while maintaining the human touch clients value.</p>
+        `
+      },
+      {
+        id: 5,
+        title: "The Rise of the Retail Investor: India's Market Revolution",
+        date: 'October 2025',
+        category: 'Market Trends',
+        categoryColor: 'red',
+        icon: 'ri-team-line',
+        iconGradient: 'from-red-500 to-red-600',
+        readTime: 9,
+        summary: 'Over 10 crore Indians now actively trade in the stock market, a dramatic shift from just a decade ago. Mobile trading apps, zero-commission brokerages, and financial literacy content have democratized access to markets.',
+        tags: ['Retail Trading', 'Indian Markets', 'Democratization'],
+        content: `
+          <p class="text-base leading-relaxed mb-5 text-slate-300 dark:text-gray-600">India's financial markets are experiencing a seismic demographic shift. Over 10 crore (100 million) Indians now actively participate in stock markets—a number that was barely 2 crore just a decade ago. This is India's retail investor revolution.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">The Technology Catalysts</h3>
+          <p>Mobile trading apps from Zerodha, Groww, Upstox, and Angel One made market access as simple as ordering food. UPI integration enabled instant fund transfers. Platforms eliminated account opening friction—what once required bank visits now happens in minutes via video KYC.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">Zero-Commission Disruption</h3>
+          <p>Traditional brokers charged 0.5–1% per trade. Discount brokers offered flat ₹20 per trade. Now, equity delivery trades are free on most platforms. This pricing revolution removed the biggest barrier for small investors. A ₹1,000 investment is now viable—it wasn't when commissions were percentage-based.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">Financial Literacy Explosion</h3>
+          <p>YouTube channels, Instagram finfluencers, and podcasts democratized financial education. Content creators explain SIPs, P/E ratios, and portfolio diversification in regional languages. This knowledge spread reached tier-2 and tier-3 cities, driving market participation beyond metro areas.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">The COVID-19 Catalyst</h3>
+          <p>The 2020 pandemic accelerated digital adoption. Lockdowns gave people time to explore investing. The market crash and subsequent recovery created a powerful lesson about long-term investing. Those who entered during the crash saw portfolios double or triple, attracting friends and family.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">Changing Market Dynamics</h3>
+          <p>Retail investors now account for over 40% of daily trading volumes. Their collective behavior influences price discovery and volatility patterns. Institutional players are adapting strategies to account for retail sentiment. The days of institutions dominating price action are over.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">Risks and Responsibilities</h3>
+          <p>With great access comes great responsibility. Many new investors lack risk management skills. SEBI has introduced investor protection measures, but education remains critical. The market will reward disciplined investors and punish those treating it like gambling.</p>
+          <h3 class="text-slate-100 dark:text-gray-900">The Path Forward</h3>
+          <p>India's retail investor base will likely double again in the next decade. As financial literacy improves and technology advances, market participation will become as common as bank accounts. This democratization of capital markets represents one of the most significant economic shifts in modern Indian history.</p>
+        `
+      }
+    ];
+
+    // ─────────────────────────────────────────────
+    // CATEGORY COLOR MAPS
+    // ─────────────────────────────────────────────
+    const CATEGORY_BADGE = {
+      'AI & Trading': 'bg-blue-900/40 text-blue-300 dark:bg-blue-100 dark:text-blue-700',
+      'DeFi':         'bg-purple-900/40 text-purple-300 dark:bg-purple-100 dark:text-purple-700',
+      'Investing':    'bg-green-900/40 text-green-300 dark:bg-green-100 dark:text-green-700',
+      'AI':           'bg-orange-900/40 text-orange-300 dark:bg-orange-100 dark:text-orange-700',
+      'Market Trends':'bg-red-900/40 text-red-300 dark:bg-red-100 dark:text-red-700',
+    };
+
+    // ─────────────────────────────────────────────
+    // STATE
+    // ─────────────────────────────────────────────
+    let activeCategory = 'all';
+    let activeSearch   = '';
+
+    // ─────────────────────────────────────────────
+    // RENDER ARTICLES
+    // ─────────────────────────────────────────────
+    function renderArticles() {
+      const container = document.getElementById('articles-container');
+      const noResults = document.getElementById('no-results');
+      const countEl   = document.getElementById('result-count');
+      const query     = activeSearch.toLowerCase().trim();
+
+      const filtered = ARTICLES.filter(a => {
+        const matchCat = activeCategory === 'all' || a.category === activeCategory;
+        const matchQ   = !query
+          || a.title.toLowerCase().includes(query)
+          || a.summary.toLowerCase().includes(query)
+          || a.tags.some(t => t.toLowerCase().includes(query))
+          || a.category.toLowerCase().includes(query)
+          || a.date.toLowerCase().includes(query);
+        return matchCat && matchQ;
+      });
+
+      // Update count
+      const total = ARTICLES.length;
+      countEl.textContent = filtered.length === total
+        ? `${total} articles`
+        : `${filtered.length} of ${total} articles`;
+
+      // Show/hide empty state
+      if (filtered.length === 0) {
+        container.innerHTML = '';
+        noResults.classList.add('visible');
+        return;
+      }
+      noResults.classList.remove('visible');
+
+      // Build HTML
+      container.innerHTML = filtered.map(a => `
+        <article
+          onclick="openModal(${a.id})"
+          class="article-card bg-slate-800 dark:bg-white rounded-2xl p-5 sm:p-7 shadow-sm border border-slate-700/50 dark:border-gray-200 hover:border-cyan-400 dark:hover:border-cyan-400 hover:shadow-lg cursor-pointer"
+          role="button"
+          tabindex="0"
+          onkeydown="if(event.key==='Enter'||event.key===' ')openModal(${a.id})"
+          aria-label="Read article: ${a.title}"
+        >
+          <div class="flex items-start gap-4 sm:gap-5">
+            <!-- Icon -->
+            <div class="flex-shrink-0 w-14 h-14 bg-gradient-to-br ${a.iconGradient} rounded-xl flex items-center justify-center shadow-md">
+              <i class="${a.icon} text-2xl text-white"></i>
+            </div>
+
+            <div class="flex-1 min-w-0">
+              <!-- Meta row -->
+              <div class="flex flex-wrap items-center gap-2 text-xs text-slate-400 dark:text-gray-500 mb-2">
+                <span class="flex items-center gap-1"><i class="ri-calendar-line"></i>${a.date}</span>
+                <span class="text-slate-600 dark:text-gray-300">•</span>
+                <span class="${CATEGORY_BADGE[a.category] || ''} px-2 py-0.5 rounded-full font-medium">${a.category}</span>
+                <span class="text-slate-600 dark:text-gray-300">•</span>
+                <span class="flex items-center gap-1"><i class="ri-time-line"></i>${a.readTime} min read</span>
+              </div>
+
+              <!-- Title -->
+              <h2 class="text-lg sm:text-xl font-bold text-slate-100 dark:text-gray-900 mb-2 leading-snug">${a.title}</h2>
+
+              <!-- Summary -->
+              <p class="text-sm text-slate-400 dark:text-gray-500 leading-relaxed mb-3 line-clamp-2">${a.summary}</p>
+
+              <!-- Tags + CTA -->
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div class="flex flex-wrap gap-1.5">
+                  ${a.tags.map(t => `<span class="article-tag text-xs bg-slate-700 dark:bg-gray-100 hover:bg-slate-600 dark:hover:bg-gray-200 text-slate-300 dark:text-gray-600 px-2.5 py-1 rounded-full">${t}</span>`).join('')}
                 </div>
-            </article>
-
-            <!-- Article 2: DeFi -->
-            <article onclick="openModal('modal2')" class="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-200 dark:border-slate-700 hover:shadow-xl transition-all duration-200 cursor-pointer">
-                <div class="flex items-start gap-4">
-                    <div class="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center">
-                        <i class="ri-coin-line text-3xl text-white"></i>
-                    </div>
-                    <div class="flex-1">
-                        <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-2">
-                            <i class="ri-calendar-line"></i>
-                            <span>January 2026</span>
-                            <span class="mx-2">•</span>
-                            <span class="text-xs bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded-full">DeFi</span>
-                        </div>
-                        <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">The Convergence of DeFi and Traditional Finance</h2>
-                        <p class="text-slate-600 dark:text-slate-300 mb-4 leading-relaxed">Decentralized Finance (DeFi) protocols are no longer fringe experiments—they're becoming integrated into mainstream financial services. Major banks are exploring blockchain-based settlement systems, while DeFi platforms are adding regulatory compliance features. This article examines how smart contracts, liquidity pools, and tokenized assets are bridging the gap between traditional banking and decentralized systems.</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Blockchain</span>
-                            <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Smart Contracts</span>
-                            <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Banking</span>
-                        </div>
-                        <p class="text-sm text-slate-500 dark:text-slate-400 italic">12 min read</p>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Article 3: SIP -->
-            <article onclick="openModal('modal3')" class="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-200 dark:border-slate-700 hover:shadow-xl transition-all duration-200 cursor-pointer">
-                <div class="flex items-start gap-4">
-                    <div class="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center">
-                        <i class="ri-line-chart-line text-3xl text-white"></i>
-                    </div>
-                    <div class="flex-1">
-                        <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-2">
-                            <i class="ri-calendar-line"></i>
-                            <span>December 2025</span>
-                            <span class="mx-2">•</span>
-                            <span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-2 py-0.5 rounded-full">Investing</span>
-                        </div>
-                        <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">The Mathematics of Wealth: Understanding SIP Returns</h2>
-                        <p class="text-slate-600 dark:text-slate-300 mb-4 leading-relaxed">Systematic Investment Plans (SIPs) harness the power of compounding and rupee-cost averaging to build wealth over time. But how much do your monthly contributions really grow? This article breaks down the mathematical principles behind SIP investing, explores the impact of different return rates and time horizons, and provides practical strategies for optimizing your investment portfolio using real Indian market data.</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">SIP</span>
-                            <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Mutual Funds</span>
-                            <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Wealth Building</span>
-                        </div>
-                        <p class="text-sm text-slate-500 dark:text-slate-400 italic">10 min read</p>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Article 4: Generative AI -->
-            <article onclick="openModal('modal4')" class="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-200 dark:border-slate-700 hover:shadow-xl transition-all duration-200 cursor-pointer">
-                <div class="flex items-start gap-4">
-                    <div class="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center">
-                        <i class="ri-cpu-line text-3xl text-white"></i>
-                    </div>
-                    <div class="flex-1">
-                        <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-2">
-                            <i class="ri-calendar-line"></i>
-                            <span>November 2025</span>
-                            <span class="mx-2">•</span>
-                            <span class="text-xs bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 px-2 py-0.5 rounded-full">AI</span>
-                        </div>
-                        <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">Generative AI: The New Frontier in Financial Services</h2>
-                        <p class="text-slate-600 dark:text-slate-300 mb-4 leading-relaxed">ChatGPT and similar large language models are transforming customer service, financial analysis, and automated reporting in the fintech industry. Banks are deploying AI assistants that can answer complex queries, generate personalized investment recommendations, and even draft regulatory compliance reports. Explore how generative AI is being integrated into financial platforms, the challenges of ensuring accuracy, and what this means for the future of financial advisors.</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Generative AI</span>
-                            <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Automation</span>
-                            <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Customer Service</span>
-                        </div>
-                        <p class="text-sm text-slate-500 dark:text-slate-400 italic">11 min read</p>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Article 5: Retail Investor -->
-            <article onclick="openModal('modal5')" class="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-200 dark:border-slate-700 hover:shadow-xl transition-all duration-200 cursor-pointer">
-                <div class="flex items-start gap-4">
-                    <div class="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center">
-                        <i class="ri-team-line text-3xl text-white"></i>
-                    </div>
-                    <div class="flex-1">
-                        <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-2">
-                            <i class="ri-calendar-line"></i>
-                            <span>October 2025</span>
-                            <span class="mx-2">•</span>
-                            <span class="text-xs bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-2 py-0.5 rounded-full">Market Trends</span>
-                        </div>
-                        <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">The Rise of the Retail Investor: India's Market Revolution</h2>
-                        <p class="text-slate-600 dark:text-slate-300 mb-4 leading-relaxed">Over 10 crore Indians now actively trade in the stock market, a dramatic shift from just a decade ago. Mobile trading apps, zero-commission brokerages, and financial literacy content have democratized access to markets. This piece explores the sociological and technological factors driving this transformation, the impact on market dynamics, and what institutional players are doing to adapt to the new retail-dominated landscape.</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Retail Trading</span>
-                            <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Indian Markets</span>
-                            <span class="text-xs bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full text-slate-700 dark:text-slate-300">Democratization</span>
-                        </div>
-                        <p class="text-sm text-slate-500 dark:text-slate-400 italic">9 min read</p>
-                    </div>
-                </div>
-            </article>
-
-        </div>
-
-        <!-- Footer -->
-        <div class="text-center mt-16 pt-8 border-t border-gray-200 dark:border-slate-700">
-            <p class="text-slate-600 dark:text-slate-400">Want to discuss these topics? Reach out via the home page.</p>
-        </div>
-
-    </div>
-
-    <!-- Modals -->
-
-    <!-- Modal 1: AI Trading -->
-    <div id="modal1" class="fixed inset-0 bg-black/80 z-[100] hidden items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-4xl w-full my-8 shadow-2xl border border-gray-200 dark:border-slate-700 max-h-[90vh] overflow-y-auto">
-            <div class="sticky top-0 bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 px-6 py-4 flex items-center justify-between z-10">
-                <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100">How AI is Revolutionizing Algorithmic Trading in 2026</h2>
-                <button onclick="closeModal('modal1')" class="text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">
-                    <i class="ri-close-line text-3xl"></i>
-                </button>
+                <span class="text-xs text-cyan-400 dark:text-cyan-600 font-medium flex items-center gap-1 flex-shrink-0">
+                  Read more <i class="ri-arrow-right-line"></i>
+                </span>
+              </div>
             </div>
-            <div class="px-6 py-8 prose dark:prose-invert max-w-none">
-                <div class="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400 mb-6">
-                    <span><i class="ri-calendar-line"></i> February 2026</span>
-                    <span>•</span>
-                    <span class="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full">AI & Trading</span>
-                    <span>•</span>
-                    <span>8 min read</span>
-                </div>
-                <p class="text-lg text-slate-700 dark:text-slate-300 leading-relaxed mb-6">The landscape of algorithmic trading has undergone a seismic shift with the advent of advanced artificial intelligence and machine learning technologies. In 2026, AI-powered trading systems are no longer just tools for institutional investors—they're reshaping how retail traders approach markets.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">The Evolution of Trading Algorithms</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">Traditional trading algorithms relied on predetermined rules and technical indicators. Today's AI systems learn from millions of data points, adapting their strategies in real-time. Machine learning models can process news sentiment, social media trends, earnings reports, and market microstructure data simultaneously, identifying patterns invisible to human analysis.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">Sentiment Analysis at Scale</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">Modern AI trading systems analyze thousands of news articles, social media posts, and analyst reports every second. Natural Language Processing (NLP) models can detect subtle sentiment shifts that precede major market movements. For Indian markets, these systems now process regional language content, capturing sentiment from vernacular news sources and social platforms.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">Predictive Models and Pattern Recognition</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">Deep learning models have become remarkably proficient at identifying complex market patterns. These neural networks can detect order book imbalances, predict short-term price movements, and identify optimal entry and exit points with unprecedented accuracy. Retail platforms like Dhan, Zerodha, and Groww are beginning to integrate these AI capabilities into their trading interfaces.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">Risk Management and Position Sizing</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">AI doesn't just identify trading opportunities—it also optimizes risk management. Modern systems calculate optimal position sizes based on volatility forecasts, portfolio correlation, and individual risk tolerance. They can automatically adjust stop-losses and take-profits based on changing market conditions.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">The Democratization of AI Trading</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">What was once available only to hedge funds and institutional traders is now accessible to retail investors. Platforms are offering AI-powered trading signals, automated strategy builders, and backtesting tools. However, this democratization also means markets are becoming more efficient, making it harder to find alpha.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">Challenges and Ethical Considerations</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">AI trading isn't without challenges. Model overfitting, black-box decision-making, and the potential for coordinated algorithmic behavior pose risks. Regulators like SEBI are working to establish guidelines for AI trading systems, focusing on transparency and market stability.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">The Future: Human-AI Collaboration</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">The most successful traders in 2026 aren't purely algorithmic—they combine AI insights with human judgment. AI handles data processing and pattern recognition, while humans provide strategic oversight, adapt to unprecedented events, and make decisions during market anomalies. This hybrid approach represents the future of trading.</p>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed">As AI continues to evolve, retail investors who understand these technologies and integrate them into their strategies will have a significant advantage. The key is not to rely blindly on algorithms, but to use them as powerful tools in a comprehensive trading approach.</p>
-            </div>
-        </div>
-    </div>
+          </div>
+        </article>
+      `).join('');
+    }
 
-    <!-- Modal 2: DeFi -->
-    <div id="modal2" class="fixed inset-0 bg-black/80 z-[100] hidden items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-4xl w-full my-8 shadow-2xl border border-gray-200 dark:border-slate-700 max-h-[90vh] overflow-y-auto">
-            <div class="sticky top-0 bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 px-6 py-4 flex items-center justify-between z-10">
-                <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100">The Convergence of DeFi and Traditional Finance</h2>
-                <button onclick="closeModal('modal2')" class="text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">
-                    <i class="ri-close-line text-3xl"></i>
-                </button>
-            </div>
-            <div class="px-6 py-8 prose dark:prose-invert max-w-none">
-                <p class="text-lg text-slate-700 dark:text-slate-300 leading-relaxed mb-6">Decentralized Finance (DeFi) is no longer an experimental fringe of the financial world. In 2026, the lines between traditional banking and decentralized systems are blurring, creating a hybrid financial ecosystem that combines the security of regulated institutions with the innovation of blockchain technology.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">From Experimental to Mainstream</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">Major banks like HDFC, ICICI, and Axis are piloting blockchain-based settlement systems. What started as skepticism has transformed into serious integration efforts. Cross-border payments that once took days now settle in minutes through blockchain rails, reducing costs by up to 80%.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">Smart Contracts in Banking</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">Smart contracts are automating lending, insurance claims, and trade finance. A home loan approval that traditionally required weeks of paperwork now executes automatically when predefined conditions are met. DeFi protocols handle collateral management, interest calculations, and risk assessment without human intervention.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">Tokenization of Assets</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">Real estate, bonds, and even company shares are being tokenized on blockchain networks. This tokenization enables fractional ownership, 24/7 trading, and instant settlement. Indian investors can now own fractions of commercial properties or government bonds, democratizing access to assets once reserved for the wealthy.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">Regulatory Compliance in DeFi</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">The biggest challenge for DeFi has been regulatory compliance. New DeFi protocols now integrate KYC/AML checks, transaction monitoring, and regulatory reporting. SEBI and RBI are working on frameworks that allow innovation while protecting consumers. Licensed DeFi platforms in India must now maintain capital reserves and follow banking regulations.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">Liquidity Pools and Yield Farming</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">Liquidity pools have become sophisticated financial instruments. Instead of keeping money in low-interest savings accounts, users can provide liquidity to DeFi protocols and earn yields of 8-15% annually. However, these higher returns come with risks like impermanent loss and smart contract vulnerabilities.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">The Future: A Hybrid Financial System</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed">The future isn't purely decentralized or centralized—it's hybrid. Traditional banks provide security, insurance, and regulatory compliance. DeFi provides efficiency, transparency, and innovation. The convergence of both systems creates a financial infrastructure that's more accessible, efficient, and resilient than either could be alone.</p>
-            </div>
-        </div>
-    </div>
+    // ─────────────────────────────────────────────
+    // SEARCH
+    // ─────────────────────────────────────────────
+    function filterArticles() {
+      const input = document.getElementById('search-input');
+      const clearBtn = document.getElementById('clear-search');
+      activeSearch = input.value;
+      clearBtn.classList.toggle('hidden', !activeSearch);
+      renderArticles();
+    }
 
-    <!-- Modal 3: SIP -->
-    <div id="modal3" class="fixed inset-0 bg-black/80 z-[100] hidden items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-4xl w-full my-8 shadow-2xl border border-gray-200 dark:border-slate-700 max-h-[90vh] overflow-y-auto">
-            <div class="sticky top-0 bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 px-6 py-4 flex items-center justify-between z-10">
-                <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100">The Mathematics of Wealth: Understanding SIP Returns</h2>
-                <button onclick="closeModal('modal3')" class="text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">
-                    <i class="ri-close-line text-3xl"></i>
-                </button>
-            </div>
-            <div class="px-6 py-8 prose dark:prose-invert max-w-none">
-                <p class="text-lg text-slate-700 dark:text-slate-300 leading-relaxed mb-6">Systematic Investment Plans (SIPs) are often called the retail investor's secret weapon. But what makes them so powerful? The answer lies in mathematics—specifically, the principles of compounding and rupee-cost averaging.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">The Power of Compounding</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">Einstein allegedly called compound interest the eighth wonder of the world. In SIP investing, your returns generate their own returns. A monthly SIP of ₹5,000 at 12% annual returns becomes ₹11.7 lakhs after 10 years—₴6 lakhs from your contributions and ₹5.7 lakhs from compounding alone.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">Rupee-Cost Averaging Explained</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">Markets fluctuate, but SIPs turn volatility into an advantage. When markets fall, your fixed monthly investment buys more units. When markets rise, you buy fewer units but at higher values. Over time, this averages out your purchase cost, reducing the impact of market timing.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">The Time Factor</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">Time is the most critical variable in SIP investing. Starting a ₹5,000 monthly SIP at age 25 versus 35 means an extra 10 years of compounding. At 12% returns, that 10-year head start translates to an additional ₹1.2 crores by retirement at 60.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">Return Rate Sensitivity</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">A ₹10,000 monthly SIP over 20 years yields vastly different results at different return rates: 8% returns = ₹59 lakhs, 12% returns = ₹1 crore, 15% returns = ₹1.5 crores. This highlights the importance of choosing the right mutual funds.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">SIP Step-Ups: Turbocharging Growth</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">Increasing your SIP amount by 10% annually (step-up SIP) dramatically enhances wealth creation. A ₹5,000 SIP with 10% annual increases at 12% returns builds ₹60 lakhs over 15 years, compared to ₹25 lakhs without step-ups.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">Real Indian Market Data</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">Historical Nifty 50 returns (1999-2024) average around 12-13% annually. Large-cap equity funds have delivered 11-12%, mid-cap funds 13-15%, and small-cap funds 14-16%. However, past performance doesn't guarantee future returns.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">Optimizing Your SIP Strategy</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed">Start early, stay consistent, and increase contributions with income. Diversify across large-cap, mid-cap, and index funds. Review performance annually but avoid frequent switching. Most importantly, stay invested during market downturns—that's when SIPs work their magic.</p>
-            </div>
-        </div>
-    </div>
+    function clearSearch() {
+      document.getElementById('search-input').value = '';
+      activeSearch = '';
+      document.getElementById('clear-search').classList.add('hidden');
+      renderArticles();
+    }
 
-    <!-- Modal 4: Generative AI -->
-    <div id="modal4" class="fixed inset-0 bg-black/80 z-[100] hidden items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-4xl w-full my-8 shadow-2xl border border-gray-200 dark:border-slate-700 max-h-[90vh] overflow-y-auto">
-            <div class="sticky top-0 bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 px-6 py-4 flex items-center justify-between z-10">
-                <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Generative AI: The New Frontier in Financial Services</h2>
-                <button onclick="closeModal('modal4')" class="text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">
-                    <i class="ri-close-line text-3xl"></i>
-                </button>
-            </div>
-            <div class="px-6 py-8 prose dark:prose-invert max-w-none">
-                <p class="text-lg text-slate-700 dark:text-slate-300 leading-relaxed mb-6">Generative AI, powered by large language models like ChatGPT, Claude, and Gemini, is fundamentally transforming financial services. In 2025-26, we're witnessing a revolution in how banks, fintechs, and financial advisors interact with customers and analyze data.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">AI-Powered Customer Service</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">Banks are deploying AI chatbots that understand context, remember conversation history, and provide personalized responses. These systems can handle complex queries about loan eligibility, investment options, and account issues. HDFC Bank's EVA and ICICI's iPal can now resolve 80% of customer queries without human intervention.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">Automated Financial Analysis</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">Generative AI can analyze financial statements, market reports, and economic data in seconds. It generates comprehensive investment analysis, identifies portfolio risks, and suggests rebalancing strategies. What took analysts days now takes minutes.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">Personalized Investment Recommendations</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">AI systems analyze individual financial goals, risk tolerance, and market conditions to generate customized investment strategies. They explain recommendations in plain language, making sophisticated financial planning accessible to everyone.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">Regulatory Compliance and Reporting</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">Financial institutions use generative AI to draft compliance reports, analyze regulatory changes, and ensure adherence to SEBI, RBI, and international guidelines. The technology can review thousands of transactions for suspicious patterns and generate detailed compliance documentation automatically.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">Content Generation and Education</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">Fintech companies use AI to create personalized financial education content. Users receive customized explainers about SIPs, tax planning, or market trends based on their knowledge level and interests. This democratizes financial literacy.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">Challenges: Accuracy and Hallucinations</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">The biggest risk with generative AI is "hallucinations"—confidently stated incorrect information. In finance, where accuracy is critical, this poses serious risks. Financial institutions implement multiple verification layers and human oversight to prevent AI-generated errors from reaching customers.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">The Future of Financial Advisors</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed">AI won't replace financial advisors—it will augment them. Advisors equipped with AI tools can serve more clients, provide deeper analysis, and focus on relationship building. The future belongs to advisors who embrace AI as a productivity multiplier while maintaining the human touch clients value.</p>
-            </div>
-        </div>
-    </div>
+    // ─────────────────────────────────────────────
+    // FILTER
+    // ─────────────────────────────────────────────
+    function setFilter(btn, category) {
+      activeCategory = category;
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      renderArticles();
+    }
 
-    <!-- Modal 5: Retail Investor -->
-    <div id="modal5" class="fixed inset-0 bg-black/80 z-[100] hidden items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-4xl w-full my-8 shadow-2xl border border-gray-200 dark:border-slate-700 max-h-[90vh] overflow-y-auto">
-            <div class="sticky top-0 bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 px-6 py-4 flex items-center justify-between z-10">
-                <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100">The Rise of the Retail Investor: India's Market Revolution</h2>
-                <button onclick="closeModal('modal5')" class="text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">
-                    <i class="ri-close-line text-3xl"></i>
-                </button>
-            </div>
-            <div class="px-6 py-8 prose dark:prose-invert max-w-none">
-                <p class="text-lg text-slate-700 dark:text-slate-300 leading-relaxed mb-6">India's financial markets are experiencing a seismic demographic shift. Over 10 crore (100 million) Indians now actively participate in stock markets—a number that was barely 2 crore just a decade ago. This is India's retail investor revolution.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">The Technology Catalysts</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">Mobile trading apps from Zerodha, Groww, Upstox, and Angel One made market access as simple as ordering food. UPI integration enabled instant fund transfers. Platforms eliminated account opening friction—what once required bank visits now happens in minutes via video KYC.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">Zero-Commission Disruption</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">Traditional brokers charged 0.5-1% per trade. Discount brokers offered flat ₹20 per trade. Now, equity delivery trades are free on most platforms. This pricing revolution removed the biggest barrier for small investors. A ₹1,000 investment is now viable—it wasn't when commissions were percentage-based.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">Financial Literacy Explosion</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">YouTube channels, Instagram finfluencers, and podcasts democratized financial education. Content creators explain SIPs, P/E ratios, and portfolio diversification in regional languages. This knowledge spread reached tier-2 and tier-3 cities, driving market participation beyond metro areas.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">The COVID-19 Catalyst</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">The 2020 pandemic accelerated digital adoption. Lockdowns gave people time to explore investing. The market crash and subsequent recovery created a powerful lesson about long-term investing. Those who entered during the crash saw portfolios double or triple, attracting friends and family.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">Changing Market Dynamics</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">Retail investors now account for over 40% of daily trading volumes. Their collective behavior influences price discovery and volatility patterns. Institutional players are adapting strategies to account for retail sentiment. The days of institutions dominating price action are over.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">Risks and Responsibilities</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">With great access comes great responsibility. Many new investors lack risk management skills. SEBI has introduced investor protection measures, but education remains critical. The market will reward disciplined investors and punish those treating it like gambling.</p>
-                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-8 mb-4">The Path Forward</h3>
-                <p class="text-slate-700 dark:text-slate-300 leading-relaxed">India's retail investor base will likely double again in the next decade. As financial literacy improves and technology advances, market participation will become as common as bank accounts. This democratization of capital markets represents one of the most significant economic shifts in modern Indian history.</p>
-            </div>
-        </div>
-    </div>
+    // ─────────────────────────────────────────────
+    // MODAL
+    // ─────────────────────────────────────────────
+    function openModal(id) {
+      const article = ARTICLES.find(a => a.id === id);
+      if (!article) return;
 
-    <!-- JavaScript for Modals -->
-    <script>
-        function openModal(modalId) {
-            const modal = document.getElementById(modalId);
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            document.body.style.overflow = 'hidden';
-        }
+      document.getElementById('modal-title').textContent = article.title;
+      document.getElementById('modal-meta').innerHTML = `
+        <span class="flex items-center gap-1"><i class="ri-calendar-line"></i>${article.date}</span>
+        <span>•</span>
+        <span class="${CATEGORY_BADGE[article.category] || ''} px-2 py-0.5 rounded-full font-medium">${article.category}</span>
+        <span>•</span>
+        <span class="flex items-center gap-1"><i class="ri-time-line"></i>${article.readTime} min read</span>
+      `;
+      document.getElementById('modal-body').innerHTML = article.content;
 
-        function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-            document.body.style.overflow = 'auto';
-        }
+      const backdrop = document.getElementById('modal-backdrop');
+      backdrop.classList.remove('hidden');
+      backdrop.classList.add('flex');
+      document.body.style.overflow = 'hidden';
 
-        // Close modal when clicking outside
-        document.addEventListener('click', function(event) {
-            if (event.target.id && event.target.id.startsWith('modal')) {
-                closeModal(event.target.id);
-            }
-        });
+      // Re-trigger animation
+      const box = document.getElementById('modal-box');
+      box.style.animation = 'none';
+      box.offsetHeight; // reflow
+      box.style.animation = '';
+    }
 
-        // Prevent closing when clicking inside modal content
-        document.querySelectorAll('[id^="modal"] > div').forEach(modalContent => {
-            modalContent.addEventListener('click', function(event) {
-                event.stopPropagation();
-            });
-        });
+    function closeModal() {
+      const backdrop = document.getElementById('modal-backdrop');
+      backdrop.classList.add('hidden');
+      backdrop.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
 
-        // Close modal with Escape key
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                document.querySelectorAll('[id^="modal"]').forEach(modal => {
-                    if (modal.classList.contains('flex')) {
-                        closeModal(modal.id);
-                    }
-                });
-            }
-        });
-    </script>
+    // ✅ FIX: Proper backdrop click detection — only close when clicking the backdrop itself
+    function handleBackdropClick(e) {
+      if (e.target === document.getElementById('modal-backdrop')) {
+        closeModal();
+      }
+    }
+
+    // Close on Escape
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // ─────────────────────────────────────────────
+    // THEME TOGGLE (inline — matches index.html, no dependency on theme.js)
+    // ─────────────────────────────────────────────
+    function toggleTheme() {
+      const html = document.documentElement;
+      const icon = document.getElementById('theme-icon');
+      if (html.classList.contains('dark')) {
+        html.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+        icon.className = 'ri-moon-line text-xl';
+      } else {
+        html.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+        icon.className = 'ri-sun-line text-xl';
+      }
+    }
+
+    // Sync icon on load
+    (function () {
+      const icon = document.getElementById('theme-icon');
+      const isDark = document.documentElement.classList.contains('dark');
+      icon.className = isDark ? 'ri-sun-line text-xl' : 'ri-moon-line text-xl';
+    })();
+
+    // ─────────────────────────────────────────────
+    // INIT
+    // ─────────────────────────────────────────────
+    renderArticles();
+  </script>
 
 </body>
 </html>
