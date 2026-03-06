@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery – Arpit Agarwala</title>
+  <meta name="description" content="Photo gallery of Arpit Agarwala – moments, milestones, and memories." />
+  <meta name="author" content="Arpit Agarwala" />
+  <link rel="canonical" href="https://arpitagarwala.online/gallery.html" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://arpitagarwala.online/gallery.html" />
+  <meta property="og:title" content="Gallery – Arpit Agarwala" />
+  <meta property="og:description" content="Photo gallery of Arpit Agarwala – moments, milestones, and memories." />
+  <meta property="og:image" content="https://arpitagarwala.online/assets/images/my-miniature.png" />
+  <link rel="icon" type="image/png" href="assets/images/tab-icon.png">
+
+  <script>
+    (function () {
+      const t = localStorage.getItem('theme');
+      if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches))
+        document.documentElement.classList.add('dark');
+    })();
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <script>tailwind.config = { darkMode: 'class' }</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+
+    /* ── Masonry grid ── */
+    .masonry {
+      columns: 1;
+      column-gap: 0.875rem;
+    }
+    @media (min-width: 640px)  { .masonry { columns: 2; } }
+    @media (min-width: 1024px) { .masonry { columns: 3; } }
+
+    .masonry-item {
+      break-inside: avoid;
+      margin-bottom: 0.875rem;
+      display: block;
+    }
+
+    /* ── Photo card ── */
+    .photo-card {
+      position: relative;
+      border-radius: 1rem;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgb(17,24,39);
+      cursor: pointer;
+      transition: transform 0.22s cubic-bezier(.4,0,.2,1),
+                  box-shadow 0.22s cubic-bezier(.4,0,.2,1),
+                  border-color 0.22s ease;
+    }
+    .dark .photo-card {
+      background: #fff;
+      border-color: rgb(229,231,235);
+    }
+    .photo-card:hover {
+      transform: translateY(-3px) scale(1.012);
+      border-color: rgba(34,211,238,0.45);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(34,211,238,0.08);
+    }
+    .dark .photo-card:hover {
+      box-shadow: 0 10px 28px rgba(0,0,0,0.1), 0 0 0 1px rgba(34,211,238,0.14);
+    }
+
+    /* overlay on hover */
+    .photo-card .overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 55%);
+      opacity: 0;
+      transition: opacity 0.22s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1rem;
+    }
+    .photo-card:hover .overlay { opacity: 1; }
+
+    /* image inside card */
+    .photo-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.4s cubic-bezier(.4,0,.2,1);
+    }
+    .photo-card:hover img { transform: scale(1.04); }
+
+    /* tag pill */
+    .tag-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      border-radius: 99px;
+      background: rgba(34,211,238,0.15);
+      color: #22d3ee;
+      border: 1px solid rgba(34,211,238,0.25);
+    }
+
+    /* ── Lightbox ── */
+    #lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(4,8,16,0.94);
+      backdrop-filter: blur(18px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      padding: 1.5rem;
+    }
+    #lightbox.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    #lightbox-img {
+      max-width: min(860px, 92vw);
+      max-height: 80vh;
+      border-radius: 1rem;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.8);
+      object-fit: contain;
+      transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+    }
+    #lightbox-close {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.15s;
+      font-size: 1.1rem;
+    }
+    #lightbox-close:hover { background: rgba(255,255,255,0.15); transform: scale(1.1); }
+    #lightbox-nav {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .lb-nav-btn {
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .lb-nav-btn:hover { background: rgba(34,211,238,0.18); color: #22d3ee; }
+    #lightbox-caption {
+      color: #94a3b8;
+      font-size: 0.78rem;
+      font-weight: 500;
+      text-align: center;
+      min-width: 120px;
+    }
+    #lightbox-meta {
+      position: absolute;
+      bottom: 5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+    }
+    #lightbox-title {
+      color: #f1f5f9;
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.2rem;
+    }
+    #lightbox-sub {
+      color: #64748b;
+      font-size: 0.75rem;
+    }
+
+    /* ── Filter pills ── */
+    .filter-btn {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.35rem 0.9rem;
+      border-radius: 99px;
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #94a3b8;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .dark .filter-btn {
+      border-color: rgb(229,231,235);
+      color: #6b7280;
+    }
+    .filter-btn:hover {
+      border-color: rgba(34,211,238,0.4);
+      color: #22d3ee;
+    }
+    .filter-btn.active {
+      background: rgba(34,211,238,0.12);
+      border-color: rgba(34,211,238,0.4);
+      color: #22d3ee;
+    }
+    .dark .filter-btn.active {
+      background: rgba(8,145,178,0.1);
+      border-color: rgba(8,145,178,0.4);
+      color: #0891b2;
+    }
+
+    /* ── Shimmer skeleton ── */
+    @keyframes shimmer {
+      0%   { background-position: -600px 0; }
+      100% { background-position:  600px 0; }
+    }
+    .skeleton {
+      border-radius: 1rem;
+      background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
+      background-size: 600px 100%;
+      animation: shimmer 1.4s infinite linear;
+    }
+    .dark .skeleton {
+      background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+      background-size: 600px 100%;
+    }
+
+    /* ── Entrance animation ── */
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(16px); }
+      to   { opacity:1; transform:none; }
+    }
+    .fade-up { animation: fadeUp 0.35s cubic-bezier(.4,0,.2,1) both; }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 99px; }
+    .dark ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); }
+  </style>
+</head>
+
+<body class="min-h-screen bg-[#080c14] dark:bg-slate-100 text-slate-100 dark:text-gray-900 transition-colors duration-300">
+
+  <!-- Back -->
+  <div class="fixed top-3 left-3 z-50">
+    <a href="index.html" class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-800/80 dark:bg-white backdrop-blur border border-slate-700 dark:border-gray-200 text-slate-300 dark:text-gray-600 hover:border-cyan-400 hover:text-cyan-400 transition-all duration-150 shadow-lg">
+      <i class="ri-arrow-left-line text-base"></i>
+    </a>
+  </div>
+
+  <!-- Theme Toggle -->
+  <div class="fixed top-3 right-3 z-50">
+    <button onclick="toggleTheme()" class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-800/80 dark:bg-white backdrop-blur border border-slate-700 dark:border-gray-200 text-slate-300 dark:text-gray-600 hover:border-cyan-400 hover:text-cyan-400 transition-all duration-150 shadow-lg">
+      <i id="theme-icon" class="ri-sun-line text-base"></i>
+    </button>
+  </div>
+
+  <!-- Lightbox -->
+  <div id="lightbox" onclick="closeLightbox(event)">
+    <button id="lightbox-close" onclick="closeLightbox()" aria-label="Close"><i class="ri-close-line"></i></button>
+    <img id="lightbox-img" src="" alt="" />
+    <div id="lightbox-meta">
+      <div id="lightbox-title"></div>
+      <div id="lightbox-sub"></div>
+    </div>
+    <div id="lightbox-nav">
+      <button class="lb-nav-btn" onclick="lbNav(-1)" aria-label="Previous"><i class="ri-arrow-left-s-line"></i></button>
+      <span id="lightbox-caption"></span>
+      <button class="lb-nav-btn" onclick="lbNav(1)" aria-label="Next"><i class="ri-arrow-right-s-line"></i></button>
+    </div>
+  </div>
+
+  <div class="max-w-5xl mx-auto px-4 pt-16 pb-12">
+
+    <!-- Header -->
+    <div class="mb-7 fade-up">
+      <div class="flex items-center gap-3 mb-1">
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">📸 Gallery</h1>
+      </div>
+      <p class="text-slate-400 dark:text-gray-500 text-sm max-w-lg">Moments, milestones & memories — a visual story of who I am beyond the code.</p>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="flex gap-4 mb-6 fade-up" style="animation-delay:60ms">
+      <div class="flex items-center gap-2 bg-slate-800/60 dark:bg-white border border-slate-700/50 dark:border-gray-200 rounded-xl px-4 py-2.5">
+        <i class="ri-image-line text-cyan-400 dark:text-cyan-600 text-base"></i>
+        <span class="text-xs font-semibold text-slate-300 dark:text-gray-600"><span id="photo-count">0</span> Photos</span>
+      </div>
+      <div class="flex items-center gap-2 bg-slate-800/60 dark:bg-white border border-slate-700/50 dark:border-gray-200 rounded-xl px-4 py-2.5">
+        <i class="ri-layout-masonry-line text-violet-400 dark:text-violet-600 text-base"></i>
+        <span class="text-xs font-semibold text-slate-300 dark:text-gray-600" id="cat-count">0 Categories</span>
+      </div>
+    </div>
+
+    <!-- Filter pills -->
+    <div id="filter-bar" class="flex flex-wrap gap-2 mb-7 fade-up" style="animation-delay:100ms"></div>
+
+    <!-- Masonry grid -->
+    <div id="gallery-grid" class="masonry"></div>
+
+    <!-- Empty state -->
+    <div id="empty-state" class="hidden flex-col items-center justify-center py-24 text-center">
+      <i class="ri-image-2-line text-5xl text-slate-700 dark:text-gray-300 mb-4"></i>
+      <p class="text-slate-400 dark:text-gray-500 text-sm font-medium">No photos in this category yet.</p>
+      <button onclick="setFilter('all')" class="mt-3 text-xs text-cyan-400 dark:text-cyan-600 hover:underline font-semibold">Show all</button>
+    </div>
+
+    <!-- Upload prompt banner -->
+    <div id="upload-banner" class="mt-8 rounded-2xl border border-dashed border-slate-700/70 dark:border-gray-300 bg-slate-800/30 dark:bg-white/60 p-6 text-center fade-up" style="animation-delay:200ms">
+      <i class="ri-cloud-upload-line text-3xl text-slate-600 dark:text-gray-400 mb-2"></i>
+      <p class="text-sm text-slate-400 dark:text-gray-500 font-medium">Add your photos to <code class="text-cyan-400 dark:text-cyan-600 bg-slate-800 dark:bg-gray-100 px-1.5 py-0.5 rounded text-xs">assets/images/gallery/</code> and update the <code class="text-cyan-400 dark:text-cyan-600 bg-slate-800 dark:bg-gray-100 px-1.5 py-0.5 rounded text-xs">PHOTOS</code> array in this file.</p>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-10 text-center text-xs text-slate-600 dark:text-gray-400">
+      &copy; 2026 Arpit Agarwala. Engineered with <span class="text-red-400">&#10084;&#65039;</span>
+    </div>
+
+  </div>
+
+  <script>
+    /* ═══════════════════════════════════════════════════
+       PHOTOS ARRAY — edit this to add/update your photos
+       ═══════════════════════════════════════════════════
+       Each entry:
+         src      – path relative to site root
+         title    – short label shown on hover + lightbox
+         desc     – optional subtitle in lightbox
+         category – used for filter pills (can add any label)
+         span     – 'tall' makes the card take more height (optional)
+    ═══════════════════════════════════════════════════ */
+    const PHOTOS = [
+      // ── Placeholder demo cards shown until you add real images ──
+      // Remove these and add your own:
+      // {
+      //   src: 'assets/images/gallery/photo1.jpg',
+      //   title: 'Caption here',
+      //   desc: 'Short description',
+      //   category: 'Personal'
+      // },
+    ];
+
+    /* ── derive unique categories ── */
+    const CATS = ['all', ...new Set(PHOTOS.map(p => p.category).filter(Boolean))];
+    let activeFilter = 'all';
+    let lbIndex = 0;
+
+    /* ── filtered list ── */
+    function filtered() {
+      return activeFilter === 'all' ? PHOTOS : PHOTOS.filter(p => p.category === activeFilter);
+    }
+
+    /* ── build filter bar ── */
+    function buildFilters() {
+      const bar = document.getElementById('filter-bar');
+      bar.innerHTML = '';
+      CATS.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = 'filter-btn' + (cat === activeFilter ? ' active' : '');
+        btn.textContent = cat === 'all' ? '✦ All' : cat;
+        btn.onclick = () => setFilter(cat);
+        bar.appendChild(btn);
+      });
+    }
+
+    /* ── set filter + re-render ── */
+    function setFilter(cat) {
+      activeFilter = cat;
+      buildFilters();
+      renderGallery();
+    }
+
+    /* ── render masonry grid ── */
+    function renderGallery() {
+      const grid = document.getElementById('gallery-grid');
+      const empty = document.getElementById('empty-state');
+      const banner = document.getElementById('upload-banner');
+      const list = filtered();
+
+      document.getElementById('photo-count').textContent = PHOTOS.length;
+      document.getElementById('cat-count').textContent =
+        (CATS.length - 1) + ' Categor' + (CATS.length - 1 === 1 ? 'y' : 'ies');
+
+      if (PHOTOS.length === 0) {
+        grid.innerHTML = '';
+        empty.classList.remove('hidden');
+        empty.classList.add('flex');
+        banner.classList.remove('hidden');
+        renderSkeletons(grid);
+        return;
+      }
+
+      banner.classList.add('hidden');
+
+      if (list.length === 0) {
+        grid.innerHTML = '';
+        empty.classList.remove('hidden');
+        empty.classList.add('flex');
+        return;
+      }
+
+      empty.classList.add('hidden');
+      empty.classList.remove('flex');
+      grid.innerHTML = '';
+
+      list.forEach((photo, i) => {
+        const item = document.createElement('div');
+        item.className = 'masonry-item fade-up';
+        item.style.animationDelay = (i * 55) + 'ms';
+
+        item.innerHTML = `
+          <div class="photo-card" onclick="openLightbox(${PHOTOS.indexOf(photo)})">
+            <img
+              src="${photo.src}"
+              alt="${photo.title || 'Photo'}"
+              loading="lazy"
+              onload="this.parentElement.classList.add('loaded')"
+            />
+            <div class="overlay">
+              ${photo.category ? `<span class="tag-pill mb-1.5"><i class="ri-price-tag-3-line"></i> ${photo.category}</span>` : ''}
+              ${photo.title ? `<p class="text-sm font-bold text-white leading-tight">${photo.title}</p>` : ''}
+              ${photo.desc  ? `<p class="text-xs text-slate-300 mt-0.5 leading-snug">${photo.desc}</p>` : ''}
+              <p class="text-xs text-slate-400 mt-1 flex items-center gap-1"><i class="ri-zoom-in-line"></i> Click to expand</p>
+            </div>
+          </div>`;
+        grid.appendChild(item);
+      });
+    }
+
+    /* ── skeleton placeholders while waiting for real photos ── */
+    function renderSkeletons(grid) {
+      const heights = [220, 310, 260, 350, 200, 280, 240, 320, 190, 270, 300, 230];
+      heights.forEach((h, i) => {
+        const item = document.createElement('div');
+        item.className = 'masonry-item fade-up';
+        item.style.animationDelay = (i * 40) + 'ms';
+        item.innerHTML = `<div class="skeleton" style="height:${h}px"></div>`;
+        grid.appendChild(item);
+      });
+    }
+
+    /* ── lightbox ── */
+    function openLightbox(index) {
+      lbIndex = index;
+      updateLightbox();
+      document.getElementById('lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox(e) {
+      if (e && e.target !== document.getElementById('lightbox') && e.target !== document.getElementById('lightbox-close') && !e.target.closest('#lightbox-close')) return;
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function lbNav(dir) {
+      const list = filtered();
+      lbIndex = (lbIndex + dir + list.length) % list.length;
+      // map back to PHOTOS index if filtered
+      const photo = list[lbIndex];
+      updateLightboxPhoto(photo, lbIndex, list.length);
+    }
+    function updateLightbox() {
+      const list = filtered();
+      const local = list.findIndex((_, i) => PHOTOS.indexOf(list[i]) === lbIndex);
+      const idx = local >= 0 ? local : 0;
+      updateLightboxPhoto(PHOTOS[lbIndex], idx, list.length);
+    }
+    function updateLightboxPhoto(photo, idx, total) {
+      if (!photo) return;
+      const img = document.getElementById('lightbox-img');
+      img.style.transform = 'scale(0.95)';
+      img.src = photo.src;
+      img.alt = photo.title || 'Photo';
+      setTimeout(() => { img.style.transform = 'scale(1)'; }, 50);
+      document.getElementById('lightbox-title').textContent = photo.title || '';
+      document.getElementById('lightbox-sub').textContent = photo.desc || '';
+      document.getElementById('lightbox-caption').textContent = (idx + 1) + ' / ' + total;
+    }
+
+    /* ── keyboard nav ── */
+    document.addEventListener('keydown', e => {
+      const lb = document.getElementById('lightbox');
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape')      closeLightbox({ target: lb });
+      if (e.key === 'ArrowLeft')   lbNav(-1);
+      if (e.key === 'ArrowRight')  lbNav(1);
+    });
+
+    /* ── theme ── */
+    function syncIcon() {
+      document.getElementById('theme-icon').className =
+        document.documentElement.classList.contains('dark') ? 'ri-sun-line text-base' : 'ri-moon-line text-base';
+    }
+    syncIcon();
+    function toggleTheme() {
+      document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+      syncIcon();
+    }
+
+    /* ── init ── */
+    buildFilters();
+    renderGallery();
+  </script>
+</body>
+</html>
