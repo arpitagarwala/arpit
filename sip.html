@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIP Calculator – Arpit Agarwala</title>
+
+  <!-- Instant theme flash prevention -->
+  <script>
+    (function(){
+      const t=localStorage.getItem('theme');
+      const d=window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if(t==='dark'||(!t&&d)) document.documentElement.classList.add('dark');
+      else document.documentElement.classList.remove('dark');
+    })();
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class'}</script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    *{box-sizing:border-box;}
+    body{font-family:'Inter',sans-serif;}
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar{width:6px;height:6px;}
+    ::-webkit-scrollbar-track{background:transparent;}
+    ::-webkit-scrollbar-thumb{background:#334155;border-radius:999px;}
+    .dark ::-webkit-scrollbar-thumb{background:#cbd5e1;}
+
+    /* ── Custom range slider ── */
+    input[type=range]{-webkit-appearance:none;appearance:none;height:6px;border-radius:9999px;outline:none;cursor:pointer;transition:opacity .15s;}
+    input[type=range]:hover{opacity:.9;}
+    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;cursor:pointer;border:2.5px solid white;box-shadow:0 2px 8px rgba(0,0,0,.35);transition:transform .15s ease,box-shadow .15s ease;}
+    input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.25);box-shadow:0 4px 14px rgba(0,0,0,.4);}
+
+    .range-cyan{background:linear-gradient(to right,#06b6d4 var(--val,50%),#1e293b var(--val,50%));}
+    .range-cyan::-webkit-slider-thumb{background:#06b6d4;}
+    .dark .range-cyan{background:linear-gradient(to right,#06b6d4 var(--val,50%),#e2e8f0 var(--val,50%));}
+
+    .range-violet{background:linear-gradient(to right,#8b5cf6 var(--val,50%),#1e293b var(--val,50%));}
+    .range-violet::-webkit-slider-thumb{background:#8b5cf6;}
+    .dark .range-violet{background:linear-gradient(to right,#8b5cf6 var(--val,50%),#e2e8f0 var(--val,50%));}
+
+    /* ── Cards ── */
+    .app-card{transition:transform .2s ease,box-shadow .2s ease;}
+    .app-card:hover{transform:translateY(-2px);box-shadow:0 20px 40px rgba(0,0,0,.25);}
+    .dark .app-card:hover{box-shadow:0 20px 40px rgba(0,0,0,.1);}
+
+    /* ── Breakdown bar ── */
+    .bbar{transition:width .6s cubic-bezier(.4,0,.2,1);}
+
+    /* ── Step-up badge glow ── */
+    .stepup-active{box-shadow:0 0 0 2px #06b6d4;}
+
+    /* ── Stat counter animation ── */
+    .stat-val{font-variant-numeric:tabular-nums;transition:color .3s;}
+
+    /* ── Toggle track ── */
+    .toggle-track{transition:background-color .25s;}
+
+    /* ── Tabs ── */
+    .tab-btn{position:relative;transition:color .2s;}
+    .tab-btn::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:#06b6d4;border-radius:999px;transform:scaleX(0);transition:transform .25s cubic-bezier(.4,0,.2,1);}
+    .tab-btn.active{color:#06b6d4;}
+    .tab-btn.active::after{transform:scaleX(1);}
+
+    /* ── Tooltip custom ── */
+    [data-tip]{position:relative;cursor:help;}
+    [data-tip]:hover::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#0f172a;color:#e2e8f0;font-size:.7rem;padding:.3rem .6rem;border-radius:.5rem;white-space:nowrap;z-index:99;pointer-events:none;border:1px solid #334155;}
+    .dark [data-tip]:hover::after{background:#f8fafc;color:#0f172a;border:1px solid #e2e8f0;}
+
+    /* ── Fade-in animation ── */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+    .fade-up{animation:fadeUp .45s cubic-bezier(.4,0,.2,1) both;}
+    .fade-up-1{animation-delay:.05s;}
+    .fade-up-2{animation-delay:.1s;}
+    .fade-up-3{animation-delay:.15s;}
+    .fade-up-4{animation-delay:.2s;}
+    .fade-up-5{animation-delay:.25s;}
+
+    /* ── Glowing accent ── */
+    .glow-cyan{box-shadow:0 0 24px rgba(6,182,212,.18);}
+  </style>
+</head>
+
+<body class="bg-slate-950 dark:bg-slate-50 text-slate-100 dark:text-slate-900 min-h-screen transition-colors duration-300">
+
+  <!-- ── Back Button ── -->
+  <div class="fixed top-4 left-4 z-50">
+    <a href="projects.html"
+       class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-700 dark:border-slate-200 text-slate-300 dark:text-slate-700 hover:border-cyan-400 dark:hover:border-cyan-400 hover:text-cyan-400 dark:hover:text-cyan-500 shadow-lg transition-all duration-200">
+      <i class="ri-arrow-left-line text-lg"></i>
+    </a>
+  </div>
+
+  <!-- ── Theme Toggle ── -->
+  <div class="fixed top-4 right-4 z-50">
+    <button onclick="toggleTheme()"
+            class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-700 dark:border-slate-200 text-slate-300 dark:text-slate-700 hover:border-cyan-400 dark:hover:border-cyan-400 hover:text-cyan-400 dark:hover:text-cyan-500 shadow-lg transition-all duration-200">
+      <i id="theme-icon" class="text-lg"></i>
+    </button>
+  </div>
+
+  <!-- ── PAGE ── -->
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-20 space-y-6">
+
+    <!-- HEADER -->
+    <div class="text-center fade-up fade-up-1">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg glow-cyan mb-4">
+        <i class="ri-line-chart-line text-3xl text-white"></i>
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-100 dark:text-slate-900">SIP Calculator</h1>
+      <p class="mt-2 text-slate-400 dark:text-slate-500 text-sm">Plan your wealth systematically. Visualise, compare and grow.</p>
+    </div>
+
+    <!-- COMPARE TOGGLE + STEP-UP ROW -->
+    <div class="flex flex-wrap items-center justify-center gap-3 fade-up fade-up-2">
+      <!-- Compare -->
+      <label class="inline-flex items-center gap-3 cursor-pointer bg-slate-800 dark:bg-white px-4 py-2.5 rounded-2xl shadow border border-slate-700 dark:border-slate-200 hover:border-cyan-400 dark:hover:border-cyan-400 transition-all duration-200">
+        <input type="checkbox" id="compareToggle" class="sr-only">
+        <div id="toggle-track" class="toggle-track relative w-11 h-6 bg-slate-600 dark:bg-slate-300 rounded-full">
+          <div id="toggle-thumb" class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-250"></div>
+        </div>
+        <span class="text-sm font-semibold text-slate-300 dark:text-slate-700">Compare Two SIPs</span>
+      </label>
+
+      <!-- Step-up toggle -->
+      <label class="inline-flex items-center gap-3 cursor-pointer bg-slate-800 dark:bg-white px-4 py-2.5 rounded-2xl shadow border border-slate-700 dark:border-slate-200 hover:border-cyan-400 dark:hover:border-cyan-400 transition-all duration-200">
+        <input type="checkbox" id="stepupToggle" class="sr-only">
+        <div id="stepup-track" class="toggle-track relative w-11 h-6 bg-slate-600 dark:bg-slate-300 rounded-full">
+          <div id="stepup-thumb" class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-250"></div>
+        </div>
+        <span class="text-sm font-semibold text-slate-300 dark:text-slate-700">Step-up SIP</span>
+        <span data-tip="Annual % increase in monthly investment" class="text-slate-500 text-xs"><i class="ri-question-line"></i></span>
+      </label>
+
+      <!-- Inflation toggle -->
+      <label class="inline-flex items-center gap-3 cursor-pointer bg-slate-800 dark:bg-white px-4 py-2.5 rounded-2xl shadow border border-slate-700 dark:border-slate-200 hover:border-cyan-400 dark:hover:border-cyan-400 transition-all duration-200">
+        <input type="checkbox" id="inflationToggle" class="sr-only">
+        <div id="inflation-track" class="toggle-track relative w-11 h-6 bg-slate-600 dark:bg-slate-300 rounded-full">
+          <div id="inflation-thumb" class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-250"></div>
+        </div>
+        <span class="text-sm font-semibold text-slate-300 dark:text-slate-700">Inflation Adjusted</span>
+        <span data-tip="Shows real purchasing power of maturity amount" class="text-slate-500 text-xs"><i class="ri-question-line"></i></span>
+      </label>
+    </div>
+
+    <!-- STEP-UP RATE INPUT (hidden until toggled) -->
+    <div id="stepup-panel" class="hidden fade-up">
+      <div class="max-w-sm mx-auto bg-slate-800 dark:bg-white p-5 rounded-2xl border border-cyan-500/40 dark:border-cyan-400/40 shadow">
+        <div class="flex items-center justify-between mb-3">
+          <label class="text-sm font-semibold text-cyan-400 dark:text-cyan-600"><i class="ri-arrow-up-circle-line mr-1"></i>Annual Step-up Rate</label>
+          <div class="flex items-center gap-1">
+            <input type="number" id="stepup-input" value="10" min="1" max="50" step="1"
+                   class="w-16 px-2 py-1 text-right font-bold text-cyan-400 dark:text-cyan-600 bg-slate-700 dark:bg-cyan-50 rounded-lg border border-slate-600 dark:border-cyan-200 focus:ring-2 focus:ring-cyan-500 outline-none text-sm">
+            <span class="text-cyan-400 dark:text-cyan-600 font-bold">%</span>
+          </div>
+        </div>
+        <input type="range" id="stepup-range" min="1" max="50" step="1" value="10" class="w-full range-cyan">
+        <div class="flex justify-between text-xs text-slate-500 mt-1"><span>1%</span><span>50%</span></div>
+      </div>
+    </div>
+
+    <!-- INFLATION RATE INPUT (hidden until toggled) -->
+    <div id="inflation-panel" class="hidden fade-up">
+      <div class="max-w-sm mx-auto bg-slate-800 dark:bg-white p-5 rounded-2xl border border-violet-500/40 dark:border-violet-400/40 shadow">
+        <div class="flex items-center justify-between mb-3">
+          <label class="text-sm font-semibold text-violet-400 dark:text-violet-600"><i class="ri-funds-line mr-1"></i>Expected Inflation Rate</label>
+          <div class="flex items-center gap-1">
+            <input type="number" id="inflation-input" value="6" min="1" max="20" step="0.5"
+                   class="w-16 px-2 py-1 text-right font-bold text-violet-400 dark:text-violet-600 bg-slate-700 dark:bg-violet-50 rounded-lg border border-slate-600 dark:border-violet-200 focus:ring-2 focus:ring-violet-500 outline-none text-sm">
+            <span class="text-violet-400 dark:text-violet-600 font-bold">%</span>
+          </div>
+        </div>
+        <input type="range" id="inflation-range" min="1" max="20" step="0.5" value="6" class="w-full range-violet">
+        <div class="flex justify-between text-xs text-slate-500 mt-1"><span>1%</span><span>20%</span></div>
+      </div>
+    </div>
+
+    <!-- INPUT CARDS -->
+    <div id="input-container" class="grid grid-cols-1 gap-5 fade-up fade-up-3">
+
+      <!-- SIP A -->
+      <div class="app-card bg-slate-800 dark:bg-white p-6 rounded-3xl shadow-xl border border-slate-700/50 dark:border-slate-200">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow">
+            <i class="ri-bar-chart-fill text-white text-lg"></i>
+          </div>
+          <h2 id="sip-a-title" class="text-lg font-bold text-slate-100 dark:text-slate-900">SIP</h2>
+        </div>
+        <div class="space-y-5">
+          <!-- Amount -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-sm font-medium text-slate-400 dark:text-slate-500">Monthly Investment</label>
+              <div class="flex items-center gap-1.5">
+                <span class="font-bold text-cyan-400 dark:text-cyan-600">₹</span>
+                <input type="number" id="a-amount-input" min="500" max="100000" step="100"
+                       class="w-28 px-3 py-1.5 text-right font-semibold text-slate-100 dark:text-slate-900 bg-slate-700 dark:bg-cyan-50 rounded-xl border border-slate-600 dark:border-cyan-200 focus:ring-2 focus:ring-cyan-500 outline-none transition-all text-sm">
+              </div>
+            </div>
+            <input type="range" id="a-amount-range" min="500" max="100000" step="100" class="w-full range-cyan">
+            <div class="flex justify-between text-xs text-slate-500 mt-1"><span>₹500</span><span>₹1,00,000</span></div>
+          </div>
+          <!-- Rate -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-sm font-medium text-slate-400 dark:text-slate-500">Expected Annual Return</label>
+              <div class="flex items-center gap-1.5">
+                <input type="number" id="a-rate-input" min="1" max="30" step="0.1"
+                       class="w-20 px-3 py-1.5 text-right font-semibold text-slate-100 dark:text-slate-900 bg-slate-700 dark:bg-cyan-50 rounded-xl border border-slate-600 dark:border-cyan-200 focus:ring-2 focus:ring-cyan-500 outline-none transition-all text-sm">
+                <span class="font-bold text-cyan-400 dark:text-cyan-600">%</span>
+              </div>
+            </div>
+            <input type="range" id="a-rate-range" min="1" max="30" step="0.1" class="w-full range-cyan">
+            <div class="flex justify-between text-xs text-slate-500 mt-1"><span>1%</span><span>30%</span></div>
+          </div>
+          <!-- Years -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-sm font-medium text-slate-400 dark:text-slate-500">Time Period</label>
+              <div class="flex items-center gap-1.5">
+                <input type="number" id="a-years-input" min="1" max="50" step="1"
+                       class="w-20 px-3 py-1.5 text-right font-semibold text-slate-100 dark:text-slate-900 bg-slate-700 dark:bg-cyan-50 rounded-xl border border-slate-600 dark:border-cyan-200 focus:ring-2 focus:ring-cyan-500 outline-none transition-all text-sm">
+                <span class="font-medium text-cyan-400 dark:text-cyan-600 text-sm">Yrs</span>
+              </div>
+            </div>
+            <input type="range" id="a-years-range" min="1" max="50" step="1" class="w-full range-cyan">
+            <div class="flex justify-between text-xs text-slate-500 mt-1"><span>1 yr</span><span>50 yrs</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIP B -->
+      <div id="sip-b-panel" class="hidden app-card bg-slate-800 dark:bg-white p-6 rounded-3xl shadow-xl border border-slate-700/50 dark:border-slate-200">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow">
+            <i class="ri-bar-chart-2-fill text-white text-lg"></i>
+          </div>
+          <h2 class="text-lg font-bold text-slate-100 dark:text-slate-900">SIP B</h2>
+        </div>
+        <div class="space-y-5">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-sm font-medium text-slate-400 dark:text-slate-500">Monthly Investment</label>
+              <div class="flex items-center gap-1.5">
+                <span class="font-bold text-violet-400 dark:text-violet-600">₹</span>
+                <input type="number" id="b-amount-input" min="500" max="100000" step="100"
+                       class="w-28 px-3 py-1.5 text-right font-semibold text-slate-100 dark:text-slate-900 bg-slate-700 dark:bg-violet-50 rounded-xl border border-slate-600 dark:border-violet-200 focus:ring-2 focus:ring-violet-500 outline-none transition-all text-sm">
+              </div>
+            </div>
+            <input type="range" id="b-amount-range" min="500" max="100000" step="100" class="w-full range-violet">
+            <div class="flex justify-between text-xs text-slate-500 mt-1"><span>₹500</span><span>₹1,00,000</span></div>
+          </div>
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-sm font-medium text-slate-400 dark:text-slate-500">Expected Annual Return</label>
+              <div class="flex items-center gap-1.5">
+                <input type="number" id="b-rate-input" min="1" max="30" step="0.1"
+                       class="w-20 px-3 py-1.5 text-right font-semibold text-slate-100 dark:text-slate-900 bg-slate-700 dark:bg-violet-50 rounded-xl border border-slate-600 dark:border-violet-200 focus:ring-2 focus:ring-violet-500 outline-none transition-all text-sm">
+                <span class="font-bold text-violet-400 dark:text-violet-600">%</span>
+              </div>
+            </div>
+            <input type="range" id="b-rate-range" min="1" max="30" step="0.1" class="w-full range-violet">
+            <div class="flex justify-between text-xs text-slate-500 mt-1"><span>1%</span><span>30%</span></div>
+          </div>
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-sm font-medium text-slate-400 dark:text-slate-500">Time Period</label>
+              <div class="flex items-center gap-1.5">
+                <input type="number" id="b-years-input" min="1" max="50" step="1"
+                       class="w-20 px-3 py-1.5 text-right font-semibold text-slate-100 dark:text-slate-900 bg-slate-700 dark:bg-violet-50 rounded-xl border border-slate-600 dark:border-violet-200 focus:ring-2 focus:ring-violet-500 outline-none transition-all text-sm">
+                <span class="font-medium text-violet-400 dark:text-violet-600 text-sm">Yrs</span>
+              </div>
+            </div>
+            <input type="range" id="b-years-range" min="1" max="50" step="1" class="w-full range-violet">
+            <div class="flex justify-between text-xs text-slate-500 mt-1"><span>1 yr</span><span>50 yrs</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUMMARY CARDS -->
+    <div id="summary-container" class="grid grid-cols-1 gap-5 fade-up fade-up-4">
+      <!-- SIP A Result -->
+      <div class="app-card bg-gradient-to-br from-cyan-600 via-cyan-700 to-blue-700 p-6 rounded-3xl shadow-xl text-white glow-cyan">
+        <div class="flex items-center justify-between mb-5">
+          <h3 id="summary-a-title" class="font-bold flex items-center gap-2">
+            <i class="ri-trophy-fill text-yellow-300"></i> Results
+          </h3>
+          <span id="a-cagr-badge" class="text-xs font-bold bg-white/20 px-3 py-1 rounded-full backdrop-blur">CAGR —</span>
+        </div>
+        <div class="grid grid-cols-3 gap-3 mb-4">
+          <div class="bg-white/10 rounded-2xl p-3.5 text-center backdrop-blur">
+            <p class="text-xs font-medium opacity-70 mb-1 uppercase tracking-wider">Invested</p>
+            <p id="a-invested" class="text-base font-bold stat-val">₹0</p>
+          </div>
+          <div class="bg-white/25 rounded-2xl p-3.5 text-center ring-2 ring-white/40">
+            <p class="text-xs font-medium opacity-70 mb-1 uppercase tracking-wider">Maturity</p>
+            <p id="a-maturity" class="text-base font-bold stat-val">₹0</p>
+          </div>
+          <div class="bg-white/10 rounded-2xl p-3.5 text-center backdrop-blur">
+            <p class="text-xs font-medium opacity-70 mb-1 uppercase tracking-wider">Gains</p>
+            <p id="a-gains" class="text-base font-bold text-green-300 stat-val">₹0</p>
+          </div>
+        </div>
+        <!-- Inflation row -->
+        <div id="a-inflation-row" class="hidden mb-4 bg-white/10 rounded-xl p-3 text-center">
+          <p class="text-xs opacity-70 mb-0.5">Inflation-Adjusted Value</p>
+          <p id="a-real" class="text-base font-bold text-yellow-200">—</p>
+        </div>
+        <!-- Breakdown bar -->
+        <div>
+          <div class="flex justify-between text-xs opacity-75 mb-1.5">
+            <span>💰 Invested <span id="a-inv-pct" class="font-bold">—</span></span>
+            <span>📈 Gains <span id="a-gain-pct" class="font-bold">—</span></span>
+          </div>
+          <div class="w-full h-2.5 rounded-full bg-white/20 overflow-hidden flex">
+            <div id="a-inv-bar"  class="bbar h-full bg-white/50 rounded-l-full"></div>
+            <div id="a-gain-bar" class="bbar h-full bg-green-400 rounded-r-full"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIP B Result -->
+      <div id="b-summary" class="hidden app-card bg-gradient-to-br from-violet-600 via-violet-700 to-purple-700 p-6 rounded-3xl shadow-xl text-white">
+        <div class="flex items-center justify-between mb-5">
+          <h3 class="font-bold flex items-center gap-2">
+            <i class="ri-trophy-fill text-yellow-300"></i> SIP B Results
+          </h3>
+          <span id="b-cagr-badge" class="text-xs font-bold bg-white/20 px-3 py-1 rounded-full backdrop-blur">CAGR —</span>
+        </div>
+        <div class="grid grid-cols-3 gap-3 mb-4">
+          <div class="bg-white/10 rounded-2xl p-3.5 text-center backdrop-blur">
+            <p class="text-xs font-medium opacity-70 mb-1 uppercase tracking-wider">Invested</p>
+            <p id="b-invested" class="text-base font-bold stat-val">₹0</p>
+          </div>
+          <div class="bg-white/25 rounded-2xl p-3.5 text-center ring-2 ring-white/40">
+            <p class="text-xs font-medium opacity-70 mb-1 uppercase tracking-wider">Maturity</p>
+            <p id="b-maturity" class="text-base font-bold stat-val">₹0</p>
+          </div>
+          <div class="bg-white/10 rounded-2xl p-3.5 text-center backdrop-blur">
+            <p class="text-xs font-medium opacity-70 mb-1 uppercase tracking-wider">Gains</p>
+            <p id="b-gains" class="text-base font-bold text-yellow-200 stat-val">₹0</p>
+          </div>
+        </div>
+        <div id="b-inflation-row" class="hidden mb-4 bg-white/10 rounded-xl p-3 text-center">
+          <p class="text-xs opacity-70 mb-0.5">Inflation-Adjusted Value</p>
+          <p id="b-real" class="text-base font-bold text-yellow-200">—</p>
+        </div>
+        <div>
+          <div class="flex justify-between text-xs opacity-75 mb-1.5">
+            <span>💰 Invested <span id="b-inv-pct" class="font-bold">—</span></span>
+            <span>📈 Gains <span id="b-gain-pct" class="font-bold">—</span></span>
+          </div>
+          <div class="w-full h-2.5 rounded-full bg-white/20 overflow-hidden flex">
+            <div id="b-inv-bar"  class="bbar h-full bg-white/50 rounded-l-full"></div>
+            <div id="b-gain-bar" class="bbar h-full bg-yellow-300 rounded-r-full"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHART -->
+    <div class="app-card fade-up fade-up-5 bg-slate-800 dark:bg-white p-6 rounded-3xl shadow-xl border border-slate-700/50 dark:border-slate-200">
+      <div class="flex items-center justify-between mb-5">
+        <h3 class="font-bold text-slate-200 dark:text-slate-800 flex items-center gap-2">
+          <i class="ri-line-chart-line text-cyan-400"></i> Growth Projection
+        </h3>
+        <!-- Chart type tabs -->
+        <div class="flex gap-1 bg-slate-700 dark:bg-slate-100 rounded-xl p-1">
+          <button onclick="setChartType('line')" id="tab-line"
+                  class="tab-btn active text-xs font-semibold px-3 py-1.5 rounded-lg text-slate-300 dark:text-slate-600 hover:text-cyan-400 transition-colors">
+            Line
+          </button>
+          <button onclick="setChartType('bar')" id="tab-bar"
+                  class="tab-btn text-xs font-semibold px-3 py-1.5 rounded-lg text-slate-300 dark:text-slate-600 hover:text-cyan-400 transition-colors">
+            Bar
+          </button>
+        </div>
+      </div>
+      <canvas id="sipChart"></canvas>
+    </div>
+
+    <!-- YEAR-BY-YEAR TABLE -->
+    <div class="app-card fade-up fade-up-5 bg-slate-800 dark:bg-white rounded-3xl shadow-xl border border-slate-700/50 dark:border-slate-200 overflow-hidden">
+      <button onclick="toggleTable()" class="w-full flex items-center justify-between px-6 py-4 hover:bg-slate-700/40 dark:hover:bg-slate-50 transition-colors">
+        <span class="font-bold text-slate-200 dark:text-slate-800 flex items-center gap-2">
+          <i class="ri-table-line text-cyan-400"></i> Year-by-Year Breakdown
+        </span>
+        <i id="table-chevron" class="ri-arrow-down-s-line text-slate-400 transition-transform duration-300"></i>
+      </button>
+      <div id="table-body" class="hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="bg-slate-700/50 dark:bg-slate-100">
+                <th class="text-left px-6 py-3 font-semibold text-slate-300 dark:text-slate-600">Year</th>
+                <th class="text-right px-6 py-3 font-semibold text-slate-300 dark:text-slate-600">Invested</th>
+                <th class="text-right px-6 py-3 font-semibold text-slate-300 dark:text-slate-600">Corpus Value</th>
+                <th class="text-right px-6 py-3 font-semibold text-slate-300 dark:text-slate-600">Gains</th>
+                <th class="text-right px-6 py-3 font-semibold text-cyan-400 dark:text-cyan-600" id="b-col-header" style="display:none">SIP B Corpus</th>
+              </tr>
+            </thead>
+            <tbody id="year-table"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="text-center text-xs text-slate-500 dark:text-slate-400 py-4">
+      &copy; 2026 Arpit Agarwala. Crafted with <span class="text-red-400">♥</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════ SCRIPT ════════════════════ -->
+  <script>
+    // ── Refs ──
+    const $ = id => document.getElementById(id);
+    const elems = p => ({
+      amountRange: $(`${p}-amount-range`), amountInput: $(`${p}-amount-input`),
+      rateRange:   $(`${p}-rate-range`),   rateInput:   $(`${p}-rate-input`),
+      yearsRange:  $(`${p}-years-range`),  yearsInput:  $(`${p}-years-input`)
+    });
+    const A = elems('a'), B = elems('b');
+
+    let chartType = 'line';
+    let sipChart;
+
+    // ── Format INR ──
+    function fmt(v) {
+      if (v >= 1e7)  return `₹${(v/1e7).toFixed(2)} Cr`;
+      if (v >= 1e5)  return `₹${(v/1e5).toFixed(2)} L`;
+      return `₹${Math.round(v).toLocaleString('en-IN')}`;
+    }
+
+    // ── Clamp helper ──
+    function clamp(v, mn, mx) { return Math.min(mx, Math.max(mn, v)); }
+
+    // ── SIP formula (standard) ──
+    function calcSIP(p, r, n) {
+      const months = n * 12, mr = r / 12 / 100;
+      const maturity = p * (((Math.pow(1+mr, months)-1)*(1+mr))/mr);
+      const invested = p * months;
+      return { invested, maturity, gains: maturity - invested };
+    }
+
+    // ── Step-up SIP formula ──
+    function calcStepSIP(p, r, n, stepPct) {
+      const mr = r / 12 / 100;
+      let corpus = 0, invested = 0, monthly = p;
+      for (let y = 0; y < n; y++) {
+        for (let m = 0; m < 12; m++) {
+          corpus = corpus * (1 + mr) + monthly;
+          invested += monthly;
+        }
+        monthly *= (1 + stepPct / 100);
+      }
+      return { invested, maturity: corpus, gains: corpus - invested };
+    }
+
+    // ── CAGR approximation ──
+    function cagr(invested, maturity, years) {
+      if (invested <= 0 || years <= 0) return 0;
+      return (Math.pow(maturity / invested, 1 / years) - 1) * 100;
+    }
+
+    // ── Yearly growth series ──
+    function yearlyGrowth(p, r, n, stepPct = 0) {
+      const mr = r / 12 / 100;
+      let corpus = 0, invested = 0, monthly = p;
+      const rows = [];
+      for (let y = 1; y <= n; y++) {
+        for (let m = 0; m < 12; m++) {
+          corpus = corpus * (1 + mr) + monthly;
+          invested += monthly;
+        }
+        rows.push({ year: y, invested: Math.round(invested), corpus: Math.round(corpus), gains: Math.round(corpus - invested) });
+        if (stepPct > 0) monthly *= (1 + stepPct / 100);
+      }
+      return rows;
+    }
+
+    // ── Range progress fill ──
+    function setFill(el, mn, mx, v) {
+      el.style.setProperty('--val', ((v-mn)/(mx-mn)*100)+'%');
+    }
+
+    // ── Breakdown bar ──
+    function setBreakdown(inv, mat, invBar, gainBar, invPctEl, gainPctEl) {
+      const ip = Math.round((inv/mat)*100);
+      const gp = 100 - ip;
+      invBar.style.width  = ip + '%';
+      gainBar.style.width = gp + '%';
+      invPctEl.textContent  = ip  + '%';
+      gainPctEl.textContent = gp + '%';
+    }
+
+    // ── Draw Chart ──
+    function drawChart(rowsA, rowsB) {
+      const labels = rowsA.map(r => `Yr ${r.year}`);
+      const isDark = document.documentElement.classList.contains('dark');
+      const textColor = isDark ? '#475569' : '#94a3b8';
+      const gridColor = isDark ? '#f1f5f9' : '#1e293b';
+
+      if (sipChart) sipChart.destroy();
+      const ctx = $('sipChart').getContext('2d');
+
+      sipChart = new Chart(ctx, {
+        type: chartType,
+        data: {
+          labels,
+          datasets: [
+            {
+              label: $('sip-a-title').textContent.trim(),
+              data: rowsA.map(r => r.corpus),
+              borderColor: '#06b6d4',
+              backgroundColor: chartType === 'line' ? 'rgba(6,182,212,0.12)' : 'rgba(6,182,212,0.7)',
+              borderWidth: 2.5, fill: chartType === 'line', tension: 0.4,
+              pointRadius: 0, pointHoverRadius: 5
+            },
+            ...(rowsB.length ? [{
+              label: 'SIP B',
+              data: rowsB.map(r => r.corpus),
+              borderColor: '#8b5cf6',
+              backgroundColor: chartType === 'line' ? 'rgba(139,92,246,0.12)' : 'rgba(139,92,246,0.7)',
+              borderWidth: 2.5, fill: chartType === 'line', tension: 0.4,
+              pointRadius: 0, pointHoverRadius: 5
+            }] : [])
+          ]
+        },
+        options: {
+          responsive: true,
+          interaction: { intersect: false, mode: 'index' },
+          plugins: {
+            legend: { labels: { color: textColor, font: { size: 13, weight: '600' }, padding: 20 } },
+            tooltip: {
+              callbacks: {
+                label: ctx => ` ${ctx.dataset.label}: ${fmt(ctx.parsed.y)}`
+              }
+            }
+          },
+          scales: {
+            x: { ticks: { color: textColor, font: { size: 11 } }, grid: { color: gridColor } },
+            y: { ticks: { color: textColor, font: { size: 11 }, callback: v => fmt(v) }, grid: { color: gridColor } }
+          }
+        }
+      });
+    }
+
+    // ── Populate year table ──
+    function populateTable(rowsA, rowsB) {
+      const tbody = $('year-table');
+      const bCol = $('b-col-header');
+      bCol.style.display = rowsB.length ? '' : 'none';
+      tbody.innerHTML = rowsA.map((r, i) => {
+        const bCell = rowsB.length ? `<td class="text-right px-6 py-3 text-violet-400 dark:text-violet-600 font-semibold">${fmt(rowsB[i]?.corpus ?? 0)}</td>` : '';
+        const alt = i % 2 === 0 ? 'bg-slate-700/20 dark:bg-slate-50' : '';
+        return `<tr class="${alt} border-t border-slate-700/30 dark:border-slate-100">
+          <td class="px-6 py-3 font-semibold text-slate-300 dark:text-slate-700">Year ${r.year}</td>
+          <td class="text-right px-6 py-3 text-slate-400 dark:text-slate-500">${fmt(r.invested)}</td>
+          <td class="text-right px-6 py-3 text-cyan-400 dark:text-cyan-600 font-semibold">${fmt(r.corpus)}</td>
+          <td class="text-right px-6 py-3 text-green-400 dark:text-green-600">${fmt(r.gains)}</td>
+          ${bCell}
+        </tr>`;
+      }).join('');
+    }
+
+    // ── Main update ──
+    function update() {
+      const stepup    = $('stepupToggle').checked;
+      const inflation = $('inflationToggle').checked;
+      const stepPct   = stepup ? clamp(parseFloat($('stepup-input').value)||10, 1, 50) : 0;
+      const inflRate  = inflation ? clamp(parseFloat($('inflation-input').value)||6, 1, 20) : 0;
+
+      // Clamp A inputs
+      const pA = clamp(parseInt(A.amountInput.value)||5000, 500, 100000);
+      const rA = clamp(parseFloat(A.rateInput.value)||12,   1,   30);
+      const nA = clamp(parseInt(A.yearsInput.value)||10,    1,   50);
+      A.amountInput.value = pA; A.amountRange.value = pA;
+      A.rateInput.value   = rA; A.rateRange.value   = rA;
+      A.yearsInput.value  = nA; A.yearsRange.value  = nA;
+      setFill(A.amountRange, 500, 100000, pA);
+      setFill(A.rateRange,   1,   30,     rA);
+      setFill(A.yearsRange,  1,   50,     nA);
+
+      const resA   = stepup ? calcStepSIP(pA, rA, nA, stepPct) : calcSIP(pA, rA, nA);
+      const rowsA  = yearlyGrowth(pA, rA, nA, stepPct);
+      const cagrA  = cagr(resA.invested, resA.maturity, nA);
+      const realA  = inflation ? resA.maturity / Math.pow(1 + inflRate/100, nA) : 0;
+
+      $('a-invested').textContent = fmt(resA.invested);
+      $('a-maturity').textContent = fmt(resA.maturity);
+      $('a-gains').textContent    = fmt(resA.gains);
+      $('a-cagr-badge').textContent = `CAGR ${cagrA.toFixed(1)}%`;
+      setBreakdown(resA.invested, resA.maturity, $('a-inv-bar'), $('a-gain-bar'), $('a-inv-pct'), $('a-gain-pct'));
+
+      const inflRowA = $('a-inflation-row');
+      inflRowA.classList.toggle('hidden', !inflation);
+      if (inflation) $('a-real').textContent = fmt(realA);
+
+      let rowsB = [];
+      if ($('compareToggle').checked) {
+        const pB = clamp(parseInt(B.amountInput.value)||7000, 500, 100000);
+        const rB = clamp(parseFloat(B.rateInput.value)||10,   1,   30);
+        const nB = clamp(parseInt(B.yearsInput.value)||15,    1,   50);
+        B.amountInput.value = pB; B.amountRange.value = pB;
+        B.rateInput.value   = rB; B.rateRange.value   = rB;
+        B.yearsInput.value  = nB; B.yearsRange.value  = nB;
+        setFill(B.amountRange, 500, 100000, pB);
+        setFill(B.rateRange,   1,   30,     rB);
+        setFill(B.yearsRange,  1,   50,     nB);
+
+        const resB  = stepup ? calcStepSIP(pB, rB, nB, stepPct) : calcSIP(pB, rB, nB);
+        rowsB = yearlyGrowth(pB, rB, nB, stepPct);
+        const cagrB = cagr(resB.invested, resB.maturity, nB);
+        const realB = inflation ? resB.maturity / Math.pow(1 + inflRate/100, nB) : 0;
+
+        $('b-invested').textContent = fmt(resB.invested);
+        $('b-maturity').textContent = fmt(resB.maturity);
+        $('b-gains').textContent    = fmt(resB.gains);
+        $('b-cagr-badge').textContent = `CAGR ${cagrB.toFixed(1)}%`;
+        setBreakdown(resB.invested, resB.maturity, $('b-inv-bar'), $('b-gain-bar'), $('b-inv-pct'), $('b-gain-pct'));
+
+        const inflRowB = $('b-inflation-row');
+        inflRowB.classList.toggle('hidden', !inflation);
+        if (inflation) $('b-real').textContent = fmt(realB);
+      }
+
+      drawChart(rowsA, rowsB);
+      populateTable(rowsA, rowsB);
+    }
+
+    // ── Sync range ↔ input ──
+    function sync(rangeEl, inputEl) {
+      rangeEl.addEventListener('input', () => { inputEl.value = rangeEl.value; update(); });
+      inputEl.addEventListener('change', () => { update(); });
+    }
+    sync(A.amountRange, A.amountInput); sync(A.rateRange, A.rateInput); sync(A.yearsRange, A.yearsInput);
+    sync(B.amountRange, B.amountInput); sync(B.rateRange, B.rateInput); sync(B.yearsRange, B.yearsInput);
+
+    // ── Step-up range/input sync ──
+    $('stepup-range').addEventListener('input', () => { $('stepup-input').value = $('stepup-range').value; setFill($('stepup-range'),1,50,+$('stepup-range').value); update(); });
+    $('stepup-input').addEventListener('change', () => { $('stepup-range').value = $('stepup-input').value; update(); });
+    $('inflation-range').addEventListener('input', () => { $('inflation-input').value = $('inflation-range').value; setFill($('inflation-range'),1,20,+$('inflation-range').value); update(); });
+    $('inflation-input').addEventListener('change', () => { $('inflation-range').value = $('inflation-input').value; update(); });
+
+    // ── Compare toggle ──
+    function makeToggle(checkId, thumbId, trackId) {
+      const chk = $(checkId), thumb = $(thumbId), track = $(trackId);
+      chk.addEventListener('change', () => {
+        const on = chk.checked;
+        thumb.style.transform = on ? 'translateX(1.25rem)' : 'translateX(0)';
+        track.classList.toggle('bg-cyan-500', on);
+        track.classList.toggle('bg-slate-600', !on);
+        track.classList.toggle('dark:bg-slate-300', !on);
+      });
+    }
+    makeToggle('compareToggle','toggle-thumb','toggle-track');
+    makeToggle('stepupToggle','stepup-thumb','stepup-track');
+    makeToggle('inflationToggle','inflation-thumb','inflation-track');
+
+    $('compareToggle').addEventListener('change', () => {
+      const on = $('compareToggle').checked;
+      $('sip-b-panel').classList.toggle('hidden', !on);
+      $('b-summary').classList.toggle('hidden', !on);
+      $('input-container').className   = `grid gap-5 ${on ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`;
+      $('summary-container').className = `grid gap-5 ${on ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`;
+      $('sip-a-title').textContent = on ? 'SIP A' : 'SIP';
+      $('summary-a-title').innerHTML = on ? '<i class="ri-trophy-fill text-yellow-300"></i> SIP A Results' : '<i class="ri-trophy-fill text-yellow-300"></i> Results';
+      update();
+    });
+
+    $('stepupToggle').addEventListener('change', () => {
+      $('stepup-panel').classList.toggle('hidden', !$('stepupToggle').checked);
+      update();
+    });
+    $('inflationToggle').addEventListener('change', () => {
+      $('inflation-panel').classList.toggle('hidden', !$('inflationToggle').checked);
+      update();
+    });
+
+    // ── Chart type ──
+    function setChartType(t) {
+      chartType = t;
+      ['line','bar'].forEach(x => {
+        $(`tab-${x}`).classList.toggle('active', x === t);
+      });
+      update();
+    }
+
+    // ── Year table toggle ──
+    function toggleTable() {
+      const tb = $('table-body'), ch = $('table-chevron');
+      tb.classList.toggle('hidden');
+      ch.style.transform = tb.classList.contains('hidden') ? '' : 'rotate(180deg)';
+    }
+
+    // ── Theme ──
+    (function syncIcon() {
+      const icon = $('theme-icon');
+      const isDark = document.documentElement.classList.contains('dark');
+      icon.className = isDark ? 'ri-sun-line text-lg' : 'ri-moon-line text-lg';
+    })();
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      const icon = $('theme-icon');
+      const isDark = html.classList.contains('dark');
+      html.classList.toggle('dark', !isDark);
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+      icon.className = isDark ? 'ri-moon-line text-lg' : 'ri-sun-line text-lg';
+      update();
+    }
+
+    // ── Init ──
+    A.amountRange.value = A.amountInput.value = 5000;
+    A.rateRange.value   = A.rateInput.value   = 12;
+    A.yearsRange.value  = A.yearsInput.value  = 10;
+    B.amountRange.value = B.amountInput.value = 7000;
+    B.rateRange.value   = B.rateInput.value   = 10;
+    B.yearsRange.value  = B.yearsInput.value  = 15;
+    setFill($('stepup-range'),1,50,10);
+    setFill($('inflation-range'),1,20,6);
+    update();
+  </script>
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ═══ Primary SEO ═══ -->
+  <title>Projects – Arpit Agarwala | Finance Tools, Web Apps & Interactive Experiments</title>
+  <meta name="description" content="Browse projects by Arpit Agarwala – SIP calculator, budget tracker, expense splitter, notepad, clock and more. Built with HTML, Tailwind CSS and vanilla JS." />
+  <meta name="keywords" content="Arpit Agarwala projects, SIP calculator, budget tracker, expense splitter, web tools, Tailwind CSS projects, finance web app" />
+  <meta name="author" content="Arpit Agarwala" />
+  <link rel="canonical" href="https://arpitagarwala.online/projects.html" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- ═══ Open Graph ═══ -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://arpitagarwala.online/projects.html" />
+  <meta property="og:title" content="Projects – Arpit Agarwala" />
+  <meta property="og:description" content="SIP calculator, budget tracker, expense splitter and more web tools built by Arpit Agarwala." />
+  <meta property="og:image" content="https://arpitagarwala.online/assets/images/my-miniature.png" />
+  <meta property="og:site_name" content="Arpit Agarwala" />
+
+  <!-- ═══ Twitter Card ═══ -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Projects – Arpit Agarwala" />
+  <meta name="twitter:description" content="SIP calculator, budget tracker, expense splitter and more web tools." />
+  <meta name="twitter:image" content="https://arpitagarwala.online/assets/images/my-miniature.png" />
+
+  <!-- ═══ JSON-LD ═══ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Projects by Arpit Agarwala",
+    "url": "https://arpitagarwala.online/projects.html",
+    "description": "A collection of finance tools, productivity apps and interactive web experiments by Arpit Agarwala.",
+    "author": {
+      "@type": "Person",
+      "name": "Arpit Agarwala",
+      "url": "https://arpitagarwala.online/"
+    }
+  }
+  </script>
+
+  <link rel="icon" type="image/png" href="assets/images/tab-icon.png">
+
+  <script>
+    (function () {
+      const theme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (theme === 'dark' || (!theme && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    })();
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <script>tailwind.config = { darkMode: 'class' }</script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    * { transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(12px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .project-card { animation: cardIn 0.28s ease both; }
+
+    .filter-pill.active {
+      background-color: #22d3ee; color: #0f172a; border-color: #22d3ee;
+    }
+    .dark .filter-pill.active {
+      background-color: #0891b2; color: #fff; border-color: #0891b2;
+    }
+
+    .search-input:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(34,211,238,0.18);
+      border-color: #22d3ee;
+    }
+    .dark .search-input:focus {
+      box-shadow: 0 0 0 3px rgba(8,145,178,0.2);
+      border-color: #0891b2;
+    }
+
+    .card-link { transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease; }
+    .card-link:hover { transform: translateY(-3px); }
+
+    @keyframes shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position:  200% center; }
+    }
+    .featured-text {
+      background: linear-gradient(90deg,#22d3ee 0%,#a5f3fc 40%,#22d3ee 70%,#0891b2 100%);
+      background-size: 200% auto;
+      animation: shimmer 3s linear infinite;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .dot-on  { background-color: #22d3ee; }
+    .dot-off { background-color: #334155; }
+    .dark .dot-off { background-color: #e5e7eb; }
+
+    #no-results { display: none; }
+    #no-results.visible { display: flex; }
+  </style>
+</head>
+
+<body class="min-h-screen bg-slate-900 text-slate-100 dark:bg-gray-50 dark:text-gray-900 transition-colors duration-300">
+
+  <!-- Back Button -->
+  <div class="fixed top-3 left-3 z-50">
+    <a href="index.html" class="bg-slate-700 dark:bg-white text-slate-200 dark:text-gray-700 p-1.5 rounded-full shadow-md inline-flex items-center border border-slate-600 dark:border-gray-200 hover:border-cyan-400 dark:hover:border-cyan-400 hover:shadow-lg transition-all duration-100">
+      <i class="ri-arrow-left-line text-lg"></i>
+    </a>
+  </div>
+
+  <!-- Theme Toggle -->
+  <div class="fixed top-3 right-3 z-50">
+    <button onclick="toggleTheme()" class="bg-slate-700 dark:bg-white text-slate-200 dark:text-gray-700 p-1.5 rounded-full shadow-md border border-slate-600 dark:border-gray-200 hover:border-cyan-400 dark:hover:border-cyan-400 hover:shadow-lg transition-all duration-100">
+      <i id="theme-icon" class="ri-sun-line text-lg"></i>
+    </button>
+  </div>
+
+  <div class="max-w-5xl mx-auto px-3 py-8 pt-14">
+
+    <!-- Header -->
+    <div class="mb-5">
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-100 dark:text-gray-900 tracking-tight mb-1">🚀 Projects</h1>
+      <p class="text-slate-400 dark:text-gray-500 text-sm max-w-xl">Tools, experiments, and mini-products — built with care, utility, and a sprinkle of creativity.</p>
+    </div>
+
+    <!-- Search + Filter -->
+    <div class="bg-slate-800 dark:bg-white rounded-xl border border-slate-700/50 dark:border-gray-200 p-3 sm:p-4 mb-5 shadow-sm">
+      <div class="relative mb-3">
+        <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-gray-400 text-base pointer-events-none"></i>
+        <input id="search-input" type="text" placeholder="Search by name, feature, or tag…"
+               class="search-input w-full pl-9 pr-8 py-2.5 rounded-lg bg-slate-700 dark:bg-gray-100 text-slate-100 dark:text-gray-900 placeholder-slate-400 dark:placeholder-gray-400 border border-slate-600 dark:border-gray-200 transition-colors text-sm"
+               oninput="handleSearch()" />
+        <button id="clear-btn" onclick="clearSearch()" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-gray-400 hover:text-slate-200 dark:hover:text-gray-700 transition-colors hidden">
+          <i class="ri-close-circle-fill text-base"></i>
+        </button>
+      </div>
+      <div class="flex flex-wrap gap-1.5 items-center">
+        <span class="text-xs font-semibold text-slate-400 dark:text-gray-500 uppercase tracking-wider mr-1">Category:</span>
+        <button class="filter-pill active text-xs font-medium px-2.5 py-1 rounded-full border border-slate-600 dark:border-gray-300 text-slate-300 dark:text-gray-600 hover:border-cyan-400 transition-all duration-150" data-cat="all" onclick="setFilter(this,'all')">All</button>
+        <button class="filter-pill text-xs font-medium px-2.5 py-1 rounded-full border border-slate-600 dark:border-gray-300 text-slate-300 dark:text-gray-600 hover:border-cyan-400 transition-all duration-150" data-cat="Finance" onclick="setFilter(this,'Finance')"><i class="ri-funds-line mr-1"></i>Finance Tools</button>
+        <button class="filter-pill text-xs font-medium px-2.5 py-1 rounded-full border border-slate-600 dark:border-gray-300 text-slate-300 dark:text-gray-600 hover:border-cyan-400 transition-all duration-150" data-cat="Utility" onclick="setFilter(this,'Utility')"><i class="ri-tools-line mr-1"></i>Utilities</button>
+        <span id="result-count" class="ml-auto text-xs text-slate-500 dark:text-gray-400 font-medium whitespace-nowrap"></span>
+      </div>
+    </div>
+
+    <!-- Grid -->
+    <div id="projects-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+
+    <!-- Empty State -->
+    <div id="no-results" class="flex-col items-center justify-center py-16 text-center">
+      <i class="ri-search-eye-line text-4xl text-slate-600 dark:text-gray-300 mb-3"></i>
+      <h3 class="text-lg font-bold text-slate-400 dark:text-gray-500 mb-2">No projects found.</h3>
+      <p class="text-slate-500 dark:text-gray-400 text-sm mb-3">Try a different search term or clear the filter.</p>
+      <button onclick="clearSearch();setFilter(document.querySelector('[data-cat=all]'),'all')" class="text-sm text-cyan-400 dark:text-cyan-600 hover:underline font-medium">Clear all filters</button>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-8 bg-slate-800 dark:bg-white text-slate-400 dark:text-gray-500 rounded-xl border border-slate-700/50 dark:border-gray-200 px-5 py-3 text-xs text-center shadow-sm">
+      &copy; 2026 Arpit Agarwala. Engineered with <span class="text-red-400">&#10084;&#65039;</span>
+    </div>
+  </div>
+
+  <script>
+    const PROJECTS = [
+      {
+        href: 'sip.html', title: 'SIP Calculator',
+        description: 'Simulate Systematic Investment Plans, compare two portfolios side-by-side, and visualize compound growth with Chart.js.',
+        icon: 'ri-line-chart-line', gradient: 'from-cyan-500 to-blue-600',
+        category: 'Finance', tags: ['Chart.js', 'Investing', 'Compound Interest'],
+        complexity: 3, featured: true, cta: 'Open Calculator'
+      },
+      {
+        href: 'budget.html', title: 'Budget Tracker',
+        description: 'Log income and expenses, visualize spending with pie charts, and track savings goals — all stored locally per user.',
+        icon: 'ri-pie-chart-2-line', gradient: 'from-emerald-500 to-teal-600',
+        category: 'Finance', tags: ['Charts', 'Local Storage', 'Personal Finance'],
+        complexity: 3, featured: false, cta: 'Open Tracker'
+      },
+      {
+        href: 'expense-splitter.html', title: 'Expense Splitter',
+        description: 'Split bills with friends using custom ratios, edit history on the fly, and export the final summary instantly.',
+        icon: 'ri-group-line', gradient: 'from-violet-500 to-purple-600',
+        category: 'Finance', tags: ['Bill Splitting', 'Export', 'Custom Ratios'],
+        complexity: 2, featured: false, cta: 'Split Bills'
+      },
+      {
+        href: 'calculator.html', title: 'Modern Calculator',
+        description: 'A glassmorphism-styled calculator with full keyboard support, operator chaining, history log, and memory functions.',
+        icon: 'ri-calculator-line', gradient: 'from-orange-500 to-red-500',
+        category: 'Utility', tags: ['Keyboard Support', 'History Log', 'Memory Functions', 'Glassmorphism'],
+        complexity: 3, featured: true, cta: 'Open Calculator'
+      },
+      {
+        href: 'notepad.html', title: 'Notepad',
+        description: 'A private, zero-server notepad that autosaves everything in your browser. No account, no cloud, no tracking.',
+        icon: 'ri-sticky-note-line', gradient: 'from-yellow-500 to-amber-500',
+        category: 'Utility', tags: ['Privacy First', 'Auto-save', 'Local Storage'],
+        complexity: 1, featured: false, cta: 'Open Notepad'
+      },
+      {
+        href: 'clock.html', title: 'Live Clock',
+        description: 'A dual digital + analog clock with world clocks, floating settings panel, and theme toggle.',
+        icon: 'ri-time-line', gradient: 'from-slate-400 to-slate-600',
+        category: 'Utility', tags: ['Real-time', 'Analog + Digital', 'World Clocks'],
+        complexity: 2, featured: false, cta: 'Open Clock'
+      }
+    ];
+
+    let activeCategory = 'all', activeSearch = '';
+
+    function renderProjects() {
+      const grid = document.getElementById('projects-grid');
+      const noResults = document.getElementById('no-results');
+      const countEl = document.getElementById('result-count');
+      const query = activeSearch.toLowerCase().trim();
+
+      const filtered = PROJECTS.filter(p => {
+        const matchCat = activeCategory === 'all' || p.category === activeCategory;
+        const matchQ = !query || p.title.toLowerCase().includes(query)
+          || p.description.toLowerCase().includes(query)
+          || p.tags.some(t => t.toLowerCase().includes(query))
+          || p.category.toLowerCase().includes(query);
+        return matchCat && matchQ;
+      });
+
+      countEl.textContent = filtered.length === PROJECTS.length ? `${PROJECTS.length} projects` : `${filtered.length} of ${PROJECTS.length} projects`;
+
+      if (filtered.length === 0) { grid.innerHTML = ''; noResults.classList.add('visible'); return; }
+      noResults.classList.remove('visible');
+
+      grid.innerHTML = filtered.map((p, i) => `
+        <div class="project-card" style="animation-delay:${i*55}ms">
+          <a href="${p.href}" class="card-link h-full bg-slate-800 dark:bg-white rounded-xl border border-slate-700/50 dark:border-gray-200 hover:border-cyan-400 dark:hover:border-cyan-400 shadow-sm hover:shadow-xl flex flex-col overflow-hidden block">
+            <div class="h-1 w-full bg-gradient-to-r ${p.gradient} flex-shrink-0"></div>
+            <div class="p-4 sm:p-5 flex flex-col flex-1">
+              <div class="flex items-start justify-between mb-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br ${p.gradient} flex items-center justify-center shadow-md">
+                  <i class="${p.icon} text-xl text-white"></i>
+                </div>
+                ${p.featured ? `<span class="text-xs font-bold px-2 py-0.5 rounded-full border border-cyan-500/30 dark:border-cyan-400/40 bg-cyan-900/20 dark:bg-cyan-50 flex items-center gap-1"><span class="featured-text">⭐ Featured</span></span>` : ''}
+              </div>
+              <h2 class="text-sm font-bold text-slate-100 dark:text-gray-900 mb-0.5">${p.title}</h2>
+              <span class="text-xs text-slate-400 dark:text-gray-400 mb-2 flex items-center gap-1">
+                <i class="${p.category === 'Finance' ? 'ri-funds-line' : 'ri-tools-line'}"></i>
+                ${p.category === 'Finance' ? 'Finance Tool' : 'Utility'}
+              </span>
+              <p class="text-xs text-slate-400 dark:text-gray-500 leading-relaxed mb-3 flex-1">${p.description}</p>
+              <div class="flex flex-wrap gap-1 mb-3">
+                ${p.tags.map(t => `<span class="text-xs bg-slate-700 dark:bg-gray-100 text-slate-300 dark:text-gray-600 px-2 py-0.5 rounded-full">${t}</span>`).join('')}
+              </div>
+              <div class="flex items-center justify-between pt-2.5 border-t border-slate-700/50 dark:border-gray-100">
+                <div class="flex items-center gap-1">
+                  <span class="text-xs text-slate-500 dark:text-gray-400 mr-1">Complexity</span>
+                  ${[1,2,3].map(d=>`<span class="w-1.5 h-1.5 rounded-full ${d<=p.complexity?'dot-on':'dot-off'}"></span>`).join('')}
+                </div>
+                <span class="text-xs font-semibold text-cyan-400 dark:text-cyan-600 flex items-center gap-1">${p.cta} <i class="ri-arrow-right-line"></i></span>
+              </div>
+            </div>
+          </a>
+        </div>
+      `).join('');
+    }
+
+    function handleSearch() {
+      const input = document.getElementById('search-input');
+      activeSearch = input.value;
+      document.getElementById('clear-btn').classList.toggle('hidden', !activeSearch);
+      renderProjects();
+    }
+    function clearSearch() {
+      document.getElementById('search-input').value = '';
+      activeSearch = '';
+      document.getElementById('clear-btn').classList.add('hidden');
+      renderProjects();
+    }
+    function setFilter(btn, cat) {
+      activeCategory = cat;
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      renderProjects();
+    }
+
+    (function () {
+      const icon = document.getElementById('theme-icon');
+      icon.className = document.documentElement.classList.contains('dark') ? 'ri-sun-line text-lg' : 'ri-moon-line text-lg';
+    })();
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      const icon = document.getElementById('theme-icon');
+      if (html.classList.contains('dark')) {
+        html.classList.remove('dark'); localStorage.setItem('theme','light'); icon.className = 'ri-moon-line text-lg';
+      } else {
+        html.classList.add('dark'); localStorage.setItem('theme','dark'); icon.className = 'ri-sun-line text-lg';
+      }
+    }
+
+    renderProjects();
+  </script>
+</body>
+</html>

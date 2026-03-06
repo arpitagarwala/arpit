@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Notepad – Arpit Agarwala</title>
+
+  <script>
+    (function(){
+      const t=localStorage.getItem('theme');
+      const d=window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if(t==='dark'||(!t&&d)) document.documentElement.classList.add('dark');
+      else document.documentElement.classList.remove('dark');
+    })();
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class'}</script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+    body{font-family:'Inter',sans-serif;overscroll-behavior:none;}
+
+    ::-webkit-scrollbar{width:4px;height:4px;}
+    ::-webkit-scrollbar-track{background:transparent;}
+    ::-webkit-scrollbar-thumb{background:rgba(148,163,184,.3);border-radius:99px;}
+    .dark ::-webkit-scrollbar-thumb{background:rgba(148,163,184,.2);}
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+    .fade-up{animation:fadeUp .35s cubic-bezier(.4,0,.2,1) both;}
+    .d1{animation-delay:.03s;}.d2{animation-delay:.06s;}.d3{animation-delay:.09s;}.d4{animation-delay:.12s;}
+
+    @keyframes popIn{from{opacity:0;transform:scale(.97) translateY(6px);}to{opacity:1;transform:scale(1) translateY(0);}}
+    .note-pop{animation:popIn .22s cubic-bezier(.4,0,.2,1) both;}
+
+    .note-card{transition:transform .18s ease,box-shadow .18s ease;cursor:pointer;}
+    .note-card:hover{transform:translateY(-3px);}
+    @media (max-width:640px){.note-card:hover{transform:none;}}
+
+    .swatch{width:2.25rem;height:2.25rem;border-radius:50%;cursor:pointer;transition:transform .12s,box-shadow .12s;border:2px solid transparent;flex-shrink:0;}
+    .swatch:active{transform:scale(.92);}
+    .swatch.active{transform:scale(1.15);box-shadow:0 0 0 2.5px #0f172a,0 0 0 5px rgba(255,255,255,.6);}
+    .dark .swatch.active{box-shadow:0 0 0 2.5px white,0 0 0 5px rgba(0,0,0,.3);}
+
+    .pin-badge{position:absolute;top:-6px;right:-6px;width:22px;height:22px;background:linear-gradient(135deg,#f59e0b,#d97706);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;box-shadow:0 2px 8px rgba(217,119,6,.5);z-index:10;}
+
+    #toast{transition:opacity .25s,transform .25s;}
+    #confirm-modal{backdrop-filter:blur(12px);}
+
+    /* ── COMPOSE PANEL THEMES ── */
+    /* Light mode: gradient compose panel with white-tinted inputs */
+    .theme-cyan    .compose-panel{background:linear-gradient(135deg,#164e63,#0e7490);color:#ecfeff;}
+    .theme-cyan    .compose-panel input,.theme-cyan    .compose-panel textarea{background:rgba(255,255,255,.15);color:#ecfeff;border:1px solid rgba(255,255,255,.25);}
+    .theme-emerald .compose-panel{background:linear-gradient(135deg,#064e3b,#065f46);color:#ecfdf5;}
+    .theme-emerald .compose-panel input,.theme-emerald .compose-panel textarea{background:rgba(255,255,255,.15);color:#ecfdf5;border:1px solid rgba(255,255,255,.25);}
+    .theme-violet  .compose-panel{background:linear-gradient(135deg,#3b0764,#4c1d95);color:#f5f3ff;}
+    .theme-violet  .compose-panel input,.theme-violet  .compose-panel textarea{background:rgba(255,255,255,.15);color:#f5f3ff;border:1px solid rgba(255,255,255,.25);}
+    .theme-rose    .compose-panel{background:linear-gradient(135deg,#4c0519,#881337);color:#fff1f2;}
+    .theme-rose    .compose-panel input,.theme-rose    .compose-panel textarea{background:rgba(255,255,255,.15);color:#fff1f2;border:1px solid rgba(255,255,255,.25);}
+    .theme-amber   .compose-panel{background:linear-gradient(135deg,#78350f,#92400e);color:#fffbeb;}
+    .theme-amber   .compose-panel input,.theme-amber   .compose-panel textarea{background:rgba(255,255,255,.15);color:#fffbeb;border:1px solid rgba(255,255,255,.25);}
+    .theme-blue    .compose-panel{background:linear-gradient(135deg,#1e3a5f,#1e40af);color:#eff6ff;}
+    .theme-blue    .compose-panel input,.theme-blue    .compose-panel textarea{background:rgba(255,255,255,.15);color:#eff6ff;border:1px solid rgba(255,255,255,.25);}
+    .theme-pink    .compose-panel{background:linear-gradient(135deg,#701a75,#86198f);color:#fdf4ff;}
+    .theme-pink    .compose-panel input,.theme-pink    .compose-panel textarea{background:rgba(255,255,255,.15);color:#fdf4ff;border:1px solid rgba(255,255,255,.25);}
+    .theme-slate   .compose-panel{background:linear-gradient(135deg,#1e293b,#334155);color:#f8fafc;}
+    .theme-slate   .compose-panel input,.theme-slate   .compose-panel textarea{background:rgba(255,255,255,.12);color:#f8fafc;border:1px solid rgba(255,255,255,.2);}
+
+    /* Dark mode: pastel compose panels */
+    .dark.theme-cyan    .compose-panel{background:linear-gradient(135deg,#ecfeff,#cffafe);color:#164e63;}
+    .dark.theme-cyan    .compose-panel input,.dark.theme-cyan    .compose-panel textarea{background:rgba(255,255,255,.6);color:#0e7490;border:1px solid #67e8f9;}
+    .dark.theme-emerald .compose-panel{background:linear-gradient(135deg,#ecfdf5,#d1fae5);color:#064e3b;}
+    .dark.theme-emerald .compose-panel input,.dark.theme-emerald .compose-panel textarea{background:rgba(255,255,255,.6);color:#065f46;border:1px solid #6ee7b7;}
+    .dark.theme-violet  .compose-panel{background:linear-gradient(135deg,#f5f3ff,#ede9fe);color:#3b0764;}
+    .dark.theme-violet  .compose-panel input,.dark.theme-violet  .compose-panel textarea{background:rgba(255,255,255,.6);color:#4c1d95;border:1px solid #c4b5fd;}
+    .dark.theme-rose    .compose-panel{background:linear-gradient(135deg,#fff1f2,#ffe4e6);color:#4c0519;}
+    .dark.theme-rose    .compose-panel input,.dark.theme-rose    .compose-panel textarea{background:rgba(255,255,255,.6);color:#881337;border:1px solid #fda4af;}
+    .dark.theme-amber   .compose-panel{background:linear-gradient(135deg,#fffbeb,#fef3c7);color:#78350f;}
+    .dark.theme-amber   .compose-panel input,.dark.theme-amber   .compose-panel textarea{background:rgba(255,255,255,.6);color:#92400e;border:1px solid #fcd34d;}
+    .dark.theme-blue    .compose-panel{background:linear-gradient(135deg,#eff6ff,#dbeafe);color:#1e3a5f;}
+    .dark.theme-blue    .compose-panel input,.dark.theme-blue    .compose-panel textarea{background:rgba(255,255,255,.6);color:#1e40af;border:1px solid #93c5fd;}
+    .dark.theme-pink    .compose-panel{background:linear-gradient(135deg,#fdf4ff,#fae8ff);color:#701a75;}
+    .dark.theme-pink    .compose-panel input,.dark.theme-pink    .compose-panel textarea{background:rgba(255,255,255,.6);color:#86198f;border:1px solid #e879f9;}
+    .dark.theme-slate   .compose-panel{background:linear-gradient(135deg,#f8fafc,#f1f5f9);color:#1e293b;}
+    .dark.theme-slate   .compose-panel input,.dark.theme-slate   .compose-panel textarea{background:rgba(255,255,255,.6);color:#334155;border:1px solid #cbd5e1;}
+
+    /* ── NOTE CARD COLORS ──
+       LIGHT MODE: vivid saturated gradients with white text (matches site's bold project cards)
+       DARK MODE:  softer pastel tints with dark text (easy on the eye on light bg)
+    */
+    .nc-cyan    {background:linear-gradient(135deg,#0891b2,#0e7490);color:#fff;box-shadow:0 4px 20px rgba(8,145,178,.35);}
+    .nc-emerald {background:linear-gradient(135deg,#059669,#047857);color:#fff;box-shadow:0 4px 20px rgba(5,150,105,.35);}
+    .nc-violet  {background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;box-shadow:0 4px 20px rgba(124,58,237,.35);}
+    .nc-rose    {background:linear-gradient(135deg,#e11d48,#be123c);color:#fff;box-shadow:0 4px 20px rgba(225,29,72,.35);}
+    .nc-amber   {background:linear-gradient(135deg,#d97706,#b45309);color:#fff;box-shadow:0 4px 20px rgba(217,119,6,.35);}
+    .nc-blue    {background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;box-shadow:0 4px 20px rgba(37,99,235,.35);}
+    .nc-pink    {background:linear-gradient(135deg,#c026d3,#a21caf);color:#fff;box-shadow:0 4px 20px rgba(192,38,211,.35);}
+    .nc-slate   {background:linear-gradient(135deg,#475569,#334155);color:#fff;box-shadow:0 4px 20px rgba(71,85,105,.30);}
+
+    /* Dark mode: pastel note cards */
+    .dark .nc-cyan    {background:#cffafe;color:#164e63;box-shadow:0 3px 16px rgba(8,145,178,.12);}
+    .dark .nc-emerald {background:#d1fae5;color:#064e3b;box-shadow:0 3px 16px rgba(5,150,105,.12);}
+    .dark .nc-violet  {background:#ede9fe;color:#3b0764;box-shadow:0 3px 16px rgba(124,58,237,.12);}
+    .dark .nc-rose    {background:#ffe4e6;color:#4c0519;box-shadow:0 3px 16px rgba(225,29,72,.12);}
+    .dark .nc-amber   {background:#fef3c7;color:#78350f;box-shadow:0 3px 16px rgba(217,119,6,.12);}
+    .dark .nc-blue    {background:#dbeafe;color:#1e3a5f;box-shadow:0 3px 16px rgba(37,99,235,.12);}
+    .dark .nc-pink    {background:#fae8ff;color:#701a75;box-shadow:0 3px 16px rgba(192,38,211,.12);}
+    .dark .nc-slate   {background:#f1f5f9;color:#1e293b;box-shadow:0 3px 16px rgba(71,85,105,.10);}
+
+    textarea{resize:vertical;min-height:110px;}
+    .compose-panel input,.compose-panel textarea{width:100%;outline:none;border-radius:.875rem;padding:.875rem 1rem;font-family:inherit;font-size:.875rem;transition:all .15s;}
+    .compose-panel input::placeholder,.compose-panel textarea::placeholder{opacity:.5;}
+    .compose-panel input:focus,.compose-panel textarea:focus{box-shadow:0 0 0 3px rgba(255,255,255,.25);transform:scale(1.005);}
+    @media (max-width:640px){.compose-panel input:focus,.compose-panel textarea:focus{transform:none;}}
+
+    .sort-btn{transition:all .18s;}
+    .sort-btn.active{background:#06b6d4;color:#fff;}
+    .sort-btn:not(.active){color:#94a3b8;}
+    .dark .sort-btn:not(.active){color:#64748b;}
+
+    @media (max-width:640px){
+      body{padding-bottom:env(safe-area-inset-bottom);}
+    }
+  </style>
+</head>
+
+<body class="theme-cyan bg-slate-900 dark:bg-gray-50 text-slate-100 dark:text-slate-900 min-h-screen transition-colors duration-300">
+
+  <!-- TOAST -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 opacity-0 translate-y-4 pointer-events-none px-4">
+    <div id="toast-msg" class="px-4 py-2.5 rounded-xl text-sm font-semibold bg-slate-800 dark:bg-white text-slate-100 dark:text-slate-900 border border-slate-700 dark:border-slate-200 shadow-xl max-w-[90vw] text-center"></div>
+  </div>
+
+  <!-- CONFIRM MODAL -->
+  <div id="confirm-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/60 dark:bg-black/20 px-4">
+    <div class="bg-slate-800 dark:bg-white rounded-3xl shadow-2xl p-6 w-full max-w-xs border border-slate-700 dark:border-slate-200">
+      <p id="confirm-msg" class="text-slate-200 dark:text-slate-800 font-semibold text-center mb-5 text-sm"></p>
+      <div class="flex gap-2.5">
+        <button onclick="confirmResolve(false)" class="flex-1 py-2.5 rounded-xl border border-slate-600 dark:border-slate-300 text-slate-300 dark:text-slate-600 font-semibold text-sm hover:bg-slate-700 dark:hover:bg-slate-100 transition-colors active:scale-95">Cancel</button>
+        <button onclick="confirmResolve(true)"  class="flex-1 py-2.5 rounded-xl bg-red-500 text-white font-bold text-sm hover:bg-red-600 transition-colors active:scale-95">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BACK + THEME -->
+  <div class="fixed top-4 left-4 z-50">
+    <a href="projects.html"
+       class="w-11 h-11 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-700 dark:border-slate-200 text-slate-300 dark:text-slate-700 hover:border-cyan-400 hover:text-cyan-400 shadow-lg transition-all active:scale-95">
+      <i class="ri-arrow-left-line text-lg"></i>
+    </a>
+  </div>
+  <div class="fixed top-4 right-4 z-50">
+    <button onclick="toggleTheme()"
+            class="w-11 h-11 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-700 dark:border-slate-200 text-slate-300 dark:text-slate-700 hover:border-cyan-400 hover:text-cyan-400 shadow-lg transition-all active:scale-95">
+      <i id="theme-icon" class="text-lg"></i>
+    </button>
+  </div>
+
+  <!-- PAGE -->
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-20 sm:py-24 space-y-6">
+
+    <!-- HEADER -->
+    <div class="text-center fade-up d1">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg mb-4" style="box-shadow:0 0 24px rgba(6,182,212,.3)">
+        <i class="ri-sticky-note-2-fill text-3xl text-white"></i>
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight">Notes</h1>
+      <p class="mt-2 text-slate-400 dark:text-slate-500 text-sm">
+        <span id="note-count">0</span> notes &bull; Last: <span id="last-edited">Never</span>
+      </p>
+    </div>
+
+    <!-- COMPOSE CARD -->
+    <div class="fade-up d2 compose-panel rounded-3xl p-6 sm:p-7 shadow-xl transition-colors duration-200">
+      <input type="text" id="note-title" placeholder="Title (optional)" maxlength="80"
+             class="mb-3 font-semibold text-base placeholder-current">
+      <textarea id="note-body" placeholder="Write your note… (Ctrl+Enter to save)"
+                rows="4" class="mb-2 leading-relaxed text-sm"></textarea>
+      <div class="flex justify-end mb-4">
+        <span id="wc-badge" class="text-xs opacity-50 font-medium">0 words · 0 chars</span>
+      </div>
+
+      <!-- Colour swatches -->
+      <div class="flex flex-wrap items-center gap-3 mb-5">
+        <span class="text-xs font-bold uppercase tracking-wider opacity-60">Colour</span>
+        <div class="flex gap-2.5 flex-wrap">
+          <button class="swatch active bg-gradient-to-br from-cyan-400 to-cyan-600"      onclick="setColor('cyan')"    title="Cyan"    data-color="cyan"></button>
+          <button class="swatch bg-gradient-to-br from-emerald-400 to-emerald-600"       onclick="setColor('emerald')" title="Emerald" data-color="emerald"></button>
+          <button class="swatch bg-gradient-to-br from-violet-500 to-violet-700"         onclick="setColor('violet')"  title="Violet"  data-color="violet"></button>
+          <button class="swatch bg-gradient-to-br from-rose-500 to-rose-700"             onclick="setColor('rose')"    title="Rose"    data-color="rose"></button>
+          <button class="swatch bg-gradient-to-br from-amber-400 to-amber-600"           onclick="setColor('amber')"   title="Amber"   data-color="amber"></button>
+          <button class="swatch bg-gradient-to-br from-blue-500 to-blue-700"             onclick="setColor('blue')"    title="Blue"    data-color="blue"></button>
+          <button class="swatch bg-gradient-to-br from-fuchsia-500 to-pink-600"          onclick="setColor('pink')"    title="Pink"    data-color="pink"></button>
+          <button class="swatch bg-gradient-to-br from-slate-500 to-slate-700"           onclick="setColor('slate')"   title="Slate"   data-color="slate"></button>
+        </div>
+
+        <!-- Pin toggle -->
+        <label class="ml-auto flex items-center gap-2 cursor-pointer select-none">
+          <input type="checkbox" id="pin-toggle" class="sr-only">
+          <div id="pin-track" class="relative w-10 h-5 rounded-full bg-white/20 transition-colors">
+            <div id="pin-thumb" class="absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform"></div>
+          </div>
+          <span class="text-xs font-semibold opacity-70"><i class="ri-pushpin-line"></i> Pin</span>
+        </label>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex gap-3">
+        <button onclick="saveNote()"
+                class="flex-1 py-3 rounded-xl bg-white/15 hover:bg-white/25 font-bold text-sm backdrop-blur transition-all active:scale-[.98] flex items-center justify-center gap-2 border border-white/20">
+          <i id="save-icon" class="ri-add-circle-line text-base"></i>
+          <span id="save-label">Add Note</span>
+        </button>
+        <button onclick="cancelEdit()" id="cancel-btn"
+                class="hidden px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 font-semibold text-sm border border-white/15 transition-all active:scale-95">
+          Cancel
+        </button>
+      </div>
+    </div>
+
+    <!-- SEARCH + SORT + FILTER -->
+    <div class="fade-up d3 flex flex-col gap-3">
+      <div class="relative">
+        <i class="ri-search-line absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+        <input type="text" id="search-input" placeholder="Search notes…" oninput="renderNotes()"
+               class="w-full pl-11 pr-4 py-3 rounded-xl bg-slate-800 dark:bg-white border border-slate-700 dark:border-slate-200 text-slate-100 dark:text-slate-900 placeholder-slate-500 dark:placeholder-slate-400 focus:ring-2 focus:ring-cyan-500 outline-none text-sm transition-all">
+      </div>
+      <div class="flex gap-2.5">
+        <select id="color-filter" onchange="renderNotes()"
+                class="flex-1 px-3.5 py-3 rounded-xl bg-slate-800 dark:bg-white border border-slate-700 dark:border-slate-200 text-slate-200 dark:text-slate-800 focus:ring-2 focus:ring-cyan-500 outline-none text-sm transition-all cursor-pointer">
+          <option value="all">🎨 All</option>
+          <option value="cyan">🩵 Cyan</option>
+          <option value="emerald">💚 Emerald</option>
+          <option value="violet">💜 Violet</option>
+          <option value="rose">🌹 Rose</option>
+          <option value="amber">🟡 Amber</option>
+          <option value="blue">💙 Blue</option>
+          <option value="pink">🩷 Pink</option>
+          <option value="slate">🩶 Slate</option>
+        </select>
+        <div class="flex bg-slate-800 dark:bg-white rounded-xl border border-slate-700 dark:border-slate-200 p-1 gap-1">
+          <button onclick="setSort('newest')" id="sort-newest" class="sort-btn active text-xs font-bold px-3 py-1.5 rounded-lg">New</button>
+          <button onclick="setSort('oldest')" id="sort-oldest" class="sort-btn text-xs font-bold px-3 py-1.5 rounded-lg">Old</button>
+          <button onclick="setSort('az')"     id="sort-az"     class="sort-btn text-xs font-bold px-3 py-1.5 rounded-lg">A–Z</button>
+        </div>
+        <button onclick="clearAllNotes()"
+                class="flex items-center gap-1.5 px-4 py-3 rounded-xl bg-slate-800 dark:bg-white border border-slate-700 dark:border-red-200 text-red-400 dark:text-red-500 hover:border-red-500 text-sm font-semibold transition-all active:scale-95">
+          <i class="ri-delete-bin-line"></i>
+          <span class="hidden sm:inline">Clear</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- NOTES GRID -->
+    <div class="fade-up d4">
+      <div id="notes-container" class="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-0"></div>
+      <div id="empty-state" class="hidden text-center py-16">
+        <i class="ri-sticky-note-line text-5xl text-slate-600 dark:text-slate-300 block mb-3"></i>
+        <p class="text-slate-500 dark:text-slate-400 font-medium">No notes found</p>
+        <p class="text-slate-600 dark:text-slate-300 text-sm mt-1">Create your first note above</p>
+      </div>
+    </div>
+
+    <div class="text-center text-xs text-slate-500 dark:text-slate-400 py-4">
+      © 2026 Arpit Agarwala
+    </div>
+  </div>
+
+  <script>
+    const $ = id => document.getElementById(id);
+    const STORAGE_KEY = 'arpit-notes-v3';
+
+    let notes        = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    let currentColor = 'cyan';
+    let editingId    = null;
+    let sortMode     = 'newest';
+
+    const COLORS = ['cyan','emerald','violet','rose','amber','blue','pink','slate'];
+
+    // Migrate ALL old color names to new ones
+    const OLD_TO_NEW = {
+      peach:'rose', ocean:'cyan', mint:'emerald', sand:'amber',
+      lavender:'violet', sage:'emerald', fuchsia:'pink', stone:'slate',
+      coral:'rose', sky:'cyan', indigo:'violet', teal:'emerald',
+      orange:'amber', green:'emerald', yellow:'amber', purple:'violet',
+      blue:'blue', pink:'pink'
+    };
+    notes.forEach(n => { if (OLD_TO_NEW[n.color]) n.color = OLD_TO_NEW[n.color]; });
+
+    const oldV2 = localStorage.getItem('arpit-notes-v2');
+    if (oldV2 && !localStorage.getItem(STORAGE_KEY)) {
+      const oldNotes = JSON.parse(oldV2) || [];
+      oldNotes.forEach(n => { if (OLD_TO_NEW[n.color]) n.color = OLD_TO_NEW[n.color]; });
+      notes = oldNotes;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+    }
+
+    let _confirmRes = null;
+    function appConfirm(msg) {
+      return new Promise(r => {
+        _confirmRes = r; $('confirm-msg').textContent = msg;
+        $('confirm-modal').classList.remove('hidden');
+      });
+    }
+    function confirmResolve(v) {
+      $('confirm-modal').classList.add('hidden');
+      if (_confirmRes) { _confirmRes(v); _confirmRes=null; }
+    }
+
+    function showToast(msg) {
+      const t=$('toast'), m=$('toast-msg');
+      m.textContent = msg;
+      t.style.opacity='1'; t.style.transform='translateY(0) translateX(-50%)';
+      setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateY(16px) translateX(-50%)'; }, 2000);
+    }
+
+    (function syncIcon(){
+      $('theme-icon').className = document.documentElement.classList.contains('dark')
+        ? 'ri-sun-line text-lg' : 'ri-moon-line text-lg';
+    })();
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.contains('dark');
+      document.documentElement.classList.toggle('dark', !isDark);
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+      $('theme-icon').className = isDark ? 'ri-moon-line text-lg' : 'ri-sun-line text-lg';
+    }
+
+    function setColor(c) {
+      currentColor = c;
+      COLORS.forEach(x => document.body.classList.remove(`theme-${x}`));
+      document.body.classList.add(`theme-${c}`);
+      document.querySelectorAll('.swatch').forEach(s => {
+        s.classList.toggle('active', s.dataset.color === c);
+      });
+    }
+
+    $('note-body').addEventListener('input', () => {
+      const txt = $('note-body').value;
+      const words = txt.trim() ? txt.trim().split(/\s+/).length : 0;
+      $('wc-badge').textContent = `${words} word${words!==1?'s':''} · ${txt.length} char${txt.length!==1?'s':''}`;
+    });
+
+    $('pin-toggle').addEventListener('change', () => {
+      const on = $('pin-toggle').checked;
+      $('pin-thumb').style.transform = on ? 'translateX(1.25rem)' : 'translateX(0)';
+      $('pin-track').style.background = on ? '#fbbf24' : '';
+    });
+
+    function saveNote() {
+      const title = $('note-title').value.trim();
+      const body  = $('note-body').value.trim();
+      if (!body) { showToast('⚠️ Write something first!'); return; }
+
+      if (editingId !== null) {
+        const idx = notes.findIndex(n => n.id === editingId);
+        if (idx > -1) {
+          notes[idx] = { ...notes[idx], title, body, color: currentColor,
+            pinned: $('pin-toggle').checked, updatedAt: Date.now() };
+        }
+        editingId = null; resetCompose(); showToast('✏️ Updated!');
+      } else {
+        notes.unshift({ id: Date.now(), title, body, color: currentColor,
+          pinned: $('pin-toggle').checked, createdAt: Date.now(), updatedAt: Date.now() });
+        showToast('📝 Saved!');
+      }
+      persist(); clearForm(); renderNotes();
+    }
+
+    function editNote(id) {
+      const note = notes.find(n => n.id === id);
+      if (!note) return;
+      editingId = id;
+      $('note-title').value = note.title;
+      $('note-body').value  = note.body;
+      $('note-body').dispatchEvent(new Event('input'));
+      $('pin-toggle').checked = !!note.pinned;
+      $('pin-toggle').dispatchEvent(new Event('change'));
+      setColor(COLORS.includes(note.color) ? note.color : 'cyan');
+      $('save-icon').className  = 'ri-save-line text-base';
+      $('save-label').textContent = 'Update';
+      $('cancel-btn').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function cancelEdit() { editingId = null; clearForm(); resetCompose(); }
+    function resetCompose() {
+      $('save-icon').className  = 'ri-add-circle-line text-base';
+      $('save-label').textContent = 'Add Note';
+      $('cancel-btn').classList.add('hidden');
+    }
+    function clearForm() {
+      $('note-title').value = ''; $('note-body').value = '';
+      $('wc-badge').textContent = '0 words · 0 chars';
+      $('pin-toggle').checked = false;
+      $('pin-toggle').dispatchEvent(new Event('change'));
+    }
+
+    async function deleteNote(id) {
+      const ok = await appConfirm('Delete this note?');
+      if (!ok) return;
+      notes = notes.filter(n => n.id !== id);
+      persist(); renderNotes(); showToast('🗑️ Deleted');
+    }
+
+    function togglePin(id) {
+      const n = notes.find(n => n.id === id);
+      if (n) { n.pinned = !n.pinned; persist(); renderNotes(); showToast(n.pinned ? '📌 Pinned!' : 'Unpinned'); }
+    }
+
+    async function clearAllNotes() {
+      if (!notes.length) { showToast('No notes to clear'); return; }
+      const ok = await appConfirm(`Delete all ${notes.length} note${notes.length!==1?'s':''}?`);
+      if (!ok) return;
+      notes = []; persist(); renderNotes(); showToast('🗑️ All cleared');
+    }
+
+    function setSort(mode) {
+      sortMode = mode;
+      ['newest','oldest','az'].forEach(m => $(`sort-${m}`).classList.toggle('active', m===mode));
+      renderNotes();
+    }
+
+    function persist() { localStorage.setItem(STORAGE_KEY, JSON.stringify(notes)); }
+    function updateStats() {
+      $('note-count').textContent = notes.length;
+      if (!notes.length) { $('last-edited').textContent = 'Never'; return; }
+      const ts = Math.max(...notes.map(n => n.updatedAt || n.createdAt || 0));
+      const d = new Date(ts);
+      $('last-edited').textContent = d.toLocaleString('en-IN', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
+    }
+
+    function timeAgo(ts) {
+      const s = Math.floor((Date.now()-ts)/1000);
+      if (s < 60)  return 'Just now';
+      const m = Math.floor(s/60);  if (m < 60)  return `${m}m`;
+      const h = Math.floor(m/60);  if (h < 24)  return `${h}h`;
+      const d = Math.floor(h/24);  if (d < 7)   return `${d}d`;
+      return new Date(ts).toLocaleDateString('en-IN', { day:'numeric', month:'short' });
+    }
+
+    function renderNotes() {
+      const query   = ($('search-input').value || '').toLowerCase();
+      const colFilt = $('color-filter').value;
+
+      let filtered = notes.filter(n => {
+        const cOk = colFilt === 'all' || n.color === colFilt;
+        const qOk = !query || n.title.toLowerCase().includes(query) || n.body.toLowerCase().includes(query);
+        return cOk && qOk;
+      });
+
+      const pinned   = filtered.filter(n =>  n.pinned);
+      const unpinned = filtered.filter(n => !n.pinned);
+      const sorter = sortMode === 'newest' ? (a,b) => (b.updatedAt||0)-(a.updatedAt||0)
+                   : sortMode === 'oldest' ? (a,b) => (a.updatedAt||0)-(b.updatedAt||0)
+                   : (a,b) => (a.title||'').localeCompare(b.title||'');
+      pinned.sort(sorter); unpinned.sort(sorter);
+      filtered = [...pinned, ...unpinned];
+
+      const container = $('notes-container');
+      const empty     = $('empty-state');
+      container.innerHTML = '';
+
+      if (!filtered.length) { empty.classList.remove('hidden'); updateStats(); return; }
+      empty.classList.add('hidden');
+
+      filtered.forEach(note => {
+        const color = COLORS.includes(note.color) ? note.color : 'cyan';
+        const div = document.createElement('div');
+        div.className = `note-pop note-card nc-${color} rounded-2xl p-5 mb-4 break-inside-avoid relative`;
+        const preview = note.body.length > 300 ? note.body.slice(0,300) + '…' : note.body;
+        div.innerHTML = `
+          ${note.pinned ? '<div class="pin-badge">📌</div>' : ''}
+          ${ note.title ? `<h3 class="font-bold text-base mb-2 pr-14 leading-snug">${escHtml(note.title)}</h3>` : '' }
+          <p class="text-sm whitespace-pre-wrap leading-relaxed opacity-90">${escHtml(preview)}</p>
+          <div class="flex items-center justify-between mt-4 pt-3 border-t border-current border-opacity-20">
+            <span class="text-xs opacity-55">${timeAgo(note.updatedAt||note.createdAt||0)}</span>
+            <span class="text-xs opacity-45">${note.body.trim().split(/\s+/).filter(Boolean).length} words</span>
+          </div>
+          <div class="absolute top-3 right-3 flex gap-1">
+            <button onclick="togglePin(${note.id})" title="${note.pinned?'Unpin':'Pin'}"
+                    class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-white/20 transition-colors active:scale-90">
+              <i class="ri-pushpin-${note.pinned?'fill':'line'} text-sm"></i>
+            </button>
+            <button onclick="editNote(${note.id})" title="Edit"
+                    class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-white/20 transition-colors active:scale-90">
+              <i class="ri-edit-line text-sm"></i>
+            </button>
+            <button onclick="deleteNote(${note.id})" title="Delete"
+                    class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-red-500/30 transition-colors active:scale-90">
+              <i class="ri-delete-bin-line text-sm"></i>
+            </button>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+      updateStats();
+    }
+
+    function escHtml(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    document.addEventListener('keydown', e => {
+      if ((e.ctrlKey||e.metaKey) && e.key==='Enter') { e.preventDefault(); saveNote(); }
+      if (e.key==='Escape' && editingId!==null) cancelEdit();
+    });
+
+    setColor(currentColor);
+    renderNotes();
+  </script>
+</body>
+</html>

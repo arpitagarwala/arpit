@@ -1,0 +1,313 @@
+/* =================================================================
+   ARPIT'S PORTFOLIO - GLOBAL THEME STYLES
+   =================================================================
+   
+   This file contains all global theme-related styles.
+   Update colors here to change the entire website theme.
+   
+   DO NOT add page-specific styles here - only global UI/UX.
+================================================================= */
+
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+/* =================================================================
+   ROOT VARIABLES - CHANGE THESE TO UPDATE THEME COLORS
+================================================================= */
+
+:root {
+  /* Typography */
+  --font-primary: 'Inter', sans-serif;
+  
+  /* Dark Mode Colors (default) */
+  --bg-primary: #0f172a;        /* slate-900 */
+  --bg-secondary: #1e293b;      /* slate-800 */
+  --bg-tertiary: #334155;       /* slate-700 */
+  
+  --text-primary: #f1f5f9;      /* slate-100 */
+  --text-secondary: #cbd5e1;    /* slate-300 */
+  --text-muted: #94a3b8;        /* slate-400 */
+  
+  --border-default: rgba(51, 65, 85, 0.5);   /* slate-700/50 */
+  --border-hover: #22d3ee;      /* cyan-400 */
+  
+  --accent-primary: #22d3ee;    /* cyan-400 */
+  --accent-secondary: #0891b2;  /* cyan-600 */
+}
+
+/* Light Mode Colors */
+.dark {
+  --bg-primary: #f9fafb;        /* gray-50 */
+  --bg-secondary: #ffffff;      /* white */
+  --bg-tertiary: #f3f4f6;       /* gray-100 */
+  
+  --text-primary: #111827;      /* gray-900 */
+  --text-secondary: #4b5563;    /* gray-600 */
+  --text-muted: #6b7280;        /* gray-500 */
+  
+  --border-default: #e5e7eb;    /* gray-200 */
+  --border-hover: #22d3ee;      /* cyan-400 */
+  
+  --accent-primary: #0891b2;    /* cyan-600 */
+  --accent-secondary: #06b6d4;  /* cyan-500 */
+}
+
+/* =================================================================
+   GLOBAL BASE STYLES
+================================================================= */
+
+body {
+  font-family: var(--font-primary);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Smooth transitions for all elements */
+* {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* =================================================================
+   THEME-AWARE UTILITY CLASSES
+================================================================= */
+
+/* Background Colors */
+.theme-bg-primary {
+  background-color: var(--bg-primary);
+}
+
+.theme-bg-secondary {
+  background-color: var(--bg-secondary);
+}
+
+.theme-bg-tertiary {
+  background-color: var(--bg-tertiary);
+}
+
+/* Text Colors */
+.theme-text-primary {
+  color: var(--text-primary);
+}
+
+.theme-text-secondary {
+  color: var(--text-secondary);
+}
+
+.theme-text-muted {
+  color: var(--text-muted);
+}
+
+/* Border Colors */
+.theme-border {
+  border-color: var(--border-default);
+}
+
+.theme-border-hover:hover {
+  border-color: var(--border-hover);
+}
+
+/* Accent Colors */
+.theme-accent {
+  color: var(--accent-primary);
+}
+
+.theme-accent-bg {
+  background-color: var(--accent-primary);
+}
+
+/* =================================================================
+   CARD COMPONENTS
+================================================================= */
+
+.theme-card {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition: all 0.1s ease;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.theme-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Card heading */
+.theme-card-title {
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 1.125rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Card description */
+.theme-card-description {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+/* =================================================================
+   BUTTONS
+================================================================= */
+
+.theme-button {
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
+  padding: 0.5rem;
+  border-radius: 9999px;
+  transition: all 0.1s ease;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.theme-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.theme-button:active {
+  transform: scale(0.98);
+}
+
+/* =================================================================
+   FORM INPUTS
+================================================================= */
+
+.theme-input {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+  transition: all 0.1s ease;
+}
+
+.theme-input::placeholder {
+  color: var(--text-muted);
+}
+
+.theme-input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1);
+}
+
+.theme-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+  transition: all 0.1s ease;
+  resize: vertical;
+  min-height: 120px;
+}
+
+.theme-textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.theme-textarea:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1);
+}
+
+/* =================================================================
+   LINKS
+================================================================= */
+
+.theme-link {
+  color: var(--text-muted);
+  transition: color 0.1s ease;
+}
+
+.theme-link:hover {
+  color: var(--text-primary);
+}
+
+/* =================================================================
+   SHADOWS
+================================================================= */
+
+.theme-shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.theme-shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.theme-shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* =================================================================
+   SPECIAL COMPONENTS
+================================================================= */
+
+/* Clock display */
+#live-clock {
+  min-height: 3rem;
+  color: var(--accent-primary);
+}
+
+/* Theme toggle icon colors */
+.theme-icon {
+  color: var(--text-secondary);
+}
+
+/* Footer styling */
+.theme-footer {
+  background-color: var(--bg-secondary);
+  color: var(--text-muted);
+  border: 1px solid var(--border-default);
+  padding: 1rem 1.5rem;
+  text-align: center;
+  font-size: 0.75rem;
+}
+
+/* =================================================================
+   RESPONSIVE UTILITIES
+================================================================= */
+
+/* Smooth scrolling */
+html.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+/* =================================================================
+   ANIMATIONS
+================================================================= */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease;
+}
+
+/* =================================================================
+   PRINT STYLES
+================================================================= */
+
+@media print {
+  body {
+    background-color: white;
+    color: black;
+  }
+}

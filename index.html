@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- ═══ Primary SEO ═══ -->
+    <title>Arpit Agarwala – Portfolio | BCom Student, CA Aspirant & Web Creator</title>
+    <meta name="description" content="Personal portfolio of Arpit Agarwala – BCom (Hons) student, CA aspirant from Kolkata. Explore projects, tools, games, articles and achievements." />
+    <meta name="keywords" content="Arpit Agarwala, portfolio, CA aspirant, BCom, Kolkata, web developer, finance tools, SIP calculator, budget tracker" />
+    <meta name="author" content="Arpit Agarwala" />
+    <link rel="canonical" href="https://arpitagarwala.online/" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- ═══ Open Graph (Facebook / LinkedIn / WhatsApp) ═══ -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://arpitagarwala.online/" />
+    <meta property="og:title" content="Arpit Agarwala – Portfolio" />
+    <meta property="og:description" content="BCom student, CA aspirant & web creator from Kolkata. Projects, tools, games and more." />
+    <meta property="og:image" content="https://arpitagarwala.online/assets/images/my-miniature.png" />
+    <meta property="og:site_name" content="Arpit Agarwala" />
+    <meta property="og:locale" content="en_IN" />
+
+    <!-- ═══ Twitter / X Card ═══ -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Arpit Agarwala – Portfolio" />
+    <meta name="twitter:description" content="BCom student, CA aspirant & web creator from Kolkata. Projects, tools, games and more." />
+    <meta name="twitter:image" content="https://arpitagarwala.online/assets/images/my-miniature.png" />
+
+    <!-- ═══ JSON-LD Structured Data ═══ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Arpit Agarwala",
+      "url": "https://arpitagarwala.online/",
+      "image": "https://arpitagarwala.online/assets/images/my-miniature.png",
+      "jobTitle": "BCom Student & CA Aspirant",
+      "description": "BCom (Hons) student and aspiring Chartered Accountant from Kolkata, passionate about finance, web development and digital tools.",
+      "email": "arpitagarwalms@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Kolkata",
+        "addressRegion": "West Bengal",
+        "addressCountry": "IN"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/in/arpitagarwala/",
+        "https://www.instagram.com/arpit.agarwala_/",
+        "https://github.com/arpitagarwala"
+      ]
+    }
+    </script>
+
+    <link rel="icon" type="image/png" href="assets/images/tab-icon.png">
+
+    <script>
+      (function () {
+        const t = localStorage.getItem('theme');
+        if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches))
+          document.documentElement.classList.add('dark');
+      })();
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script>tailwind.config = { darkMode: 'class' }</script>
+
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+      body { font-family: 'Inter', sans-serif; }
+      .card {
+        background: rgb(17, 24, 39);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 1rem;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      }
+      .dark .card { background:#ffffff; border-color:rgb(229,231,235); }
+      a.card:hover, div.card.hoverable:hover {
+        transform: translateY(-2px);
+        border-color: rgba(34,211,238,0.4);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(34,211,238,0.07);
+      }
+      .dark a.card:hover, .dark div.card.hoverable:hover {
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08), 0 0 0 1px rgba(34,211,238,0.12);
+      }
+      .icon-box {
+        width:2.25rem; height:2.25rem; border-radius:0.5rem;
+        display:flex; align-items:center; justify-content:center; flex-shrink:0;
+      }
+    </style>
+  </head>
+
+  <body class="min-h-screen bg-[#080c14] dark:bg-slate-100 text-slate-100 dark:text-gray-900 transition-colors duration-300 flex items-center justify-center py-10 px-4">
+
+    <div class="fixed top-4 right-4 z-50">
+      <button onclick="toggleTheme()"
+        class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-800 dark:bg-white text-slate-300 dark:text-gray-600 border border-slate-700 dark:border-gray-200 shadow-xl hover:scale-110 transition-all duration-200">
+        <i id="theme-icon" class="ri-sun-line text-lg"></i>
+      </button>
+    </div>
+
+    <main class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 max-w-5xl w-full">
+
+      <!-- ABOUT col-span-3 row-span-2 -->
+      <div class="card p-6 col-span-1 sm:col-span-2 lg:col-span-3 lg:row-span-2 relative overflow-hidden">
+        <div class="absolute -top-16 -right-16 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="flex flex-col md:flex-row-reverse items-start md:items-center gap-6 h-full">
+          <img src="assets/images/my-miniature.png" alt="Arpit Agarwala – BCom student and CA aspirant from Kolkata"
+            class="w-28 md:w-40 lg:w-52 shrink-0 drop-shadow-[0_12px_28px_rgba(0,0,0,0.55)] md:mr-[-1.5rem] relative z-10" />
+          <div class="flex-1 min-w-0">
+            <div class="flex flex-wrap gap-2 mb-3">
+              <span class="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-cyan-500/10 text-cyan-400 dark:bg-cyan-50 dark:text-cyan-600">
+                <i class="ri-map-pin-line"></i> Kolkata, India
+              </span>
+              <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 dark:bg-emerald-50 dark:text-emerald-600">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 dark:bg-emerald-500 animate-pulse"></span>Available
+              </span>
+            </div>
+            <h1 class="text-2xl lg:text-3xl font-extrabold text-white dark:text-gray-900 mb-3 leading-tight">Hello there! 👋</h1>
+            <p class="text-sm lg:text-[0.925rem] text-slate-400 dark:text-gray-500 leading-relaxed">
+              I'm <strong class="text-slate-200 dark:text-gray-800 font-semibold">Arpit Agarwala</strong>, a BCom (Hons) student and aspiring Chartered Accountant passionate about productivity, digital tools, and finance-based problem solving.
+            </p>
+            <p class="text-sm lg:text-[0.925rem] text-slate-400 dark:text-gray-500 leading-relaxed mt-2">
+              I love building unique web experiences, creating interactive games and experimenting with design &amp; automation. This site is a growing hub of everything I enjoy.
+            </p>
+            <div class="flex gap-2.5 mt-5 flex-wrap">
+              <a href="projects.html" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 active:bg-cyan-600 text-white text-sm font-semibold transition-colors duration-200 shadow-md shadow-cyan-500/20">
+                <i class="ri-rocket-2-line"></i> View Projects
+              </a>
+              <a href="mailto:arpitagarwalms@gmail.com" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-slate-600 dark:border-gray-300 hover:border-slate-400 dark:hover:border-gray-500 text-slate-300 dark:text-gray-600 text-sm font-semibold transition-colors duration-200">
+                <i class="ri-mail-line"></i> Contact Me
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACHIEVEMENTS col 4 row 1 -->
+      <a href="achievements.html" class="card p-5 flex flex-col justify-between group">
+        <div>
+          <div class="icon-box bg-amber-500/10 dark:bg-amber-50 mb-3"><i class="ri-trophy-line text-amber-400 dark:text-amber-500"></i></div>
+          <h3 class="text-sm font-bold text-white dark:text-gray-900 mb-1">Achievements</h3>
+          <p class="text-xs text-slate-500 dark:text-gray-400 leading-relaxed">Awards, certifications, milestones & wins.</p>
+        </div>
+        <div class="flex items-center gap-1 text-xs font-medium text-slate-600 dark:text-gray-400 group-hover:text-cyan-400 dark:group-hover:text-cyan-500 transition-colors mt-4">View <i class="ri-arrow-right-line"></i></div>
+      </a>
+
+      <!-- PROJECTS col 4 row 2 -->
+      <a href="projects.html" class="card p-5 flex flex-col justify-between group">
+        <div>
+          <div class="icon-box bg-blue-500/10 dark:bg-blue-50 mb-3"><i class="ri-code-box-line text-blue-400 dark:text-blue-500"></i></div>
+          <h3 class="text-sm font-bold text-white dark:text-gray-900 mb-1">Projects</h3>
+          <p class="text-xs text-slate-500 dark:text-gray-400 leading-relaxed">Tools and experiments built with care.</p>
+        </div>
+        <div class="flex items-center gap-1 text-xs font-medium text-slate-600 dark:text-gray-400 group-hover:text-cyan-400 dark:group-hover:text-cyan-500 transition-colors mt-4">Explore <i class="ri-arrow-right-line"></i></div>
+      </a>
+
+      <!-- GAMES col 1 row 3 -->
+      <a href="games.html" class="card p-5 flex flex-col justify-between group">
+        <div>
+          <div class="icon-box bg-amber-500/10 dark:bg-amber-50 mb-3"><i class="ri-gamepad-line text-amber-400 dark:text-amber-500"></i></div>
+          <h3 class="text-sm font-bold text-white dark:text-gray-900 mb-1">Games</h3>
+          <p class="text-xs text-slate-500 dark:text-gray-400 leading-relaxed">Learn money the fun way.</p>
+        </div>
+        <div class="flex items-center gap-1 text-xs font-medium text-slate-600 dark:text-gray-400 group-hover:text-cyan-400 dark:group-hover:text-cyan-500 transition-colors mt-4">Play <i class="ri-arrow-right-line"></i></div>
+      </a>
+
+      <!-- TIME col 2-3 row 3 -->
+      <div class="card col-span-1 sm:col-span-2 lg:col-span-2 p-5 flex flex-col items-center justify-center text-center relative overflow-hidden" style="min-height:130px">
+        <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-transparent pointer-events-none"></div>
+        <p class="text-[10px] font-bold tracking-[0.22em] uppercase text-slate-500 dark:text-gray-400 mb-2">TIME IS MONEY 💸</p>
+        <div id="live-clock" class="text-3xl lg:text-[2.6rem] font-black tracking-widest text-cyan-400 dark:text-cyan-600 tabular-nums font-mono leading-none"></div>
+        <p id="live-date" class="text-xs text-slate-500 dark:text-gray-400 mt-2 tracking-wide"></p>
+      </div>
+
+      <!-- ARTICLES col 4 row 3 -->
+      <a href="articles.html" class="card p-5 flex flex-col justify-between group">
+        <div>
+          <div class="icon-box bg-orange-500/10 dark:bg-orange-50 mb-3"><i class="ri-article-line text-orange-400 dark:text-orange-500"></i></div>
+          <h3 class="text-sm font-bold text-white dark:text-gray-900 mb-1">Articles</h3>
+          <p class="text-xs text-slate-500 dark:text-gray-400 leading-relaxed">Finance, discipline, productivity.</p>
+        </div>
+        <div class="flex items-center gap-1 text-xs font-medium text-slate-600 dark:text-gray-400 group-hover:text-cyan-400 dark:group-hover:text-cyan-500 transition-colors mt-4">Read <i class="ri-arrow-right-line"></i></div>
+      </a>
+
+      <!-- CONTACT col 1-2 row 4 -->
+      <a href="mailto:arpitagarwalms@gmail.com" class="card p-5 col-span-1 sm:col-span-2 lg:col-span-2 flex items-center gap-4 group">
+        <div class="w-11 h-11 flex items-center justify-center rounded-full bg-cyan-500/10 dark:bg-cyan-50 shrink-0">
+          <i class="ri-mail-send-line text-cyan-400 dark:text-cyan-500 text-xl"></i>
+        </div>
+        <div class="min-w-0 flex-1">
+          <h3 class="text-sm font-bold text-white dark:text-gray-900 mb-0.5">Get in Touch</h3>
+          <p class="text-xs text-slate-400 dark:text-gray-500 truncate">arpitagarwalms@gmail.com</p>
+          <p class="text-xs text-slate-500 dark:text-gray-400 flex items-center gap-1 mt-0.5"><i class="ri-map-pin-line text-xs"></i> Kolkata, India</p>
+        </div>
+        <i class="ri-arrow-right-up-line text-slate-600 dark:text-gray-400 group-hover:text-cyan-400 dark:group-hover:text-cyan-500 transition-colors text-base shrink-0"></i>
+      </a>
+
+      <!-- SOCIALS col 3-4 row 4 -->
+      <div class="card p-5 col-span-1 sm:col-span-2 lg:col-span-2 flex flex-col justify-center gap-3">
+        <p class="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-500 dark:text-gray-400">Find me on</p>
+        <div class="flex gap-2">
+          <a href="https://www.instagram.com/arpit.agarwala_/" target="_blank" rel="noopener"
+            class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-slate-700/40 dark:bg-gray-100 hover:bg-pink-500/15 dark:hover:bg-pink-50 text-slate-400 dark:text-gray-500 hover:text-pink-400 dark:hover:text-pink-500 text-xs font-semibold transition-all duration-200">
+            <i class="ri-instagram-line text-base"></i> Instagram
+          </a>
+          <a href="https://www.linkedin.com/in/arpitagarwala/" target="_blank" rel="noopener"
+            class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-slate-700/40 dark:bg-gray-100 hover:bg-blue-500/15 dark:hover:bg-blue-50 text-slate-400 dark:text-gray-500 hover:text-blue-400 dark:hover:text-blue-500 text-xs font-semibold transition-all duration-200">
+            <i class="ri-linkedin-line text-base"></i> LinkedIn
+          </a>
+          <a href="https://github.com/arpitagarwala" target="_blank" rel="noopener"
+            class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-slate-700/40 dark:bg-gray-100 hover:bg-slate-600/40 dark:hover:bg-gray-200 text-slate-400 dark:text-gray-500 hover:text-slate-200 dark:hover:text-gray-900 text-xs font-semibold transition-all duration-200">
+            <i class="ri-github-line text-base"></i> GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- CREDITS col-span-4 row 5 -->
+      <div class="col-span-1 sm:col-span-2 lg:col-span-4 text-center py-3 px-6 rounded-2xl bg-slate-800/50 dark:bg-white border border-slate-700/30 dark:border-gray-200 text-xs text-slate-500 dark:text-gray-400">
+        &copy; 2026 Arpit Agarwala. Engineered with <span class="text-red-400">&#10084;&#65039;</span>
+      </div>
+
+    </main>
+
+    <script>
+      function updateClock() {
+        const now = new Date();
+        const c = document.getElementById('live-clock');
+        const d = document.getElementById('live-date');
+        if (c) c.innerText = now.toLocaleTimeString('en-US', { hour12:false, hour:'2-digit', minute:'2-digit', second:'2-digit' });
+        if (d) d.innerText = now.toLocaleDateString('en-IN', { weekday:'short', day:'numeric', month:'short', year:'numeric' });
+      }
+      updateClock();
+      setInterval(updateClock, 1000);
+
+      function syncIcon() {
+        document.getElementById('theme-icon').className =
+          document.documentElement.classList.contains('dark') ? 'ri-sun-line text-lg' : 'ri-moon-line text-lg';
+      }
+      syncIcon();
+      function toggleTheme() {
+        document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        syncIcon();
+      }
+    </script>
+  </body>
+</html>
