@@ -3,7 +3,43 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calculator – Arpit Agarwala</title>
+
+  <!-- ═══ Primary SEO ═══ -->
+  <title>Calculator – Arpit Agarwala | Scientific & Unit Converter Web App</title>
+  <meta name="description" content="A free glassmorphism-styled online calculator with standard, scientific, and unit converter modes. Full keyboard support, history log, memory functions – by Arpit Agarwala." />
+  <meta name="keywords" content="online calculator, scientific calculator, unit converter, glassmorphism calculator, web calculator, Arpit Agarwala, free calculator tool" />
+  <meta name="author" content="Arpit Agarwala" />
+  <link rel="canonical" href="https://arpitagarwala.online/calculator.html" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- ═══ Open Graph ═══ -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://arpitagarwala.online/calculator.html" />
+  <meta property="og:title" content="Calculator – Arpit Agarwala | Scientific & Unit Converter" />
+  <meta property="og:description" content="Free online calculator with standard, scientific, and unit converter modes. Keyboard support, history log, and memory functions." />
+  <meta property="og:image" content="https://arpitagarwala.online/assets/images/my-miniature.png" />
+  <meta property="og:site_name" content="Arpit Agarwala" />
+
+  <!-- ═══ Twitter Card ═══ -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Calculator – Arpit Agarwala" />
+  <meta name="twitter:description" content="Free online calculator with scientific mode, unit converter, keyboard support & history log." />
+  <meta name="twitter:image" content="https://arpitagarwala.online/assets/images/my-miniature.png" />
+
+  <!-- ═══ JSON-LD ═══ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Calculator by Arpit Agarwala",
+    "url": "https://arpitagarwala.online/calculator.html",
+    "description": "A glassmorphism-styled online calculator with standard, scientific, and unit converter modes. Features full keyboard support, history log, and memory functions.",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Person", "name": "Arpit Agarwala", "url": "https://arpitagarwala.online/" }
+  }
+  </script>
 
   <script>
     (function(){
@@ -100,12 +136,10 @@
 
 <body class="min-h-screen flex items-center justify-center bg-slate-950 dark:bg-slate-100 text-slate-50 dark:text-slate-900 transition-colors duration-300 p-4">
 
-  <!-- TOAST -->
   <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 opacity-0 translate-y-4 pointer-events-none">
     <div id="toast-msg" class="px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-800 dark:bg-white text-slate-100 dark:text-slate-900 border border-slate-700 dark:border-slate-200 shadow-lg"></div>
   </div>
 
-  <!-- BACK -->
   <div class="fixed top-4 left-4 z-50">
     <a href="projects.html"
        class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-700 dark:border-slate-200 text-slate-300 dark:text-slate-700 hover:border-cyan-400 hover:text-cyan-400 shadow-lg transition-all">
@@ -113,7 +147,6 @@
     </a>
   </div>
 
-  <!-- TOP-RIGHT: history + theme -->
   <div class="fixed top-4 right-4 z-50 flex gap-2">
     <button onclick="toggleHistory()"
             class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-700 dark:border-slate-200 text-slate-300 dark:text-slate-700 hover:border-cyan-400 hover:text-cyan-400 shadow-lg transition-all">
@@ -125,13 +158,10 @@
     </button>
   </div>
 
-  <!-- LAYOUT -->
   <div class="w-full max-w-5xl flex flex-col lg:flex-row gap-5 items-center lg:items-start justify-center pt-16 lg:pt-0">
 
-    <!-- MAIN CALCULATOR -->
     <div class="fade-up d1 w-full max-w-[400px] glass rounded-[2rem] shadow-2xl p-5 flex flex-col gap-4">
 
-      <!-- Header -->
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
           <span class="text-[10px] uppercase tracking-[.18em] font-bold text-slate-400 dark:text-slate-500">Calculator</span>
@@ -143,20 +173,17 @@
         </div>
       </div>
 
-      <!-- Mode tabs -->
       <div class="flex gap-1 p-1 bg-white/5 dark:bg-black/5 rounded-xl border border-white/8 dark:border-black/8">
         <button onclick="setMode('standard')"   id="tab-standard"   class="mode-tab active flex-1 py-1.5 text-xs font-bold rounded-lg border">Standard</button>
         <button onclick="setMode('scientific')" id="tab-scientific" class="mode-tab flex-1 py-1.5 text-xs font-bold rounded-lg border">Scientific</button>
         <button onclick="setMode('unit')"       id="tab-unit"       class="mode-tab flex-1 py-1.5 text-xs font-bold rounded-lg border">Unit</button>
       </div>
 
-      <!-- Display -->
       <div class="flex flex-col items-end gap-1 px-1">
         <div id="history-current" class="h-5 text-xs text-slate-400 dark:text-slate-500 mono truncate w-full text-right"></div>
         <div id="display" class="w-full text-right text-5xl font-bold tracking-tight truncate mono text-slate-50 dark:text-slate-900 leading-tight">0</div>
       </div>
 
-      <!-- Scientific panel -->
       <div id="sci-panel" class="hidden grid grid-cols-4 gap-2">
         <button class="sci-btn" onclick="sciOp('sin')">sin</button>
         <button class="sci-btn" onclick="sciOp('cos')">cos</button>
@@ -172,7 +199,6 @@
         <button class="sci-btn" onclick="sciOp('abs')">|x|</button>
       </div>
 
-      <!-- Unit converter panel -->
       <div id="unit-panel" class="hidden flex flex-col gap-3">
         <select id="unit-cat" onchange="renderUnitSelects()" class="w-full px-3 py-2 rounded-xl bg-white/5 dark:bg-black/5 border border-white/10 dark:border-black/10 text-slate-200 dark:text-slate-800 text-sm outline-none focus:ring-2 focus:ring-cyan-500">
           <option value="length">Length</option>
@@ -197,61 +223,35 @@
         </div>
       </div>
 
-      <!-- ─────────────── MAIN BUTTON GRID ─────────────── -->
-      <!--
-        Row 1: MRC  | M+   | M−   | AC
-        Row 2: ⌫   | GT   | √    | %
-        Row 3: 7    | 8    | 9    | ÷
-        Row 4: 4    | 5    | 6    | ×
-        Row 5: 1    | 2    | 3    | −
-        Row 6: .    | 0    | +/−  | +
-        Row 7: ============ = ============
-      -->
       <div class="grid grid-cols-4 gap-2.5" id="main-grid">
-
-        <!-- Row 1: Memory + AC -->
         <button onclick="memoryRecall()"   class="btn-ripple btn-fn h-12 rounded-2xl text-xs font-bold transition-all active:scale-95">MRC</button>
         <button onclick="memoryAdd()"      class="btn-ripple btn-fn h-12 rounded-2xl text-xs font-bold transition-all active:scale-95">M+</button>
         <button onclick="memorySubtract()" class="btn-ripple btn-fn h-12 rounded-2xl text-xs font-bold transition-all active:scale-95">M−</button>
         <button onclick="clearAll()"       class="btn-ripple btn-ac h-12 rounded-2xl font-bold transition-all active:scale-95">AC</button>
-
-        <!-- Row 2: ⌫ | GT | √ | % -->
         <button onclick="deleteLast()"           class="btn-ripple btn-fn h-12 rounded-2xl font-bold transition-all active:scale-95"><i class="ri-delete-back-2-line text-xl"></i></button>
         <button onclick="showGT()"               class="btn-ripple btn-fn h-12 rounded-2xl font-bold text-sm transition-all active:scale-95">GT</button>
         <button onclick="calculateRoot()"         class="btn-ripple btn-fn h-12 rounded-2xl font-bold text-lg transition-all active:scale-95">√</button>
         <button onclick="calculatePercentage()"   class="btn-ripple btn-fn h-12 rounded-2xl font-bold text-sm transition-all active:scale-95">%</button>
-
-        <!-- Row 3: 7 8 9 ÷ -->
         <button onclick="appendNumber('7')"    class="btn-ripple btn-num h-12 rounded-2xl text-lg font-semibold transition-all active:scale-95">7</button>
         <button onclick="appendNumber('8')"    class="btn-ripple btn-num h-12 rounded-2xl text-lg font-semibold transition-all active:scale-95">8</button>
         <button onclick="appendNumber('9')"    class="btn-ripple btn-num h-12 rounded-2xl text-lg font-semibold transition-all active:scale-95">9</button>
         <button onclick="appendOperator('/')" class="btn-ripple btn-op  h-12 rounded-2xl font-bold text-xl transition-all active:scale-95">÷</button>
-
-        <!-- Row 4: 4 5 6 × -->
         <button onclick="appendNumber('4')"    class="btn-ripple btn-num h-12 rounded-2xl text-lg font-semibold transition-all active:scale-95">4</button>
         <button onclick="appendNumber('5')"    class="btn-ripple btn-num h-12 rounded-2xl text-lg font-semibold transition-all active:scale-95">5</button>
         <button onclick="appendNumber('6')"    class="btn-ripple btn-num h-12 rounded-2xl text-lg font-semibold transition-all active:scale-95">6</button>
         <button onclick="appendOperator('*')" class="btn-ripple btn-op  h-12 rounded-2xl font-bold text-xl transition-all active:scale-95">×</button>
-
-        <!-- Row 5: 1 2 3 − -->
         <button onclick="appendNumber('1')"    class="btn-ripple btn-num h-12 rounded-2xl text-lg font-semibold transition-all active:scale-95">1</button>
         <button onclick="appendNumber('2')"    class="btn-ripple btn-num h-12 rounded-2xl text-lg font-semibold transition-all active:scale-95">2</button>
         <button onclick="appendNumber('3')"    class="btn-ripple btn-num h-12 rounded-2xl text-lg font-semibold transition-all active:scale-95">3</button>
         <button onclick="appendOperator('-')" class="btn-ripple btn-op  h-12 rounded-2xl font-bold text-xl transition-all active:scale-95">−</button>
-
-        <!-- Row 6: . | 0 | +/− | + -->
         <button onclick="appendNumber('.')"  class="btn-ripple btn-num h-12 rounded-2xl text-xl font-bold transition-all active:scale-95">.</button>
         <button onclick="appendNumber('0')"  class="btn-ripple btn-num h-12 rounded-2xl text-lg font-semibold transition-all active:scale-95">0</button>
         <button onclick="toggleSign()"        class="btn-ripple btn-fn  h-12 rounded-2xl font-bold text-sm transition-all active:scale-95">+/−</button>
         <button onclick="appendOperator('+')" class="btn-ripple btn-op  h-12 rounded-2xl font-bold text-xl transition-all active:scale-95">+</button>
-
-        <!-- Row 7: = full width -->
         <button onclick="calculate()" class="btn-ripple btn-eq col-span-4 h-12 rounded-2xl text-white font-bold text-2xl transition-all active:scale-[.98]">=</button>
       </div>
-
     </div>
 
-    <!-- HISTORY SIDEBAR -->
     <div id="history-sidebar" class="hidden fade-up d2 w-full lg:w-72 glass rounded-[2rem] shadow-xl p-5 flex flex-col gap-4 max-h-[480px]">
       <div class="flex items-center justify-between border-b border-white/8 dark:border-black/8 pb-3">
         <span class="font-bold text-sm flex items-center gap-2 text-slate-300 dark:text-slate-700">
@@ -266,7 +266,6 @@
         <div id="no-history" class="text-xs text-slate-500 italic text-center py-10">No calculations yet</div>
       </div>
     </div>
-
   </div>
 
   <script>
