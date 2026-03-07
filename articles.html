@@ -90,6 +90,17 @@
 
     .modal-body h3 { font-size:1.05rem; font-weight:700; margin-top:1.75rem; margin-bottom:0.65rem; }
     .modal-body p  { line-height:1.75; margin-bottom:1rem; }
+    .modal-body ul { margin-bottom:1rem; padding-left:1.25rem; list-style:none; }
+    .modal-body ul li { position:relative; padding-left:1.25rem; margin-bottom:0.5rem; line-height:1.7; }
+    .modal-body ul li::before { content:'▸'; position:absolute; left:0; color:#22d3ee; font-size:0.75rem; top:0.2rem; }
+    .modal-body .dark ul li::before { color:#0891b2; }
+    .modal-body .callout { background:rgba(34,211,238,0.06); border-left:3px solid #22d3ee; border-radius:0 0.5rem 0.5rem 0; padding:0.85rem 1rem; margin:1.25rem 0; }
+    .modal-body .callout-warning { background:rgba(251,191,36,0.07); border-left-color:#fbbf24; }
+    .modal-body .verdict-box { background:rgba(34,211,238,0.05); border:1px solid rgba(34,211,238,0.2); border-radius:0.75rem; padding:1rem 1.15rem; margin:1.25rem 0; }
+    .modal-body .section-divider { height:1px; background:rgba(255,255,255,0.07); margin:1.5rem 0; }
+    .dark .modal-body .section-divider { background:rgba(0,0,0,0.07); }
+    .dark .modal-body .callout { background:rgba(8,145,178,0.06); border-left-color:#0891b2; }
+    .dark .modal-body .verdict-box { background:rgba(8,145,178,0.05); border-color:rgba(8,145,178,0.2); }
 
     #no-results { display:none; }
     #no-results.visible { display:flex; }
@@ -119,7 +130,7 @@
 
     <div class="mb-5">
       <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-100 dark:text-gray-900 tracking-tight mb-1">&#x1F4DD; Articles</h1>
-      <p class="text-slate-400 dark:text-gray-500 text-sm">Insights on Fintech, AI, and the Future of Finance.</p>
+      <p class="text-slate-400 dark:text-gray-500 text-sm">Insights on Fintech, AI, Taxation, and the Future of Finance.</p>
     </div>
 
     <div class="bg-slate-800 dark:bg-white rounded-xl border border-slate-700/50 dark:border-gray-200 p-3 sm:p-4 mb-5 shadow-sm">
@@ -147,6 +158,7 @@
         <button class="filter-pill text-xs font-medium px-3 py-1.5 rounded-full border border-slate-600 dark:border-gray-300 text-slate-300 dark:text-gray-600 hover:border-cyan-400 transition-all duration-150" data-category="Investing" onclick="setFilter(this, 'Investing')"><i class="ri-line-chart-line mr-1"></i>Investing</button>
         <button class="filter-pill text-xs font-medium px-3 py-1.5 rounded-full border border-slate-600 dark:border-gray-300 text-slate-300 dark:text-gray-600 hover:border-cyan-400 transition-all duration-150" data-category="AI" onclick="setFilter(this, 'AI')"><i class="ri-cpu-line mr-1"></i>AI</button>
         <button class="filter-pill text-xs font-medium px-3 py-1.5 rounded-full border border-slate-600 dark:border-gray-300 text-slate-300 dark:text-gray-600 hover:border-cyan-400 transition-all duration-150" data-category="Market Trends" onclick="setFilter(this, 'Market Trends')"><i class="ri-bar-chart-line mr-1"></i>Market Trends</button>
+        <button class="filter-pill text-xs font-medium px-3 py-1.5 rounded-full border border-slate-600 dark:border-gray-300 text-slate-300 dark:text-gray-600 hover:border-cyan-400 transition-all duration-150" data-category="Taxation" onclick="setFilter(this, 'Taxation')"><i class="ri-scales-3-line mr-1"></i>Taxation</button>
         <span id="result-count" class="ml-auto text-xs text-slate-500 dark:text-gray-400 font-medium whitespace-nowrap"></span>
       </div>
     </div>
@@ -188,6 +200,139 @@
 
   <script>
     const ARTICLES = [
+      {
+        id: 6,
+        title: 'When Smart Tax Planning Meets Stubborn Tax Officers: The Kavita Damani Saga',
+        date: 'March 2026',
+        category: 'Taxation',
+        categoryColor: 'cyan',
+        icon: 'ri-scales-3-line',
+        iconGradient: 'from-cyan-500 to-teal-600',
+        readTime: 15,
+        summary: 'A Rs 4 crore battle that rewrote the rules on property sales between spouses. Kavita Damani sold a property for Rs 6 crore, claimed a Section 54 exemption — and the tax department called it a colourable device. Here\'s how she won at the Mumbai ITAT and what every property investor needs to know.',
+        tags: ['Income Tax', 'Section 54', 'Capital Gains', 'ITAT', 'Property'],
+        content: `
+          <div class="callout">
+            <p class="text-xs font-semibold text-cyan-400 dark:text-cyan-600 mb-1 uppercase tracking-wide">&#9878; Case Reference</p>
+            <p class="text-sm font-medium text-slate-200 dark:text-gray-800 mb-0">Kavita Manoj Damani v. DCIT &nbsp;·&nbsp; Mumbai Income Tax Appellate Tribunal</p>
+          </div>
+
+          <p class="leading-relaxed mb-4 text-slate-300 dark:text-gray-600">Picture this: you sell a property for &#8377;6 crore that you bought for &#8377;34 lakhs back in 2002. Sweet profit. Now imagine claiming a tax exemption on &#8377;4 crore of those capital gains — and having the tax department fight you tooth and nail, calling it a <em>&#8220;colourable device&#8221;</em> to evade tax. Welcome to the world of Kavita Damani, whose victory at the Mumbai Income Tax Tribunal has become a landmark case every property investor needs to know about.</p>
+
+          <div class="section-divider"></div>
+
+          <h3 class="text-slate-100 dark:text-gray-900">&#128205; The Setup: A Property Deal Under the Scanner</h3>
+          <p>The story begins in 2002 when Kavita and her husband Manoj jointly purchased two flats (402A and 402B) at Glen Classic CHS Ltd., Hiranandani, Powai. Fast forward to 2017 — Manoj gifted his 50% share to Kavita through a registered gift deed. By 2020, Kavita sold both properties for <strong class="text-slate-100 dark:text-gray-900">&#8377;5.98 crore</strong>, earning capital gains of <strong class="text-slate-100 dark:text-gray-900">&#8377;4.21 crore</strong>.</p>
+          <p>She claimed an exemption under <strong class="text-cyan-400 dark:text-cyan-600">Section 54</strong> of the Income Tax Act by purchasing a new residential property — at Lodha Estella — from her husband for <strong class="text-slate-100 dark:text-gray-900">&#8377;3.85 crore</strong>. The Assessing Officer (AO) smelled a rat.</p>
+
+          <div class="section-divider"></div>
+
+          <h3 class="text-slate-100 dark:text-gray-900">&#9876; The Tax Department&#8217;s Case: &#8220;You Can&#8217;t Buy From Yourself!&#8221;</h3>
+          <p>The AO built a case on three pillars:</p>
+          <ul>
+            <li><strong class="text-slate-200 dark:text-gray-800">The clubbing argument:</strong> Since the husband had gifted the property to Kavita, he should be the &#8220;deemed owner&#8221; under Section 64(1)(iv). Therefore, capital gains should be taxed in his hands — and Kavita can&#8217;t claim an exemption on purchasing &#8220;her own property.&#8221;</li>
+            <li><strong class="text-slate-200 dark:text-gray-800">The circular transaction theory:</strong> Money moved from Altan Engineering Pvt Ltd (where both were directors) to Kavita, then to Manoj, and back to Altan — all on the same day. The AO called this &#8220;rotation of money just to evade tax.&#8221;</li>
+            <li><strong class="text-slate-200 dark:text-gray-800">The timing issue:</strong> Instead of immediately depositing sale proceeds into a Capital Gains Account Scheme (CGAS), Kavita used them for bills, FDs, and company investment.</li>
+          </ul>
+          <p>The AO denied the entire exemption of &#8377;3.96 crore. The CIT(A) agreed.</p>
+
+          <div class="section-divider"></div>
+
+          <h3 class="text-slate-100 dark:text-gray-900">&#9878; The Tribunal Strikes Back: Why Kavita Won</h3>
+          <p>The Mumbai Tribunal disagreed with both authorities. Here&#8217;s their four-part reasoning:</p>
+
+          <h3 class="text-slate-100 dark:text-gray-900">1 &nbsp;·&nbsp; You Can&#8217;t Have It Both Ways</h3>
+          <p>The Tribunal spotted an obvious contradiction: if you&#8217;ve assessed the capital gains fully in Kavita&#8217;s hands, you can&#8217;t then say her husband is the real owner. Kavita had become the complete owner after the 2017 gift. She reported rental income from these properties in her returns. The sale agreement, TDS certificate, and sale proceeds were all in her name. She was the real and economic owner — full stop.</p>
+
+          <h3 class="text-slate-100 dark:text-gray-900">2 &nbsp;·&nbsp; The Clubbing Loophole Nobody Talks About</h3>
+          <div class="callout">
+            <p class="text-xs font-semibold text-cyan-400 dark:text-cyan-600 mb-2 uppercase tracking-wide">The Legal Russian Doll</p>
+            <p class="mb-1"><strong>Section 64(1)(iv)</strong> requires clubbing of <em>&#8220;income&#8221;</em> from a transferred asset.</p>
+            <p class="mb-1"><strong>Section 2(24)</strong> defines income as including capital gains that are <em>&#8220;chargeable&#8221;</em> under Section 45.</p>
+            <p class="mb-1"><strong>Section 45</strong> says capital gains are chargeable <em>&#8220;subject to&#8221;</em> exemptions like Section 54.</p>
+            <p class="mb-0">&#8756; If Section 54 exempts the gains &#8594; not chargeable under S.45 &#8594; not &#8220;income&#8221; under S.2(24) &#8594; Section 64 has nothing to club.</p>
+          </div>
+
+          <h3 class="text-slate-100 dark:text-gray-900">3 &nbsp;·&nbsp; The Fund Rotation Was Legitimate</h3>
+          <p>The Tribunal looked at the complete picture the AO ignored. Kavita had parked &#8377;3.33 crore with Altan Engineering while waiting for her lower TDS deduction application — which was granted on February 24, 2021. When her FDs matured on October 9, 2020, she received &#8377;2.03 crore, loaned &#8377;1.80 crore to Altan, got it back on March 12, 2021, and paid her husband on <strong class="text-slate-100 dark:text-gray-900">March 18, 2021</strong>.</p>
+          <div class="callout callout-warning">
+            <p class="text-xs font-semibold text-amber-400 dark:text-amber-600 mb-1 uppercase tracking-wide">&#128336; The TOLA Extension</p>
+            <p class="mb-0">The Taxation and Other Laws (Relaxation and Amendment of Certain Provisions) Act, 2020 had extended the investment deadline to <strong>March 31, 2021</strong>. She paid on March 18 — well within time. The AO simply failed to consider this extension.</p>
+          </div>
+
+          <h3 class="text-slate-100 dark:text-gray-900">4 &nbsp;·&nbsp; No Crystal Ball in 2017</h3>
+          <p>The AO alleged the 2017 gift was a &#8220;colourable device.&#8221; But the gift was executed and registered in <strong>April 2017</strong>. The property was sold in <strong>January 2020</strong> — three years later. How could anyone in 2017 predict a sale three years hence? Unless Kavita had a crystal ball, this argument falls completely flat.</p>
+
+          <div class="section-divider"></div>
+
+          <h3 class="text-slate-100 dark:text-gray-900">&#128218; What Case Law Says: Buying From Relatives Is Fine</h3>
+          <p>The Tribunal&#8217;s decision rests on solid precedent:</p>
+          <ul>
+            <li><strong class="text-slate-200 dark:text-gray-800">ITO v. Kalawati Vijaykumar Agarwal</strong> — wife bought property from husband, claimed Section 54F. Pune Tribunal: money changing hands within a household isn&#8217;t circular if done at arm&#8217;s length through banking channels.</li>
+            <li><strong class="text-slate-200 dark:text-gray-800">ITO v. Rajesh Sharma</strong> — father purchasing from his son. Valid.</li>
+            <li><strong class="text-slate-200 dark:text-gray-800">Surjeet Singh v. Pr. CIT</strong> — husband buying from wife. Completely legitimate.</li>
+          </ul>
+          <p>The common thread: Section 54 doesn&#8217;t care about the relationship between buyer and seller. What matters is whether the transaction is genuine, properly documented, done through banking channels, and legally compliant (stamp duty, registration, TDS). Check, check, check, and check.</p>
+
+          <div class="section-divider"></div>
+
+          <h3 class="text-slate-100 dark:text-gray-900">&#128203; The Clubbing Precedents: A Clear Pattern</h3>
+          <p>Multiple tribunal decisions have established that when Section 54/54F investment is made, clubbing provisions don&#8217;t apply:</p>
+          <ul>
+            <li><strong class="text-slate-200 dark:text-gray-800">Asstt. CIT v. Madan Lal Bassi:</strong> Minor son&#8217;s shares sold to buy a house — Section 54F benefits must be given; Section 64 clubbing doesn&#8217;t apply.</li>
+            <li><strong class="text-slate-200 dark:text-gray-800">Hemant Shah v. Asstt. CIT:</strong> AO tried to club children&#8217;s capital gains without considering their Section 54F investment — no chargeable capital gain exists to club.</li>
+            <li><strong class="text-slate-200 dark:text-gray-800">CIT v. Ajit Thomas:</strong> Husband gifts house to wife — deeming provisions of Section 27(1) can&#8217;t be extended to deny Section 54F exemption.</li>
+          </ul>
+          <p>The principle is consistent: gross receipts aren&#8217;t taxed — only <em>income</em> is. If Section 54 exempts it, there&#8217;s no income to club.</p>
+
+          <div class="section-divider"></div>
+
+          <h3 class="text-slate-100 dark:text-gray-900">&#9997; Practical Lessons for Property Investors</h3>
+
+          <h3 class="text-slate-100 dark:text-gray-900" style="margin-top:1rem">1 &nbsp;·&nbsp; Document Everything Religiously</h3>
+          <ul>
+            <li>Execute proper gift deeds with registration</li>
+            <li>Maintain separate bank accounts and keep all payment records through banking channels</li>
+            <li>Pay stamp duty and deduct TDS on every transaction</li>
+          </ul>
+
+          <h3 class="text-slate-100 dark:text-gray-900" style="margin-top:1rem">2 &nbsp;·&nbsp; Timing Matters</h3>
+          <ul>
+            <li>Don&#8217;t gift and sell in the same financial year</li>
+            <li>Maintain a reasonable gap between related transactions</li>
+            <li>Use CGAS if you can&#8217;t immediately reinvest — and track deadline extensions like TOLA</li>
+          </ul>
+
+          <h3 class="text-slate-100 dark:text-gray-900" style="margin-top:1rem">3 &nbsp;·&nbsp; Establish Clear Ownership</h3>
+          <ul>
+            <li>After receiving a gift, report all income from that asset in your returns</li>
+            <li>Transfer rental agreements and TDS certificates to your name</li>
+          </ul>
+
+          <h3 class="text-slate-100 dark:text-gray-900" style="margin-top:1rem">4 &nbsp;·&nbsp; Avoid Red Flags</h3>
+          <ul>
+            <li>Don&#8217;t create circular transactions on the same day without a documented business reason</li>
+            <li>Stay within legal timelines and use arm&#8217;s length pricing in related-party deals</li>
+          </ul>
+
+          <div class="section-divider"></div>
+
+          <h3 class="text-slate-100 dark:text-gray-900">&#127775; The Bigger Picture: Substance Over Form</h3>
+          <p>What makes this judgment truly significant is the Tribunal&#8217;s emphasis on <strong class="text-slate-100 dark:text-gray-900">substance over form</strong>. The tax authorities were hung up on the relationship between Kavita and Manoj. But the Tribunal looked past labels and asked: Was this transaction real? Did money actually change hands? Were legal formalities completed? Was there genuine intent? The answers were all yes.</p>
+          <p>As the Kerala High Court said in <em>CIT v. S.K. Naik</em>, whatever deductions are due to a person should be allowed, even if their income is clubbed with someone else. You can&#8217;t cherry-pick which provisions to apply.</p>
+
+          <div class="verdict-box">
+            <p class="text-xs font-bold text-cyan-400 dark:text-cyan-600 uppercase tracking-wider mb-2">&#9878; The Takeaway</p>
+            <p class="mb-2">Kavita&#8217;s victory isn&#8217;t about loopholes. It&#8217;s about understanding that tax planning <em>within the framework of law</em> is not only legitimate — it&#8217;s protected. The Income Tax Act doesn&#8217;t prohibit spouses from transacting with each other. It doesn&#8217;t punish you for receiving gifts from family. It doesn&#8217;t penalise you for using legal extensions like TOLA. What it requires is <strong class="text-slate-100 dark:text-gray-900">honesty, documentation, and compliance</strong>.</p>
+            <p class="mb-0 text-slate-400 dark:text-gray-500 text-xs italic">&#8220;The avoidance of taxes is the only intellectual pursuit that carries any reward.&#8221; — John Maynard Keynes</p>
+          </div>
+
+          <div class="callout callout-warning" style="margin-top:1.5rem">
+            <p class="text-xs font-semibold text-amber-400 dark:text-amber-600 mb-1 uppercase tracking-wide">Disclaimer</p>
+            <p class="mb-0 text-slate-400 dark:text-gray-500">This article is for informational purposes only and should not be considered as tax advice. Consult a qualified tax professional for your specific situation.</p>
+          </div>
+        `
+      },
       {
         id: 1,
         title: 'How AI is Revolutionizing Algorithmic Trading in 2026',
@@ -299,6 +444,7 @@
       'Investing':     'bg-green-900/40 text-green-300 dark:bg-green-100 dark:text-green-700',
       'AI':            'bg-orange-900/40 text-orange-300 dark:bg-orange-100 dark:text-orange-700',
       'Market Trends': 'bg-red-900/40 text-red-300 dark:bg-red-100 dark:text-red-700',
+      'Taxation':      'bg-cyan-900/40 text-cyan-300 dark:bg-cyan-100 dark:text-cyan-700',
     };
 
     let activeCategory = 'all';
