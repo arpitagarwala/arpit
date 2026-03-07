@@ -70,6 +70,11 @@
       .nav-link:hover .nav-arrow { opacity:1; transform:translateX(2px); }
       .nav-arrow { opacity:0; transition:opacity 0.15s,transform 0.15s; margin-left:auto; }
       .nav-icon { width:2.4rem; height:2.4rem; border-radius:0.6rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:1.05rem; }
+      /* Featured design link */
+      .nav-link-featured { border-color: rgba(232,121,249,0.15); background: rgba(232,121,249,0.04); }
+      .nav-link-featured:hover { border-color: rgba(232,121,249,0.4) !important; background: rgba(232,121,249,0.07) !important; }
+      .dark .nav-link-featured { border-color: rgba(192,38,211,0.12); background: rgba(192,38,211,0.03); }
+      .dark .nav-link-featured:hover { border-color: rgba(192,38,211,0.3) !important; background: rgba(192,38,211,0.06) !important; }
     </style>
   </head>
 
@@ -118,36 +123,56 @@
       <div class="card p-5 lg:col-span-2">
         <p class="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-500 dark:text-gray-400 mb-3 px-1">Explore</p>
         <div class="grid grid-cols-2 gap-1.5">
+
           <a href="projects.html" class="nav-link">
             <span class="nav-icon bg-blue-500/10 dark:bg-blue-50"><i class="ri-code-box-line text-blue-400 dark:text-blue-500"></i></span>
             <div><p class="text-sm font-semibold text-slate-200 dark:text-gray-800">Projects</p><p class="text-xs text-slate-500 dark:text-gray-400">Tools &amp; experiments</p></div>
             <i class="ri-arrow-right-line text-sm text-slate-600 dark:text-gray-400 nav-arrow"></i>
           </a>
+
           <a href="gallery.html" class="nav-link">
             <span class="nav-icon bg-pink-500/10 dark:bg-pink-50"><i class="ri-image-line text-pink-400 dark:text-pink-500"></i></span>
             <div><p class="text-sm font-semibold text-slate-200 dark:text-gray-800">Gallery</p><p class="text-xs text-slate-500 dark:text-gray-400">Moments &amp; memories</p></div>
             <i class="ri-arrow-right-line text-sm text-slate-600 dark:text-gray-400 nav-arrow"></i>
           </a>
+
           <a href="achievements.html" class="nav-link">
             <span class="nav-icon bg-amber-500/10 dark:bg-amber-50"><i class="ri-trophy-line text-amber-400 dark:text-amber-500"></i></span>
             <div><p class="text-sm font-semibold text-slate-200 dark:text-gray-800">Achievements</p><p class="text-xs text-slate-500 dark:text-gray-400">Awards &amp; milestones</p></div>
             <i class="ri-arrow-right-line text-sm text-slate-600 dark:text-gray-400 nav-arrow"></i>
           </a>
+
           <a href="articles.html" class="nav-link">
             <span class="nav-icon bg-orange-500/10 dark:bg-orange-50"><i class="ri-article-line text-orange-400 dark:text-orange-500"></i></span>
             <div><p class="text-sm font-semibold text-slate-200 dark:text-gray-800">Articles</p><p class="text-xs text-slate-500 dark:text-gray-400">Finance &amp; productivity</p></div>
             <i class="ri-arrow-right-line text-sm text-slate-600 dark:text-gray-400 nav-arrow"></i>
           </a>
+
           <a href="games.html" class="nav-link">
             <span class="nav-icon bg-violet-500/10 dark:bg-violet-50"><i class="ri-gamepad-line text-violet-400 dark:text-violet-500"></i></span>
             <div><p class="text-sm font-semibold text-slate-200 dark:text-gray-800">Games</p><p class="text-xs text-slate-500 dark:text-gray-400">Learn money, have fun</p></div>
             <i class="ri-arrow-right-line text-sm text-slate-600 dark:text-gray-400 nav-arrow"></i>
           </a>
+
           <a href="about.html" class="nav-link">
             <span class="nav-icon bg-teal-500/10 dark:bg-teal-50"><i class="ri-user-line text-teal-400 dark:text-teal-500"></i></span>
             <div><p class="text-sm font-semibold text-slate-200 dark:text-gray-800">About</p><p class="text-xs text-slate-500 dark:text-gray-400">Who I am</p></div>
             <i class="ri-arrow-right-line text-sm text-slate-600 dark:text-gray-400 nav-arrow"></i>
           </a>
+
+          <!-- Design Portfolio – full-width featured link -->
+          <a href="https://design.arpitagarwala.online" target="_blank" rel="noopener"
+             class="nav-link nav-link-featured col-span-2">
+            <span class="nav-icon bg-fuchsia-500/10 dark:bg-fuchsia-50">
+              <i class="ri-palette-line text-fuchsia-400 dark:text-fuchsia-500"></i>
+            </span>
+            <div>
+              <p class="text-sm font-semibold text-slate-200 dark:text-gray-800">Design Portfolio</p>
+              <p class="text-xs text-slate-500 dark:text-gray-400">UI/UX work &amp; Figma projects</p>
+            </div>
+            <i class="ri-arrow-right-up-line text-sm text-slate-600 dark:text-gray-400 nav-arrow"></i>
+          </a>
+
         </div>
       </div>
 
