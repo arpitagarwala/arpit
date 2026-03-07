@@ -37,30 +37,39 @@
     @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
     .fade-up{animation:fadeUp .35s ease both;}
 
-    /* Trading card – same border-radius/transition as ach-card, distinct accent border */
     .trading-card{
       background:rgb(17,24,39);
       border:1px solid rgba(34,211,238,0.18);
       border-radius:1rem;
       transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;
-      position:relative;overflow:hidden;
+      /* position:relative is set inline so tooltip can escape overflow */
+      position:relative;
     }
     .dark .trading-card{background:#fff;border-color:rgba(8,145,178,0.18);}
     .trading-card:hover{transform:translateY(-2px);border-color:rgba(34,211,238,0.45);box-shadow:0 10px 28px rgba(0,0,0,0.4);}
     .dark .trading-card:hover{box-shadow:0 8px 20px rgba(0,0,0,0.08);border-color:rgba(8,145,178,0.35);}
 
-    /* Canvas wrapper */
-    #chart-wrap{position:relative;border-radius:.5rem;overflow:hidden;cursor:crosshair;}
-    #equity-canvas{display:block;width:100%;height:90px;}
+    /* chart-wrap: NO overflow:hidden so tooltip is never clipped */
+    #chart-wrap{position:relative;border-radius:.5rem;cursor:crosshair;}
+    #equity-canvas{display:block;width:100%;height:90px;border-radius:.5rem;}
 
-    /* Tooltip */
+    /* Tooltip: child of .trading-card, floats freely */
     #chart-tip{
-      position:absolute;pointer-events:none;
-      background:rgba(15,23,42,0.92);border:1px solid rgba(34,211,238,0.25);
-      border-radius:.45rem;padding:5px 9px;font-size:10px;line-height:1.6;
-      white-space:nowrap;color:#e2e8f0;display:none;z-index:10;
+      position:absolute;
+      pointer-events:none;
+      background:rgba(15,23,42,0.95);
+      border:1px solid rgba(34,211,238,0.3);
+      border-radius:.45rem;
+      padding:6px 10px;
+      font-size:10px;
+      line-height:1.65;
+      white-space:nowrap;
+      color:#e2e8f0;
+      display:none;
+      z-index:50;
+      box-shadow:0 4px 16px rgba(0,0,0,0.4);
     }
-    .dark #chart-tip{background:rgba(255,255,255,0.95);color:#1e293b;border-color:rgba(8,145,178,0.3);}
+    .dark #chart-tip{background:rgba(255,255,255,0.97);color:#1e293b;border-color:rgba(8,145,178,0.3);box-shadow:0 4px 16px rgba(0,0,0,0.1);}
   </style>
 </head>
 <body class="min-h-screen bg-[#080c14] dark:bg-slate-100 text-slate-100 dark:text-gray-900 transition-colors duration-300 py-10 px-4">
@@ -98,8 +107,11 @@
     <!-- Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 
-      <!-- Trading card: col-span-2 -->
-      <div class="col-span-1 sm:col-span-2 trading-card p-5 fade-up" style="animation-delay:.06s">
+      <!-- Trading card: col-span-2, tooltip is DIRECT child here -->
+      <div id="trading-card" class="col-span-1 sm:col-span-2 trading-card p-5 fade-up" style="animation-delay:.06s">
+
+        <!-- Tooltip lives here so it's not clipped by chart-wrap -->
+        <div id="chart-tip"></div>
 
         <!-- Header -->
         <div class="flex items-start justify-between gap-3 mb-3">
@@ -118,13 +130,12 @@
           </div>
         </div>
 
-        <!-- Chart -->
+        <!-- Chart wrap: no overflow:hidden -->
         <div id="chart-wrap" class="bg-slate-800/60 dark:bg-gray-50 border border-slate-700/40 dark:border-gray-200 rounded-lg mb-3">
           <canvas id="equity-canvas"></canvas>
-          <div id="chart-tip"></div>
         </div>
 
-        <!-- 2 mini stats -->
+        <!-- Mini stats -->
         <div class="grid grid-cols-3 gap-2 mb-3">
           <div class="bg-white/[0.03] dark:bg-black/[0.03] border border-white/[0.06] dark:border-black/[0.06] rounded-lg px-3 py-2">
             <p class="text-[10px] text-slate-400 dark:text-gray-500">Best Day</p>
@@ -216,7 +227,7 @@
         </div>
       </div>
 
-    </div><!-- /grid -->
+    </div>
 
     <!-- Footer -->
     <div class="mt-6 text-center py-3.5 px-6 rounded-xl bg-slate-800/50 dark:bg-white border border-slate-700/30 dark:border-gray-200 text-sm text-slate-500 dark:text-gray-400">
@@ -225,7 +236,6 @@
   </div>
 
   <script>
-  /* ── Trading data ─────────────────────────────────────────── */
   const TRADES = [
     { date:'18 Sep', open:45788.29, netPL: 164.91,   close:45788.29, ret: 0.36 },
     { date:'19 Sep', open:45788.29, netPL: 280.55,   close:46068.84, ret: 0.61 },
@@ -250,147 +260,136 @@
     { date:'17 Oct', open:57970.57, netPL:8618.31,   close:66588.88, ret:14.87 },
   ];
 
-  /* ── Canvas chart ─────────────────────────────────────────── */
-  const canvas  = document.getElementById('equity-canvas');
-  const tip     = document.getElementById('chart-tip');
-  const wrap    = document.getElementById('chart-wrap');
-  const ctx     = canvas.getContext('2d');
+  const canvas = document.getElementById('equity-canvas');
+  const tip    = document.getElementById('chart-tip');
+  const wrap   = document.getElementById('chart-wrap');
+  const card   = document.getElementById('trading-card');  // tooltip parent
+  const ctx    = canvas.getContext('2d');
 
-  const PAD = { top:10, right:10, bottom:16, left:10 };
+  const PAD  = { top:10, right:10, bottom:16, left:10 };
   const closes = TRADES.map(t => t.close);
   const minV   = Math.min(...closes) * 0.998;
   const maxV   = Math.max(...closes) * 1.002;
+  let pts = [];
+  const isDark = () => document.documentElement.classList.contains('dark');
 
-  let pts = [];   // computed pixel points
-  let isDark = () => document.documentElement.classList.contains('dark');
-
-  function toY(v, h){ return PAD.top + (1 - (v - minV)/(maxV - minV)) * (h - PAD.top - PAD.bottom); }
-  function toX(i, w){ return PAD.left + i * (w - PAD.left - PAD.right) / (TRADES.length - 1); }
+  function toY(v,h){ return PAD.top + (1-(v-minV)/(maxV-minV))*(h-PAD.top-PAD.bottom); }
+  function toX(i,w){ return PAD.left + i*(w-PAD.left-PAD.right)/(TRADES.length-1); }
 
   function drawChart(){
-    const dpr = window.devicePixelRatio || 1;
+    const dpr  = window.devicePixelRatio||1;
     const rect = canvas.getBoundingClientRect();
-    const W = rect.width  || canvas.offsetWidth  || 400;
-    const H = rect.height || canvas.offsetHeight || 90;
-    canvas.width  = W * dpr;
-    canvas.height = H * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
+    const W    = rect.width  || canvas.offsetWidth  || 400;
+    const H    = rect.height || canvas.offsetHeight || 90;
+    canvas.width  = W*dpr;
+    canvas.height = H*dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
     const dark = isDark();
-    pts = TRADES.map((t,i) => ({ x: toX(i,W), y: toY(t.close,H), t }));
+    pts = TRADES.map((t,i)=>({x:toX(i,W),y:toY(t.close,H),t}));
 
-    /* gradient fill */
     const grad = ctx.createLinearGradient(0,0,0,H);
-    grad.addColorStop(0, dark ? 'rgba(16,185,129,0.18)' : 'rgba(16,185,129,0.14)');
-    grad.addColorStop(1, 'rgba(16,185,129,0)');
+    grad.addColorStop(0, dark?'rgba(16,185,129,0.18)':'rgba(16,185,129,0.14)');
+    grad.addColorStop(1,'rgba(16,185,129,0)');
     ctx.beginPath();
-    ctx.moveTo(pts[0].x, H - PAD.bottom);
-    pts.forEach(p => ctx.lineTo(p.x, p.y));
-    ctx.lineTo(pts[pts.length-1].x, H - PAD.bottom);
+    ctx.moveTo(pts[0].x, H-PAD.bottom);
+    pts.forEach(p=>ctx.lineTo(p.x,p.y));
+    ctx.lineTo(pts[pts.length-1].x, H-PAD.bottom);
     ctx.closePath();
-    ctx.fillStyle = grad;
-    ctx.fill();
+    ctx.fillStyle=grad; ctx.fill();
 
-    /* line */
     ctx.beginPath();
-    pts.forEach((p,i) => i===0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y));
-    ctx.strokeStyle = '#10b981';
-    ctx.lineWidth   = 1.8;
-    ctx.lineJoin    = 'round';
-    ctx.stroke();
+    pts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
+    ctx.strokeStyle='#10b981'; ctx.lineWidth=1.8; ctx.lineJoin='round'; ctx.stroke();
 
-    /* x-axis date labels (first / mid / last) */
-    ctx.fillStyle  = dark ? 'rgba(0,0,0,0.35)' : 'rgba(100,116,139,0.8)';
-    ctx.font       = `9px Inter,sans-serif`;
-    ctx.textAlign  = 'left';  ctx.fillText(TRADES[0].date, PAD.left, H-3);
-    const mi = Math.floor(TRADES.length/2);
-    ctx.textAlign  = 'center'; ctx.fillText(TRADES[mi].date, pts[mi].x, H-3);
-    ctx.textAlign  = 'right';  ctx.fillText(TRADES[TRADES.length-1].date, W-PAD.right, H-3);
+    ctx.fillStyle = dark?'rgba(0,0,0,0.35)':'rgba(100,116,139,0.8)';
+    ctx.font='9px Inter,sans-serif';
+    const mi=Math.floor(TRADES.length/2);
+    ctx.textAlign='left';   ctx.fillText(TRADES[0].date, PAD.left, H-3);
+    ctx.textAlign='center'; ctx.fillText(TRADES[mi].date, pts[mi].x, H-3);
+    ctx.textAlign='right';  ctx.fillText(TRADES[TRADES.length-1].date, W-PAD.right, H-3);
   }
 
-  /* ── Hover interaction ──────────────────────────────────── */
   function findNearest(mx){
-    let best=0, bd=Infinity;
-    pts.forEach((p,i)=>{ const d=Math.abs(p.x-mx); if(d<bd){bd=d;best=i;} });
+    let best=0,bd=Infinity;
+    pts.forEach((p,i)=>{const d=Math.abs(p.x-mx);if(d<bd){bd=d;best=i;}});
     return best;
   }
 
-  canvas.addEventListener('mousemove', e => {
+  canvas.addEventListener('mousemove', e=>{
     if(!pts.length) return;
-    const rect = canvas.getBoundingClientRect();
-    const dpr  = window.devicePixelRatio||1;
-    const mx   = (e.clientX - rect.left);   // CSS pixels
-    const idx  = findNearest(mx);
-    const p    = pts[idx];
-    const t    = p.t;
-    const pos  = t.netPL >= 0;
+    const cRect = canvas.getBoundingClientRect();
+    const kRect = card.getBoundingClientRect();   // card is tooltip's offsetParent
+    const mx    = e.clientX - cRect.left;         // x relative to canvas (CSS px)
+    const idx   = findNearest(mx);
+    const p     = pts[idx];
+    const t     = p.t;
+    const pos   = t.netPL >= 0;
 
-    /* redraw + crosshair */
     drawChart();
-    const H  = canvas.offsetHeight;
-    const W  = canvas.offsetWidth;
+    const H = canvas.offsetHeight;
+    const W = canvas.offsetWidth;
     ctx.save();
     ctx.setLineDash([3,3]);
-    ctx.strokeStyle = pos ? 'rgba(16,185,129,0.5)' : 'rgba(239,68,68,0.5)';
-    ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(p.x,PAD.top); ctx.lineTo(p.x, H-PAD.bottom); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(PAD.left,p.y); ctx.lineTo(W-PAD.right,p.y);  ctx.stroke();
+    ctx.strokeStyle = pos?'rgba(16,185,129,0.5)':'rgba(239,68,68,0.5)';
+    ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(p.x,PAD.top);   ctx.lineTo(p.x,H-PAD.bottom); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(PAD.left,p.y);   ctx.lineTo(W-PAD.right,p.y);  ctx.stroke();
     ctx.restore();
-
-    /* active dot */
     ctx.beginPath();
-    ctx.arc(p.x, p.y, 4, 0, Math.PI*2);
-    ctx.fillStyle   = pos ? '#10b981' : '#ef4444';
-    ctx.strokeStyle = isDark() ? '#fff' : '#0f172a';
-    ctx.lineWidth   = 1.5;
-    ctx.fill(); ctx.stroke();
+    ctx.arc(p.x,p.y,4,0,Math.PI*2);
+    ctx.fillStyle   = pos?'#10b981':'#ef4444';
+    ctx.strokeStyle = isDark()?'#fff':'#0f172a';
+    ctx.lineWidth=1.5; ctx.fill(); ctx.stroke();
 
-    /* tooltip content */
-    const plSign  = pos ? '+' : '';
-    const plColor = pos ? '#34d399' : '#f87171';
+    const plSign  = pos?'+':'';
+    const plColor = pos?'#34d399':'#f87171';
     tip.innerHTML =
       `<span style="color:#94a3b8;font-size:9px">${t.date}</span><br>`+
       `<span style="font-weight:700">₹${t.close.toLocaleString('en-IN',{maximumFractionDigits:0})}</span><br>`+
-      `<span style="color:${plColor};font-weight:600">${plSign}${t.ret.toFixed(2)}% &nbsp; ${plSign}₹${Math.abs(t.netPL).toLocaleString('en-IN',{maximumFractionDigits:0})}</span>`;
-    tip.style.display = 'block';
+      `<span style="color:${plColor};font-weight:600">${plSign}${t.ret.toFixed(2)}%&nbsp;&nbsp;${plSign}₹${Math.abs(t.netPL).toLocaleString('en-IN',{maximumFractionDigits:0})}</span>`;
+    tip.style.display='block';
 
-    /* position tooltip: keep inside wrapper */
-    const wRect  = wrap.getBoundingClientRect();
-    const tipW   = 120;
-    const tipH   = 52;
-    let tx = p.x + 10;
-    let ty = p.y - tipH - 6;
-    if(tx + tipW > W - PAD.right) tx = p.x - tipW - 10;
-    if(ty < 4) ty = p.y + 10;
+    /* --- position relative to card (tooltip's offsetParent) --- */
+    // dot position in viewport
+    const dotVX = cRect.left + p.x;
+    const dotVY = cRect.top  + p.y;
+    // convert to card-local coords
+    const dotLX = dotVX - kRect.left;
+    const dotLY = dotVY - kRect.top;
+
+    const TW = 130, TH = 58;
+    let tx = dotLX + 12;
+    let ty = dotLY - TH - 8;
+    // flip left if overflowing right edge of card
+    if(tx + TW > kRect.width)  tx = dotLX - TW - 12;
+    // flip down if overflowing top of card
+    if(ty < 4) ty = dotLY + 10;
+
     tip.style.left = tx + 'px';
     tip.style.top  = ty + 'px';
   });
 
-  canvas.addEventListener('mouseleave', () => {
+  canvas.addEventListener('mouseleave',()=>{
     tip.style.display='none';
     drawChart();
   });
 
-  /* ── Init + resize ──────────────────────────────────────── */
   function init(){
-    // Force canvas CSS size from parent
-    canvas.style.height = '90px';
-    setTimeout(drawChart, 0);
+    canvas.style.height='90px';
+    setTimeout(drawChart,0);
   }
   init();
   window.addEventListener('resize', drawChart);
 
-  /* ── Theme ──────────────────────────────────────────────── */
   function syncIcon(){
     document.getElementById('theme-icon').className =
-      document.documentElement.classList.contains('dark') ? 'ri-sun-line text-lg' : 'ri-moon-line text-lg';
+      document.documentElement.classList.contains('dark')?'ri-sun-line text-lg':'ri-moon-line text-lg';
   }
   syncIcon();
   function toggleTheme(){
     document.documentElement.classList.toggle('dark');
-    localStorage.setItem('theme', document.documentElement.classList.contains('dark')?'dark':'light');
-    syncIcon();
-    drawChart();
+    localStorage.setItem('theme',document.documentElement.classList.contains('dark')?'dark':'light');
+    syncIcon(); drawChart();
   }
   </script>
 </body>
