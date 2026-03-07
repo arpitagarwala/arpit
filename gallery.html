@@ -292,7 +292,7 @@
       <div class="flex items-center gap-3 mb-1">
         <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">&#x1F4F8; Gallery</h1>
       </div>
-      <p class="text-slate-400 dark:text-gray-500 text-sm max-w-lg">Moments, milestones & memories — a visual story of who I am beyond the code.</p>
+      <p class="text-slate-400 dark:text-gray-500 text-sm max-w-lg">Moments, milestones &amp; memories — a visual story of who I am beyond the code.</p>
     </div>
 
     <div class="flex gap-4 mb-6 fade-up" style="animation-delay:60ms">
@@ -328,7 +328,74 @@
   </div>
 
   <script>
-    const PHOTOS = [];
+    const PHOTOS = [
+      {
+        src:   'https://res.cloudinary.com/dxsja3wy5/image/upload/v1772894901/WhatsApp_Image_2026-03-07_at_8.03.13_PM_kvvxso.jpg',
+        thumb: 'https://res.cloudinary.com/dxsja3wy5/image/upload/w_600,q_auto,f_auto/v1772894901/WhatsApp_Image_2026-03-07_at_8.03.13_PM_kvvxso.jpg',
+        title: 'Moment 01',
+        category: 'Moments'
+      },
+      {
+        src:   'https://res.cloudinary.com/dxsja3wy5/image/upload/v1772894900/WhatsApp_Image_2026-03-07_at_8.01.51_PM_oq4kkf.jpg',
+        thumb: 'https://res.cloudinary.com/dxsja3wy5/image/upload/w_600,q_auto,f_auto/v1772894900/WhatsApp_Image_2026-03-07_at_8.01.51_PM_oq4kkf.jpg',
+        title: 'Moment 02',
+        category: 'Moments'
+      },
+      {
+        src:   'https://res.cloudinary.com/dxsja3wy5/image/upload/v1772894899/WhatsApp_Image_2026-03-07_at_8.02.54_PM_1_clkjsu.jpg',
+        thumb: 'https://res.cloudinary.com/dxsja3wy5/image/upload/w_600,q_auto,f_auto/v1772894899/WhatsApp_Image_2026-03-07_at_8.02.54_PM_1_clkjsu.jpg',
+        title: 'Moment 03',
+        category: 'Moments'
+      },
+      {
+        src:   'https://res.cloudinary.com/dxsja3wy5/image/upload/v1772894899/WhatsApp_Image_2026-03-07_at_8.02.54_PM_pa7ebr.jpg',
+        thumb: 'https://res.cloudinary.com/dxsja3wy5/image/upload/w_600,q_auto,f_auto/v1772894899/WhatsApp_Image_2026-03-07_at_8.02.54_PM_pa7ebr.jpg',
+        title: 'Moment 04',
+        category: 'Moments'
+      },
+      {
+        src:   'https://res.cloudinary.com/dxsja3wy5/image/upload/v1772894896/WhatsApp_Image_2026-03-07_at_7.54.14_PM_d5wdun.jpg',
+        thumb: 'https://res.cloudinary.com/dxsja3wy5/image/upload/w_600,q_auto,f_auto/v1772894896/WhatsApp_Image_2026-03-07_at_7.54.14_PM_d5wdun.jpg',
+        title: 'Moment 05',
+        category: 'Moments'
+      },
+      {
+        src:   'https://res.cloudinary.com/dxsja3wy5/image/upload/v1772894898/WhatsApp_Image_2026-03-07_at_8.02.35_PM_ncn6ib.jpg',
+        thumb: 'https://res.cloudinary.com/dxsja3wy5/image/upload/w_600,q_auto,f_auto/v1772894898/WhatsApp_Image_2026-03-07_at_8.02.35_PM_ncn6ib.jpg',
+        title: 'Moment 06',
+        category: 'Moments'
+      },
+      {
+        src:   'https://res.cloudinary.com/dxsja3wy5/image/upload/v1772894898/WhatsApp_Image_2026-03-07_at_8.01.35_PM_cehcpv.jpg',
+        thumb: 'https://res.cloudinary.com/dxsja3wy5/image/upload/w_600,q_auto,f_auto/v1772894898/WhatsApp_Image_2026-03-07_at_8.01.35_PM_cehcpv.jpg',
+        title: 'Moment 07',
+        category: 'Moments'
+      },
+      {
+        src:   'https://res.cloudinary.com/dxsja3wy5/image/upload/v1772894897/WhatsApp_Image_2026-03-07_at_7.53.41_PM_f49pkm.jpg',
+        thumb: 'https://res.cloudinary.com/dxsja3wy5/image/upload/w_600,q_auto,f_auto/v1772894897/WhatsApp_Image_2026-03-07_at_7.53.41_PM_f49pkm.jpg',
+        title: 'Moment 08',
+        category: 'Moments'
+      },
+      {
+        src:   'https://res.cloudinary.com/dxsja3wy5/image/upload/v1772894896/WhatsApp_Image_2026-03-07_at_7.56.25_PM_qnavfl.jpg',
+        thumb: 'https://res.cloudinary.com/dxsja3wy5/image/upload/w_600,q_auto,f_auto/v1772894896/WhatsApp_Image_2026-03-07_at_7.56.25_PM_qnavfl.jpg',
+        title: 'Moment 09',
+        category: 'Moments'
+      },
+      {
+        src:   'https://res.cloudinary.com/dxsja3wy5/image/upload/v1772894896/WhatsApp_Image_2026-03-07_at_7.56.58_PM_ydbvt4.jpg',
+        thumb: 'https://res.cloudinary.com/dxsja3wy5/image/upload/w_600,q_auto,f_auto/v1772894896/WhatsApp_Image_2026-03-07_at_7.56.58_PM_ydbvt4.jpg',
+        title: 'Moment 10',
+        category: 'Moments'
+      },
+      {
+        src:   'https://res.cloudinary.com/dxsja3wy5/image/upload/v1772894896/WhatsApp_Image_2026-03-07_at_7.56.26_PM_vxtpmv.jpg',
+        thumb: 'https://res.cloudinary.com/dxsja3wy5/image/upload/w_600,q_auto,f_auto/v1772894896/WhatsApp_Image_2026-03-07_at_7.56.26_PM_vxtpmv.jpg',
+        title: 'Moment 11',
+        category: 'Moments'
+      }
+    ];
 
     const CATS = ['all', ...new Set(PHOTOS.map(p => p.category).filter(Boolean))];
     let activeFilter = 'all';
@@ -395,7 +462,7 @@
 
         item.innerHTML = `
           <div class="photo-card" onclick="openLightbox(${PHOTOS.indexOf(photo)})">
-            <img src="${photo.src}" alt="${photo.title || 'Photo'}" loading="lazy" />
+            <img src="${photo.thumb || photo.src}" alt="${photo.title || 'Photo'}" loading="lazy" />
             <div class="overlay">
               ${photo.category ? `<span class="tag-pill mb-1.5"><i class="ri-price-tag-3-line"></i> ${photo.category}</span>` : ''}
               ${photo.title ? `<p class="text-sm font-bold text-white leading-tight">${photo.title}</p>` : ''}
