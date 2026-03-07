@@ -38,13 +38,22 @@
     <link rel="icon" type="image/png" sizes="16x16" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_16,h_16,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_180,h_180,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
     <link rel="shortcut icon" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_32,h_32,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
+
+    <!-- Cross-domain theme sync: honour ?theme= URL param, then localStorage, then OS -->
     <script>
       (function () {
-        const t = localStorage.getItem('theme');
-        if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches))
-          document.documentElement.classList.add('dark');
+        var p = new URLSearchParams(window.location.search).get('theme');
+        if (p === 'dark' || p === 'light') {
+          localStorage.setItem('theme', p);
+          if (p === 'dark') document.documentElement.classList.add('dark');
+        } else {
+          var t = localStorage.getItem('theme');
+          if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches))
+            document.documentElement.classList.add('dark');
+        }
       })();
     </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <script>tailwind.config = { darkMode: 'class' }</script>
@@ -88,7 +97,6 @@
             <p class="text-sm lg:text-[0.95rem] text-slate-400 dark:text-gray-500 leading-relaxed">
               I'm <strong class="text-slate-200 dark:text-gray-800">Arpit Agarwala</strong> — BCom (Hons) student, CA Intermediate aspirant, and builder of finance-first web tools. Cleared CA Foundation in Dec 2023, currently in deep prep for Intermediate while shipping projects at the intersection of finance, tech, and design.
             </p>
-            <!-- Single CTA: Who I Am -->
             <div class="mt-5">
               <a href="about.html" class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 active:bg-cyan-600 text-white text-sm font-semibold transition-colors shadow-md shadow-cyan-500/20">
                 <i class="ri-user-smile-line"></i> Who I Am
@@ -112,22 +120,22 @@
         <div class="grid grid-cols-2 gap-1.5">
           <a href="projects.html" class="nav-link">
             <span class="nav-icon bg-blue-500/10 dark:bg-blue-50"><i class="ri-code-box-line text-blue-400 dark:text-blue-500"></i></span>
-            <div><p class="text-sm font-semibold text-slate-200 dark:text-gray-800">Projects</p><p class="text-xs text-slate-500 dark:text-gray-400">Tools & experiments</p></div>
+            <div><p class="text-sm font-semibold text-slate-200 dark:text-gray-800">Projects</p><p class="text-xs text-slate-500 dark:text-gray-400">Tools &amp; experiments</p></div>
             <i class="ri-arrow-right-line text-sm text-slate-600 dark:text-gray-400 nav-arrow"></i>
           </a>
           <a href="gallery.html" class="nav-link">
             <span class="nav-icon bg-pink-500/10 dark:bg-pink-50"><i class="ri-image-line text-pink-400 dark:text-pink-500"></i></span>
-            <div><p class="text-sm font-semibold text-slate-200 dark:text-gray-800">Gallery</p><p class="text-xs text-slate-500 dark:text-gray-400">Moments & memories</p></div>
+            <div><p class="text-sm font-semibold text-slate-200 dark:text-gray-800">Gallery</p><p class="text-xs text-slate-500 dark:text-gray-400">Moments &amp; memories</p></div>
             <i class="ri-arrow-right-line text-sm text-slate-600 dark:text-gray-400 nav-arrow"></i>
           </a>
           <a href="achievements.html" class="nav-link">
             <span class="nav-icon bg-amber-500/10 dark:bg-amber-50"><i class="ri-trophy-line text-amber-400 dark:text-amber-500"></i></span>
-            <div><p class="text-sm font-semibold text-slate-200 dark:text-gray-800">Achievements</p><p class="text-xs text-slate-500 dark:text-gray-400">Awards & milestones</p></div>
+            <div><p class="text-sm font-semibold text-slate-200 dark:text-gray-800">Achievements</p><p class="text-xs text-slate-500 dark:text-gray-400">Awards &amp; milestones</p></div>
             <i class="ri-arrow-right-line text-sm text-slate-600 dark:text-gray-400 nav-arrow"></i>
           </a>
           <a href="articles.html" class="nav-link">
             <span class="nav-icon bg-orange-500/10 dark:bg-orange-50"><i class="ri-article-line text-orange-400 dark:text-orange-500"></i></span>
-            <div><p class="text-sm font-semibold text-slate-200 dark:text-gray-800">Articles</p><p class="text-xs text-slate-500 dark:text-gray-400">Finance & productivity</p></div>
+            <div><p class="text-sm font-semibold text-slate-200 dark:text-gray-800">Articles</p><p class="text-xs text-slate-500 dark:text-gray-400">Finance &amp; productivity</p></div>
             <i class="ri-arrow-right-line text-sm text-slate-600 dark:text-gray-400 nav-arrow"></i>
           </a>
           <a href="games.html" class="nav-link">
@@ -145,8 +153,6 @@
 
       <!-- SOCIALS + CONTACT -->
       <div class="card p-6 flex flex-col justify-between gap-4">
-
-        <!-- GET IN TOUCH -->
         <a href="mailto:arpitagarwalms@gmail.com?subject=Hello%20Arpit!&body=Hi%20Arpit%2C%0A%0AI%20came%20across%20your%20portfolio%20(arpitagarwala.online)%20and%20wanted%20to%20reach%20out."
            class="flex items-center gap-3.5 group">
           <div class="w-11 h-11 flex items-center justify-center rounded-full bg-cyan-500/10 dark:bg-cyan-50 shrink-0">
@@ -158,10 +164,7 @@
           </div>
           <i class="ri-arrow-right-up-line text-sm text-slate-600 dark:text-gray-400 group-hover:text-cyan-400 transition-colors"></i>
         </a>
-
         <div class="h-px bg-slate-700/50 dark:bg-gray-200"></div>
-
-        <!-- FIND ME ON -->
         <div>
           <p class="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-500 dark:text-gray-400 mb-2.5">Find me on</p>
           <div class="flex flex-col gap-2">
@@ -187,7 +190,6 @@
             </a>
           </div>
         </div>
-
       </div>
 
       <!-- FOOTER -->
@@ -198,25 +200,46 @@
     </main>
 
     <script>
+      /* Clock */
       function updateClock() {
-        const now = new Date();
-        const c = document.getElementById('live-clock');
-        const d = document.getElementById('live-date');
+        var now = new Date();
+        var c = document.getElementById('live-clock');
+        var d = document.getElementById('live-date');
         if (c) c.innerText = now.toLocaleTimeString('en-US', { hour12:false, hour:'2-digit', minute:'2-digit', second:'2-digit' });
         if (d) d.innerText = now.toLocaleDateString('en-IN', { weekday:'short', day:'numeric', month:'short', year:'numeric' });
       }
       updateClock();
       setInterval(updateClock, 1000);
+
+      /* Theme icon sync */
       function syncIcon() {
         document.getElementById('theme-icon').className =
           document.documentElement.classList.contains('dark') ? 'ri-sun-line text-xl' : 'ri-moon-line text-xl';
       }
       syncIcon();
+
+      /* Stamp current theme into any outbound design.arpitagarwala.online links */
+      function updateCrossLinks() {
+        var t = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+        document.querySelectorAll('a[href*="design.arpitagarwala.online"]').forEach(function (a) {
+          try {
+            var u = new URL(a.href);
+            u.searchParams.set('theme', t);
+            a.href = u.toString();
+          } catch (e) {}
+        });
+      }
+
+      /* Theme toggle */
       function toggleTheme() {
         document.documentElement.classList.toggle('dark');
         localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
         syncIcon();
+        updateCrossLinks();
       }
+
+      /* Stamp on first load */
+      document.addEventListener('DOMContentLoaded', updateCrossLinks);
     </script>
   </body>
 </html>
