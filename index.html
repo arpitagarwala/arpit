@@ -70,11 +70,6 @@
       .nav-link:hover .nav-arrow { opacity:1; transform:translateX(2px); }
       .nav-arrow { opacity:0; transition:opacity 0.15s,transform 0.15s; margin-left:auto; }
       .nav-icon { width:2.4rem; height:2.4rem; border-radius:0.6rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:1.05rem; }
-      /* Featured design link */
-      .nav-link-featured { border-color: rgba(232,121,249,0.15); background: rgba(232,121,249,0.04); }
-      .nav-link-featured:hover { border-color: rgba(232,121,249,0.4) !important; background: rgba(232,121,249,0.07) !important; }
-      .dark .nav-link-featured { border-color: rgba(192,38,211,0.12); background: rgba(192,38,211,0.03); }
-      .dark .nav-link-featured:hover { border-color: rgba(192,38,211,0.3) !important; background: rgba(192,38,211,0.06) !important; }
     </style>
   </head>
 
@@ -160,16 +155,9 @@
             <i class="ri-arrow-right-line text-sm text-slate-600 dark:text-gray-400 nav-arrow"></i>
           </a>
 
-          <!-- Design Portfolio – full-width featured link -->
-          <a href="https://design.arpitagarwala.online" target="_blank" rel="noopener"
-             class="nav-link nav-link-featured col-span-2">
-            <span class="nav-icon bg-fuchsia-500/10 dark:bg-fuchsia-50">
-              <i class="ri-palette-line text-fuchsia-400 dark:text-fuchsia-500"></i>
-            </span>
-            <div>
-              <p class="text-sm font-semibold text-slate-200 dark:text-gray-800">Design Portfolio</p>
-              <p class="text-xs text-slate-500 dark:text-gray-400">UI/UX work &amp; Figma projects</p>
-            </div>
+          <a href="https://design.arpitagarwala.online" target="_blank" rel="noopener" class="nav-link">
+            <span class="nav-icon bg-fuchsia-500/10 dark:bg-fuchsia-50"><i class="ri-palette-line text-fuchsia-400 dark:text-fuchsia-500"></i></span>
+            <div><p class="text-sm font-semibold text-slate-200 dark:text-gray-800">Designs</p><p class="text-xs text-slate-500 dark:text-gray-400">UI/UX &amp; Figma work</p></div>
             <i class="ri-arrow-right-up-line text-sm text-slate-600 dark:text-gray-400 nav-arrow"></i>
           </a>
 
@@ -225,7 +213,6 @@
     </main>
 
     <script>
-      /* Clock */
       function updateClock() {
         var now = new Date();
         var c = document.getElementById('live-clock');
@@ -236,14 +223,12 @@
       updateClock();
       setInterval(updateClock, 1000);
 
-      /* Theme icon sync */
       function syncIcon() {
         document.getElementById('theme-icon').className =
           document.documentElement.classList.contains('dark') ? 'ri-sun-line text-xl' : 'ri-moon-line text-xl';
       }
       syncIcon();
 
-      /* Stamp current theme into any outbound design.arpitagarwala.online links */
       function updateCrossLinks() {
         var t = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
         document.querySelectorAll('a[href*="design.arpitagarwala.online"]').forEach(function (a) {
@@ -255,7 +240,6 @@
         });
       }
 
-      /* Theme toggle */
       function toggleTheme() {
         document.documentElement.classList.toggle('dark');
         localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
@@ -263,7 +247,6 @@
         updateCrossLinks();
       }
 
-      /* Stamp on first load */
       document.addEventListener('DOMContentLoaded', updateCrossLinks);
     </script>
   </body>
