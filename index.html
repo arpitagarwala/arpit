@@ -3,8 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <!-- ═══ Primary SEO ═══ -->
     <title>Arpit Agarwala – Portfolio | BCom Student, CA Aspirant & Web Creator</title>
     <meta name="description" content="Personal portfolio of Arpit Agarwala – BCom (Hons) student, CA aspirant from Kolkata. Explore projects, tools, games, articles and achievements." />
     <meta name="keywords" content="Arpit Agarwala, portfolio, CA aspirant, BCom, Kolkata, web developer, finance tools, SIP calculator, budget tracker" />
@@ -36,7 +34,6 @@
       "sameAs": ["https://www.linkedin.com/in/arpitagarwala/", "https://www.instagram.com/arpit.agarwala_/", "https://github.com/arpitagarwala"]
     }
     </script>
-
     <link rel="icon" type="image/png" href="assets/images/tab-icon.png">
     <script>
       (function () {
@@ -48,11 +45,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <script>tailwind.config = { darkMode: 'class' }</script>
-
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
       body { font-family: 'Inter', sans-serif; }
-
       .card {
         background: rgb(17,24,39);
         border: 1px solid rgba(255,255,255,0.06);
@@ -60,7 +55,6 @@
         transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
       }
       .dark .card { background: #ffffff; border-color: rgb(229,231,235); }
-
       a.card:hover {
         transform: translateY(-2px);
         border-color: rgba(34,211,238,0.4);
@@ -69,7 +63,6 @@
       .dark a.card:hover {
         box-shadow: 0 8px 24px rgba(0,0,0,0.08), 0 0 0 1px rgba(34,211,238,0.12);
       }
-
       .nav-link {
         display: flex;
         align-items: center;
@@ -94,7 +87,6 @@
         transition: opacity 0.15s, transform 0.15s;
         margin-left: auto;
       }
-
       .nav-icon {
         width: 2.4rem; height: 2.4rem;
         border-radius: 0.6rem;
@@ -116,7 +108,7 @@
 
     <main class="grid grid-cols-1 lg:grid-cols-3 gap-4 max-w-5xl w-full">
 
-      <!-- ROW 1: HERO (col 1–2) + CLOCK (col 3) -->
+      <!-- ROW 1: HERO + CLOCK -->
 
       <!-- HERO -->
       <div class="card p-7 lg:col-span-2 relative overflow-hidden">
@@ -136,13 +128,16 @@
             </div>
             <h1 class="text-2xl lg:text-3xl font-extrabold text-white dark:text-gray-900 mb-2.5 leading-tight">Hello there! 👋</h1>
             <p class="text-sm lg:text-[0.95rem] text-slate-400 dark:text-gray-500 leading-relaxed">
-              I’m <strong class="text-slate-200 dark:text-gray-800">Arpit Agarwala</strong>, a BCom (Hons) student and CA aspirant from Kolkata — passionate about finance, web tools, and building things that matter.
+              I’m <strong class="text-slate-200 dark:text-gray-800">Arpit Agarwala</strong> — BCom (Hons) student, CA Intermediate aspirant, and builder of finance-first web tools. Cleared CA Foundation in Dec 2023, currently in deep prep for Intermediate while shipping projects at the intersection of finance, tech, and design.
             </p>
             <div class="flex gap-2.5 mt-5 flex-wrap">
-              <a href="projects.html" class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-white text-sm font-semibold transition-colors shadow-md shadow-cyan-500/20">
-                <i class="ri-rocket-2-line"></i> View Projects
+              <!-- WHO I AM btn — links to about.html -->
+              <a href="about.html" class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 active:bg-cyan-600 text-white text-sm font-semibold transition-colors shadow-md shadow-cyan-500/20">
+                <i class="ri-user-smile-line"></i> Who I Am
               </a>
-              <a href="mailto:arpitagarwalms@gmail.com" class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg border border-slate-600 dark:border-gray-300 hover:border-slate-400 dark:hover:border-gray-500 text-slate-300 dark:text-gray-600 text-sm font-semibold transition-colors">
+              <!-- CONTACT ME btn — mailto link -->
+              <a href="mailto:arpitagarwalms@gmail.com?subject=Hello%20Arpit!&body=Hi%20Arpit%2C%0A%0AI%20came%20across%20your%20portfolio%20(arpitagarwala.online)%20and%20wanted%20to%20reach%20out."
+                 class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg border border-slate-600 dark:border-gray-300 hover:border-cyan-500/50 dark:hover:border-cyan-400/50 text-slate-300 dark:text-gray-600 hover:text-white dark:hover:text-gray-900 text-sm font-semibold transition-all">
                 <i class="ri-mail-line"></i> Contact Me
               </a>
             </div>
@@ -158,7 +153,7 @@
         <p id="live-date" class="text-xs text-slate-500 dark:text-gray-400 mt-3 tracking-wide"></p>
       </div>
 
-      <!-- ROW 2: PAGES NAV (col 1–2) + SOCIALS (col 3) -->
+      <!-- ROW 2: PAGES NAV + SOCIALS -->
 
       <!-- PAGES NAV -->
       <div class="card p-5 lg:col-span-2">
@@ -223,10 +218,11 @@
       </div>
 
       <!-- SOCIALS + CONTACT -->
-      <div class="card p-6 flex flex-col justify-between gap-5">
+      <div class="card p-6 flex flex-col justify-between gap-4">
 
-        <!-- contact -->
-        <a href="mailto:arpitagarwalms@gmail.com" class="flex items-center gap-3.5 group">
+        <!-- GET IN TOUCH — mailto with prefilled subject+body -->
+        <a href="mailto:arpitagarwalms@gmail.com?subject=Hello%20Arpit!&body=Hi%20Arpit%2C%0A%0AI%20came%20across%20your%20portfolio%20(arpitagarwala.online)%20and%20wanted%20to%20reach%20out."
+           class="flex items-center gap-3.5 group">
           <div class="w-11 h-11 flex items-center justify-center rounded-full bg-cyan-500/10 dark:bg-cyan-50 shrink-0">
             <i class="ri-mail-send-line text-cyan-400 dark:text-cyan-500 text-lg"></i>
           </div>
@@ -239,25 +235,37 @@
 
         <div class="h-px bg-slate-700/50 dark:bg-gray-200"></div>
 
-        <!-- socials -->
+        <!-- FIND ME ON -->
         <div>
           <p class="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-500 dark:text-gray-400 mb-2.5">Find me on</p>
           <div class="flex flex-col gap-2">
+
+            <!-- WhatsApp -->
+            <a href="https://wa.me/919957414146?text=Hi%20Arpit!%20I%20came%20across%20your%20portfolio%20at%20arpitagarwala.online%20and%20wanted%20to%20connect."
+               target="_blank" rel="noopener" class="nav-link">
+              <i class="ri-whatsapp-line text-emerald-400 dark:text-emerald-500 text-base"></i>
+              <span class="text-sm font-medium text-slate-300 dark:text-gray-600">WhatsApp</span>
+              <i class="ri-arrow-right-up-line text-xs text-slate-600 dark:text-gray-400 nav-arrow"></i>
+            </a>
+
             <a href="https://www.instagram.com/arpit.agarwala_/" target="_blank" rel="noopener" class="nav-link">
               <i class="ri-instagram-line text-pink-400 dark:text-pink-500 text-base"></i>
               <span class="text-sm font-medium text-slate-300 dark:text-gray-600">Instagram</span>
               <i class="ri-arrow-right-up-line text-xs text-slate-600 dark:text-gray-400 nav-arrow"></i>
             </a>
+
             <a href="https://www.linkedin.com/in/arpitagarwala/" target="_blank" rel="noopener" class="nav-link">
               <i class="ri-linkedin-line text-blue-400 dark:text-blue-500 text-base"></i>
               <span class="text-sm font-medium text-slate-300 dark:text-gray-600">LinkedIn</span>
               <i class="ri-arrow-right-up-line text-xs text-slate-600 dark:text-gray-400 nav-arrow"></i>
             </a>
+
             <a href="https://github.com/arpitagarwala" target="_blank" rel="noopener" class="nav-link">
               <i class="ri-github-line text-slate-300 dark:text-gray-700 text-base"></i>
               <span class="text-sm font-medium text-slate-300 dark:text-gray-600">GitHub</span>
               <i class="ri-arrow-right-up-line text-xs text-slate-600 dark:text-gray-400 nav-arrow"></i>
             </a>
+
           </div>
         </div>
 
