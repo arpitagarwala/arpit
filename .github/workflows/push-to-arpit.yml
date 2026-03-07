@@ -1,0 +1,20 @@
+name: Push Preview to Arpit (Live)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  push-to-arpit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout preview repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push to arpit repo
+        run: |
+          git config user.email "arpitagarwala@users.noreply.github.com"
+          git config user.name "arpitagarwala"
+          git remote add arpit https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/arpitagarwala/arpit.git
+          git push arpit HEAD:main --force
