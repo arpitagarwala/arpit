@@ -4,14 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Achievements – Arpit Agarwala</title>
-  <meta name="description" content="Achievements of Arpit Agarwala – CA Foundation, Chairman Award, academic scholarship, internships, leadership and certifications." />
+  <meta name="description" content="Achievements of Arpit Agarwala – CA Foundation, Chairman Award, 30-Day Trading Challenge, academic scholarship, internships, leadership and certifications." />
   <meta name="author" content="Arpit Agarwala" />
   <link rel="canonical" href="https://arpitagarwala.online/achievements.html" />
   <meta name="robots" content="index, follow" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://arpitagarwala.online/achievements.html" />
   <meta property="og:title" content="Achievements – Arpit Agarwala" />
-  <meta property="og:description" content="CA Foundation cleared, Chairman Award, academic scholarship and more milestones by Arpit Agarwala." />
+  <meta property="og:description" content="CA Foundation cleared, Chairman Award, 30-Day Trading Challenge +45.46% return, academic scholarship and more milestones by Arpit Agarwala." />
   <meta property="og:image" content="https://arpitagarwala.online/assets/images/my-miniature.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/png" href="assets/images/tab-icon.png">
@@ -38,11 +38,63 @@
     .dark .stat { background:rgba(8,145,178,0.04); border-color:rgba(8,145,178,0.11); }
     @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
     .fade-up { animation: fadeUp 0.35s ease both; }
+
+    /* Trading card */
+    .trading-card {
+      background: linear-gradient(135deg, rgb(17,24,39) 0%, rgb(10,20,35) 100%);
+      border: 1px solid rgba(34,211,238,0.2);
+      border-radius: 1rem;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .dark .trading-card {
+      background: linear-gradient(135deg, #f0fdff 0%, #e0f7fa 100%);
+      border-color: rgba(8,145,178,0.2);
+    }
+    .trading-card::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 220px; height: 220px;
+      background: radial-gradient(circle, rgba(34,211,238,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .trading-card:hover { border-color: rgba(34,211,238,0.5); box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
+    .dark .trading-card:hover { border-color: rgba(8,145,178,0.4); box-shadow: 0 8px 28px rgba(0,0,0,0.1); }
+
+    /* Equity curve SVG */
+    .equity-svg { width:100%; height:80px; display:block; }
+
+    /* Mini stat pill */
+    .t-stat { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.07); border-radius:0.6rem; padding:0.55rem 0.8rem; }
+    .dark .t-stat { background:rgba(0,0,0,0.03); border-color:rgba(0,0,0,0.07); }
+
+    /* Daily log table toggle */
+    #daily-log { max-height:0; overflow:hidden; transition: max-height 0.4s ease; }
+    #daily-log.open { max-height:600px; }
+    .log-row-pos { background: rgba(16,185,129,0.06); }
+    .log-row-neg { background: rgba(239,68,68,0.06); }
+    .dark .log-row-pos { background: rgba(16,185,129,0.05); }
+    .dark .log-row-neg { background: rgba(239,68,68,0.04); }
+
+    /* Shimmer badge */
+    @keyframes shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position:  200% center; }
+    }
+    .shimmer-text {
+      background: linear-gradient(90deg,#22d3ee 0%,#a5f3fc 40%,#22d3ee 70%,#0891b2 100%);
+      background-size: 200% auto;
+      animation: shimmer 3s linear infinite;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
   </style>
 </head>
 <body class="min-h-screen bg-[#080c14] dark:bg-slate-100 text-slate-100 dark:text-gray-900 transition-colors duration-300 py-10 px-4">
 
-  <!-- Back Button (uniform: fixed circle, top-left) -->
+  <!-- Back Button -->
   <div class="fixed top-3 left-3 z-50">
     <a href="index.html" class="bg-slate-700 dark:bg-white text-slate-200 dark:text-gray-700 p-1.5 rounded-full shadow-md inline-flex items-center border border-slate-600 dark:border-gray-200 hover:border-cyan-400 dark:hover:border-cyan-400 hover:shadow-lg transition-all duration-100">
       <i class="ri-arrow-left-line text-lg"></i>
@@ -61,19 +113,148 @@
     <!-- Page heading -->
     <div class="mb-7 fade-up">
       <h1 class="text-3xl font-extrabold text-white dark:text-gray-900">🏆 Achievements</h1>
-      <p class="text-slate-400 dark:text-gray-500 text-sm mt-1">Awards, certifications, academic milestones & leadership wins.</p>
+      <p class="text-slate-400 dark:text-gray-500 text-sm mt-1">Awards, certifications, trading milestones & leadership wins.</p>
     </div>
 
     <!-- Stats row -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 fade-up" style="animation-delay:0.05s">
-      <div class="stat"><p class="text-2xl font-black text-cyan-400 dark:text-cyan-600">6</p><p class="text-[10px] uppercase tracking-wider text-slate-400 dark:text-gray-500 mt-0.5">Total</p></div>
+      <div class="stat"><p class="text-2xl font-black text-cyan-400 dark:text-cyan-600">7</p><p class="text-[10px] uppercase tracking-wider text-slate-400 dark:text-gray-500 mt-0.5">Total</p></div>
       <div class="stat"><p class="text-2xl font-black text-amber-400 dark:text-amber-600">3</p><p class="text-[10px] uppercase tracking-wider text-slate-400 dark:text-gray-500 mt-0.5">Awards</p></div>
-      <div class="stat"><p class="text-2xl font-black text-emerald-400 dark:text-emerald-600">2</p><p class="text-[10px] uppercase tracking-wider text-slate-400 dark:text-gray-500 mt-0.5">Certifications</p></div>
+      <div class="stat"><p class="text-2xl font-black text-emerald-400 dark:text-emerald-600">+45.5%</p><p class="text-[10px] uppercase tracking-wider text-slate-400 dark:text-gray-500 mt-0.5">Trading Return</p></div>
       <div class="stat"><p class="text-2xl font-black text-violet-400 dark:text-violet-600">3</p><p class="text-[10px] uppercase tracking-wider text-slate-400 dark:text-gray-500 mt-0.5">Years Active</p></div>
     </div>
 
-    <!-- Achievement cards -->
+    <!-- Achievement cards grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+      <!-- ========== FEATURED: 30-DAY TRADING CHALLENGE (full width) ========== -->
+      <div class="col-span-1 sm:col-span-2 lg:col-span-3 trading-card p-5 sm:p-6 fade-up" style="animation-delay:0.06s">
+
+        <!-- Header row -->
+        <div class="flex flex-wrap items-start justify-between gap-3 mb-4">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center shadow-lg flex-shrink-0">
+              <i class="ri-stock-line text-white text-xl"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-0.5">
+                <span class="text-[10px] font-bold tracking-[0.18em] uppercase text-emerald-400 dark:text-emerald-600">Trading Challenge · Sep–Oct 2025</span>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full border border-cyan-500/30 dark:border-cyan-400/40 bg-cyan-900/20 dark:bg-cyan-50">
+                  <span class="shimmer-text">⭐ Featured</span>
+                </span>
+              </div>
+              <h3 class="text-base sm:text-lg font-extrabold text-white dark:text-gray-900 leading-snug">30-Day Live Trading Challenge</h3>
+            </div>
+          </div>
+          <!-- Total return badge -->
+          <div class="flex-shrink-0 text-right">
+            <p class="text-3xl sm:text-4xl font-black text-emerald-400 dark:text-emerald-600 leading-none">+45.46%</p>
+            <p class="text-[10px] text-slate-400 dark:text-gray-500 mt-0.5">₹45,788 → ₹66,589 &middot; 21 trading days</p>
+          </div>
+        </div>
+
+        <!-- Equity curve SVG -->
+        <div class="mb-4">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-[10px] font-semibold text-slate-400 dark:text-gray-500 uppercase tracking-wider">Equity Curve</span>
+            <span class="text-[10px] text-slate-500 dark:text-gray-400">₹45,788 &rarr; ₹66,589</span>
+          </div>
+          <div class="rounded-lg overflow-hidden bg-slate-800/60 dark:bg-white/80 border border-slate-700/40 dark:border-gray-200 p-2">
+            <svg class="equity-svg" viewBox="0 0 420 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="equityGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#10b981" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <!-- fill area -->
+              <path d="M0,73 L20,71 L40,70 L60,55 L80,57 L100,59 L120,56 L140,44 L160,48 L180,36 L200,41 L220,34 L240,23 L260,28 L280,34 L300,33 L320,36 L340,14 L360,17 L380,21 L400,3 L420,3 L420,80 L0,80 Z" fill="url(#equityGrad)"/>
+              <!-- line -->
+              <polyline
+                points="0,73 20,71 40,70 60,55 80,57 100,59 120,56 140,44 160,48 180,36 200,41 220,34 240,23 260,28 280,34 300,33 320,36 340,14 360,17 380,21 400,3"
+                fill="none" stroke="#10b981" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"
+              />
+              <!-- day dots -->
+              <circle cx="0"   cy="73" r="2" fill="#10b981" opacity="0.7"/>
+              <circle cx="60"  cy="55" r="2" fill="#10b981" opacity="0.7"/>
+              <circle cx="140" cy="44" r="2" fill="#10b981" opacity="0.7"/>
+              <circle cx="240" cy="23" r="2" fill="#ef4444" opacity="0.8"/>
+              <circle cx="340" cy="14" r="2" fill="#10b981" opacity="0.7"/>
+              <circle cx="400" cy="3"  r="3" fill="#10b981"/>
+              <!-- peak label -->
+              <text x="398" y="12" font-size="7" fill="#10b981" text-anchor="end" font-family="Inter,sans-serif" font-weight="700">+45.5%</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Key stats row -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
+          <div class="t-stat">
+            <p class="text-[10px] text-slate-400 dark:text-gray-500 mb-0.5">Best Day</p>
+            <p class="text-sm font-black text-emerald-400 dark:text-emerald-600">+14.87%</p>
+            <p class="text-[10px] text-slate-500 dark:text-gray-400">17 Oct 2025</p>
+          </div>
+          <div class="t-stat">
+            <p class="text-[10px] text-slate-400 dark:text-gray-500 mb-0.5">Worst Day</p>
+            <p class="text-sm font-black text-red-400 dark:text-red-600">-5.03%</p>
+            <p class="text-[10px] text-slate-500 dark:text-gray-400">9 Oct 2025</p>
+          </div>
+          <div class="t-stat">
+            <p class="text-[10px] text-slate-400 dark:text-gray-500 mb-0.5">Win Rate</p>
+            <p class="text-sm font-black text-cyan-400 dark:text-cyan-600">62%</p>
+            <p class="text-[10px] text-slate-500 dark:text-gray-400">13 of 21 days</p>
+          </div>
+          <div class="t-stat">
+            <p class="text-[10px] text-slate-400 dark:text-gray-500 mb-0.5">Net P&amp;L</p>
+            <p class="text-sm font-black text-emerald-400 dark:text-emerald-600">₹20,800+</p>
+            <p class="text-[10px] text-slate-500 dark:text-gray-400">gross basis</p>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <p class="text-xs text-slate-400 dark:text-gray-500 leading-relaxed mb-4">
+          A self-imposed 30-day live trading challenge using SMC/ICT methodology on Indian equity & F&O segments. Starting with ₹45,788, the portfolio grew to ₹66,589 — a net gain of <strong class="text-emerald-400 dark:text-emerald-600">+45.46%</strong> over 21 active trading sessions. Discipline, risk management, and pattern-based entries were the core framework throughout.
+        </p>
+
+        <!-- Toggle button -->
+        <button onclick="toggleLog()" id="log-toggle-btn"
+          class="flex items-center gap-1.5 text-xs font-semibold text-cyan-400 dark:text-cyan-600 hover:text-cyan-300 dark:hover:text-cyan-500 transition-colors mb-3">
+          <i class="ri-table-line"></i>
+          <span id="log-toggle-text">Show Daily P&amp;L Log</span>
+          <i id="log-chevron" class="ri-arrow-down-s-line transition-transform duration-300"></i>
+        </button>
+
+        <!-- Daily log table -->
+        <div id="daily-log">
+          <div class="rounded-lg overflow-hidden border border-slate-700/40 dark:border-gray-200">
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs">
+                <thead>
+                  <tr class="bg-slate-700/60 dark:bg-gray-100 text-slate-300 dark:text-gray-600">
+                    <th class="px-3 py-2 text-left font-semibold">Date</th>
+                    <th class="px-3 py-2 text-right font-semibold">Opening</th>
+                    <th class="px-3 py-2 text-right font-semibold">Net P&amp;L</th>
+                    <th class="px-3 py-2 text-right font-semibold">Closing</th>
+                    <th class="px-3 py-2 text-right font-semibold">Return</th>
+                  </tr>
+                </thead>
+                <tbody id="log-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer tag -->
+        <div class="mt-4 pt-4 border-t border-slate-700/30 dark:border-gray-200">
+          <span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 dark:bg-emerald-50 dark:text-emerald-600">
+            <i class="ri-line-chart-line"></i> Live Trading · SMC/ICT Methodology
+          </span>
+          <span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 dark:bg-cyan-50 dark:text-cyan-600 ml-1.5">
+            <i class="ri-calendar-check-line"></i> Sep 18 – Oct 17, 2025
+          </span>
+        </div>
+      </div>
+      <!-- ========== END TRADING CARD ========== -->
 
       <div class="ach-card p-5 fade-up" style="animation-delay:0.08s">
         <div class="w-10 h-10 rounded-xl bg-cyan-500/10 dark:bg-cyan-50 flex items-center justify-center mb-4"><i class="ri-medal-2-line text-cyan-400 dark:text-cyan-600 text-xl"></i></div>
@@ -145,6 +326,62 @@
   </div>
 
   <script>
+    // Daily trading data
+    const TRADES = [
+      { date:'18-Sep-25', open:45788.29, netPL:164.91,    close:45788.29, ret: 0.36 },
+      { date:'19-Sep-25', open:45788.29, netPL:280.55,    close:46068.84, ret: 0.61 },
+      { date:'22-Sep-25', open:46068.84, netPL:53.06,     close:46121.90, ret: 0.12 },
+      { date:'23-Sep-25', open:46121.90, netPL:2578.46,   close:48700.35, ret: 5.59 },
+      { date:'24-Sep-25', open:48700.35, netPL:-301.14,   close:48399.21, ret:-0.62 },
+      { date:'25-Sep-25', open:48399.21, netPL:-299.14,   close:48100.07, ret:-0.62 },
+      { date:'26-Sep-25', open:48100.07, netPL:848.15,    close:48948.22, ret: 1.76 },
+      { date:'29-Sep-25', open:48948.22, netPL:3032.26,   close:50980.49, ret: 6.19 },
+      { date:'30-Sep-25', open:50980.49, netPL:1535.79,   close:52516.28, ret: 3.01 },
+      { date:'1-Oct-25',  open:52516.28, netPL:3467.31,   close:55983.59, ret: 6.60 },
+      { date:'3-Oct-25',  open:55983.59, netPL:-1453.02,  close:54530.57, ret:-2.60 },
+      { date:'6-Oct-25',  open:54530.57, netPL:3306.75,   close:57837.32, ret: 6.06 },
+      { date:'7-Oct-25',  open:57837.32, netPL:5105.77,   close:59943.09, ret: 8.83 },
+      { date:'8-Oct-25',  open:59943.09, netPL:-1868.31,  close:58074.78, ret:-3.12 },
+      { date:'9-Oct-25',  open:58074.78, netPL:-2923.17,  close:55151.62, ret:-5.03 },
+      { date:'10-Oct-25', open:55151.62, netPL:794.03,    close:55945.65, ret: 1.44 },
+      { date:'13-Oct-25', open:55945.65, netPL:-1253.81,  close:54691.84, ret:-2.24 },
+      { date:'14-Oct-25', open:54691.84, netPL:7514.92,   close:62206.77, ret:13.74 },
+      { date:'15-Oct-25', open:62206.77, netPL:-536.02,   close:59670.74, ret:-0.86 },
+      { date:'16-Oct-25', open:59670.74, netPL:-1700.17,  close:57970.57, ret:-2.85 },
+      { date:'17-Oct-25', open:57970.57, netPL:8618.31,   close:66588.88, ret:14.87 },
+    ];
+
+    // Build table rows
+    (function buildTable() {
+      const tbody = document.getElementById('log-tbody');
+      tbody.innerHTML = TRADES.map(t => {
+        const pos = t.netPL >= 0;
+        const plStr = (pos ? '+' : '') + '₹' + Math.abs(t.netPL).toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
+        const retStr = (pos ? '+' : '') + t.ret.toFixed(2) + '%';
+        const rowCls = pos ? 'log-row-pos' : 'log-row-neg';
+        const clr    = pos ? 'text-emerald-400 dark:text-emerald-600' : 'text-red-400 dark:text-red-500';
+        return `
+          <tr class="${rowCls} border-t border-slate-700/30 dark:border-gray-100">
+            <td class="px-3 py-1.5 text-slate-300 dark:text-gray-700 font-medium">${t.date}</td>
+            <td class="px-3 py-1.5 text-right text-slate-400 dark:text-gray-500">₹${t.open.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+            <td class="px-3 py-1.5 text-right font-semibold ${clr}">${plStr}</td>
+            <td class="px-3 py-1.5 text-right text-slate-300 dark:text-gray-700">₹${t.close.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+            <td class="px-3 py-1.5 text-right font-bold ${clr}">${retStr}</td>
+          </tr>`;
+      }).join('');
+    })();
+
+    // Toggle daily log
+    function toggleLog() {
+      const log = document.getElementById('daily-log');
+      const txt = document.getElementById('log-toggle-text');
+      const chv = document.getElementById('log-chevron');
+      const open = log.classList.toggle('open');
+      txt.textContent = open ? 'Hide Daily P&L Log' : 'Show Daily P&L Log';
+      chv.style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
+
+    // Theme
     function syncIcon() {
       document.getElementById('theme-icon').className =
         document.documentElement.classList.contains('dark') ? 'ri-sun-line text-lg' : 'ri-moon-line text-lg';
