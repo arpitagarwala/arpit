@@ -45,11 +45,18 @@
         var p = new URLSearchParams(window.location.search).get('theme');
         if (p === 'dark' || p === 'light') {
           localStorage.setItem('theme', p);
-          if (p === 'dark') document.documentElement.classList.add('dark');
+          if (p === 'dark') {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
         } else {
           var t = localStorage.getItem('theme');
-          if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches))
+          if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
         }
       })();
     </script>
