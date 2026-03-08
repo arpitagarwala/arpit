@@ -275,7 +275,7 @@
 <body class="min-h-screen bg-[#080c14] dark:bg-slate-100 text-slate-100 dark:text-gray-900 transition-colors duration-300">
 
   <div class="fixed top-3 left-3 z-50">
-    <a href="index.html" class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-800/80 dark:bg-white backdrop-blur border border-slate-700 dark:border-gray-200 text-slate-300 dark:text-gray-600 hover:border-cyan-400 hover:text-cyan-400 transition-all duration-150 shadow-lg">
+    <a id="back-link" href="index.html" class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-800/80 dark:bg-white backdrop-blur border border-slate-700 dark:border-gray-200 text-slate-300 dark:text-gray-600 hover:border-cyan-400 hover:text-cyan-400 transition-all duration-150 shadow-lg">
       <i class="ri-arrow-left-line text-base"></i>
     </a>
   </div>
@@ -480,16 +480,29 @@
       document.getElementById('lightbox-caption').textContent = `${currentIdx + 1} / ${PHOTOS.length}`;
     }
 
+    function getCurrentTheme() {
+      return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+    }
+
+    function updateBackLink() {
+      var backLink = document.getElementById('back-link');
+      if (backLink) {
+        backLink.href = 'index.html?theme=' + getCurrentTheme();
+      }
+    }
+
     function toggleTheme() {
       document.documentElement.classList.toggle('dark');
       const isDark = document.documentElement.classList.contains('dark');
       localStorage.setItem('theme', isDark ? 'dark' : 'light');
       document.getElementById('theme-icon').className = isDark ? 'ri-sun-line text-base' : 'ri-moon-line text-base';
+      updateBackLink();
     }
 
     (function () {
       const isDark = document.documentElement.classList.contains('dark');
       document.getElementById('theme-icon').className = isDark ? 'ri-sun-line text-base' : 'ri-moon-line text-base';
+      updateBackLink();
     })();
 
     renderGallery();
