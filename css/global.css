@@ -133,16 +133,16 @@ a.card:hover {
    .dark     = dark theme active pill
    Using !important to override Tailwind utility classes
 ───────────────────────────────────────── */
-.filter-pill.active {
-  background-color: #0891b2 !important;
-  color: #ffffff !important;
-  border-color: #0891b2 !important;
+html .filter-pill.active {
+  background-color: #0891b2;
+  color: #ffffff;
+  border-color: #0891b2;
 }
 
-.dark .filter-pill.active {
-  background-color: #22d3ee !important;
-  color: #0f172a !important;
-  border-color: #22d3ee !important;
+html.dark .filter-pill.active {
+  background-color: #22d3ee;
+  color: #0f172a;
+  border-color: #22d3ee;
 }
 
 /* ─────────────────────────────────────────
