@@ -110,7 +110,7 @@
 
     <div id="articles-container" class="space-y-3"></div>
 
-    <div id="no-results" class="flex-col items-center justify-center py-16 text-center">
+    <div id="no-results" class="hidden flex-col items-center justify-center py-16 text-center">
       <i class="ri-search-eye-line text-4xl text-gray-300 dark:text-slate-600 mb-3"></i>
       <h3 class="text-lg font-bold text-gray-500 dark:text-slate-400 mb-2">No articles found</h3>
       <p class="text-gray-400 dark:text-slate-500 text-sm mb-3">Try a different search term or clear your filters.</p>
@@ -614,9 +614,11 @@
 
       if (filtered.length === 0) {
         container.innerHTML = '';
+        noResults.classList.remove('hidden');
         noResults.classList.add('visible');
         return;
       }
+      noResults.classList.add('hidden');
       noResults.classList.remove('visible');
 
       container.innerHTML = filtered.map(a => `
