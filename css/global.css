@@ -7,10 +7,15 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
+/* Smooth easing globally (used on projects page cards) */
+* {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 /* ─────────────────────────────────────────
-   CARD
-   Default (light theme) → white card
-   .dark (dark theme)   → dark navy card
+   CARD  (index.html)
+   No prefix  = light: white card
+   .dark      = dark: navy card
 ───────────────────────────────────────── */
 .card {
   background: #ffffff;
@@ -35,7 +40,7 @@ a.card:hover {
 }
 
 /* ─────────────────────────────────────────
-   NAV LINK
+   NAV LINK  (index.html)
 ───────────────────────────────────────── */
 .nav-link {
   display: flex;
@@ -78,4 +83,104 @@ a.card:hover {
   justify-content: center;
   flex-shrink: 0;
   font-size: 1.05rem;
+}
+
+/* ─────────────────────────────────────────
+   PROJECT CARD  (projects.html)
+   Card entrance animation
+───────────────────────────────────────── */
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.project-card {
+  animation: cardIn 0.28s ease both;
+}
+
+/* Clickable project card link */
+.card-link {
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.card-link:hover {
+  transform: translateY(-3px);
+}
+
+/* ─────────────────────────────────────────
+   FILTER PILLS  (projects.html)
+   No prefix  = light theme active pill
+   .dark      = dark theme active pill
+───────────────────────────────────────── */
+.filter-pill.active {
+  background-color: #0891b2;
+  color: #ffffff;
+  border-color: #0891b2;
+}
+
+.dark .filter-pill.active {
+  background-color: #22d3ee;
+  color: #0f172a;
+  border-color: #22d3ee;
+}
+
+/* ─────────────────────────────────────────
+   SEARCH INPUT  (projects.html)
+   No prefix  = light theme focus ring
+   .dark      = dark theme focus ring
+───────────────────────────────────────── */
+.search-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.2);
+  border-color: #0891b2;
+}
+
+.dark .search-input:focus {
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.18);
+  border-color: #22d3ee;
+}
+
+/* ─────────────────────────────────────────
+   FEATURED SHIMMER TEXT  (projects.html)
+───────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+.featured-text {
+  background: linear-gradient(90deg, #22d3ee 0%, #a5f3fc 40%, #22d3ee 70%, #0891b2 100%);
+  background-size: 200% auto;
+  animation: shimmer 3s linear infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─────────────────────────────────────────
+   COMPLEXITY DOTS  (projects.html)
+   dot-on  = filled (cyan)
+   dot-off = unfilled; light theme: slate, dark theme: gray
+───────────────────────────────────────── */
+.dot-on {
+  background-color: #22d3ee;
+}
+
+.dot-off {
+  background-color: #e5e7eb; /* light theme: gray-200 */
+}
+
+.dark .dot-off {
+  background-color: #334155; /* dark theme: slate-700 */
+}
+
+/* ─────────────────────────────────────────
+   EMPTY STATE  (projects.html)
+───────────────────────────────────────── */
+#no-results {
+  display: none;
+}
+
+#no-results.visible {
+  display: flex;
 }
