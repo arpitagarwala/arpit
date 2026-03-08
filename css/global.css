@@ -7,15 +7,15 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
-/* Smooth easing globally (used on projects page cards) */
+/* Smooth easing globally */
 * {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ─────────────────────────────────────────
    CARD  (index.html)
-   No prefix  = light: white card
-   .dark      = dark: navy card
+   No prefix = light: white card
+   .dark     = dark: navy card
 ───────────────────────────────────────── */
 .card {
   background: #ffffff;
@@ -87,7 +87,6 @@ a.card:hover {
 
 /* ─────────────────────────────────────────
    PROJECT CARD  (projects.html)
-   Card entrance animation
 ───────────────────────────────────────── */
 @keyframes cardIn {
   from { opacity: 0; transform: translateY(12px) scale(0.97); }
@@ -98,7 +97,6 @@ a.card:hover {
   animation: cardIn 0.28s ease both;
 }
 
-/* Clickable project card link */
 .card-link {
   transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
 }
@@ -109,8 +107,8 @@ a.card:hover {
 
 /* ─────────────────────────────────────────
    FILTER PILLS  (projects.html)
-   No prefix  = light theme active pill
-   .dark      = dark theme active pill
+   No prefix = light theme active pill
+   .dark     = dark theme active pill
 ───────────────────────────────────────── */
 .filter-pill.active {
   background-color: #0891b2;
@@ -126,8 +124,8 @@ a.card:hover {
 
 /* ─────────────────────────────────────────
    SEARCH INPUT  (projects.html)
-   No prefix  = light theme focus ring
-   .dark      = dark theme focus ring
+   No prefix = light theme focus ring
+   .dark     = dark theme focus ring
 ───────────────────────────────────────── */
 .search-input:focus {
   outline: none;
@@ -160,18 +158,18 @@ a.card:hover {
 /* ─────────────────────────────────────────
    COMPLEXITY DOTS  (projects.html)
    dot-on  = filled (cyan)
-   dot-off = unfilled; light theme: slate, dark theme: gray
+   dot-off = unfilled; light: gray-200, dark: slate-700
 ───────────────────────────────────────── */
 .dot-on {
   background-color: #22d3ee;
 }
 
 .dot-off {
-  background-color: #e5e7eb; /* light theme: gray-200 */
+  background-color: #e5e7eb;
 }
 
 .dark .dot-off {
-  background-color: #334155; /* dark theme: slate-700 */
+  background-color: #334155;
 }
 
 /* ─────────────────────────────────────────
@@ -183,4 +181,164 @@ a.card:hover {
 
 #no-results.visible {
   display: flex;
+}
+
+/* ─────────────────────────────────────────
+   ACHIEVEMENT CARD  (achievements.html)
+   Intentionally separate from .card:
+   - 1rem border-radius (vs 1.15rem on index)
+   - overflow:hidden (clips the top photo)
+   - different hover shadows per theme
+   No prefix = light: white card
+   .dark     = dark: navy card
+───────────────────────────────────────── */
+.ach-card {
+  background: #ffffff;
+  border: 1px solid rgb(229, 231, 235);
+  border-radius: 1rem;
+  overflow: hidden;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.dark .ach-card {
+  background: rgb(17, 24, 39);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+.ach-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(34, 211, 238, 0.35);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.dark .ach-card:hover {
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+  border-color: rgba(8, 145, 178, 0.25);
+}
+
+/* Card top photo */
+.card-photo {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+/* ─────────────────────────────────────────
+   STAT TILES  (achievements.html)
+   No prefix = light theme
+   .dark     = dark theme
+───────────────────────────────────────── */
+.stat {
+  background: rgba(8, 145, 178, 0.04);
+  border: 1px solid rgba(8, 145, 178, 0.11);
+  border-radius: 0.8rem;
+  padding: 1rem 0.75rem;
+  text-align: center;
+}
+
+.dark .stat {
+  background: rgba(34, 211, 238, 0.04);
+  border-color: rgba(34, 211, 238, 0.11);
+}
+
+/* ─────────────────────────────────────────
+   FADE UP ANIMATION  (achievements.html)
+───────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.fade-up {
+  animation: fadeUp 0.35s ease both;
+}
+
+/* ─────────────────────────────────────────
+   TRADING CARD  (achievements.html)
+   Separate from .ach-card: has a cyan border by default
+   No prefix = light theme
+   .dark     = dark theme
+───────────────────────────────────────── */
+.trading-card {
+  background: #ffffff;
+  border: 1px solid rgba(8, 145, 178, 0.18);
+  border-radius: 1rem;
+  position: relative;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.dark .trading-card {
+  background: rgb(17, 24, 39);
+  border-color: rgba(34, 211, 238, 0.18);
+}
+
+.trading-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(8, 145, 178, 0.35);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.dark .trading-card:hover {
+  border-color: rgba(34, 211, 238, 0.45);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+}
+
+/* ─────────────────────────────────────────
+   EQUITY CHART  (achievements.html)
+───────────────────────────────────────── */
+#chart-wrap {
+  position: relative;
+  border-radius: 0.5rem;
+  cursor: crosshair;
+}
+
+#equity-canvas {
+  display: block;
+  width: 100%;
+  height: 90px;
+  border-radius: 0.5rem;
+}
+
+#chart-tip {
+  position: absolute;
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid rgba(8, 145, 178, 0.3);
+  border-radius: 0.45rem;
+  padding: 6px 10px;
+  font-size: 10px;
+  line-height: 1.65;
+  white-space: nowrap;
+  color: #1e293b;
+  display: none;
+  z-index: 50;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.dark #chart-tip {
+  background: rgba(15, 23, 42, 0.95);
+  color: #e2e8f0;
+  border-color: rgba(34, 211, 238, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* ─────────────────────────────────────────
+   EXTERNAL LINK PILL  (achievements.html)
+───────────────────────────────────────── */
+.ext-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  transition: opacity 0.15s;
+  text-decoration: none;
+}
+
+.ext-link:hover {
+  opacity: 0.75;
 }

@@ -3,155 +3,120 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <!-- ═══ Primary SEO ═══ -->
-<title>Achievements – Arpit Agarwala | Certifications & Milestones</title>
-<meta name="description" content="A showcase of Arpit Agarwala's professional achievements, certifications, and milestones in UI/UX design and front-end web development." />
-<meta name="keywords" content="Arpit Agarwala achievements, certifications, milestones, web developer, UI UX designer awards" />
-<meta name="author" content="Arpit Agarwala" />
-<link rel="canonical" href="https://arpitagarwala.online/achievements.html" />
-<meta name="robots" content="index, follow" />
+  <title>Achievements – Arpit Agarwala | Certifications & Milestones</title>
+  <meta name="description" content="A showcase of Arpit Agarwala's professional achievements, certifications, and milestones in UI/UX design and front-end web development." />
+  <meta name="keywords" content="Arpit Agarwala achievements, certifications, milestones, web developer, UI UX designer awards" />
+  <meta name="author" content="Arpit Agarwala" />
+  <link rel="canonical" href="https://arpitagarwala.online/achievements.html" />
+  <meta name="robots" content="index, follow" />
 
-<!-- ═══ Open Graph ═══ -->
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://arpitagarwala.online/achievements.html" />
-<meta property="og:title" content="Achievements – Arpit Agarwala | Certifications & Milestones" />
-<meta property="og:description" content="Professional achievements, certifications, and milestones of Arpit Agarwala." />
-<meta property="og:image" content="https://arpitagarwala.online/assets/images/my-miniature.png" />
-<meta property="og:site_name" content="Arpit Agarwala" />
+  <!-- ═══ Open Graph ═══ -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://arpitagarwala.online/achievements.html" />
+  <meta property="og:title" content="Achievements – Arpit Agarwala | Certifications & Milestones" />
+  <meta property="og:description" content="Professional achievements, certifications, and milestones of Arpit Agarwala." />
+  <meta property="og:image" content="https://arpitagarwala.online/assets/images/my-miniature.png" />
+  <meta property="og:site_name" content="Arpit Agarwala" />
 
-<!-- ═══ Twitter Card ═══ -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Achievements – Arpit Agarwala" />
-<meta name="twitter:description" content="Certifications and milestones in UI/UX design and front-end development." />
-<meta name="twitter:image" content="https://arpitagarwala.online/assets/images/my-miniature.png" />
+  <!-- ═══ Twitter Card ═══ -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Achievements – Arpit Agarwala" />
+  <meta name="twitter:description" content="Certifications and milestones in UI/UX design and front-end development." />
+  <meta name="twitter:image" content="https://arpitagarwala.online/assets/images/my-miniature.png" />
 
-<!-- ═══ JSON-LD ═══ -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "name": "Achievements – Arpit Agarwala",
-  "url": "https://arpitagarwala.online/achievements.html",
-  "description": "Professional achievements, certifications, and milestones of Arpit Agarwala.",
-  "author": { "@type": "Person", "name": "Arpit Agarwala", "url": "https://arpitagarwala.online/" }
-}
-</script>
+  <!-- ═══ JSON-LD ═══ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Achievements – Arpit Agarwala",
+    "url": "https://arpitagarwala.online/achievements.html",
+    "description": "Professional achievements, certifications, and milestones of Arpit Agarwala.",
+    "author": { "@type": "Person", "name": "Arpit Agarwala", "url": "https://arpitagarwala.online/" }
+  }
+  </script>
 
-  <!-- Cross-domain theme sync: honour ?theme= URL param, then localStorage, then OS -->
+  <link rel="icon" type="image/png" sizes="32x32" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_32,h_32,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_16,h_16,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_180,h_180,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
+  <link rel="shortcut icon" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_32,h_32,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
+
+  <!--
+    THEME INIT (runs before render to avoid flash)
+    Convention: .dark on <html> = dark theme visually.
+    localStorage 'theme' = 'dark' | 'light'.
+    ?theme= URL param overrides on first load (cross-page sync).
+  -->
   <script>
     (function () {
-      var p = new URLSearchParams(window.location.search).get('theme');
-      if (p === 'dark' || p === 'light') {
-        localStorage.setItem('theme', p);
-        if (p === 'dark') {
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-        }
+      var param = new URLSearchParams(window.location.search).get('theme');
+      var stored = localStorage.getItem('theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      var theme;
+      if (param === 'dark' || param === 'light') {
+        theme = param;
+        localStorage.setItem('theme', theme);
+      } else if (stored === 'dark' || stored === 'light') {
+        theme = stored;
       } else {
-        var t = localStorage.getItem('theme');
-        if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-        }
+        theme = prefersDark ? 'dark' : 'light';
+      }
+
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
       }
     })();
   </script>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-  <script>tailwind.config={darkMode:'class'}</script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-    body{font-family:'Inter',sans-serif;}
-    .ach-card{background:rgb(17,24,39);border:1px solid rgba(255,255,255,0.06);border-radius:1rem;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;overflow:hidden;}
-    .dark .ach-card{background:#fff;border-color:rgb(229,231,235);}
-    .ach-card:hover{transform:translateY(-2px);border-color:rgba(34,211,238,0.35);box-shadow:0 10px 28px rgba(0,0,0,0.4);}
-    .dark .ach-card:hover{box-shadow:0 8px 20px rgba(0,0,0,0.08);border-color:rgba(8,145,178,0.25);}
-    .stat{background:rgba(34,211,238,0.04);border:1px solid rgba(34,211,238,0.11);border-radius:.8rem;padding:1rem .75rem;text-align:center;}
-    .dark .stat{background:rgba(8,145,178,0.04);border-color:rgba(8,145,178,0.11);}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
-    .fade-up{animation:fadeUp .35s ease both;}
-
-    .card-photo{width:100%;height:120px;object-fit:cover;object-position:center top;display:block;}
-
-    .trading-card{
-      background:rgb(17,24,39);
-      border:1px solid rgba(34,211,238,0.18);
-      border-radius:1rem;
-      transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;
-      position:relative;
-    }
-    .dark .trading-card{background:#fff;border-color:rgba(8,145,178,0.18);}
-    .trading-card:hover{transform:translateY(-2px);border-color:rgba(34,211,238,0.45);box-shadow:0 10px 28px rgba(0,0,0,0.4);}
-    .dark .trading-card:hover{box-shadow:0 8px 20px rgba(0,0,0,0.08);border-color:rgba(8,145,178,0.35);}
-
-    #chart-wrap{position:relative;border-radius:.5rem;cursor:crosshair;}
-    #equity-canvas{display:block;width:100%;height:90px;border-radius:.5rem;}
-
-    #chart-tip{
-      position:absolute;
-      pointer-events:none;
-      background:rgba(15,23,42,0.95);
-      border:1px solid rgba(34,211,238,0.3);
-      border-radius:.45rem;
-      padding:6px 10px;
-      font-size:10px;
-      line-height:1.65;
-      white-space:nowrap;
-      color:#e2e8f0;
-      display:none;
-      z-index:50;
-      box-shadow:0 4px 16px rgba(0,0,0,0.4);
-    }
-    .dark #chart-tip{background:rgba(255,255,255,0.97);color:#1e293b;border-color:rgba(8,145,178,0.3);box-shadow:0 4px 16px rgba(0,0,0,0.1);}
-
-    .ext-link{
-      display:inline-flex;align-items:center;gap:3px;
-      font-size:10px;font-weight:600;
-      padding:2px 8px;border-radius:9999px;
-      transition:opacity .15s;
-      text-decoration:none;
-    }
-    .ext-link:hover{opacity:.75;}
-  </style>
+  <script>tailwind.config = { darkMode: 'class' }</script>
+  <link rel="stylesheet" href="css/global.css">
 </head>
-<body class="min-h-screen bg-[#080c14] dark:bg-slate-100 text-slate-100 dark:text-gray-900 transition-colors duration-300 py-10 px-4">
+
+<!--
+  TAILWIND DARK: CLASSES ARE NOW CORRECT:
+  No dark: prefix = light theme styles
+  dark:           = dark theme styles
+-->
+<body class="min-h-screen bg-gray-50 dark:bg-[#080c14] text-gray-900 dark:text-slate-100 transition-colors duration-300 py-10 px-4">
 
   <!-- Back -->
   <div class="fixed top-3 left-3 z-50">
-    <a href="index.html" class="bg-slate-700 dark:bg-white text-slate-200 dark:text-gray-700 p-1.5 rounded-full shadow-md inline-flex items-center border border-slate-600 dark:border-gray-200 hover:border-cyan-400 dark:hover:border-cyan-400 hover:shadow-lg transition-all duration-100">
+    <a href="index.html" class="bg-white dark:bg-slate-700 text-gray-700 dark:text-slate-200 p-1.5 rounded-full shadow-md inline-flex items-center border border-gray-200 dark:border-slate-600 hover:border-cyan-500 dark:hover:border-cyan-400 hover:shadow-lg transition-all duration-100">
       <i class="ri-arrow-left-line text-lg"></i>
     </a>
   </div>
 
-  <!-- Theme -->
+  <!-- Theme Toggle -->
   <div class="fixed top-3 right-3 z-50">
-    <button onclick="toggleTheme()" class="bg-slate-700 dark:bg-white text-slate-200 dark:text-gray-700 p-1.5 rounded-full shadow-md border border-slate-600 dark:border-gray-200 hover:border-cyan-400 dark:hover:border-cyan-400 hover:shadow-lg transition-all duration-100">
-      <i id="theme-icon" class="ri-sun-line text-lg"></i>
+    <button onclick="toggleTheme()" class="bg-white dark:bg-slate-700 text-gray-700 dark:text-slate-200 p-1.5 rounded-full shadow-md border border-gray-200 dark:border-slate-600 hover:border-cyan-500 dark:hover:border-cyan-400 hover:shadow-lg transition-all duration-100">
+      <i id="theme-icon" class="ri-moon-line text-lg"></i>
     </button>
   </div>
 
   <div class="max-w-5xl mx-auto pt-10">
 
     <div class="mb-7 fade-up">
-      <h1 class="text-3xl font-extrabold text-white dark:text-gray-900">🏆 Achievements</h1>
-      <p class="text-slate-400 dark:text-gray-500 text-sm mt-1">Awards, certifications, trading milestones & leadership wins.</p>
+      <h1 class="text-3xl font-extrabold text-gray-900 dark:text-white">🏆 Achievements</h1>
+      <p class="text-gray-500 dark:text-slate-400 text-sm mt-1">Awards, certifications, trading milestones &amp; leadership wins.</p>
     </div>
 
     <!-- Stats -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 fade-up" style="animation-delay:.05s">
-      <div class="stat"><p class="text-2xl font-black text-cyan-400 dark:text-cyan-600">8</p><p class="text-[10px] uppercase tracking-wider text-slate-400 dark:text-gray-500 mt-0.5">Total</p></div>
-      <div class="stat"><p class="text-2xl font-black text-amber-400 dark:text-amber-600">4</p><p class="text-[10px] uppercase tracking-wider text-slate-400 dark:text-gray-500 mt-0.5">Awards</p></div>
-      <div class="stat"><p class="text-2xl font-black text-emerald-400 dark:text-emerald-600">+45.5%</p><p class="text-[10px] uppercase tracking-wider text-slate-400 dark:text-gray-500 mt-0.5">Trading Return</p></div>
-      <div class="stat"><p class="text-2xl font-black text-violet-400 dark:text-violet-600">3</p><p class="text-[10px] uppercase tracking-wider text-slate-400 dark:text-gray-500 mt-0.5">Years Active</p></div>
+      <div class="stat"><p class="text-2xl font-black text-cyan-600 dark:text-cyan-400">8</p><p class="text-[10px] uppercase tracking-wider text-gray-400 dark:text-slate-400 mt-0.5">Total</p></div>
+      <div class="stat"><p class="text-2xl font-black text-amber-600 dark:text-amber-400">4</p><p class="text-[10px] uppercase tracking-wider text-gray-400 dark:text-slate-400 mt-0.5">Awards</p></div>
+      <div class="stat"><p class="text-2xl font-black text-emerald-600 dark:text-emerald-400">+45.5%</p><p class="text-[10px] uppercase tracking-wider text-gray-400 dark:text-slate-400 mt-0.5">Trading Return</p></div>
+      <div class="stat"><p class="text-2xl font-black text-violet-600 dark:text-violet-400">3</p><p class="text-[10px] uppercase tracking-wider text-gray-400 dark:text-slate-400 mt-0.5">Years Active</p></div>
     </div>
 
     <!-- Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-
-      <!-- ══ ROW 1 ══ -->
 
       <!-- Trading Card (col-span-2) -->
       <div id="trading-card" class="col-span-1 sm:col-span-2 trading-card p-5 fade-up" style="animation-delay:.06s">
@@ -162,38 +127,38 @@
               <i class="ri-stock-line text-white text-xl"></i>
             </div>
             <div>
-              <span class="text-[10px] font-bold tracking-[0.18em] uppercase text-emerald-400 dark:text-emerald-600 block mb-0.5">Trading Challenge · Sep–Oct 2025</span>
-              <h3 class="text-base font-extrabold text-white dark:text-gray-900 leading-snug">30-Day Live Trading Challenge</h3>
+              <span class="text-[10px] font-bold tracking-[0.18em] uppercase text-emerald-600 dark:text-emerald-400 block mb-0.5">Trading Challenge · Sep–Oct 2025</span>
+              <h3 class="text-base font-extrabold text-gray-900 dark:text-white leading-snug">30-Day Live Trading Challenge</h3>
             </div>
           </div>
           <div class="text-right flex-shrink-0">
-            <p class="text-2xl font-black text-emerald-400 dark:text-emerald-600 leading-none">+45.46%</p>
-            <p class="text-[10px] text-slate-400 dark:text-gray-500 mt-0.5">21 trading days</p>
+            <p class="text-2xl font-black text-emerald-600 dark:text-emerald-400 leading-none">+45.46%</p>
+            <p class="text-[10px] text-gray-400 dark:text-slate-400 mt-0.5">21 trading days</p>
           </div>
         </div>
-        <div id="chart-wrap" class="bg-slate-800/60 dark:bg-gray-50 border border-slate-700/40 dark:border-gray-200 rounded-lg mb-3">
+        <div id="chart-wrap" class="bg-gray-50 dark:bg-slate-800/60 border border-gray-200 dark:border-slate-700/40 rounded-lg mb-3">
           <canvas id="equity-canvas"></canvas>
         </div>
         <div class="grid grid-cols-3 gap-2 mb-3">
-          <div class="bg-white/[0.03] dark:bg-black/[0.03] border border-white/[0.06] dark:border-black/[0.06] rounded-lg px-3 py-2">
-            <p class="text-[10px] text-slate-400 dark:text-gray-500">Best Day</p>
-            <p class="text-sm font-black text-emerald-400 dark:text-emerald-600">+14.87%</p>
+          <div class="bg-black/[0.03] dark:bg-white/[0.03] border border-black/[0.06] dark:border-white/[0.06] rounded-lg px-3 py-2">
+            <p class="text-[10px] text-gray-400 dark:text-slate-400">Best Day</p>
+            <p class="text-sm font-black text-emerald-600 dark:text-emerald-400">+14.87%</p>
           </div>
-          <div class="bg-white/[0.03] dark:bg-black/[0.03] border border-white/[0.06] dark:border-black/[0.06] rounded-lg px-3 py-2">
-            <p class="text-[10px] text-slate-400 dark:text-gray-500">Worst Day</p>
-            <p class="text-sm font-black text-red-400 dark:text-red-600">−5.03%</p>
+          <div class="bg-black/[0.03] dark:bg-white/[0.03] border border-black/[0.06] dark:border-white/[0.06] rounded-lg px-3 py-2">
+            <p class="text-[10px] text-gray-400 dark:text-slate-400">Worst Day</p>
+            <p class="text-sm font-black text-red-600 dark:text-red-400">−5.03%</p>
           </div>
-          <div class="bg-white/[0.03] dark:bg-black/[0.03] border border-white/[0.06] dark:border-black/[0.06] rounded-lg px-3 py-2">
-            <p class="text-[10px] text-slate-400 dark:text-gray-500">Win Rate</p>
-            <p class="text-sm font-black text-cyan-400 dark:text-cyan-600">62%</p>
+          <div class="bg-black/[0.03] dark:bg-white/[0.03] border border-black/[0.06] dark:border-white/[0.06] rounded-lg px-3 py-2">
+            <p class="text-[10px] text-gray-400 dark:text-slate-400">Win Rate</p>
+            <p class="text-sm font-black text-cyan-600 dark:text-cyan-400">62%</p>
           </div>
         </div>
-        <p class="text-xs text-slate-400 dark:text-gray-500 leading-relaxed">
-          Live F&amp;O challenge using SMC/ICT methodology. <span class="text-white dark:text-gray-900 font-semibold">₹45,788 → ₹66,589</span> across 21 sessions.
+        <p class="text-xs text-gray-500 dark:text-slate-400 leading-relaxed">
+          Live F&amp;O challenge using SMC/ICT methodology. <span class="text-gray-900 dark:text-white font-semibold">₹45,788 → ₹66,589</span> across 21 sessions.
         </p>
-        <div class="mt-3 pt-3 border-t border-slate-700/30 dark:border-gray-200 flex flex-wrap gap-1.5">
-          <span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 dark:bg-emerald-50 dark:text-emerald-600"><i class="ri-line-chart-line"></i> SMC/ICT</span>
-          <span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 dark:bg-cyan-50 dark:text-cyan-600"><i class="ri-calendar-check-line"></i> Sep 18 – Oct 17, 2025</span>
+        <div class="mt-3 pt-3 border-t border-gray-200 dark:border-slate-700/30 flex flex-wrap gap-1.5">
+          <span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400"><i class="ri-line-chart-line"></i> SMC/ICT</span>
+          <span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-cyan-50 text-cyan-600 dark:bg-cyan-500/10 dark:text-cyan-400"><i class="ri-calendar-check-line"></i> Sep 18 – Oct 17, 2025</span>
         </div>
       </div>
 
@@ -201,29 +166,27 @@
       <div class="ach-card fade-up" style="animation-delay:.08s">
         <img src="https://res.cloudinary.com/dxsja3wy5/image/upload/w_900,q_auto,f_auto/v1772858929/chairman-award_clz2ft.jpg" alt="Arpit receiving Chairman Award from Archana Puran Singh" class="card-photo" onerror="this.style.display='none'">
         <div class="p-5">
-          <div class="w-10 h-10 rounded-xl bg-amber-500/10 dark:bg-amber-50 flex items-center justify-center mb-3"><i class="ri-award-line text-amber-400 dark:text-amber-600 text-xl"></i></div>
-          <span class="text-[10px] font-bold tracking-[0.18em] uppercase text-amber-400 dark:text-amber-600 mb-1.5 block">Award · Sep 2023</span>
-          <h3 class="text-base font-extrabold text-white dark:text-gray-900 mb-1.5 leading-snug">Chairman Award</h3>
-          <p class="text-xs text-slate-400 dark:text-gray-500 leading-relaxed">Presented by actress &amp; TV personality <span class="text-white dark:text-gray-800 font-semibold">Archana Puran Singh</span> at LK Singhania Education Centre's Annual Prize Giving Function for outstanding leadership as Head Boy.</p>
-          <div class="mt-4 pt-3 border-t border-slate-700/40 dark:border-gray-200 flex flex-wrap gap-1.5">
-            <span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 dark:bg-amber-50 dark:text-amber-600"><i class="ri-school-line"></i> LK Singhania</span>
-            <a href="https://www.facebook.com/share/p/1Mi9xyd8sV/" target="_blank" rel="noopener" class="ext-link bg-blue-500/10 text-blue-400 dark:bg-blue-50 dark:text-blue-600"><i class="ri-facebook-circle-fill"></i> View Post</a>
+          <div class="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-500/10 flex items-center justify-center mb-3"><i class="ri-award-line text-amber-600 dark:text-amber-400 text-xl"></i></div>
+          <span class="text-[10px] font-bold tracking-[0.18em] uppercase text-amber-600 dark:text-amber-400 mb-1.5 block">Award · Sep 2023</span>
+          <h3 class="text-base font-extrabold text-gray-900 dark:text-white mb-1.5 leading-snug">Chairman Award</h3>
+          <p class="text-xs text-gray-500 dark:text-slate-400 leading-relaxed">Presented by actress &amp; TV personality <span class="text-gray-900 dark:text-white font-semibold">Archana Puran Singh</span> at LK Singhania Education Centre's Annual Prize Giving Function for outstanding leadership as Head Boy.</p>
+          <div class="mt-4 pt-3 border-t border-gray-200 dark:border-slate-700/40 flex flex-wrap gap-1.5">
+            <span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400"><i class="ri-school-line"></i> LK Singhania</span>
+            <a href="https://www.facebook.com/share/p/1Mi9xyd8sV/" target="_blank" rel="noopener" class="ext-link bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400"><i class="ri-facebook-circle-fill"></i> View Post</a>
           </div>
         </div>
       </div>
-
-      <!-- ══ ROW 2 — all photo cards ══ -->
 
       <!-- Bhawanipur Scholar -->
       <div class="ach-card fade-up" style="animation-delay:.11s">
         <img src="https://res.cloudinary.com/dxsja3wy5/image/upload/w_900,q_auto,f_auto/v1772858929/bhawanipur-scholar_ylcf0y.jpg" alt="Arpit receiving The Bhawanipur Scholar 2023 award" class="card-photo" onerror="this.style.display='none'">
         <div class="p-5">
-          <div class="w-10 h-10 rounded-xl bg-violet-500/10 dark:bg-violet-50 flex items-center justify-center mb-3"><i class="ri-star-line text-violet-400 dark:text-violet-600 text-xl"></i></div>
-          <span class="text-[10px] font-bold tracking-[0.18em] uppercase text-violet-400 dark:text-violet-600 mb-1.5 block">Scholarship · 2023</span>
-          <h3 class="text-base font-extrabold text-white dark:text-gray-900 mb-1.5 leading-snug">The Bhawanipur Scholar 2023</h3>
-          <p class="text-xs text-slate-400 dark:text-gray-500 leading-relaxed">Awarded the <span class="text-white dark:text-gray-800 font-semibold">Bhawanipur Scholar</span> title with a gold medal and merit certificate by Bhawanipur Education Society College for exceptional academic performance in BCom (Hons).</p>
-          <div class="mt-4 pt-3 border-t border-slate-700/40 dark:border-gray-200">
-            <span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-violet-500/10 text-violet-400 dark:bg-violet-50 dark:text-violet-600"><i class="ri-graduation-cap-line"></i> Bhawanipur College</span>
+          <div class="w-10 h-10 rounded-xl bg-violet-50 dark:bg-violet-500/10 flex items-center justify-center mb-3"><i class="ri-star-line text-violet-600 dark:text-violet-400 text-xl"></i></div>
+          <span class="text-[10px] font-bold tracking-[0.18em] uppercase text-violet-600 dark:text-violet-400 mb-1.5 block">Scholarship · 2023</span>
+          <h3 class="text-base font-extrabold text-gray-900 dark:text-white mb-1.5 leading-snug">The Bhawanipur Scholar 2023</h3>
+          <p class="text-xs text-gray-500 dark:text-slate-400 leading-relaxed">Awarded the <span class="text-gray-900 dark:text-white font-semibold">Bhawanipur Scholar</span> title with a gold medal and merit certificate by Bhawanipur Education Society College for exceptional academic performance in BCom (Hons).</p>
+          <div class="mt-4 pt-3 border-t border-gray-200 dark:border-slate-700/40">
+            <span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-400"><i class="ri-graduation-cap-line"></i> Bhawanipur College</span>
           </div>
         </div>
       </div>
@@ -232,13 +195,13 @@
       <div class="ach-card fade-up" style="animation-delay:.14s">
         <img src="https://res.cloudinary.com/dxsja3wy5/image/upload/w_900,q_auto,f_auto/v1772858929/head-boy_exv4ka.jpg" alt="Arpit as Head Boy of LK Singhania Education Centre" class="card-photo" onerror="this.style.display='none'">
         <div class="p-5">
-          <div class="w-10 h-10 rounded-xl bg-emerald-500/10 dark:bg-emerald-50 flex items-center justify-center mb-3"><i class="ri-shield-star-line text-emerald-400 dark:text-emerald-600 text-xl"></i></div>
-          <span class="text-[10px] font-bold tracking-[0.18em] uppercase text-emerald-400 dark:text-emerald-600 mb-1.5 block">Leadership · 2022–2023</span>
-          <h3 class="text-base font-extrabold text-white dark:text-gray-900 mb-1.5 leading-snug">Head Boy of School</h3>
-          <p class="text-xs text-slate-400 dark:text-gray-500 leading-relaxed">Elected Head Boy of LK Singhania Education Centre, Gotan for 2022–23. Led school-wide initiatives, managed the student council, and represented the school at events.</p>
-          <div class="mt-4 pt-3 border-t border-slate-700/40 dark:border-gray-200 flex flex-wrap gap-1.5">
-            <span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 dark:bg-emerald-50 dark:text-emerald-600"><i class="ri-school-line"></i> LK Singhania</span>
-            <a href="https://www.lksec.org/student-council-list.php?year=2022-23" target="_blank" rel="noopener" class="ext-link bg-emerald-500/10 text-emerald-400 dark:bg-emerald-50 dark:text-emerald-600"><i class="ri-external-link-line"></i> Council List</a>
+          <div class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center mb-3"><i class="ri-shield-star-line text-emerald-600 dark:text-emerald-400 text-xl"></i></div>
+          <span class="text-[10px] font-bold tracking-[0.18em] uppercase text-emerald-600 dark:text-emerald-400 mb-1.5 block">Leadership · 2022–2023</span>
+          <h3 class="text-base font-extrabold text-gray-900 dark:text-white mb-1.5 leading-snug">Head Boy of School</h3>
+          <p class="text-xs text-gray-500 dark:text-slate-400 leading-relaxed">Elected Head Boy of LK Singhania Education Centre, Gotan for 2022–23. Led school-wide initiatives, managed the student council, and represented the school at events.</p>
+          <div class="mt-4 pt-3 border-t border-gray-200 dark:border-slate-700/40 flex flex-wrap gap-1.5">
+            <span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400"><i class="ri-school-line"></i> LK Singhania</span>
+            <a href="https://www.lksec.org/student-council-list.php?year=2022-23" target="_blank" rel="noopener" class="ext-link bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400"><i class="ri-external-link-line"></i> Council List</a>
           </div>
         </div>
       </div>
@@ -247,84 +210,82 @@
       <div class="ach-card fade-up" style="animation-delay:.17s">
         <img src="https://res.cloudinary.com/dxsja3wy5/image/upload/w_900,q_auto,f_auto/v1772858928/ipsc-uiux_ssts9j.jpg" alt="IPSC IT E-Conclave 2021 Citation of Excellence for UI/UX Design" class="card-photo" style="object-position:center center" onerror="this.style.display='none'">
         <div class="p-5">
-          <div class="w-10 h-10 rounded-xl bg-pink-500/10 dark:bg-pink-50 flex items-center justify-center mb-3"><i class="ri-trophy-line text-pink-400 dark:text-pink-600 text-xl"></i></div>
-          <span class="text-[10px] font-bold tracking-[0.18em] uppercase text-pink-400 dark:text-pink-600 mb-1.5 block">Competition · Jul 2021</span>
-          <h3 class="text-base font-extrabold text-white dark:text-gray-900 mb-1.5 leading-snug">IPSC UI/UX Design — 1st Place</h3>
-          <p class="text-xs text-slate-400 dark:text-gray-500 leading-relaxed">Secured <span class="text-white dark:text-gray-800 font-semibold">1st position</span> in the Ada Lovelace UI/UX Design event at IPSC IT E-Conclave 2021, hosted by BK Birla Centre for Education, Pune (Sarala Birla Group).</p>
-          <div class="mt-4 pt-3 border-t border-slate-700/40 dark:border-gray-200 flex flex-wrap gap-1.5">
-            <span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-pink-500/10 text-pink-400 dark:bg-pink-50 dark:text-pink-600"><i class="ri-building-line"></i> BK Birla, Pune</span>
-            <a href="https://www.figma.com/proto/UbZQ9BYBxX8aFp5ShM1jOv/bornfit?node-id=33-134&p=f&t=9NJHwR2pwj8cbIMo-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=33%3A134&show-proto-sidebar=1" target="_blank" rel="noopener" class="ext-link bg-purple-500/10 text-purple-400 dark:bg-purple-50 dark:text-purple-600"><i class="ri-artboard-line"></i> Prototype</a>
-            <a href="https://www.facebook.com/share/18QVtTiKbz/" target="_blank" rel="noopener" class="ext-link bg-blue-500/10 text-blue-400 dark:bg-blue-50 dark:text-blue-600"><i class="ri-facebook-circle-fill"></i> Post</a>
+          <div class="w-10 h-10 rounded-xl bg-pink-50 dark:bg-pink-500/10 flex items-center justify-center mb-3"><i class="ri-trophy-line text-pink-600 dark:text-pink-400 text-xl"></i></div>
+          <span class="text-[10px] font-bold tracking-[0.18em] uppercase text-pink-600 dark:text-pink-400 mb-1.5 block">Competition · Jul 2021</span>
+          <h3 class="text-base font-extrabold text-gray-900 dark:text-white mb-1.5 leading-snug">IPSC UI/UX Design — 1st Place</h3>
+          <p class="text-xs text-gray-500 dark:text-slate-400 leading-relaxed">Secured <span class="text-gray-900 dark:text-white font-semibold">1st position</span> in the Ada Lovelace UI/UX Design event at IPSC IT E-Conclave 2021, hosted by BK Birla Centre for Education, Pune (Sarala Birla Group).</p>
+          <div class="mt-4 pt-3 border-t border-gray-200 dark:border-slate-700/40 flex flex-wrap gap-1.5">
+            <span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-pink-50 text-pink-600 dark:bg-pink-500/10 dark:text-pink-400"><i class="ri-building-line"></i> BK Birla, Pune</span>
+            <a href="https://www.figma.com/proto/UbZQ9BYBxX8aFp5ShM1jOv/bornfit?node-id=33-134&p=f&t=9NJHwR2pwj8cbIMo-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=33%3A134&show-proto-sidebar=1" target="_blank" rel="noopener" class="ext-link bg-purple-50 text-purple-600 dark:bg-purple-500/10 dark:text-purple-400"><i class="ri-artboard-line"></i> Prototype</a>
+            <a href="https://www.facebook.com/share/18QVtTiKbz/" target="_blank" rel="noopener" class="ext-link bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400"><i class="ri-facebook-circle-fill"></i> Post</a>
           </div>
         </div>
       </div>
 
-      <!-- ══ ROW 3 — all plain (no-photo) cards ══ -->
-
       <!-- CA Foundation -->
       <div class="ach-card p-5 fade-up" style="animation-delay:.20s">
-        <div class="w-10 h-10 rounded-xl bg-cyan-500/10 dark:bg-cyan-50 flex items-center justify-center mb-4"><i class="ri-medal-2-line text-cyan-400 dark:text-cyan-600 text-xl"></i></div>
-        <span class="text-[10px] font-bold tracking-[0.18em] uppercase text-cyan-400 dark:text-cyan-600 mb-2 block">Certification · Dec 2023</span>
-        <h3 class="text-base font-extrabold text-white dark:text-gray-900 mb-1.5 leading-snug">CA Foundation Cleared</h3>
-        <p class="text-xs text-slate-400 dark:text-gray-500 leading-relaxed">Cleared the ICAI CA Foundation exam in December 2023, qualifying to proceed to CA Intermediate — a key milestone in the Chartered Accountancy journey.</p>
-        <div class="mt-4 pt-4 border-t border-slate-700/40 dark:border-gray-200">
-          <span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 dark:bg-cyan-50 dark:text-cyan-600"><i class="ri-building-line"></i> ICAI</span>
+        <div class="w-10 h-10 rounded-xl bg-cyan-50 dark:bg-cyan-500/10 flex items-center justify-center mb-4"><i class="ri-medal-2-line text-cyan-600 dark:text-cyan-400 text-xl"></i></div>
+        <span class="text-[10px] font-bold tracking-[0.18em] uppercase text-cyan-600 dark:text-cyan-400 mb-2 block">Certification · Dec 2023</span>
+        <h3 class="text-base font-extrabold text-gray-900 dark:text-white mb-1.5 leading-snug">CA Foundation Cleared</h3>
+        <p class="text-xs text-gray-500 dark:text-slate-400 leading-relaxed">Cleared the ICAI CA Foundation exam in December 2023, qualifying to proceed to CA Intermediate — a key milestone in the Chartered Accountancy journey.</p>
+        <div class="mt-4 pt-4 border-t border-gray-200 dark:border-slate-700/40">
+          <span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-cyan-50 text-cyan-600 dark:bg-cyan-500/10 dark:text-cyan-400"><i class="ri-building-line"></i> ICAI</span>
         </div>
       </div>
 
       <!-- Founded IT Club -->
       <div class="ach-card p-5 fade-up" style="animation-delay:.23s">
-        <div class="w-10 h-10 rounded-xl bg-blue-500/10 dark:bg-blue-50 flex items-center justify-center mb-4"><i class="ri-computer-line text-blue-400 dark:text-blue-600 text-xl"></i></div>
-        <span class="text-[10px] font-bold tracking-[0.18em] uppercase text-blue-400 dark:text-blue-600 mb-2 block">Milestone · 2022</span>
-        <h3 class="text-base font-extrabold text-white dark:text-gray-900 mb-1.5 leading-snug">Founded School IT Club</h3>
-        <p class="text-xs text-slate-400 dark:text-gray-500 leading-relaxed">Founded and led the school's first IT Club — workshops to 40+ students in Photoshop, Figma, Arduino, and coding. Managed national-level conference representation.</p>
-        <div class="mt-4 pt-4 border-t border-slate-700/40 dark:border-gray-200">
-          <span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 dark:bg-blue-50 dark:text-blue-600"><i class="ri-team-line"></i> 40+ Students</span>
+        <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center mb-4"><i class="ri-computer-line text-blue-600 dark:text-blue-400 text-xl"></i></div>
+        <span class="text-[10px] font-bold tracking-[0.18em] uppercase text-blue-600 dark:text-blue-400 mb-2 block">Milestone · 2022</span>
+        <h3 class="text-base font-extrabold text-gray-900 dark:text-white mb-1.5 leading-snug">Founded School IT Club</h3>
+        <p class="text-xs text-gray-500 dark:text-slate-400 leading-relaxed">Founded and led the school's first IT Club — workshops to 40+ students in Photoshop, Figma, Arduino, and coding. Managed national-level conference representation.</p>
+        <div class="mt-4 pt-4 border-t border-gray-200 dark:border-slate-700/40">
+          <span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400"><i class="ri-team-line"></i> 40+ Students</span>
         </div>
       </div>
 
       <!-- Younity -->
       <div class="ach-card p-5 fade-up" style="animation-delay:.26s">
-        <div class="w-10 h-10 rounded-xl bg-orange-500/10 dark:bg-orange-50 flex items-center justify-center mb-4"><i class="ri-line-chart-line text-orange-400 dark:text-orange-600 text-xl"></i></div>
-        <span class="text-[10px] font-bold tracking-[0.18em] uppercase text-orange-400 dark:text-orange-600 mb-2 block">Performance · 2023</span>
-        <h3 class="text-base font-extrabold text-white dark:text-gray-900 mb-1.5 leading-snug">Top Performer — Younity.in</h3>
-        <p class="text-xs text-slate-400 dark:text-gray-500 leading-relaxed">Generated ₹10,000+ in revenue within the first month, outperforming 80% of teammates. Contract extended 3 months for exceptional results.</p>
-        <div class="mt-4 pt-4 border-t border-slate-700/40 dark:border-gray-200">
-          <span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-orange-500/10 text-orange-400 dark:bg-orange-50 dark:text-orange-600"><i class="ri-building-2-line"></i> Younity.in</span>
+        <div class="w-10 h-10 rounded-xl bg-orange-50 dark:bg-orange-500/10 flex items-center justify-center mb-4"><i class="ri-line-chart-line text-orange-600 dark:text-orange-400 text-xl"></i></div>
+        <span class="text-[10px] font-bold tracking-[0.18em] uppercase text-orange-600 dark:text-orange-400 mb-2 block">Performance · 2023</span>
+        <h3 class="text-base font-extrabold text-gray-900 dark:text-white mb-1.5 leading-snug">Top Performer — Younity.in</h3>
+        <p class="text-xs text-gray-500 dark:text-slate-400 leading-relaxed">Generated ₹10,000+ in revenue within the first month, outperforming 80% of teammates. Contract extended 3 months for exceptional results.</p>
+        <div class="mt-4 pt-4 border-t border-gray-200 dark:border-slate-700/40">
+          <span class="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-orange-50 text-orange-600 dark:bg-orange-500/10 dark:text-orange-400"><i class="ri-building-2-line"></i> Younity.in</span>
         </div>
       </div>
 
     </div>
 
     <!-- Footer -->
-    <div class="mt-6 text-center py-3.5 px-6 rounded-xl bg-slate-800/50 dark:bg-white border border-slate-700/30 dark:border-gray-200 text-sm text-slate-500 dark:text-gray-400">
+    <div class="mt-6 text-center py-3.5 px-6 rounded-xl bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700/30 text-sm text-gray-400 dark:text-slate-500">
       &copy; 2026 Arpit Agarwala. Engineered with <span class="text-red-400">&#10084;&#65039;</span>
     </div>
   </div>
 
   <script>
   const TRADES = [
-    { date:'18 Sep', open:45788.29, netPL: 164.91,   close:45788.29, ret: 0.36 },
-    { date:'19 Sep', open:45788.29, netPL: 280.55,   close:46068.84, ret: 0.61 },
-    { date:'22 Sep', open:46068.84, netPL:  53.06,   close:46121.90, ret: 0.12 },
-    { date:'23 Sep', open:46121.90, netPL:2578.46,   close:48700.35, ret: 5.59 },
-    { date:'24 Sep', open:48700.35, netPL: -301.14,  close:48399.21, ret:-0.62 },
-    { date:'25 Sep', open:48399.21, netPL: -299.14,  close:48100.07, ret:-0.62 },
-    { date:'26 Sep', open:48100.07, netPL:  848.15,  close:48948.22, ret: 1.76 },
-    { date:'29 Sep', open:48948.22, netPL:3032.26,   close:50980.49, ret: 6.19 },
-    { date:'30 Sep', open:50980.49, netPL:1535.79,   close:52516.28, ret: 3.01 },
-    { date:'1 Oct',  open:52516.28, netPL:3467.31,   close:55983.59, ret: 6.60 },
-    { date:'3 Oct',  open:55983.59, netPL:-1453.02,  close:54530.57, ret:-2.60 },
-    { date:'6 Oct',  open:54530.57, netPL:3306.75,   close:57837.32, ret: 6.06 },
-    { date:'7 Oct',  open:57837.32, netPL:5105.77,   close:59943.09, ret: 8.83 },
-    { date:'8 Oct',  open:59943.09, netPL:-1868.31,  close:58074.78, ret:-3.12 },
-    { date:'9 Oct',  open:58074.78, netPL:-2923.17,  close:55151.62, ret:-5.03 },
-    { date:'10 Oct', open:55151.62, netPL:  794.03,  close:55945.65, ret: 1.44 },
-    { date:'13 Oct', open:55945.65, netPL:-1253.81,  close:54691.84, ret:-2.24 },
-    { date:'14 Oct', open:54691.84, netPL:7514.92,   close:62206.77, ret:13.74 },
-    { date:'15 Oct', open:62206.77, netPL: -536.02,  close:59670.74, ret:-0.86 },
-    { date:'16 Oct', open:59670.74, netPL:-1700.17,  close:57970.57, ret:-2.85 },
-    { date:'17 Oct', open:57970.57, netPL:8618.31,   close:66588.88, ret:14.87 },
+    { date:'18 Sep', open:45788.29, netPL:  164.91, close:45788.29, ret:  0.36 },
+    { date:'19 Sep', open:45788.29, netPL:  280.55, close:46068.84, ret:  0.61 },
+    { date:'22 Sep', open:46068.84, netPL:   53.06, close:46121.90, ret:  0.12 },
+    { date:'23 Sep', open:46121.90, netPL: 2578.46, close:48700.35, ret:  5.59 },
+    { date:'24 Sep', open:48700.35, netPL: -301.14, close:48399.21, ret: -0.62 },
+    { date:'25 Sep', open:48399.21, netPL: -299.14, close:48100.07, ret: -0.62 },
+    { date:'26 Sep', open:48100.07, netPL:  848.15, close:48948.22, ret:  1.76 },
+    { date:'29 Sep', open:48948.22, netPL: 3032.26, close:50980.49, ret:  6.19 },
+    { date:'30 Sep', open:50980.49, netPL: 1535.79, close:52516.28, ret:  3.01 },
+    { date:'1 Oct',  open:52516.28, netPL: 3467.31, close:55983.59, ret:  6.60 },
+    { date:'3 Oct',  open:55983.59, netPL:-1453.02, close:54530.57, ret: -2.60 },
+    { date:'6 Oct',  open:54530.57, netPL: 3306.75, close:57837.32, ret:  6.06 },
+    { date:'7 Oct',  open:57837.32, netPL: 5105.77, close:59943.09, ret:  8.83 },
+    { date:'8 Oct',  open:59943.09, netPL:-1868.31, close:58074.78, ret: -3.12 },
+    { date:'9 Oct',  open:58074.78, netPL:-2923.17, close:55151.62, ret: -5.03 },
+    { date:'10 Oct', open:55151.62, netPL:  794.03, close:55945.65, ret:  1.44 },
+    { date:'13 Oct', open:55945.65, netPL:-1253.81, close:54691.84, ret: -2.24 },
+    { date:'14 Oct', open:54691.84, netPL: 7514.92, close:62206.77, ret: 13.74 },
+    { date:'15 Oct', open:62206.77, netPL: -536.02, close:59670.74, ret: -0.86 },
+    { date:'16 Oct', open:59670.74, netPL:-1700.17, close:57970.57, ret: -2.85 },
+    { date:'17 Oct', open:57970.57, netPL: 8618.31, close:66588.88, ret: 14.87 },
   ];
 
   const canvas = document.getElementById('equity-canvas');
@@ -333,54 +294,58 @@
   const card   = document.getElementById('trading-card');
   const ctx    = canvas.getContext('2d');
 
-  const PAD  = { top:10, right:10, bottom:16, left:10 };
+  const PAD    = { top: 10, right: 10, bottom: 16, left: 10 };
   const closes = TRADES.map(t => t.close);
   const minV   = Math.min(...closes) * 0.998;
   const maxV   = Math.max(...closes) * 1.002;
   let pts = [];
-  const isDark = () => document.documentElement.classList.contains('dark');
 
-  function toY(v,h){ return PAD.top + (1-(v-minV)/(maxV-minV))*(h-PAD.top-PAD.bottom); }
-  function toX(i,w){ return PAD.left + i*(w-PAD.left-PAD.right)/(TRADES.length-1); }
+  function isDark() { return document.documentElement.classList.contains('dark'); }
+  function toY(v, h) { return PAD.top + (1 - (v - minV) / (maxV - minV)) * (h - PAD.top - PAD.bottom); }
+  function toX(i, w) { return PAD.left + i * (w - PAD.left - PAD.right) / (TRADES.length - 1); }
 
-  function drawChart(){
-    const dpr  = window.devicePixelRatio||1;
+  function drawChart() {
+    const dpr  = window.devicePixelRatio || 1;
     const rect = canvas.getBoundingClientRect();
     const W    = rect.width  || canvas.offsetWidth  || 400;
     const H    = rect.height || canvas.offsetHeight || 90;
-    canvas.width  = W*dpr;
-    canvas.height = H*dpr;
-    ctx.setTransform(dpr,0,0,dpr,0,0);
+    canvas.width  = W * dpr;
+    canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     const dark = isDark();
-    pts = TRADES.map((t,i)=>({x:toX(i,W),y:toY(t.close,H),t}));
-    const grad = ctx.createLinearGradient(0,0,0,H);
-    grad.addColorStop(0, dark?'rgba(16,185,129,0.18)':'rgba(16,185,129,0.14)');
-    grad.addColorStop(1,'rgba(16,185,129,0)');
+    pts = TRADES.map((t, i) => ({ x: toX(i, W), y: toY(t.close, H), t }));
+    const grad = ctx.createLinearGradient(0, 0, 0, H);
+    grad.addColorStop(0, dark ? 'rgba(16,185,129,0.18)' : 'rgba(16,185,129,0.14)');
+    grad.addColorStop(1, 'rgba(16,185,129,0)');
     ctx.beginPath();
-    ctx.moveTo(pts[0].x, H-PAD.bottom);
-    pts.forEach(p=>ctx.lineTo(p.x,p.y));
-    ctx.lineTo(pts[pts.length-1].x, H-PAD.bottom);
+    ctx.moveTo(pts[0].x, H - PAD.bottom);
+    pts.forEach(p => ctx.lineTo(p.x, p.y));
+    ctx.lineTo(pts[pts.length - 1].x, H - PAD.bottom);
     ctx.closePath();
-    ctx.fillStyle=grad; ctx.fill();
+    ctx.fillStyle = grad;
+    ctx.fill();
     ctx.beginPath();
-    pts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
-    ctx.strokeStyle='#10b981'; ctx.lineWidth=1.8; ctx.lineJoin='round'; ctx.stroke();
-    ctx.fillStyle = dark?'rgba(0,0,0,0.35)':'rgba(100,116,139,0.8)';
-    ctx.font='9px Inter,sans-serif';
-    const mi=Math.floor(TRADES.length/2);
-    ctx.textAlign='left';   ctx.fillText(TRADES[0].date, PAD.left, H-3);
-    ctx.textAlign='center'; ctx.fillText(TRADES[mi].date, pts[mi].x, H-3);
-    ctx.textAlign='right';  ctx.fillText(TRADES[TRADES.length-1].date, W-PAD.right, H-3);
+    pts.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+    ctx.strokeStyle = '#10b981';
+    ctx.lineWidth = 1.8;
+    ctx.lineJoin = 'round';
+    ctx.stroke();
+    ctx.fillStyle = dark ? 'rgba(0,0,0,0.35)' : 'rgba(100,116,139,0.8)';
+    ctx.font = '9px Inter,sans-serif';
+    const mi = Math.floor(TRADES.length / 2);
+    ctx.textAlign = 'left';   ctx.fillText(TRADES[0].date, PAD.left, H - 3);
+    ctx.textAlign = 'center'; ctx.fillText(TRADES[mi].date, pts[mi].x, H - 3);
+    ctx.textAlign = 'right';  ctx.fillText(TRADES[TRADES.length - 1].date, W - PAD.right, H - 3);
   }
 
-  function findNearest(mx){
-    let best=0,bd=Infinity;
-    pts.forEach((p,i)=>{const d=Math.abs(p.x-mx);if(d<bd){bd=d;best=i;}});
+  function findNearest(mx) {
+    let best = 0, bd = Infinity;
+    pts.forEach((p, i) => { const d = Math.abs(p.x - mx); if (d < bd) { bd = d; best = i; } });
     return best;
   }
 
-  canvas.addEventListener('mousemove', e=>{
-    if(!pts.length) return;
+  canvas.addEventListener('mousemove', e => {
+    if (!pts.length) return;
     const cRect = canvas.getBoundingClientRect();
     const kRect = card.getBoundingClientRect();
     const mx    = e.clientX - cRect.left;
@@ -392,24 +357,26 @@
     const H = canvas.offsetHeight;
     const W = canvas.offsetWidth;
     ctx.save();
-    ctx.setLineDash([3,3]);
-    ctx.strokeStyle = pos?'rgba(16,185,129,0.5)':'rgba(239,68,68,0.5)';
-    ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(p.x,PAD.top);   ctx.lineTo(p.x,H-PAD.bottom); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(PAD.left,p.y);   ctx.lineTo(W-PAD.right,p.y);  ctx.stroke();
+    ctx.setLineDash([3, 3]);
+    ctx.strokeStyle = pos ? 'rgba(16,185,129,0.5)' : 'rgba(239,68,68,0.5)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(p.x, PAD.top);   ctx.lineTo(p.x, H - PAD.bottom); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(PAD.left, p.y);   ctx.lineTo(W - PAD.right, p.y);  ctx.stroke();
     ctx.restore();
     ctx.beginPath();
-    ctx.arc(p.x,p.y,4,0,Math.PI*2);
-    ctx.fillStyle   = pos?'#10b981':'#ef4444';
-    ctx.strokeStyle = isDark()?'#fff':'#0f172a';
-    ctx.lineWidth=1.5; ctx.fill(); ctx.stroke();
-    const plSign  = pos?'+':'';
-    const plColor = pos?'#34d399':'#f87171';
+    ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+    ctx.fillStyle   = pos ? '#10b981' : '#ef4444';
+    ctx.strokeStyle = isDark() ? '#fff' : '#0f172a';
+    ctx.lineWidth = 1.5;
+    ctx.fill();
+    ctx.stroke();
+    const plSign  = pos ? '+' : '';
+    const plColor = pos ? '#34d399' : '#f87171';
     tip.innerHTML =
-      `<span style="color:#94a3b8;font-size:9px">${t.date}</span><br>`+
-      `<span style="font-weight:700">₹${t.close.toLocaleString('en-IN',{maximumFractionDigits:0})}</span><br>`+
-      `<span style="color:${plColor};font-weight:600">${plSign}${t.ret.toFixed(2)}%&nbsp;&nbsp;${plSign}₹${Math.abs(t.netPL).toLocaleString('en-IN',{maximumFractionDigits:0})}</span>`;
-    tip.style.display='block';
+      `<span style="color:#94a3b8;font-size:9px">${t.date}</span><br>` +
+      `<span style="font-weight:700">₹${t.close.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</span><br>` +
+      `<span style="color:${plColor};font-weight:600">${plSign}${t.ret.toFixed(2)}%&nbsp;&nbsp;${plSign}₹${Math.abs(t.netPL).toLocaleString('en-IN', { maximumFractionDigits: 0 })}</span>`;
+    tip.style.display = 'block';
     const dotVX = cRect.left + p.x;
     const dotVY = cRect.top  + p.y;
     const dotLX = dotVX - kRect.left;
@@ -417,34 +384,38 @@
     const TW = 130, TH = 58;
     let tx = dotLX + 12;
     let ty = dotLY - TH - 8;
-    if(tx + TW > kRect.width) tx = dotLX - TW - 12;
-    if(ty < 4) ty = dotLY + 10;
+    if (tx + TW > kRect.width)  tx = dotLX - TW - 12;
+    if (ty < 4) ty = dotLY + 10;
     tip.style.left = tx + 'px';
     tip.style.top  = ty + 'px';
   });
 
-  canvas.addEventListener('mouseleave',()=>{
-    tip.style.display='none';
+  canvas.addEventListener('mouseleave', () => {
+    tip.style.display = 'none';
     drawChart();
   });
 
-  function init(){
-    canvas.style.height='90px';
-    setTimeout(drawChart,0);
+  function init() {
+    canvas.style.height = '90px';
+    setTimeout(drawChart, 0);
   }
   init();
   window.addEventListener('resize', drawChart);
 
-  function syncIcon(){
-    document.getElementById('theme-icon').className =
-      document.documentElement.classList.contains('dark')?'ri-sun-line text-lg':'ri-moon-line text-lg';
+  /* ── Theme helpers ── */
+  // .dark on <html> = dark theme. No .dark = light theme. Simple & standard.
+  function syncIcon() {
+    document.getElementById('theme-icon').className = isDark() ? 'ri-sun-line text-lg' : 'ri-moon-line text-lg';
   }
-  syncIcon();
-  function toggleTheme(){
+
+  function toggleTheme() {
     document.documentElement.classList.toggle('dark');
-    localStorage.setItem('theme',document.documentElement.classList.contains('dark')?'dark':'light');
-    syncIcon(); drawChart();
+    localStorage.setItem('theme', isDark() ? 'dark' : 'light');
+    syncIcon();
+    drawChart();
   }
+
+  syncIcon();
   </script>
 </body>
 </html>
