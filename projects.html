@@ -47,14 +47,21 @@
   <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_180,h_180,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
   <link rel="shortcut icon" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_32,h_32,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
 
+  <!-- Cross-page theme sync (CSS is inverted: .dark class = visually LIGHT) -->
   <script>
     (function () {
-      const theme = localStorage.getItem('theme');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (theme === 'dark' || (!theme && prefersDark)) {
-        document.documentElement.classList.add('dark');
+      var p = new URLSearchParams(window.location.search).get('theme');
+      if (p === 'dark' || p === 'light') {
+        localStorage.setItem('theme', p);
+        // Inverted: visual dark = no .dark class; visual light = .dark class
+        if (p === 'light') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
       } else {
-        document.documentElement.classList.remove('dark');
+        var t = localStorage.getItem('theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        // Default visual = dark, so add .dark only if stored/preferred theme is light
+        if (t === 'light' || (!t && !prefersDark)) document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
       }
     })();
   </script>
@@ -119,7 +126,7 @@
 
   <!-- Back Button -->
   <div class="fixed top-3 left-3 z-50">
-    <a href="index.html" class="bg-slate-700 dark:bg-white text-slate-200 dark:text-gray-700 p-1.5 rounded-full shadow-md inline-flex items-center border border-slate-600 dark:border-gray-200 hover:border-cyan-400 dark:hover:border-cyan-400 hover:shadow-lg transition-all duration-100">
+    <a id="back-link" href="index.html" class="bg-slate-700 dark:bg-white text-slate-200 dark:text-gray-700 p-1.5 rounded-full shadow-md inline-flex items-center border border-slate-600 dark:border-gray-200 hover:border-cyan-400 dark:hover:border-cyan-400 hover:shadow-lg transition-all duration-100">
       <i class="ri-arrow-left-line text-lg"></i>
     </a>
   </div>
@@ -296,19 +303,30 @@
       renderProjects();
     }
 
-    (function () {
-      const icon = document.getElementById('theme-icon');
-      icon.className = document.documentElement.classList.contains('dark') ? 'ri-sun-line text-lg' : 'ri-moon-line text-lg';
-    })();
+    // Inverted CSS: .dark class = visually LIGHT, no .dark = visually DARK
+    function getVisualTheme() {
+      return document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+    }
+
+    function syncIcon() {
+      // Sun icon when visually dark (no .dark), Moon icon when visually light (.dark)
+      document.getElementById('theme-icon').className =
+        document.documentElement.classList.contains('dark') ? 'ri-moon-line text-lg' : 'ri-sun-line text-lg';
+    }
+
+    function updateBackLink() {
+      var a = document.getElementById('back-link');
+      if (a) a.href = 'index.html?theme=' + getVisualTheme();
+    }
+
+    syncIcon();
+    updateBackLink();
 
     function toggleTheme() {
-      const html = document.documentElement;
-      const icon = document.getElementById('theme-icon');
-      if (html.classList.contains('dark')) {
-        html.classList.remove('dark'); localStorage.setItem('theme','light'); icon.className = 'ri-moon-line text-lg';
-      } else {
-        html.classList.add('dark'); localStorage.setItem('theme','dark'); icon.className = 'ri-sun-line text-lg';
-      }
+      document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', getVisualTheme());
+      syncIcon();
+      updateBackLink();
     }
 
     renderProjects();
