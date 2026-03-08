@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Arpit Agarwala – Portfolio | BCom Student, CA Aspirant & Web Creator</title>
+    <title>Arpit Agarwala – Portfolio | BCom Student, CA Aspirant &amp; Web Creator</title>
     <meta name="description" content="Personal portfolio of Arpit Agarwala – BCom (Hons) student, CA aspirant from Kolkata. Explore projects, tools, games, articles and achievements." />
     <meta name="keywords" content="Arpit Agarwala, portfolio, CA aspirant, BCom, Kolkata, web developer, finance tools, SIP calculator, budget tracker" />
     <meta name="author" content="Arpit Agarwala" />
@@ -12,13 +12,13 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://arpitagarwala.online/" />
     <meta property="og:title" content="Arpit Agarwala – Portfolio" />
-    <meta property="og:description" content="BCom student, CA aspirant & web creator from Kolkata. Projects, tools, games and more." />
+    <meta property="og:description" content="BCom student, CA aspirant &amp; web creator from Kolkata. Projects, tools, games and more." />
     <meta property="og:image" content="https://arpitagarwala.online/assets/images/my-miniature.png" />
     <meta property="og:site_name" content="Arpit Agarwala" />
     <meta property="og:locale" content="en_IN" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Arpit Agarwala – Portfolio" />
-    <meta name="twitter:description" content="BCom student, CA aspirant & web creator from Kolkata." />
+    <meta name="twitter:description" content="BCom student, CA aspirant &amp; web creator from Kolkata." />
     <meta name="twitter:image" content="https://arpitagarwala.online/assets/images/my-miniature.png" />
     <script type="application/ld+json">
     {
@@ -27,7 +27,7 @@
       "name": "Arpit Agarwala",
       "url": "https://arpitagarwala.online/",
       "image": "https://arpitagarwala.online/assets/images/my-miniature.png",
-      "jobTitle": "BCom Student & CA Aspirant",
+      "jobTitle": "BCom Student &amp; CA Aspirant",
       "description": "BCom (Hons) student and aspiring Chartered Accountant from Kolkata.",
       "email": "arpitagarwalms@gmail.com",
       "address": { "@type": "PostalAddress", "addressLocality": "Kolkata", "addressRegion": "West Bengal", "addressCountry": "IN" },
@@ -40,19 +40,22 @@
     <link rel="shortcut icon" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_32,h_32,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
 
     <!-- Cross-domain theme sync: honour ?theme= URL param, then localStorage, then OS -->
+    <!-- NOTE: this site's CSS is inverted — the .dark class renders the LIGHT visual theme.
+         So: visual dark = no .dark class, visual light = .dark class present.
+         The ?theme= param and localStorage always store the VISUAL name (dark/light). -->
     <script>
       (function () {
         var p = new URLSearchParams(window.location.search).get('theme');
         if (p === 'dark' || p === 'light') {
           localStorage.setItem('theme', p);
-          if (p === 'dark') {
+          if (p === 'light') {
             document.documentElement.classList.add('dark');
           } else {
             document.documentElement.classList.remove('dark');
           }
         } else {
           var t = localStorage.getItem('theme');
-          if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          if (t === 'light' || (!t && !window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
           } else {
             document.documentElement.classList.remove('dark');
@@ -236,8 +239,10 @@
       }
       syncIcon();
 
+      // CSS is inverted: .dark class = visually light, no .dark = visually dark.
+      // So the visual theme name is the OPPOSITE of the class state.
       function updateCrossLinks() {
-        var t = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+        var t = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
         document.querySelectorAll('a[href*="design.arpitagarwala.online"]').forEach(function (a) {
           try {
             var u = new URL(a.href);
@@ -249,7 +254,7 @@
 
       function toggleTheme() {
         document.documentElement.classList.toggle('dark');
-        localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'light' : 'dark');
         syncIcon();
         updateCrossLinks();
       }
