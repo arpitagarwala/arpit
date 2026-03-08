@@ -108,7 +108,7 @@
               I'm <strong class="text-slate-200 dark:text-gray-800">Arpit Agarwala</strong> — BCom (Hons) student, CA Intermediate aspirant, and builder of finance-first web tools. Cleared CA Foundation in Dec 2023, currently in deep prep for Intermediate while shipping projects at the intersection of finance, tech, and design.
             </p>
             <div class="mt-5">
-              <a href="about.html" class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 active:bg-cyan-600 text-white text-sm font-semibold transition-colors shadow-md shadow-cyan-500/20">
+              <a href="about.html" class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 active:bg-cyan-600 text-white text-sm font-semibold transition-colors shadow-md shadow-cyan-500/20 internal-link">
                 <i class="ri-user-smile-line"></i> Who am I?
               </a>
             </div>
@@ -129,43 +129,43 @@
         <p class="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-500 dark:text-gray-400 mb-3 px-1">Explore</p>
         <div class="grid grid-cols-2 gap-1.5">
 
-          <a href="projects.html" class="nav-link">
+          <a href="projects.html" class="nav-link internal-link">
             <span class="nav-icon bg-blue-500/10 dark:bg-blue-50"><i class="ri-code-box-line text-blue-400 dark:text-blue-500"></i></span>
             <div><p class="text-sm font-semibold text-slate-200 dark:text-gray-800">Projects</p><p class="text-xs text-slate-500 dark:text-gray-400">Tools &amp; experiments</p></div>
             <i class="ri-arrow-right-line text-sm text-slate-600 dark:text-gray-400 nav-arrow"></i>
           </a>
 
-          <a href="gallery.html" class="nav-link">
+          <a href="gallery.html" class="nav-link internal-link">
             <span class="nav-icon bg-pink-500/10 dark:bg-pink-50"><i class="ri-image-line text-pink-400 dark:text-pink-500"></i></span>
             <div><p class="text-sm font-semibold text-slate-200 dark:text-gray-800">Gallery</p><p class="text-xs text-slate-500 dark:text-gray-400">Moments &amp; memories</p></div>
             <i class="ri-arrow-right-line text-sm text-slate-600 dark:text-gray-400 nav-arrow"></i>
           </a>
 
-          <a href="achievements.html" class="nav-link">
+          <a href="achievements.html" class="nav-link internal-link">
             <span class="nav-icon bg-amber-500/10 dark:bg-amber-50"><i class="ri-trophy-line text-amber-400 dark:text-amber-500"></i></span>
             <div><p class="text-sm font-semibold text-slate-200 dark:text-gray-800">Achievements</p><p class="text-xs text-slate-500 dark:text-gray-400">Awards &amp; milestones</p></div>
             <i class="ri-arrow-right-line text-sm text-slate-600 dark:text-gray-400 nav-arrow"></i>
           </a>
 
-          <a href="articles.html" class="nav-link">
+          <a href="articles.html" class="nav-link internal-link">
             <span class="nav-icon bg-orange-500/10 dark:bg-orange-50"><i class="ri-article-line text-orange-400 dark:text-orange-500"></i></span>
             <div><p class="text-sm font-semibold text-slate-200 dark:text-gray-800">Articles</p><p class="text-xs text-slate-500 dark:text-gray-400">Finance &amp; productivity</p></div>
             <i class="ri-arrow-right-line text-sm text-slate-600 dark:text-gray-400 nav-arrow"></i>
           </a>
 
-          <a href="games.html" class="nav-link">
+          <a href="games.html" class="nav-link internal-link">
             <span class="nav-icon bg-violet-500/10 dark:bg-violet-50"><i class="ri-gamepad-line text-violet-400 dark:text-violet-500"></i></span>
             <div><p class="text-sm font-semibold text-slate-200 dark:text-gray-800">Games</p><p class="text-xs text-slate-500 dark:text-gray-400">Learn money, have fun</p></div>
             <i class="ri-arrow-right-line text-sm text-slate-600 dark:text-gray-400 nav-arrow"></i>
           </a>
 
-          <a href="about.html" class="nav-link">
+          <a href="about.html" class="nav-link internal-link">
             <span class="nav-icon bg-teal-500/10 dark:bg-teal-50"><i class="ri-user-line text-teal-400 dark:text-teal-500"></i></span>
             <div><p class="text-sm font-semibold text-slate-200 dark:text-gray-800">About</p><p class="text-xs text-slate-500 dark:text-gray-400">Who am I?</p></div>
             <i class="ri-arrow-right-line text-sm text-slate-600 dark:text-gray-400 nav-arrow"></i>
           </a>
 
-          <a href="https://design.arpitagarwala.online" target="_blank" rel="noopener" class="nav-link">
+          <a href="https://design.arpitagarwala.online" target="_blank" rel="noopener" class="nav-link external-link">
             <span class="nav-icon bg-fuchsia-500/10 dark:bg-fuchsia-50"><i class="ri-palette-line text-fuchsia-400 dark:text-fuchsia-500"></i></span>
             <div><p class="text-sm font-semibold text-slate-200 dark:text-gray-800">Designs</p><p class="text-xs text-slate-500 dark:text-gray-400">UI/UX &amp; Figma work</p></div>
             <i class="ri-arrow-right-up-line text-sm text-slate-600 dark:text-gray-400 nav-arrow"></i>
@@ -241,12 +241,26 @@
 
       // CSS is inverted: .dark class = visually light, no .dark = visually dark.
       // So the visual theme name is the OPPOSITE of the class state.
-      function updateCrossLinks() {
-        var t = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
-        document.querySelectorAll('a[href*="design.arpitagarwala.online"]').forEach(function (a) {
+      function getCurrentTheme() {
+        return document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+      }
+
+      function updateAllLinks() {
+        var theme = getCurrentTheme();
+        
+        // Update internal navigation links
+        document.querySelectorAll('a.internal-link').forEach(function(a) {
+          var url = a.getAttribute('href');
+          if (url && !url.startsWith('http') && !url.startsWith('mailto:')) {
+            a.href = url.split('?')[0] + '?theme=' + theme;
+          }
+        });
+
+        // Update external cross-domain links
+        document.querySelectorAll('a.external-link, a[href*="design.arpitagarwala.online"]').forEach(function (a) {
           try {
             var u = new URL(a.href);
-            u.searchParams.set('theme', t);
+            u.searchParams.set('theme', theme);
             a.href = u.toString();
           } catch (e) {}
         });
@@ -254,12 +268,14 @@
 
       function toggleTheme() {
         document.documentElement.classList.toggle('dark');
-        localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'light' : 'dark');
+        localStorage.setItem('theme', getCurrentTheme());
         syncIcon();
-        updateCrossLinks();
+        updateAllLinks();
       }
 
-      document.addEventListener('DOMContentLoaded', updateCrossLinks);
+      document.addEventListener('DOMContentLoaded', function() {
+        updateAllLinks();
+      });
     </script>
   </body>
 </html>
