@@ -18,11 +18,25 @@
   <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_180,h_180,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
   <link rel="shortcut icon" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_32,h_32,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
 
+  <!-- Cross-domain theme sync: honour ?theme= URL param, then localStorage, then OS -->
   <script>
     (function () {
-      const t = localStorage.getItem('theme');
-      if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches))
-        document.documentElement.classList.add('dark');
+      var p = new URLSearchParams(window.location.search).get('theme');
+      if (p === 'dark' || p === 'light') {
+        localStorage.setItem('theme', p);
+        if (p === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      } else {
+        var t = localStorage.getItem('theme');
+        if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      }
     })();
   </script>
 
@@ -290,7 +304,7 @@
 
     <div class="mb-7 fade-up">
       <div class="flex items-center gap-3 mb-1">
-        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">&#x1F4F8; Gallery</h1>
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">📸 Gallery</h1>
       </div>
       <p class="text-slate-400 dark:text-gray-500 text-sm max-w-lg">Moments, milestones &amp; memories — a visual story of who I am beyond the code.</p>
     </div>
@@ -384,163 +398,109 @@
         category: 'Moments'
       },
       {
-        src:   'https://res.cloudinary.com/dxsja3wy5/image/upload/v1772894896/WhatsApp_Image_2026-03-07_at_7.56.58_PM_ydbvt4.jpg',
-        thumb: 'https://res.cloudinary.com/dxsja3wy5/image/upload/w_600,q_auto,f_auto/v1772894896/WhatsApp_Image_2026-03-07_at_7.56.58_PM_ydbvt4.jpg',
+        src:   'https://res.cloudinary.com/dxsja3wy5/image/upload/v1772894896/WhatsApp_Image_2026-03-07_at_7.54.50_PM_xqrzjf.jpg',
+        thumb: 'https://res.cloudinary.com/dxsja3wy5/image/upload/w_600,q_auto,f_auto/v1772894896/WhatsApp_Image_2026-03-07_at_7.54.50_PM_xqrzjf.jpg',
         title: 'Moment 10',
-        category: 'Moments'
-      },
-      {
-        src:   'https://res.cloudinary.com/dxsja3wy5/image/upload/v1772894896/WhatsApp_Image_2026-03-07_at_7.56.26_PM_vxtpmv.jpg',
-        thumb: 'https://res.cloudinary.com/dxsja3wy5/image/upload/w_600,q_auto,f_auto/v1772894896/WhatsApp_Image_2026-03-07_at_7.56.26_PM_vxtpmv.jpg',
-        title: 'Moment 11',
         category: 'Moments'
       }
     ];
 
-    const CATS = ['all', ...new Set(PHOTOS.map(p => p.category).filter(Boolean))];
     let activeFilter = 'all';
-    let lbIndex = 0;
+    let currentIdx   = 0;
 
-    function filtered() {
-      return activeFilter === 'all' ? PHOTOS : PHOTOS.filter(p => p.category === activeFilter);
-    }
+    const categories = ['all', ...new Set(PHOTOS.map(p => p.category))];
+    document.getElementById('photo-count').textContent = PHOTOS.length;
+    document.getElementById('cat-count').textContent = (categories.length - 1) + ' Categories';
 
-    function buildFilters() {
-      const bar = document.getElementById('filter-bar');
-      bar.innerHTML = '';
-      CATS.forEach(cat => {
-        const btn = document.createElement('button');
-        btn.className = 'filter-btn' + (cat === activeFilter ? ' active' : '');
-        btn.textContent = cat === 'all' ? '\u2726 All' : cat;
-        btn.onclick = () => setFilter(cat);
-        bar.appendChild(btn);
-      });
-    }
+    const filterBar = document.getElementById('filter-bar');
+    categories.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn' + (cat === 'all' ? ' active' : '');
+      btn.textContent = cat === 'all' ? 'All' : cat;
+      btn.onclick = () => setFilter(cat);
+      filterBar.appendChild(btn);
+    });
 
     function setFilter(cat) {
       activeFilter = cat;
-      buildFilters();
+      document.querySelectorAll('.filter-btn').forEach((b, i) => {
+        b.classList.toggle('active', categories[i] === cat);
+      });
       renderGallery();
     }
 
     function renderGallery() {
-      const grid = document.getElementById('gallery-grid');
+      const grid  = document.getElementById('gallery-grid');
       const empty = document.getElementById('empty-state');
-      const banner = document.getElementById('upload-banner');
-      const list = filtered();
+      const filtered = activeFilter === 'all' ? PHOTOS : PHOTOS.filter(p => p.category === activeFilter);
 
-      document.getElementById('photo-count').textContent = PHOTOS.length;
-      document.getElementById('cat-count').textContent =
-        (CATS.length - 1) + ' Categor' + (CATS.length - 1 === 1 ? 'y' : 'ies');
-
-      if (PHOTOS.length === 0) {
-        grid.innerHTML = '';
-        empty.classList.remove('hidden');
-        empty.classList.add('flex');
-        banner.classList.remove('hidden');
-        renderSkeletons(grid);
-        return;
-      }
-
-      banner.classList.add('hidden');
-
-      if (list.length === 0) {
+      if (!filtered.length) {
         grid.innerHTML = '';
         empty.classList.remove('hidden');
         empty.classList.add('flex');
         return;
       }
-
       empty.classList.add('hidden');
-      empty.classList.remove('flex');
-      grid.innerHTML = '';
 
-      list.forEach((photo, i) => {
-        const item = document.createElement('div');
-        item.className = 'masonry-item fade-up';
-        item.style.animationDelay = (i * 55) + 'ms';
-
-        item.innerHTML = `
-          <div class="photo-card" onclick="openLightbox(${PHOTOS.indexOf(photo)})">
-            <img src="${photo.thumb || photo.src}" alt="${photo.title || 'Photo'}" loading="lazy" />
+      grid.innerHTML = filtered.map((p, i) => `
+        <div class="masonry-item">
+          <div class="photo-card" onclick="openLightbox(${PHOTOS.indexOf(p)})">
+            <img src="${p.thumb}" alt="${p.title}" loading="lazy">
             <div class="overlay">
-              ${photo.category ? `<span class="tag-pill mb-1.5"><i class="ri-price-tag-3-line"></i> ${photo.category}</span>` : ''}
-              ${photo.title ? `<p class="text-sm font-bold text-white leading-tight">${photo.title}</p>` : ''}
-              ${photo.desc  ? `<p class="text-xs text-slate-300 mt-0.5 leading-snug">${photo.desc}</p>` : ''}
-              <p class="text-xs text-slate-400 mt-1 flex items-center gap-1"><i class="ri-zoom-in-line"></i> Click to expand</p>
+              <span class="tag-pill"><i class="ri-image-line"></i>${p.category}</span>
             </div>
-          </div>`;
-        grid.appendChild(item);
-      });
+          </div>
+        </div>
+      `).join('');
     }
 
-    function renderSkeletons(grid) {
-      const heights = [220, 310, 260, 350, 200, 280, 240, 320, 190, 270, 300, 230];
-      heights.forEach((h, i) => {
-        const item = document.createElement('div');
-        item.className = 'masonry-item fade-up';
-        item.style.animationDelay = (i * 40) + 'ms';
-        item.innerHTML = `<div class="skeleton" style="height:${h}px"></div>`;
-        grid.appendChild(item);
-      });
-    }
-
-    function openLightbox(index) {
-      lbIndex = index;
+    function openLightbox(idx) {
+      currentIdx = idx;
       updateLightbox();
       document.getElementById('lightbox').classList.add('open');
       document.body.style.overflow = 'hidden';
     }
-    function closeLightbox(e) {
-      if (e && e.target !== document.getElementById('lightbox') && e.target !== document.getElementById('lightbox-close') && !e.target.closest('#lightbox-close')) return;
+
+    function closeLightbox(event) {
+      if (event && event.target.id !== 'lightbox' && event.target.id !== 'lightbox-close' && !event.target.closest('#lightbox-close')) return;
       document.getElementById('lightbox').classList.remove('open');
       document.body.style.overflow = '';
     }
+
     function lbNav(dir) {
-      const list = filtered();
-      lbIndex = (lbIndex + dir + list.length) % list.length;
-      const photo = list[lbIndex];
-      updateLightboxPhoto(photo, lbIndex, list.length);
+      currentIdx = (currentIdx + dir + PHOTOS.length) % PHOTOS.length;
+      updateLightbox();
     }
+
     function updateLightbox() {
-      const list = filtered();
-      const local = list.findIndex((_, i) => PHOTOS.indexOf(list[i]) === lbIndex);
-      const idx = local >= 0 ? local : 0;
-      updateLightboxPhoto(PHOTOS[lbIndex], idx, list.length);
-    }
-    function updateLightboxPhoto(photo, idx, total) {
-      if (!photo) return;
-      const img = document.getElementById('lightbox-img');
-      img.style.transform = 'scale(0.95)';
-      img.src = photo.src;
-      img.alt = photo.title || 'Photo';
-      setTimeout(() => { img.style.transform = 'scale(1)'; }, 50);
-      document.getElementById('lightbox-title').textContent = photo.title || '';
-      document.getElementById('lightbox-sub').textContent = photo.desc || '';
-      document.getElementById('lightbox-caption').textContent = (idx + 1) + ' / ' + total;
+      const p = PHOTOS[currentIdx];
+      document.getElementById('lightbox-img').src = p.src;
+      document.getElementById('lightbox-title').textContent = p.title;
+      document.getElementById('lightbox-sub').textContent = p.category;
+      document.getElementById('lightbox-caption').textContent = `${currentIdx + 1} / ${PHOTOS.length}`;
     }
 
-    document.addEventListener('keydown', e => {
-      const lb = document.getElementById('lightbox');
-      if (!lb.classList.contains('open')) return;
-      if (e.key === 'Escape')      closeLightbox({ target: lb });
-      if (e.key === 'ArrowLeft')   lbNav(-1);
-      if (e.key === 'ArrowRight')  lbNav(1);
-    });
-
-    function syncIcon() {
-      document.getElementById('theme-icon').className =
-        document.documentElement.classList.contains('dark') ? 'ri-sun-line text-base' : 'ri-moon-line text-base';
-    }
-    syncIcon();
     function toggleTheme() {
       document.documentElement.classList.toggle('dark');
-      localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-      syncIcon();
+      const isDark = document.documentElement.classList.contains('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      document.getElementById('theme-icon').className = isDark ? 'ri-sun-line text-base' : 'ri-moon-line text-base';
     }
 
-    buildFilters();
+    (function () {
+      const isDark = document.documentElement.classList.contains('dark');
+      document.getElementById('theme-icon').className = isDark ? 'ri-sun-line text-base' : 'ri-moon-line text-base';
+    })();
+
     renderGallery();
+
+    document.addEventListener('keydown', e => {
+      if (!document.getElementById('lightbox').classList.contains('open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      else if (e.key === 'ArrowLeft') lbNav(-1);
+      else if (e.key === 'ArrowRight') lbNav(1);
+    });
   </script>
+
 </body>
 </html>
