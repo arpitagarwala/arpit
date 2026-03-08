@@ -131,17 +131,18 @@ a.card:hover {
    FILTER PILLS  (projects.html, articles.html)
    No prefix = light theme active pill
    .dark     = dark theme active pill
+   Using !important to override Tailwind utility classes
 ───────────────────────────────────────── */
 .filter-pill.active {
-  background-color: #0891b2;
-  color: #ffffff;
-  border-color: #0891b2;
+  background-color: #0891b2 !important;
+  color: #ffffff !important;
+  border-color: #0891b2 !important;
 }
 
 .dark .filter-pill.active {
-  background-color: #22d3ee;
-  color: #0f172a;
-  border-color: #22d3ee;
+  background-color: #22d3ee !important;
+  color: #0f172a !important;
+  border-color: #22d3ee !important;
 }
 
 /* ─────────────────────────────────────────
@@ -196,13 +197,14 @@ a.card:hover {
 
 /* ─────────────────────────────────────────
    EMPTY STATE  (projects.html, games.html, gallery.html, articles.html)
+   Using !important to ensure it overrides Tailwind classes
 ───────────────────────────────────────── */
 #no-results {
-  display: none;
+  display: none !important;
 }
 
 #no-results.visible {
-  display: flex;
+  display: flex !important;
 }
 
 /* ─────────────────────────────────────────
