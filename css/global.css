@@ -8,6 +8,26 @@ body {
 }
 
 /* ─────────────────────────────────────────
+   SCROLLBAR  (global)
+───────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 99px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ─────────────────────────────────────────
    CARD  (index.html)
    No prefix = light: white card
    .dark     = dark: navy card
@@ -171,7 +191,7 @@ a.card:hover {
 }
 
 /* ─────────────────────────────────────────
-   EMPTY STATE  (projects.html, games.html)
+   EMPTY STATE  (projects.html, games.html, gallery.html)
 ───────────────────────────────────────── */
 #no-results {
   display: none;
@@ -239,7 +259,7 @@ a.card:hover {
 }
 
 /* ─────────────────────────────────────────
-   FADE UP ANIMATION  (achievements.html)
+   FADE UP ANIMATION  (achievements.html, gallery.html)
 ───────────────────────────────────────── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(12px); }
@@ -336,4 +356,281 @@ a.card:hover {
 
 .ext-link:hover {
   opacity: 0.75;
+}
+
+/* ─────────────────────────────────────────
+   GALLERY MASONRY LAYOUT  (gallery.html)
+───────────────────────────────────────── */
+.masonry {
+  columns: 1;
+  column-gap: 0.875rem;
+}
+
+@media (min-width: 640px) {
+  .masonry {
+    columns: 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .masonry {
+    columns: 3;
+  }
+}
+
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 0.875rem;
+  display: block;
+}
+
+/* ─────────────────────────────────────────
+   PHOTO CARD  (gallery.html)
+   Unique design with scale on hover
+   No prefix = light: white card
+   .dark     = dark: navy card
+───────────────────────────────────────── */
+.photo-card {
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid rgb(229, 231, 235);
+  background: #ffffff;
+  cursor: pointer;
+  transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.22s ease;
+}
+
+.dark .photo-card {
+  background: rgb(17, 24, 39);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+.photo-card:hover {
+  transform: translateY(-3px) scale(1.012);
+  border-color: rgba(34, 211, 238, 0.45);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(34, 211, 238, 0.14);
+}
+
+.dark .photo-card:hover {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(34, 211, 238, 0.08);
+}
+
+.photo-card .overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.72) 0%, transparent 55%);
+  opacity: 0;
+  transition: opacity 0.22s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1rem;
+}
+
+.photo-card:hover .overlay {
+  opacity: 1;
+}
+
+.photo-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.photo-card:hover img {
+  transform: scale(1.04);
+}
+
+/* ─────────────────────────────────────────
+   TAG PILL  (gallery.html)
+   Gallery-specific tag design
+───────────────────────────────────────── */
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.55rem;
+  border-radius: 99px;
+  background: rgba(34, 211, 238, 0.15);
+  color: #22d3ee;
+  border: 1px solid rgba(34, 211, 238, 0.25);
+}
+
+/* ─────────────────────────────────────────
+   LIGHTBOX  (gallery.html)
+───────────────────────────────────────── */
+#lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(4, 8, 16, 0.94);
+  backdrop-filter: blur(18px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  padding: 1.5rem;
+}
+
+#lightbox.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+#lightbox-img {
+  max-width: min(860px, 92vw);
+  max-height: 80vh;
+  border-radius: 1rem;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.8);
+  object-fit: contain;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#lightbox-close {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+  font-size: 1.1rem;
+}
+
+#lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.1);
+}
+
+#lightbox-nav {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.lb-nav-btn {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.lb-nav-btn:hover {
+  background: rgba(34, 211, 238, 0.18);
+  color: #22d3ee;
+}
+
+#lightbox-caption {
+  color: #94a3b8;
+  font-size: 0.78rem;
+  font-weight: 500;
+  text-align: center;
+  min-width: 120px;
+}
+
+#lightbox-meta {
+  position: absolute;
+  bottom: 5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+#lightbox-title {
+  color: #f1f5f9;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+
+#lightbox-sub {
+  color: #64748b;
+  font-size: 0.75rem;
+}
+
+/* ─────────────────────────────────────────
+   FILTER BUTTONS  (gallery.html)
+   Similar to .filter-pill but different active state
+   No prefix = light theme
+   .dark     = dark theme
+───────────────────────────────────────── */
+.filter-btn {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.35rem 0.9rem;
+  border-radius: 99px;
+  border: 1px solid rgb(229, 231, 235);
+  color: #6b7280;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.dark .filter-btn {
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+}
+
+.filter-btn:hover {
+  border-color: rgba(34, 211, 238, 0.4);
+  color: #22d3ee;
+}
+
+.filter-btn.active {
+  background: rgba(8, 145, 178, 0.1);
+  border-color: rgba(8, 145, 178, 0.4);
+  color: #0891b2;
+}
+
+.dark .filter-btn.active {
+  background: rgba(34, 211, 238, 0.12);
+  border-color: rgba(34, 211, 238, 0.4);
+  color: #22d3ee;
+}
+
+/* ─────────────────────────────────────────
+   SKELETON LOADER  (gallery.html)
+───────────────────────────────────────── */
+@keyframes skeletonShimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+.skeleton {
+  border-radius: 1rem;
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 600px 100%;
+  animation: skeletonShimmer 1.4s infinite linear;
+}
+
+.dark .skeleton {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 25%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.04) 75%);
+  background-size: 600px 100%;
 }
