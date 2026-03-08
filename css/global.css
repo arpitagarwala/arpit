@@ -7,11 +7,6 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
-/* Smooth easing globally */
-* {
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
 /* ─────────────────────────────────────────
    CARD  (index.html)
    No prefix = light: white card
@@ -86,17 +81,20 @@ a.card:hover {
 }
 
 /* ─────────────────────────────────────────
-   PROJECT CARD  (projects.html)
+   PROJECT / GAME CARD ENTRANCE  (projects.html, games.html)
+   .project-card and .game-card share the same animation
 ───────────────────────────────────────── */
 @keyframes cardIn {
   from { opacity: 0; transform: translateY(12px) scale(0.97); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.project-card {
+.project-card,
+.game-card {
   animation: cardIn 0.28s ease both;
 }
 
+/* Clickable card link */
 .card-link {
   transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
 }
@@ -123,7 +121,7 @@ a.card:hover {
 }
 
 /* ─────────────────────────────────────────
-   SEARCH INPUT  (projects.html)
+   SEARCH INPUT  (projects.html, games.html)
    No prefix = light theme focus ring
    .dark     = dark theme focus ring
 ───────────────────────────────────────── */
@@ -139,7 +137,7 @@ a.card:hover {
 }
 
 /* ─────────────────────────────────────────
-   FEATURED SHIMMER TEXT  (projects.html)
+   FEATURED SHIMMER TEXT  (projects.html, games.html)
 ───────────────────────────────────────── */
 @keyframes shimmer {
   0%   { background-position: -200% center; }
@@ -156,7 +154,7 @@ a.card:hover {
 }
 
 /* ─────────────────────────────────────────
-   COMPLEXITY DOTS  (projects.html)
+   COMPLEXITY / DIFFICULTY DOTS  (projects.html, games.html)
    dot-on  = filled (cyan)
    dot-off = unfilled; light: gray-200, dark: slate-700
 ───────────────────────────────────────── */
@@ -173,7 +171,7 @@ a.card:hover {
 }
 
 /* ─────────────────────────────────────────
-   EMPTY STATE  (projects.html)
+   EMPTY STATE  (projects.html, games.html)
 ───────────────────────────────────────── */
 #no-results {
   display: none;
@@ -185,10 +183,7 @@ a.card:hover {
 
 /* ─────────────────────────────────────────
    ACHIEVEMENT CARD  (achievements.html)
-   Intentionally separate from .card:
-   - 1rem border-radius (vs 1.15rem on index)
-   - overflow:hidden (clips the top photo)
-   - different hover shadows per theme
+   Separate from .card: 1rem radius, overflow:hidden for photo
    No prefix = light: white card
    .dark     = dark: navy card
 ───────────────────────────────────────── */
@@ -257,7 +252,7 @@ a.card:hover {
 
 /* ─────────────────────────────────────────
    TRADING CARD  (achievements.html)
-   Separate from .ach-card: has a cyan border by default
+   Has a cyan border by default; separate from .ach-card
    No prefix = light theme
    .dark     = dark theme
 ───────────────────────────────────────── */
