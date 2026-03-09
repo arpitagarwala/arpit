@@ -51,8 +51,8 @@
       if (param === 'dark' || param === 'light') { theme = param; localStorage.setItem('theme', theme); }
       else if (stored === 'dark' || stored === 'light') { theme = stored; }
       else { theme = prefersDark ? 'dark' : 'light'; }
-      if (theme === 'dark') { document.documentElement.classList.add('dark'); }
-      else { document.documentElement.classList.remove('dark'); }
+              if (theme === 'dark') { document.documentElement.classList.remove('dark'); }
+              else { document.documentElement.classList.add('dark'); }
     })();
   </script>
 
@@ -685,7 +685,7 @@
     (function syncIcon() {
       const icon = $('theme-icon');
       const isDark = document.documentElement.classList.contains('dark');
-      icon.className = isDark ? 'ri-sun-line text-lg' : 'ri-moon-line text-lg';
+              icon.className = isDark ? 'ri-moon-line text-lg' : 'ri-sun-line text-lg';
     })();
 
     function toggleTheme() {
@@ -693,15 +693,15 @@
       const icon = $('theme-icon');
       const isDark = html.classList.contains('dark');
       html.classList.toggle('dark', !isDark);
-      localStorage.setItem('theme', isDark ? 'light' : 'dark');
-      icon.className = isDark ? 'ri-moon-line text-lg' : 'ri-sun-line text-lg';
+              localStorage.setItem('theme', isDark ? 'dark' : 'light');
+              icon.className = isDark ? 'ri-sun-line text-lg' : 'ri-moon-line text-lg';
       update();
       updateAllLinks();
     }
 
 
     // ── Theme helpers ──
-    function isDark() { return document.documentElement.classList.contains('dark'); }
+            function isDark() { return !document.documentElement.classList.contains('dark'); }
     function updateAllLinks() {
       var theme = isDark() ? 'dark' : 'light';
       document.querySelectorAll('a.internal-link').forEach(function (a) {
