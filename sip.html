@@ -43,11 +43,16 @@
 
   <!-- Instant theme flash prevention -->
   <script>
-    (function(){
-      const t=localStorage.getItem('theme');
-      const d=window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if(t==='dark'||(!t&&d)) document.documentElement.classList.add('dark');
-      else document.documentElement.classList.remove('dark');
+(function () {
+      var param = new URLSearchParams(window.location.search).get('theme');
+      var stored = localStorage.getItem('theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var theme;
+      if (param === 'dark' || param === 'light') { theme = param; localStorage.setItem('theme', theme); }
+      else if (stored === 'dark' || stored === 'light') { theme = stored; }
+      else { theme = prefersDark ? 'dark' : 'light'; }
+      if (theme === 'dark') { document.documentElement.classList.add('dark'); }
+      else { document.documentElement.classList.remove('dark'); }
     })();
   </script>
 
@@ -59,72 +64,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_180,h_180,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
   <link rel="shortcut icon" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_32,h_32,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-  <style>
-    *{box-sizing:border-box;}
-    body{font-family:'Inter',sans-serif;}
-
-    /* ── Scrollbar ── */
-    ::-webkit-scrollbar{width:6px;height:6px;}
-    ::-webkit-scrollbar-track{background:transparent;}
-    ::-webkit-scrollbar-thumb{background:#334155;border-radius:999px;}
-    .dark ::-webkit-scrollbar-thumb{background:#cbd5e1;}
-
-    /* ── Custom range slider ── */
-    input[type=range]{-webkit-appearance:none;appearance:none;height:6px;border-radius:9999px;outline:none;cursor:pointer;transition:opacity .15s;}
-    input[type=range]:hover{opacity:.9;}
-    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;cursor:pointer;border:2.5px solid white;box-shadow:0 2px 8px rgba(0,0,0,.35);transition:transform .15s ease,box-shadow .15s ease;}
-    input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.25);box-shadow:0 4px 14px rgba(0,0,0,.4);}
-
-    .range-cyan{background:linear-gradient(to right,#06b6d4 var(--val,50%),#1e293b var(--val,50%));}
-    .range-cyan::-webkit-slider-thumb{background:#06b6d4;}
-    .dark .range-cyan{background:linear-gradient(to right,#06b6d4 var(--val,50%),#e2e8f0 var(--val,50%));}
-
-    .range-violet{background:linear-gradient(to right,#8b5cf6 var(--val,50%),#1e293b var(--val,50%));}
-    .range-violet::-webkit-slider-thumb{background:#8b5cf6;}
-    .dark .range-violet{background:linear-gradient(to right,#8b5cf6 var(--val,50%),#e2e8f0 var(--val,50%));}
-
-    /* ── Cards ── */
-    .app-card{transition:transform .2s ease,box-shadow .2s ease;}
-    .app-card:hover{transform:translateY(-2px);box-shadow:0 20px 40px rgba(0,0,0,.25);}
-    .dark .app-card:hover{box-shadow:0 20px 40px rgba(0,0,0,.1);}
-
-    /* ── Breakdown bar ── */
-    .bbar{transition:width .6s cubic-bezier(.4,0,.2,1);}
-
-    /* ── Step-up badge glow ── */
-    .stepup-active{box-shadow:0 0 0 2px #06b6d4;}
-
-    /* ── Stat counter animation ── */
-    .stat-val{font-variant-numeric:tabular-nums;transition:color .3s;}
-
-    /* ── Toggle track ── */
-    .toggle-track{transition:background-color .25s;}
-
-    /* ── Tabs ── */
-    .tab-btn{position:relative;transition:color .2s;}
-    .tab-btn::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:#06b6d4;border-radius:999px;transform:scaleX(0);transition:transform .25s cubic-bezier(.4,0,.2,1);}
-    .tab-btn.active{color:#06b6d4;}
-    .tab-btn.active::after{transform:scaleX(1);}
-
-    /* ── Tooltip custom ── */
-    [data-tip]{position:relative;cursor:help;}
-    [data-tip]:hover::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#0f172a;color:#e2e8f0;font-size:.7rem;padding:.3rem .6rem;border-radius:.5rem;white-space:nowrap;z-index:99;pointer-events:none;border:1px solid #334155;}
-    .dark [data-tip]:hover::after{background:#f8fafc;color:#0f172a;border:1px solid #e2e8f0;}
-
-    /* ── Fade-in animation ── */
-    @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
-    .fade-up{animation:fadeUp .45s cubic-bezier(.4,0,.2,1) both;}
-    .fade-up-1{animation-delay:.05s;}
-    .fade-up-2{animation-delay:.1s;}
-    .fade-up-3{animation-delay:.15s;}
-    .fade-up-4{animation-delay:.2s;}
-    .fade-up-5{animation-delay:.25s;}
-
-    /* ── Glowing accent ── */
-    .glow-cyan{box-shadow:0 0 24px rgba(6,182,212,.18);}
-  </style>
+<link rel="stylesheet" href="css/global.css">
 </head>
 
 <body class="bg-slate-950 dark:bg-slate-50 text-slate-100 dark:text-slate-900 min-h-screen transition-colors duration-300">
@@ -132,7 +72,7 @@
   <!-- ── Back Button ── -->
   <div class="fixed top-4 left-4 z-50">
     <a href="projects.html"
-       class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-700 dark:border-slate-200 text-slate-300 dark:text-slate-700 hover:border-cyan-400 dark:hover:border-cyan-400 hover:text-cyan-400 dark:hover:text-cyan-500 shadow-lg transition-all duration-200">
+       class="internal-link w-10 h-10 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-700 dark:border-slate-200 text-slate-300 dark:text-slate-700 hover:border-cyan-400 dark:hover:border-cyan-400 hover:text-cyan-400 dark:hover:text-cyan-500 shadow-lg transition-all duration-200">
       <i class="ri-arrow-left-line text-lg"></i>
     </a>
   </div>
@@ -756,8 +696,22 @@
       localStorage.setItem('theme', isDark ? 'light' : 'dark');
       icon.className = isDark ? 'ri-moon-line text-lg' : 'ri-sun-line text-lg';
       update();
+      updateAllLinks();
     }
 
+
+    // ── Theme helpers ──
+    function isDark() { return document.documentElement.classList.contains('dark'); }
+    function updateAllLinks() {
+      var theme = isDark() ? 'dark' : 'light';
+      document.querySelectorAll('a.internal-link').forEach(function (a) {
+        var href = a.getAttribute('href');
+        if (href && !href.startsWith('http') && !href.startsWith('mailto:')) {
+          a.href = href.split('?')[0] + '?theme=' + theme;
+        }
+      });
+    }
+    document.addEventListener('DOMContentLoaded', updateAllLinks);
     // ── Init ──
     A.amountRange.value = A.amountInput.value = 5000;
     A.rateRange.value   = A.rateInput.value   = 12;
