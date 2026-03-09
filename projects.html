@@ -226,7 +226,7 @@
 
       grid.innerHTML = filtered.map((p, i) => `
         <div class="project-card" style="animation-delay:${i * 55}ms">
-          <a href="${p.href}" class="card-link h-full bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700/50 hover:border-cyan-500 dark:hover:border-cyan-400 shadow-sm hover:shadow-xl flex flex-col overflow-hidden block">
+          <a href="${p.href}?theme=${isDark() ? 'dark' : 'light'}" class="card-link h-full bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700/50 hover:border-cyan-500 dark:hover:border-cyan-400 shadow-sm hover:shadow-xl flex flex-col overflow-hidden block">
             <div class="h-1 w-full bg-gradient-to-r ${p.gradient} flex-shrink-0"></div>
             <div class="p-4 sm:p-5 flex flex-col flex-1">
               <div class="flex items-start justify-between mb-3">
@@ -298,6 +298,7 @@
       localStorage.setItem('theme', isDark() ? 'dark' : 'light');
       syncIcon();
       updateBackLink();
+          renderProjects();
     }
 
     syncIcon();
