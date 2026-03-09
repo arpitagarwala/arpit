@@ -655,78 +655,132 @@ html.dark .filter-pill.active {
   }
 }
 
-/* ─────────────────────────────────────────
-   MODAL LAYOUT UPGRADES  (articles.html)
-   Wider box, more breathing room
-───────────────────────────────────────── */
+/* ═══════════════════════════════════════════
+   MODAL — complete redesign for readability
+   (articles.html)
+═══════════════════════════════════════════ */
 
-/* Increase the modal's max-width beyond the Tailwind max-w-4xl */
+/* ── Box ── */
 #modal-box {
-  max-width: 860px;
-  max-height: 88vh;
+  max-width: 920px !important;
+  max-height: 92vh !important;
+  border-radius: 1.25rem !important;
 }
 
-/* The inner body gets a comfortable reading width and larger text */
-#modal-body {
-  font-size: 1rem;          /* up from text-sm / 0.875rem */
-  max-width: 680px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 2rem 2.5rem;     /* more vertical + horizontal breathing room */
+/* ── Header ── */
+.modal-header {
+  padding: 1.5rem 2rem 1.25rem;
+}
+
+.modal-title {
+  font-size: 1.5rem !important;
+  line-height: 1.35 !important;
+  letter-spacing: -0.02em !important;
+  margin-top: 0.25rem;
 }
 
 @media (max-width: 640px) {
-  #modal-body {
-    padding: 1.25rem 1.25rem;
-    font-size: 0.9375rem;
+  .modal-header { padding: 1.1rem 1.1rem 1rem; }
+  .modal-title  { font-size: 1.2rem !important; }
+}
+
+.modal-meta {
+  font-size: 0.8rem !important;
+}
+
+.modal-close {
+  font-size: 1.35rem;
+  margin-top: 0.2rem;
+  line-height: 1;
+}
+
+/* ── Body wrapper ── */
+.modal-body {
+  padding: 2.5rem 2.5rem 3rem !important;
+  font-size: 1.0625rem !important;   /* 17px */
+  line-height: 1.9 !important;
+  max-width: 740px;
+  margin: 0 auto;
+}
+
+@media (max-width: 640px) {
+  .modal-body {
+    padding: 1.5rem 1.25rem 2rem !important;
+    font-size: 1rem !important;
   }
 }
 
-/* ─────────────────────────────────────────
-   MODAL BODY TYPOGRAPHY  (articles.html)
-   Upgraded for long-form readability
-───────────────────────────────────────── */
-.modal-body h3 {
-  font-size: 1.15rem;       /* up from 1.05rem */
-  font-weight: 700;
-  margin-top: 2.25rem;      /* more space above section breaks */
-  margin-bottom: 0.75rem;
-  color: inherit;
-  letter-spacing: -0.01em;
-}
-
-/* First h3 in the body shouldn't have excess top margin */
-.modal-body h3:first-child {
-  margin-top: 0.5rem;
-}
-
+/* ── Paragraphs ── */
 .modal-body p {
-  font-size: 1rem;          /* explicit, not inherited from text-sm */
-  line-height: 1.85;        /* up from 1.75 — more comfortable for long reads */
-  margin-bottom: 1.15rem;
+  font-size: 1.0625rem !important;
+  line-height: 1.9 !important;
+  margin-bottom: 1.5rem !important;
   color: inherit;
 }
 
+/* ── Section headings — two tiers ── */
+/* Primary section head (emoji + title pattern used in articles) */
+.modal-body h3 {
+  font-size: 1.2rem !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+  letter-spacing: -0.015em;
+  margin-top: 3rem !important;
+  margin-bottom: 0.9rem !important;
+  padding-bottom: 0.55rem;
+  border-bottom: 2px solid rgba(8, 145, 178, 0.18);
+  color: #0f172a;
+}
+
+.dark .modal-body h3 {
+  color: #f1f5f9;
+  border-bottom-color: rgba(34, 211, 238, 0.18);
+}
+
+/* Sub-headings (h3 with style="margin-top:1rem" used inside sections) */
+.modal-body h3 + h3,
+.modal-body h3[style] {
+  font-size: 1.05rem !important;
+  font-weight: 600 !important;
+  margin-top: 2rem !important;
+  margin-bottom: 0.6rem !important;
+  padding-bottom: 0;
+  border-bottom: none;
+  color: #0891b2;
+}
+
+.dark .modal-body h3 + h3,
+.dark .modal-body h3[style] {
+  color: #22d3ee;
+}
+
+/* First element — no giant top gap */
+.modal-body > *:first-child,
+.modal-body h3:first-child {
+  margin-top: 0 !important;
+}
+
+/* ── Lists ── */
 .modal-body ul {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem !important;
   padding-left: 0;
   list-style: none;
 }
 
 .modal-body ul li {
   position: relative;
-  padding-left: 1.4rem;
-  margin-bottom: 0.65rem;
-  line-height: 1.8;
-  font-size: 1rem;
+  padding-left: 1.6rem !important;
+  margin-bottom: 0.75rem !important;
+  line-height: 1.85 !important;
+  font-size: 1.0625rem !important;
 }
 
 .modal-body ul li::before {
   content: '▸';
   position: absolute;
   left: 0;
-  font-size: 0.75rem;
-  top: 0.28rem;
+  font-size: 0.8rem;
+  top: 0.32rem;
   color: #0891b2;
 }
 
@@ -734,193 +788,154 @@ html.dark .filter-pill.active {
   color: #22d3ee;
 }
 
-/* ─────────────────────────────────────────
-   CALLOUT BOXES  — larger padding, bigger text
-───────────────────────────────────────── */
+/* ── Callout boxes ── */
 .modal-body .callout {
-  background: rgba(8, 145, 178, 0.06);
-  border-left: 3px solid #0891b2;
-  border-radius: 0 0.65rem 0.65rem 0;
-  padding: 1.1rem 1.25rem;
-  margin: 1.5rem 0;
+  background: rgba(8, 145, 178, 0.07);
+  border-left: 4px solid #0891b2;
+  border-radius: 0 0.75rem 0.75rem 0;
+  padding: 1.25rem 1.5rem !important;
+  margin: 2rem 0 !important;
 }
 
 .dark .modal-body .callout {
-  background: rgba(34, 211, 238, 0.06);
+  background: rgba(34, 211, 238, 0.07);
   border-left-color: #22d3ee;
 }
 
 .modal-body .callout-warning {
-  background: rgba(217, 119, 6, 0.06);
-  border-left-color: #d97706;
+  background: rgba(217, 119, 6, 0.07) !important;
+  border-left-color: #d97706 !important;
 }
 
 .dark .modal-body .callout-warning {
-  background: rgba(251, 191, 36, 0.07);
-  border-left-color: #fbbf24;
+  background: rgba(251, 191, 36, 0.08) !important;
+  border-left-color: #fbbf24 !important;
 }
 
 .modal-body .callout-danger {
-  background: rgba(220, 38, 38, 0.05);
-  border-left-color: #dc2626;
+  background: rgba(220, 38, 38, 0.06) !important;
+  border-left-color: #dc2626 !important;
 }
 
 .dark .modal-body .callout-danger {
-  background: rgba(239, 68, 68, 0.06);
-  border-left-color: #ef4444;
+  background: rgba(239, 68, 68, 0.07) !important;
+  border-left-color: #ef4444 !important;
 }
 
-/* Callout inner text — explicit sizes so text-sm doesn't bleed in */
+/* Text inside callouts */
 .modal-body .callout p,
-.modal-body .callout div {
-  font-size: 0.9375rem;
-  line-height: 1.75;
-  margin-bottom: 0.4rem;
+.modal-body .callout div,
+.modal-body .callout li {
+  font-size: 1rem !important;
+  line-height: 1.8 !important;
+  margin-bottom: 0.5rem !important;
 }
 
 .modal-body .callout p:last-child {
-  margin-bottom: 0;
+  margin-bottom: 0 !important;
 }
 
-/* ─────────────────────────────────────────
-   VERDICT BOX
-───────────────────────────────────────── */
+/* ── Verdict box ── */
 .modal-body .verdict-box {
   background: rgba(8, 145, 178, 0.05);
-  border: 1px solid rgba(8, 145, 178, 0.22);
-  border-radius: 0.875rem;
-  padding: 1.25rem 1.4rem;
-  margin: 1.75rem 0;
+  border: 1.5px solid rgba(8, 145, 178, 0.25);
+  border-radius: 1rem;
+  padding: 1.5rem 1.75rem !important;
+  margin: 2.5rem 0 !important;
 }
 
 .dark .modal-body .verdict-box {
   background: rgba(34, 211, 238, 0.05);
-  border-color: rgba(34, 211, 238, 0.2);
+  border-color: rgba(34, 211, 238, 0.22);
 }
 
 .modal-body .verdict-box p {
-  font-size: 0.9375rem;
-  line-height: 1.8;
+  font-size: 1rem !important;
+  line-height: 1.85 !important;
 }
 
-/* ─────────────────────────────────────────
-   SECTION DIVIDER
-───────────────────────────────────────── */
+/* ── Section divider ── */
 .modal-body .section-divider {
   height: 1px;
-  background: rgba(0, 0, 0, 0.07);
-  margin: 2rem 0;
+  background: rgba(0, 0, 0, 0.08);
+  margin: 2.75rem 0 !important;
 }
 
 .dark .modal-body .section-divider {
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.08);
 }
 
-/* ─────────────────────────────────────────
-   TIMELINE
-───────────────────────────────────────── */
+/* ── Timeline ── */
 .modal-body .timeline-item {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 1.15rem;
-  font-size: 0.9375rem;
-  line-height: 1.75;
+  gap: 1.1rem;
+  margin-bottom: 1.35rem !important;
+  font-size: 1rem !important;
+  line-height: 1.8 !important;
 }
 
 .modal-body .timeline-dot {
   flex-shrink: 0;
-  width: 0.7rem;
-  height: 0.7rem;
+  width: 0.75rem;
+  height: 0.75rem;
   border-radius: 50%;
   background: #0891b2;
-  margin-top: 0.42rem;
+  margin-top: 0.45rem;
 }
 
 .dark .modal-body .timeline-dot {
   background: #22d3ee;
 }
 
-/* ─────────────────────────────────────────
-   TWO-COLUMN LAYOUT
-───────────────────────────────────────── */
+/* ── Two-column layout ── */
 .modal-body .two-col {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.875rem;
-  margin: 1.25rem 0;
+  gap: 1rem;
+  margin: 1.75rem 0 !important;
 }
 
 @media (max-width: 560px) {
-  .modal-body .two-col {
-    grid-template-columns: 1fr;
-  }
+  .modal-body .two-col { grid-template-columns: 1fr; }
 }
 
 .modal-body .col-box {
-  border-radius: 0.65rem;
-  padding: 1rem 1.1rem;
-  font-size: 0.9rem;
-  line-height: 1.7;
+  border-radius: 0.75rem;
+  padding: 1.1rem 1.25rem !important;
 }
 
-.modal-body .col-box p {
-  font-size: 0.9rem;
+.modal-body .col-box p,
+.modal-body .col-box li {
+  font-size: 0.9375rem !important;
+  line-height: 1.75 !important;
+  margin-bottom: 0.45rem !important;
 }
 
 .modal-body .col-box-green {
   background: rgba(22, 163, 74, 0.05);
-  border: 1px solid rgba(22, 163, 74, 0.2);
+  border: 1px solid rgba(22, 163, 74, 0.22);
 }
 
 .dark .modal-body .col-box-green {
   background: rgba(34, 197, 94, 0.07);
-  border-color: rgba(34, 197, 94, 0.2);
+  border-color: rgba(34, 197, 94, 0.22);
 }
 
 .modal-body .col-box-red {
   background: rgba(220, 38, 38, 0.05);
-  border: 1px solid rgba(220, 38, 38, 0.2);
+  border: 1px solid rgba(220, 38, 38, 0.22);
 }
 
 .dark .modal-body .col-box-red {
   background: rgba(239, 68, 68, 0.07);
-  border-color: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.22);
 }
 
-/* ─────────────────────────────────────────
-   MODAL HEADER  — slightly bigger title
-───────────────────────────────────────── */
-#modal-title {
-  font-size: 1.2rem;
-  line-height: 1.4;
-  letter-spacing: -0.015em;
-}
-
-@media (min-width: 640px) {
-  #modal-title {
-    font-size: 1.35rem;
-  }
-}
-
-/* ─────────────────────────────────────────
-   MODAL SCROLLBAR
-───────────────────────────────────────── */
-.modal-scroll::-webkit-scrollbar {
-  width: 5px;
-}
-
-.modal-scroll::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.modal-scroll::-webkit-scrollbar-thumb {
-  background: #d1d5db;
-  border-radius: 3px;
-}
-
-.dark .modal-scroll::-webkit-scrollbar-thumb {
-  background: #334155;
-}
+/* ── Scrollbar ── */
+.modal-scroll::-webkit-scrollbar { width: 5px; }
+.modal-scroll::-webkit-scrollbar-track { background: transparent; }
+.modal-scroll::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+.dark .modal-scroll::-webkit-scrollbar-thumb { background: #334155; }
 
 /* ─────────────────────────────────────────
    BOX SIZING (global reset)
