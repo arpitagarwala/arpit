@@ -127,19 +127,19 @@
        class="fixed inset-0 bg-black/75 z-[100] hidden items-center justify-center p-4 overflow-y-auto modal-backdrop"
        onclick="handleBackdropClick(event)">
     <div id="modal-box"
-         class="modal-content modal-scroll bg-white dark:bg-slate-800 rounded-xl w-full my-8 shadow-2xl border border-gray-200 dark:border-slate-700/50 overflow-y-auto relative">
+         class="modal-content modal-scroll bg-white dark:bg-slate-800 rounded-xl max-w-4xl w-full my-8 shadow-2xl border border-gray-200 dark:border-slate-700/50 max-h-[90vh] overflow-y-auto relative">
 
-      <div class="modal-header sticky top-0 bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700/50 flex items-start justify-between z-10 gap-4">
+      <div class="sticky top-0 bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700/50 px-5 py-4 flex items-start justify-between z-10 gap-4">
         <div class="flex-1">
-          <div id="modal-meta" class="modal-meta flex flex-wrap items-center gap-2 text-gray-500 dark:text-slate-400 mb-2"></div>
-          <h2 id="modal-title" class="modal-title font-bold text-gray-900 dark:text-slate-100"></h2>
+          <div id="modal-meta" class="flex flex-wrap items-center gap-2 text-xs text-gray-500 dark:text-slate-400 mb-1.5"></div>
+          <h2 id="modal-title" class="text-lg sm:text-xl font-bold text-gray-900 dark:text-slate-100 leading-snug"></h2>
         </div>
-        <button onclick="closeModal()" class="modal-close flex-shrink-0 text-gray-400 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-200 transition-colors">
-          <i class="ri-close-line"></i>
+        <button onclick="closeModal()" class="flex-shrink-0 text-gray-400 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-200 transition-colors mt-1">
+          <i class="ri-close-line text-xl"></i>
         </button>
       </div>
 
-      <div id="modal-body" class="modal-body text-gray-700 dark:text-slate-300"></div>
+      <div id="modal-body" class="modal-body px-5 py-6 text-gray-700 dark:text-slate-300"></div>
     </div>
   </div>
 
