@@ -33,8 +33,6 @@ body {
 
 /* ─────────────────────────────────────────
    CARD  (index.html)
-   No prefix = light: white card
-   .dark     = dark: navy card
 ───────────────────────────────────────── */
 .card {
   background: #ffffff;
@@ -106,7 +104,6 @@ a.card:hover {
 
 /* ─────────────────────────────────────────
    PROJECT / GAME CARD ENTRANCE  (projects.html, games.html)
-   .project-card and .game-card share the same animation
 ───────────────────────────────────────── */
 @keyframes cardIn {
   from { opacity: 0; transform: translateY(12px) scale(0.97); }
@@ -118,7 +115,6 @@ a.card:hover {
   animation: cardIn 0.28s ease both;
 }
 
-/* Clickable card link */
 .card-link {
   transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
 }
@@ -129,9 +125,6 @@ a.card:hover {
 
 /* ─────────────────────────────────────────
    FILTER PILLS  (projects.html, articles.html)
-   No prefix = light theme active pill
-   .dark     = dark theme active pill
-   Using !important to override Tailwind utility classes
 ───────────────────────────────────────── */
 html .filter-pill.active {
   background-color: #0891b2;
@@ -147,8 +140,6 @@ html.dark .filter-pill.active {
 
 /* ─────────────────────────────────────────
    SEARCH INPUT  (projects.html, games.html, articles.html)
-   No prefix = light theme focus ring
-   .dark     = dark theme focus ring
 ───────────────────────────────────────── */
 .search-input:focus {
   outline: none;
@@ -179,9 +170,7 @@ html.dark .filter-pill.active {
 }
 
 /* ─────────────────────────────────────────
-   COMPLEXITY / DIFFICULTY DOTS  (projects.html, games.html)
-   dot-on  = filled (cyan)
-   dot-off = unfilled; light: gray-200, dark: slate-700
+   COMPLEXITY / DIFFICULTY DOTS
 ───────────────────────────────────────── */
 .dot-on {
   background-color: #22d3ee;
@@ -196,8 +185,7 @@ html.dark .filter-pill.active {
 }
 
 /* ─────────────────────────────────────────
-   EMPTY STATE  (projects.html, games.html, gallery.html, articles.html)
-   Using !important to ensure it overrides Tailwind classes
+   EMPTY STATE
 ───────────────────────────────────────── */
 #no-results {
   display: none !important;
@@ -209,9 +197,6 @@ html.dark .filter-pill.active {
 
 /* ─────────────────────────────────────────
    ACHIEVEMENT CARD  (achievements.html)
-   Separate from .card: 1rem radius, overflow:hidden for photo
-   No prefix = light: white card
-   .dark     = dark: navy card
 ───────────────────────────────────────── */
 .ach-card {
   background: #ffffff;
@@ -237,7 +222,6 @@ html.dark .filter-pill.active {
   border-color: rgba(8, 145, 178, 0.25);
 }
 
-/* Card top photo */
 .card-photo {
   width: 100%;
   height: 120px;
@@ -248,8 +232,6 @@ html.dark .filter-pill.active {
 
 /* ─────────────────────────────────────────
    STAT TILES  (achievements.html)
-   No prefix = light theme
-   .dark     = dark theme
 ───────────────────────────────────────── */
 .stat {
   background: rgba(8, 145, 178, 0.04);
@@ -278,9 +260,6 @@ html.dark .filter-pill.active {
 
 /* ─────────────────────────────────────────
    TRADING CARD  (achievements.html)
-   Has a cyan border by default; separate from .ach-card
-   No prefix = light theme
-   .dark     = dark theme
 ───────────────────────────────────────── */
 .trading-card {
   background: #ffffff;
@@ -392,9 +371,6 @@ html.dark .filter-pill.active {
 
 /* ─────────────────────────────────────────
    PHOTO CARD  (gallery.html)
-   Unique design with scale on hover
-   No prefix = light: white card
-   .dark     = dark: navy card
 ───────────────────────────────────────── */
 .photo-card {
   position: relative;
@@ -452,7 +428,6 @@ html.dark .filter-pill.active {
 
 /* ─────────────────────────────────────────
    TAG PILL  (gallery.html)
-   Gallery-specific tag design
 ───────────────────────────────────────── */
 .tag-pill {
   display: inline-flex;
@@ -583,9 +558,6 @@ html.dark .filter-pill.active {
 
 /* ─────────────────────────────────────────
    FILTER BUTTONS  (gallery.html)
-   Similar to .filter-pill but different active state
-   No prefix = light theme
-   .dark     = dark theme
 ───────────────────────────────────────── */
 .filter-btn {
   font-size: 0.72rem;
@@ -652,9 +624,6 @@ html.dark .filter-pill.active {
   transform: translateY(-2px);
 }
 
-/* ─────────────────────────────────────────
-   ARTICLE TAG  (articles.html)
-───────────────────────────────────────── */
 .article-tag {
   transition: background-color 0.1s ease, color 0.1s ease;
 }
@@ -672,7 +641,7 @@ html.dark .filter-pill.active {
 
 @keyframes fadeIn {
   from { opacity: 0; }
-  to { opacity: 1; }
+  to   { opacity: 1; }
 }
 
 @keyframes slideUp {
@@ -687,31 +656,69 @@ html.dark .filter-pill.active {
 }
 
 /* ─────────────────────────────────────────
-   MODAL BODY STYLING  (articles.html)
+   MODAL LAYOUT UPGRADES  (articles.html)
+   Wider box, more breathing room
+───────────────────────────────────────── */
+
+/* Increase the modal's max-width beyond the Tailwind max-w-4xl */
+#modal-box {
+  max-width: 860px;
+  max-height: 88vh;
+}
+
+/* The inner body gets a comfortable reading width and larger text */
+#modal-body {
+  font-size: 1rem;          /* up from text-sm / 0.875rem */
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2rem 2.5rem;     /* more vertical + horizontal breathing room */
+}
+
+@media (max-width: 640px) {
+  #modal-body {
+    padding: 1.25rem 1.25rem;
+    font-size: 0.9375rem;
+  }
+}
+
+/* ─────────────────────────────────────────
+   MODAL BODY TYPOGRAPHY  (articles.html)
+   Upgraded for long-form readability
 ───────────────────────────────────────── */
 .modal-body h3 {
-  font-size: 1.05rem;
+  font-size: 1.15rem;       /* up from 1.05rem */
   font-weight: 700;
-  margin-top: 1.75rem;
-  margin-bottom: 0.65rem;
+  margin-top: 2.25rem;      /* more space above section breaks */
+  margin-bottom: 0.75rem;
+  color: inherit;
+  letter-spacing: -0.01em;
+}
+
+/* First h3 in the body shouldn't have excess top margin */
+.modal-body h3:first-child {
+  margin-top: 0.5rem;
 }
 
 .modal-body p {
-  line-height: 1.75;
-  margin-bottom: 1rem;
+  font-size: 1rem;          /* explicit, not inherited from text-sm */
+  line-height: 1.85;        /* up from 1.75 — more comfortable for long reads */
+  margin-bottom: 1.15rem;
+  color: inherit;
 }
 
 .modal-body ul {
-  margin-bottom: 1rem;
-  padding-left: 1.25rem;
+  margin-bottom: 1.25rem;
+  padding-left: 0;
   list-style: none;
 }
 
 .modal-body ul li {
   position: relative;
-  padding-left: 1.25rem;
-  margin-bottom: 0.5rem;
-  line-height: 1.7;
+  padding-left: 1.4rem;
+  margin-bottom: 0.65rem;
+  line-height: 1.8;
+  font-size: 1rem;
 }
 
 .modal-body ul li::before {
@@ -719,7 +726,7 @@ html.dark .filter-pill.active {
   position: absolute;
   left: 0;
   font-size: 0.75rem;
-  top: 0.2rem;
+  top: 0.28rem;
   color: #0891b2;
 }
 
@@ -727,13 +734,15 @@ html.dark .filter-pill.active {
   color: #22d3ee;
 }
 
-/* Callout boxes */
+/* ─────────────────────────────────────────
+   CALLOUT BOXES  — larger padding, bigger text
+───────────────────────────────────────── */
 .modal-body .callout {
   background: rgba(8, 145, 178, 0.06);
   border-left: 3px solid #0891b2;
-  border-radius: 0 0.5rem 0.5rem 0;
-  padding: 0.85rem 1rem;
-  margin: 1.25rem 0;
+  border-radius: 0 0.65rem 0.65rem 0;
+  padding: 1.1rem 1.25rem;
+  margin: 1.5rem 0;
 }
 
 .dark .modal-body .callout {
@@ -761,13 +770,27 @@ html.dark .filter-pill.active {
   border-left-color: #ef4444;
 }
 
-/* Verdict box */
+/* Callout inner text — explicit sizes so text-sm doesn't bleed in */
+.modal-body .callout p,
+.modal-body .callout div {
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  margin-bottom: 0.4rem;
+}
+
+.modal-body .callout p:last-child {
+  margin-bottom: 0;
+}
+
+/* ─────────────────────────────────────────
+   VERDICT BOX
+───────────────────────────────────────── */
 .modal-body .verdict-box {
   background: rgba(8, 145, 178, 0.05);
-  border: 1px solid rgba(8, 145, 178, 0.2);
-  border-radius: 0.75rem;
-  padding: 1rem 1.15rem;
-  margin: 1.25rem 0;
+  border: 1px solid rgba(8, 145, 178, 0.22);
+  border-radius: 0.875rem;
+  padding: 1.25rem 1.4rem;
+  margin: 1.75rem 0;
 }
 
 .dark .modal-body .verdict-box {
@@ -775,43 +798,56 @@ html.dark .filter-pill.active {
   border-color: rgba(34, 211, 238, 0.2);
 }
 
-/* Section divider */
+.modal-body .verdict-box p {
+  font-size: 0.9375rem;
+  line-height: 1.8;
+}
+
+/* ─────────────────────────────────────────
+   SECTION DIVIDER
+───────────────────────────────────────── */
 .modal-body .section-divider {
   height: 1px;
   background: rgba(0, 0, 0, 0.07);
-  margin: 1.5rem 0;
+  margin: 2rem 0;
 }
 
 .dark .modal-body .section-divider {
   background: rgba(255, 255, 255, 0.07);
 }
 
-/* Timeline */
+/* ─────────────────────────────────────────
+   TIMELINE
+───────────────────────────────────────── */
 .modal-body .timeline-item {
   display: flex;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
+  gap: 1rem;
+  margin-bottom: 1.15rem;
+  font-size: 0.9375rem;
+  line-height: 1.75;
 }
 
 .modal-body .timeline-dot {
   flex-shrink: 0;
-  width: 0.625rem;
-  height: 0.625rem;
+  width: 0.7rem;
+  height: 0.7rem;
   border-radius: 50%;
   background: #0891b2;
-  margin-top: 0.4rem;
+  margin-top: 0.42rem;
 }
 
 .dark .modal-body .timeline-dot {
   background: #22d3ee;
 }
 
-/* Two column layout */
+/* ─────────────────────────────────────────
+   TWO-COLUMN LAYOUT
+───────────────────────────────────────── */
 .modal-body .two-col {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
-  margin: 1rem 0;
+  gap: 0.875rem;
+  margin: 1.25rem 0;
 }
 
 @media (max-width: 560px) {
@@ -821,8 +857,14 @@ html.dark .filter-pill.active {
 }
 
 .modal-body .col-box {
-  border-radius: 0.5rem;
-  padding: 0.85rem 1rem;
+  border-radius: 0.65rem;
+  padding: 1rem 1.1rem;
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.modal-body .col-box p {
+  font-size: 0.9rem;
 }
 
 .modal-body .col-box-green {
@@ -845,9 +887,26 @@ html.dark .filter-pill.active {
   border-color: rgba(239, 68, 68, 0.2);
 }
 
-/* Modal scrollbar */
+/* ─────────────────────────────────────────
+   MODAL HEADER  — slightly bigger title
+───────────────────────────────────────── */
+#modal-title {
+  font-size: 1.2rem;
+  line-height: 1.4;
+  letter-spacing: -0.015em;
+}
+
+@media (min-width: 640px) {
+  #modal-title {
+    font-size: 1.35rem;
+  }
+}
+
+/* ─────────────────────────────────────────
+   MODAL SCROLLBAR
+───────────────────────────────────────── */
 .modal-scroll::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 
 .modal-scroll::-webkit-scrollbar-track {
@@ -873,8 +932,6 @@ html.dark .filter-pill.active {
 /* ─────────────────────────────────────────
    SIP CALCULATOR (sip.html)
 ───────────────────────────────────────── */
-
-/* ── Range slider ── */
 input[type=range] {
   -webkit-appearance: none;
   appearance: none;
@@ -915,24 +972,15 @@ input[type=range]::-webkit-slider-thumb:hover {
   background: linear-gradient(to right, #8b5cf6 var(--val,50%), #e2e8f0 var(--val,50%));
 }
 
-/* ── App card (sip.html) ── */
 .app-card { transition: transform .2s ease, box-shadow .2s ease; }
 .app-card:hover { transform: translateY(-2px); box-shadow: 0 20px 40px rgba(0,0,0,.25); }
 .dark .app-card:hover { box-shadow: 0 20px 40px rgba(0,0,0,.1); }
 
-/* ── Breakdown bar ── */
 .bbar { transition: width .6s cubic-bezier(.4,0,.2,1); }
-
-/* ── Step-up badge glow ── */
 .stepup-active { box-shadow: 0 0 0 2px #06b6d4; }
-
-/* ── Stat counter ── */
 .stat-val { font-variant-numeric: tabular-nums; transition: color .3s; }
-
-/* ── Toggle track ── */
 .toggle-track { transition: background-color .25s; }
 
-/* ── Tabs (sip.html) ── */
 .tab-btn { position: relative; transition: color .2s; }
 .tab-btn::after {
   content: '';
@@ -949,7 +997,6 @@ input[type=range]::-webkit-slider-thumb:hover {
 .tab-btn.active { color: #06b6d4; }
 .tab-btn.active::after { transform: scaleX(1); }
 
-/* ── Tooltip ── */
 [data-tip] { position: relative; cursor: help; }
 [data-tip]:hover::after {
   content: attr(data-tip);
@@ -973,24 +1020,19 @@ input[type=range]::-webkit-slider-thumb:hover {
   border: 1px solid #e2e8f0;
 }
 
-/* ── Animation delay variants ── */
 .fade-up-1 { animation-delay: .05s; }
 .fade-up-2 { animation-delay: .1s; }
 .fade-up-3 { animation-delay: .15s; }
 .fade-up-4 { animation-delay: .2s; }
 .fade-up-5 { animation-delay: .25s; }
 
-/* ── Glowing accent ── */
 .glow-cyan { box-shadow: 0 0 24px rgba(6,182,212,.18); }
 
 /* ─────────────────────────────────────────
    CALCULATOR (calculator.html)
 ───────────────────────────────────────── */
-
-/* ── Monospace font ── */
 .mono { font-family: 'JetBrains Mono', monospace; }
 
-/* ── Glassmorphism card ── */
 .glass {
   background: rgba(15,23,42,.72);
   backdrop-filter: blur(24px);
@@ -1001,7 +1043,6 @@ input[type=range]::-webkit-slider-thumb:hover {
   border: 1px solid rgba(0,0,0,.08);
 }
 
-/* ── Button ripple effect ── */
 @keyframes ripple {
   from { transform: scale(0); opacity: .4; }
   to   { transform: scale(2.5); opacity: 0; }
@@ -1018,10 +1059,8 @@ input[type=range]::-webkit-slider-thumb:hover {
 }
 .btn-ripple:active::after { animation: ripple .35s ease-out; }
 
-/* ── Calc display ── */
 #display { transition: font-size .1s; }
 
-/* ── Mode tabs (calculator) ── */
 .mode-tab { transition: all .2s; }
 .mode-tab.active {
   background: rgba(6,182,212,.18);
@@ -1036,7 +1075,6 @@ input[type=range]::-webkit-slider-thumb:hover {
 .mode-tab:not(.active) { color: rgba(255,255,255,.45); border-color: transparent; }
 .dark .mode-tab:not(.active) { color: rgba(0,0,0,.4); border-color: transparent; }
 
-/* ── Calculator buttons ── */
 .btn-op  { background: rgba(251,191,36,.1); color: #fbbf24; }
 .btn-op:hover { background: rgba(251,191,36,.2); }
 .dark .btn-op  { background: rgba(217,119,6,.12); color: #d97706; }
@@ -1059,12 +1097,10 @@ input[type=range]::-webkit-slider-thumb:hover {
 .btn-ac:hover { background: rgba(239,68,68,.22); }
 .dark .btn-ac  { background: rgba(239,68,68,.1); color: #ef4444; }
 
-/* ── History item ── */
 .hist-item { transition: background .15s; }
 .hist-item:hover { background: rgba(255,255,255,.06); }
 .dark .hist-item:hover { background: rgba(0,0,0,.06); }
 
-/* ── Scientific buttons ── */
 .sci-btn {
   font-size: .7rem;
   font-weight: 600;
@@ -1084,5 +1120,4 @@ input[type=range]::-webkit-slider-thumb:hover {
 }
 .dark .sci-btn:hover { background: rgba(109,40,217,.18); }
 
-/* ── Angle badge ── */
 #angle-badge { cursor: pointer; user-select: none; }
