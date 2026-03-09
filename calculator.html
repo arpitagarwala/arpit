@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -42,11 +42,16 @@
   </script>
 
   <script>
-    (function(){
-      const t=localStorage.getItem('theme');
-      const d=window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if(t==='dark'||(!t&&d)) document.documentElement.classList.add('dark');
-      else document.documentElement.classList.remove('dark');
+(function () {
+      var param = new URLSearchParams(window.location.search).get('theme');
+      var stored = localStorage.getItem('theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var theme;
+      if (param === 'dark' || param === 'light') { theme = param; localStorage.setItem('theme', theme); }
+      else if (stored === 'dark' || stored === 'light') { theme = stored; }
+      else { theme = prefersDark ? 'dark' : 'light'; }
+      if (theme === 'dark') { document.documentElement.classList.add('dark'); }
+      else { document.documentElement.classList.remove('dark'); }
     })();
   </script>
 
@@ -58,82 +63,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>tailwind.config={darkMode:'class'}</script>
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-
-  <style>
-    *{box-sizing:border-box;}
-    body{font-family:'Inter',sans-serif;}
-    .mono{font-family:'JetBrains Mono',monospace;}
-
-    ::-webkit-scrollbar{width:4px;}
-    ::-webkit-scrollbar-track{background:transparent;}
-    ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:99px;}
-    .dark ::-webkit-scrollbar-thumb{background:rgba(0,0,0,.12);}
-
-    .glass{
-      background:rgba(15,23,42,.72);
-      backdrop-filter:blur(24px);
-      border:1px solid rgba(255,255,255,.08);
-    }
-    .dark .glass{
-      background:rgba(255,255,255,.72);
-      border:1px solid rgba(0,0,0,.08);
-    }
-
-    @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
-    .fade-up{animation:fadeUp .4s cubic-bezier(.4,0,.2,1) both;}
-    .d1{animation-delay:.04s;}.d2{animation-delay:.08s;}
-
-    @keyframes ripple{from{transform:scale(0);opacity:.4;}to{transform:scale(2.5);opacity:0;}}
-    .btn-ripple{position:relative;overflow:hidden;}
-    .btn-ripple::after{content:'';position:absolute;inset:0;border-radius:inherit;background:white;transform:scale(0);opacity:0;}
-    .btn-ripple:active::after{animation:ripple .35s ease-out;}
-
-    #display{transition:font-size .1s;}
-
-    .mode-tab{transition:all .2s;}
-    .mode-tab.active{background:rgba(6,182,212,.18);color:#06b6d4;border-color:rgba(6,182,212,.35);}
-    .dark .mode-tab.active{background:rgba(6,182,212,.15);color:#0891b2;border-color:rgba(6,182,212,.3);}
-    .mode-tab:not(.active){color:rgba(255,255,255,.45);border-color:transparent;}
-    .dark .mode-tab:not(.active){color:rgba(0,0,0,.4);border-color:transparent;}
-
-    .btn-op{background:rgba(251,191,36,.1);color:#fbbf24;}
-    .btn-op:hover{background:rgba(251,191,36,.2);}
-    .dark .btn-op{background:rgba(217,119,6,.12);color:#d97706;}
-    .dark .btn-op:hover{background:rgba(217,119,6,.22);}
-
-    .btn-eq{background:linear-gradient(135deg,#06b6d4,#3b82f6);box-shadow:0 6px 24px rgba(6,182,212,.35);}
-    .btn-eq:hover{opacity:.92;}
-    .btn-eq:active{transform:scale(.96);}
-
-    .btn-num{background:rgba(255,255,255,.05);}
-    .btn-num:hover{background:rgba(255,255,255,.1);}
-    .dark .btn-num{background:rgba(0,0,0,.04);}
-    .dark .btn-num:hover{background:rgba(0,0,0,.1);}
-
-    .btn-fn{background:rgba(255,255,255,.03);color:rgba(255,255,255,.7);}
-    .btn-fn:hover{background:rgba(255,255,255,.09);}
-    .dark .btn-fn{background:rgba(0,0,0,.04);color:rgba(0,0,0,.6);}
-    .dark .btn-fn:hover{background:rgba(0,0,0,.1);}
-
-    .btn-ac{background:rgba(239,68,68,.12);color:#f87171;}
-    .btn-ac:hover{background:rgba(239,68,68,.22);}
-    .dark .btn-ac{background:rgba(239,68,68,.1);color:#ef4444;}
-
-    .hist-item{transition:background .15s;}
-    .hist-item:hover{background:rgba(255,255,255,.06);}
-    .dark .hist-item:hover{background:rgba(0,0,0,.06);}
-
-    .sci-btn{font-size:.7rem;font-weight:600;background:rgba(139,92,246,.1);color:#a78bfa;border:1px solid rgba(139,92,246,.18);border-radius:.75rem;padding:.5rem;transition:all .15s;cursor:pointer;}
-    .sci-btn:hover{background:rgba(139,92,246,.2);}
-    .dark .sci-btn{background:rgba(109,40,217,.08);color:#7c3aed;border-color:rgba(109,40,217,.2);}
-    .dark .sci-btn:hover{background:rgba(109,40,217,.18);}
-
-    #toast{transition:opacity .3s,transform .3s;}
-    #angle-badge{cursor:pointer;user-select:none;}
-  </style>
+<link rel="stylesheet" href="css/global.css">
 </head>
-
 <body class="min-h-screen flex items-center justify-center bg-slate-950 dark:bg-slate-100 text-slate-50 dark:text-slate-900 transition-colors duration-300 p-4">
 
   <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 opacity-0 translate-y-4 pointer-events-none">
@@ -142,7 +73,7 @@
 
   <div class="fixed top-4 left-4 z-50">
     <a href="projects.html"
-       class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-700 dark:border-slate-200 text-slate-300 dark:text-slate-700 hover:border-cyan-400 hover:text-cyan-400 shadow-lg transition-all">
+       class="internal-link w-10 h-10 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-700 dark:border-slate-200 text-slate-300 dark:text-slate-700 hover:border-cyan-400 hover:text-cyan-400 shadow-lg transition-all">
       <i class="ri-arrow-left-line text-lg"></i>
     </a>
   </div>
@@ -299,7 +230,19 @@
       document.documentElement.classList.toggle('dark', !isDark);
       localStorage.setItem('theme', isDark ? 'light' : 'dark');
       document.getElementById('theme-icon').className = isDark ? 'ri-moon-line text-lg' : 'ri-sun-line text-lg';
+          updateAllLinks();
     }
+        function isDark() { return document.documentElement.classList.contains('dark'); }
+    function updateAllLinks() {
+      document.querySelectorAll('a.internal-link').forEach(a => {
+        const url = new URL(a.href, location.href);
+        url.searchParams.set('theme', isDark() ? 'dark' : 'light');
+        a.href = url.toString();
+      });
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      updateAllLinks();
+    });
 
     function showToast(msg) {
       const t=document.getElementById('toast'), m=document.getElementById('toast-msg');
