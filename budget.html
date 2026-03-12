@@ -584,8 +584,7 @@
             if (!entries.length) { showToast('No entries to export'); return; }
             const header = 'Description,Amount,Type,Mode,Category,Date';
             const rows = entries.map(e => `"${e.description}",${e.amount},${e.type},${e.mode},${e.category},"${e.date || ''}"`);
-            const csv = [header, ...rows].join('
-');
+            const csv = [header, ...rows].join('\n');
             const blob = new Blob([csv], { type: 'text/csv' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
