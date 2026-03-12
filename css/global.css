@@ -1330,3 +1330,48 @@ input[type=range]::-webkit-slider-thumb:hover {
 .dark .sci-btn:hover { background: rgba(109,40,217,.18); }
 
 #angle-badge { cursor: pointer; user-select: none; }
+
+/* ─────────────────────────────────────────
+   BUDGET INPUTS — explicit top-level overrides
+   (ensures correct colors in both dark/light mode)
+   ───────────────────────────────────────── */
+
+.budget-page #name-input,
+.budget-page #description,
+.budget-page #amount,
+.budget-page #type,
+.budget-page #mode,
+.budget-page #category,
+.budget-page #filter-category,
+.budget-page #filter-type {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #0f172a !important;
+  color-scheme: light !important;
+}
+
+.budget-page #name-input::placeholder,
+.budget-page #description::placeholder,
+.budget-page #amount::placeholder {
+  color: #94a3b8 !important;
+}
+
+html.dark .budget-page #name-input,
+html.dark .budget-page #description,
+html.dark .budget-page #amount,
+html.dark .budget-page #type,
+html.dark .budget-page #mode,
+html.dark .budget-page #category,
+html.dark .budget-page #filter-category,
+html.dark .budget-page #filter-type {
+  background: #0f172a !important;
+  border-color: #334155 !important;
+  color: #f1f5f9 !important;
+  color-scheme: dark !important;
+}
+
+html.dark .budget-page #name-input::placeholder,
+html.dark .budget-page #description::placeholder,
+html.dark .budget-page #amount::placeholder {
+  color: #64748b !important;
+}
