@@ -1,593 +1,636 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Budget Tracker – Arpit Agarwala | Personal Finance Tool</title>
-  <meta name="description" content="Track your income, expenses and savings with Arpit Agarwala's free Budget Tracker. Supports UPI, cash, bank, card modes, category charts and CSV export." />
-  <meta name="keywords" content="budget tracker, expense tracker, income tracker, personal finance, Arpit Agarwala, savings rate, UPI, Kolkata" />
-  <meta name="author" content="Arpit Agarwala" />
-  <link rel="canonical" href="https://arpitagarwala.online/budget.html" />
-  <meta name="robots" content="index, follow" />
+    <title>Budget Tracker - Arpit Agarwala | Personal Finance Tool</title>
+    <meta name="description" content="Track your income, expenses and savings with Arpit Agarwala's free Budget Tracker. Supports UPI, cash, bank, card modes, category charts and CSV export." />
+    <meta name="keywords" content="budget tracker, expense tracker, income tracker, personal finance, Arpit Agarwala, savings rate, UPI, Kolkata" />
+    <meta name="author" content="Arpit Agarwala" />
+    <link rel="canonical" href="https://arpitagarwala.online/budget.html" />
+    <meta name="robots" content="index, follow" />
 
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://arpitagarwala.online/budget.html" />
-  <meta property="og:title" content="Budget Tracker – Arpit Agarwala" />
-  <meta property="og:description" content="Free personal budget tracker with income/expense categories, pie charts, and CSV export by Arpit Agarwala." />
-  <meta property="og:image" content="https://arpitagarwala.online/assets/images/my-miniature.png" />
-  <meta property="og:site_name" content="Arpit Agarwala" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://arpitagarwala.online/budget.html" />
+    <meta property="og:title" content="Budget Tracker - Arpit Agarwala" />
+    <meta property="og:description" content="Free personal budget tracker with income/expense categories, pie charts, and CSV export by Arpit Agarwala." />
+    <meta property="og:image" content="https://arpitagarwala.online/assets/images/my-miniature.png" />
+    <meta property="og:site_name" content="Arpit Agarwala" />
 
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Budget Tracker – Arpit Agarwala" />
-  <meta name="twitter:description" content="Track income, expenses and savings for free. Built by Arpit Agarwala." />
-  <meta name="twitter:image" content="https://arpitagarwala.online/assets/images/my-miniature.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Budget Tracker - Arpit Agarwala" />
+    <meta name="twitter:description" content="Track income, expenses and savings for free. Built by Arpit Agarwala." />
+    <meta name="twitter:image" content="https://arpitagarwala.online/assets/images/my-miniature.png" />
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Budget Tracker by Arpit Agarwala",
-    "url": "https://arpitagarwala.online/budget.html",
-    "description": "Personal budget tracker supporting income, expenses, categories, and CSV export.",
-    "applicationCategory": "FinanceApplication",
-    "author": { "@type": "Person", "name": "Arpit Agarwala", "url": "https://arpitagarwala.online/" }
-  }
-  </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Budget Tracker by Arpit Agarwala",
+      "url": "https://arpitagarwala.online/budget.html",
+      "description": "Personal budget tracker supporting income, expenses, categories, and CSV export.",
+      "applicationCategory": "FinanceApplication",
+      "author": { "@type": "Person", "name": "Arpit Agarwala", "url": "https://arpitagarwala.online/" }
+    }
+    </script>
 
-  <!-- Instant theme, no flash -->
-  <script>
-    (function(){
-      const t=localStorage.getItem('theme');
-      const d=window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if(t==='dark'||(!t&&d)) document.documentElement.classList.add('dark');
-      else document.documentElement.classList.remove('dark');
-    })();
-  </script>
+    <script>
+      (function () {
+        var param = new URLSearchParams(window.location.search).get('theme');
+        var stored = localStorage.getItem('theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-  <link rel="icon" type="image/png" sizes="32x32" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_32,h_32,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_16,h_16,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_180,h_180,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
-  <link rel="shortcut icon" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_32,h_32,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
+        var theme;
+        if (param === 'dark' || param === 'light') {
+          theme = param;
+          localStorage.setItem('theme', theme);
+        } else if (stored === 'dark' || stored === 'light') {
+          theme = stored;
+        } else {
+          theme = prefersDark ? 'dark' : 'light';
+        }
 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>tailwind.config={darkMode:'class'}</script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
 
-  <style>
-    *{box-sizing:border-box;}
-    body{font-family:'Inter',sans-serif;}
-
-    ::-webkit-scrollbar{width:6px;height:6px;}
-    ::-webkit-scrollbar-track{background:transparent;}
-    ::-webkit-scrollbar-thumb{background:#334155;border-radius:999px;}
-    .dark ::-webkit-scrollbar-thumb{background:#cbd5e1;}
-
-    /* Cards */
-    .app-card{transition:transform .2s ease,box-shadow .2s ease;}
-    .app-card:hover{transform:translateY(-2px);box-shadow:0 20px 40px rgba(0,0,0,.25);}
-    .dark .app-card:hover{box-shadow:0 20px 40px rgba(0,0,0,.08);}
-
-    /* Fade-up animation */
-    @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
-    .fade-up{animation:fadeUp .4s cubic-bezier(.4,0,.2,1) both;}
-    .d1{animation-delay:.05s;}.d2{animation-delay:.1s;}.d3{animation-delay:.15s;}
-    .d4{animation-delay:.2s;}.d5{animation-delay:.25s;}.d6{animation-delay:.3s;}
-
-    /* Progress bar */
-    .prog-bar{transition:width .6s cubic-bezier(.4,0,.2,1);}
-
-    /* Entry slide-in */
-    @keyframes slideIn{from{opacity:0;transform:translateX(-10px);}to{opacity:1;transform:translateX(0);}}
-    .entry-item{animation:slideIn .25s ease both;}
-
-    /* Savings badge glow */
-    .glow-cyan{box-shadow:0 0 20px rgba(6,182,212,.2);}
-    .glow-green{box-shadow:0 0 20px rgba(34,197,94,.2);}
-    .glow-red{box-shadow:0 0 20px rgba(239,68,68,.2);}
-
-    /* Modal backdrop */
-    #name-modal{backdrop-filter:blur(8px);}
-
-    /* Input focus */
-    .app-input:focus{outline:none;ring:2px solid #06b6d4;}
-
-    /* Toast */
-    #toast{transition:opacity .3s,transform .3s;}
-  </style>
+    <link rel="stylesheet" href="css/global.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body class="bg-slate-950 dark:bg-slate-50 text-slate-100 dark:text-slate-900 min-h-screen transition-colors duration-300">
-
-  <!-- NAME MODAL (replaces intrusive prompt()) -->
-  <div id="name-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 dark:bg-white/60">
-    <div class="bg-slate-800 dark:bg-white rounded-3xl shadow-2xl p-8 w-full max-w-sm mx-4 border border-slate-700 dark:border-slate-200">
-      <div class="flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 shadow mb-5 mx-auto">
-        <i class="ri-user-line text-2xl text-white"></i>
-      </div>
-      <h2 class="text-xl font-bold text-center text-slate-100 dark:text-slate-900 mb-1">Welcome!</h2>
-      <p class="text-sm text-slate-400 dark:text-slate-500 text-center mb-5">Enter your name to load your personal budget</p>
-      <input id="name-input" type="text" placeholder="Your name…"
-             class="w-full px-4 py-3 rounded-xl bg-slate-700 dark:bg-slate-100 border border-slate-600 dark:border-slate-300 text-slate-100 dark:text-slate-900 placeholder-slate-400 dark:placeholder-slate-400 focus:ring-2 focus:ring-cyan-500 outline-none text-sm font-medium mb-4">
-      <button onclick="submitName()"
-              class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold hover:opacity-90 transition-opacity shadow-lg">
-        Let's Go <i class="ri-arrow-right-line ml-1"></i>
-      </button>
-    </div>
-  </div>
-
-  <!-- TOAST -->
-  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 opacity-0 translate-y-4 pointer-events-none">
-    <div id="toast-msg" class="px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-800 dark:bg-white text-slate-100 dark:text-slate-900 border border-slate-700 dark:border-slate-200 shadow-lg"></div>
-  </div>
-
-  <!-- BACK BUTTON -->
-  <div class="fixed top-4 left-4 z-50">
-    <a href="projects.html"
-       class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-700 dark:border-slate-200 text-slate-300 dark:text-slate-700 hover:border-cyan-400 dark:hover:border-cyan-400 hover:text-cyan-400 dark:hover:text-cyan-500 shadow-lg transition-all duration-200">
-      <i class="ri-arrow-left-line text-lg"></i>
-    </a>
-  </div>
-
-  <!-- THEME TOGGLE -->
-  <div class="fixed top-4 right-4 z-50">
-    <button onclick="toggleTheme()"
-            class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-700 dark:border-slate-200 text-slate-300 dark:text-slate-700 hover:border-cyan-400 dark:hover:border-cyan-400 hover:text-cyan-400 dark:hover:text-cyan-500 shadow-lg transition-all duration-200">
-      <i id="theme-icon" class="text-lg"></i>
-    </button>
-  </div>
-
-  <!-- PAGE -->
-  <div class="max-w-2xl mx-auto px-4 sm:px-6 py-20 space-y-5">
-
-    <!-- HEADER -->
-    <div class="text-center fade-up d1">
-      <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg glow-cyan mb-4">
-        <i class="ri-funds-line text-3xl text-white"></i>
-      </div>
-      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight">Budget Tracker</h1>
-      <p class="mt-2 text-slate-400 dark:text-slate-500 text-sm">
-        Tracking for <span id="user-label" class="text-cyan-400 dark:text-cyan-600 font-semibold">—</span>
-      </p>
-    </div>
-
-    <!-- SUMMARY CARDS -->
-    <div class="grid grid-cols-3 gap-3 fade-up d2">
-      <!-- Balance -->
-      <div id="balance-card" class="app-card col-span-3 sm:col-span-1 bg-gradient-to-br from-cyan-600 to-blue-700 rounded-2xl p-5 text-white shadow-xl glow-cyan text-center">
-        <p class="text-xs font-semibold uppercase tracking-widest opacity-75 mb-1">Balance</p>
-        <p id="balance" class="text-2xl font-extrabold">₹0</p>
-        <p id="savings-rate" class="text-xs mt-1 opacity-75">Savings rate —</p>
-      </div>
-      <!-- Income -->
-      <div class="app-card bg-slate-800 dark:bg-white rounded-2xl p-5 shadow border border-slate-700/50 dark:border-slate-200 text-center">
-        <div class="flex items-center justify-center gap-1.5 mb-1">
-          <i class="ri-arrow-down-circle-fill text-green-400 dark:text-green-600"></i>
-          <p class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">Income</p>
-        </div>
-        <p id="income" class="text-xl font-bold text-green-400 dark:text-green-600">₹0</p>
-      </div>
-      <!-- Expenses -->
-      <div class="app-card bg-slate-800 dark:bg-white rounded-2xl p-5 shadow border border-slate-700/50 dark:border-slate-200 text-center">
-        <div class="flex items-center justify-center gap-1.5 mb-1">
-          <i class="ri-arrow-up-circle-fill text-red-400 dark:text-red-500"></i>
-          <p class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">Expenses</p>
-        </div>
-        <p id="expenses" class="text-xl font-bold text-red-400 dark:text-red-500">₹0</p>
-      </div>
-    </div>
-
-    <!-- INCOME vs EXPENSE PROGRESS BAR -->
-    <div class="fade-up d2 bg-slate-800 dark:bg-white rounded-2xl p-5 shadow border border-slate-700/50 dark:border-slate-200">
-      <div class="flex justify-between text-xs font-semibold mb-2">
-        <span class="text-green-400 dark:text-green-600">Income</span>
-        <span class="text-red-400 dark:text-red-500">Expenses</span>
-      </div>
-      <div class="w-full h-3 bg-slate-700 dark:bg-slate-200 rounded-full overflow-hidden flex">
-        <div id="income-bar"  class="prog-bar h-full bg-green-400 dark:bg-green-500 rounded-l-full" style="width:0%"></div>
-        <div id="expense-bar" class="prog-bar h-full bg-red-400 dark:bg-red-500 rounded-r-full"  style="width:0%"></div>
-      </div>
-      <div class="flex justify-between text-xs text-slate-500 mt-1.5">
-        <span id="income-pct">0%</span>
-        <span id="expense-pct">0%</span>
-      </div>
-    </div>
-
-    <!-- CHART -->
-    <div class="fade-up d3 app-card bg-slate-800 dark:bg-white rounded-3xl p-5 shadow-xl border border-slate-700/50 dark:border-slate-200">
-      <h3 class="font-bold text-slate-200 dark:text-slate-800 flex items-center gap-2 mb-4">
-        <i class="ri-pie-chart-2-fill text-cyan-400"></i> Expenses by Category
-      </h3>
-      <div id="chart-empty" class="hidden py-10 text-center text-slate-500 dark:text-slate-400">
-        <i class="ri-pie-chart-line text-4xl mb-2 block opacity-40"></i>
-        <p class="text-sm">No expense data yet</p>
-      </div>
-      <canvas id="categoryChart"></canvas>
-    </div>
-
-    <!-- ADD ENTRY FORM -->
-    <div class="fade-up d4 bg-slate-800 dark:bg-white rounded-3xl p-6 shadow-xl border border-slate-700/50 dark:border-slate-200">
-      <h3 class="font-bold text-slate-200 dark:text-slate-800 flex items-center gap-2 mb-5">
-        <i class="ri-add-circle-fill text-cyan-400"></i> Add Entry
-      </h3>
-      <form id="entry-form" class="space-y-3">
-        <div class="grid grid-cols-2 gap-3">
-          <input type="text" id="description" placeholder="Description" required
-                 class="col-span-2 px-4 py-3 rounded-xl bg-slate-700 dark:bg-slate-100 border border-slate-600 dark:border-slate-300 text-slate-100 dark:text-slate-900 placeholder-slate-400 dark:placeholder-slate-400 focus:ring-2 focus:ring-cyan-500 outline-none text-sm transition-all">
-          <div class="relative">
-            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-400 dark:text-cyan-600 font-bold text-sm">₹</span>
-            <input type="number" id="amount" placeholder="Amount" required min="1"
-                   class="w-full pl-7 pr-4 py-3 rounded-xl bg-slate-700 dark:bg-slate-100 border border-slate-600 dark:border-slate-300 text-slate-100 dark:text-slate-900 placeholder-slate-400 dark:placeholder-slate-400 focus:ring-2 focus:ring-cyan-500 outline-none text-sm transition-all">
-          </div>
-          <select id="type"
-                  class="px-4 py-3 rounded-xl bg-slate-700 dark:bg-slate-100 border border-slate-600 dark:border-slate-300 text-slate-100 dark:text-slate-900 focus:ring-2 focus:ring-cyan-500 outline-none text-sm transition-all">
-            <option value="income">💰 Income</option>
-            <option value="expense">💸 Expense</option>
-          </select>
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <select id="mode"
-                  class="px-4 py-3 rounded-xl bg-slate-700 dark:bg-slate-100 border border-slate-600 dark:border-slate-300 text-slate-100 dark:text-slate-900 focus:ring-2 focus:ring-cyan-500 outline-none text-sm transition-all">
-            <option value="cash">💵 Cash</option>
-            <option value="bank">🏦 Bank</option>
-            <option value="upi">📱 UPI</option>
-            <option value="card">💳 Card</option>
-          </select>
-          <select id="category"
-                  class="px-4 py-3 rounded-xl bg-slate-700 dark:bg-slate-100 border border-slate-600 dark:border-slate-300 text-slate-100 dark:text-slate-900 focus:ring-2 focus:ring-cyan-500 outline-none text-sm transition-all">
-            <option value="general">📦 General</option>
-            <option value="food">🍔 Food</option>
-            <option value="travel">✈️ Travel</option>
-            <option value="leisure">🎮 Leisure</option>
-            <option value="education">📚 Education</option>
-            <option value="investment">📈 Investment</option>
-            <option value="health">🏥 Health</option>
-            <option value="rent">🏠 Rent</option>
-            <option value="utilities">⚡ Utilities</option>
-            <option value="shopping">🛍️ Shopping</option>
-            <option value="others">🔖 Others</option>
-          </select>
-        </div>
-        <button type="submit"
-                class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold hover:opacity-90 transition-opacity shadow-lg flex items-center justify-center gap-2">
-          <i class="ri-add-line text-lg"></i> Add Entry
-        </button>
-      </form>
-    </div>
-
-    <!-- FILTER + ACTIONS ROW -->
-    <div class="fade-up d5 flex flex-wrap items-center justify-between gap-3">
-      <div class="flex items-center gap-2">
-        <label class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Filter</label>
-        <select id="filter-category"
-                class="px-3 py-2 rounded-xl bg-slate-800 dark:bg-white border border-slate-700 dark:border-slate-200 text-slate-200 dark:text-slate-800 focus:ring-2 focus:ring-cyan-500 outline-none text-sm transition-all">
-          <option value="all">All Categories</option>
-          <option value="food">🍔 Food</option>
-          <option value="travel">✈️ Travel</option>
-          <option value="leisure">🎮 Leisure</option>
-          <option value="education">📚 Education</option>
-          <option value="investment">📈 Investment</option>
-          <option value="health">🏥 Health</option>
-          <option value="rent">🏠 Rent</option>
-          <option value="utilities">⚡ Utilities</option>
-          <option value="shopping">🛍️ Shopping</option>
-          <option value="others">🔖 Others</option>
-          <option value="general">📦 General</option>
-        </select>
-        <select id="filter-type"
-                class="px-3 py-2 rounded-xl bg-slate-800 dark:bg-white border border-slate-700 dark:border-slate-200 text-slate-200 dark:text-slate-800 focus:ring-2 focus:ring-cyan-500 outline-none text-sm transition-all">
-          <option value="all">All Types</option>
-          <option value="income">💰 Income</option>
-          <option value="expense">💸 Expense</option>
-        </select>
-      </div>
-      <div class="flex items-center gap-2">
-        <button onclick="exportCSV()"
-                class="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-800 dark:bg-white border border-slate-700 dark:border-slate-200 text-slate-300 dark:text-slate-700 hover:border-cyan-400 dark:hover:border-cyan-400 hover:text-cyan-400 dark:hover:text-cyan-500 text-sm font-semibold transition-all">
-          <i class="ri-download-2-line"></i> Export
-        </button>
-        <button onclick="clearAll()"
-                class="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-800 dark:bg-white border border-slate-700 dark:border-red-200 text-red-400 dark:text-red-500 hover:border-red-400 dark:hover:border-red-400 text-sm font-semibold transition-all">
-          <i class="ri-delete-bin-line"></i> Clear All
-        </button>
-      </div>
-    </div>
-
-    <!-- ENTRIES LIST -->
-    <div class="fade-up d6 space-y-2" id="entries-wrapper">
-      <!-- Empty state -->
-      <div id="entries-empty" class="hidden py-16 text-center">
-        <i class="ri-inbox-line text-5xl text-slate-600 dark:text-slate-300 block mb-3"></i>
-        <p class="text-slate-500 dark:text-slate-400 font-medium">No entries yet</p>
-        <p class="text-slate-600 dark:text-slate-300 text-sm mt-1">Add your first income or expense above</p>
-      </div>
-      <ul id="entries" class="space-y-2"></ul>
-    </div>
-
-    <!-- FOOTER -->
-    <div class="text-center text-xs text-slate-500 dark:text-slate-400 py-4">
-      &copy; 2026 Arpit Agarwala. Crafted with <span class="text-red-400">♥</span>
-    </div>
-  </div>
-
-  <script>
-    const $ = id => document.getElementById(id);
-
-    // ── Category config ──
-    const CAT_ICONS = {
-      general:'📦', food:'🍔', travel:'✈️', leisure:'🎮',
-      education:'📚', investment:'📈', health:'🏥', rent:'🏠',
-      utilities:'⚡', shopping:'🛍️', others:'🔖'
-    };
-    const CAT_COLORS = [
-      '#06b6d4','#8b5cf6','#34d399','#f59e0b','#f87171',
-      '#60a5fa','#a78bfa','#fb923c','#4ade80','#e879f9','#38bdf8'
-    ];
-
-    // ── User key (from URL param, set by modal) ──
-    let userKey = new URLSearchParams(window.location.search).get('user') || '';
-    let storageKey = userKey ? `budget-${userKey}` : '';
-    let entries = storageKey ? (JSON.parse(localStorage.getItem(storageKey)) || []) : [];
-    let categoryChart;
-
-    // Show or hide name modal
-    if (userKey) {
-      $('name-modal').style.display = 'none';
-      setUserLabel(userKey);
-    }
-
-    function submitName() {
-      const val = $('name-input').value.trim();
-      if (!val) return;
-      const safe = val.toLowerCase().replace(/\s+/g, '-');
-      window.location.href = `${window.location.pathname}?user=${safe}`;
-    }
-    $('name-input').addEventListener('keydown', e => { if (e.key === 'Enter') submitName(); });
-
-    function setUserLabel(key) {
-      $('user-label').textContent = key.split('-').map(w => w.charAt(0).toUpperCase()+w.slice(1)).join(' ');
-    }
-
-    // ── Format INR ──
-    function fmt(v) {
-      if (v >= 1e7) return `₹${(v/1e7).toFixed(2)} Cr`;
-      if (v >= 1e5) return `₹${(v/1e5).toFixed(2)} L`;
-      return `₹${Math.abs(v).toLocaleString('en-IN', {maximumFractionDigits:0})}`;
-    }
-    function fmtSigned(v) {
-      const prefix = v >= 0 ? '₹' : '-₹';
-      const abs = Math.abs(v);
-      if (abs >= 1e7) return `${prefix}${(abs/1e7).toFixed(2)} Cr`;
-      if (abs >= 1e5) return `${prefix}${(abs/1e5).toFixed(2)} L`;
-      return `${prefix}${abs.toLocaleString('en-IN', {maximumFractionDigits:0})}`;
-    }
-
-    // ── Toast ──
-    function showToast(msg, color='cyan') {
-      const t = $('toast'), m = $('toast-msg');
-      m.textContent = msg;
-      t.style.opacity = '1'; t.style.transform = 'translateY(0) translateX(-50%)';
-      setTimeout(() => { t.style.opacity='0'; t.style.transform='translateY(16px) translateX(-50%)'; }, 2200);
-    }
-
-    // ── Chart ──
-    function updateChart(filter='all') {
-      const canvas = $('categoryChart');
-      const expData = {};
-      entries.forEach(e => {
-        if (e.type === 'expense' && (filter==='all' || e.category===filter)) {
-          expData[e.category] = (expData[e.category]||0) + e.amount;
-        }
-      });
-      const labels = Object.keys(expData);
-      const data   = Object.values(expData);
-
-      if (categoryChart) categoryChart.destroy();
-
-      if (!labels.length) {
-        canvas.style.display = 'none';
-        $('chart-empty').classList.remove('hidden');
-        return;
-      }
-      canvas.style.display = 'block';
-      $('chart-empty').classList.add('hidden');
-
-      const isDark = document.documentElement.classList.contains('dark');
-      const textColor = isDark ? '#475569' : '#94a3b8';
-
-      categoryChart = new Chart(canvas.getContext('2d'), {
-        type: 'doughnut',
-        data: {
-          labels: labels.map(l => `${CAT_ICONS[l]||'🔖'} ${l.charAt(0).toUpperCase()+l.slice(1)}`),
-          datasets: [{ data, backgroundColor: CAT_COLORS, borderWidth: 0, hoverOffset: 8 }]
-        },
-        options: {
-          responsive: true, cutout: '65%',
-          plugins: {
-            legend: { position: 'bottom', labels: { color: textColor, font: { size: 12, weight: '600' }, padding: 16, usePointStyle: true, pointStyleWidth: 8 } },
-            tooltip: { callbacks: { label: c => ` ${c.label}: ${fmt(c.parsed)}` } }
-          }
-        }
-      });
-    }
-
-    // ── Render entries ──
-    function updateUI() {
-      if (!storageKey) return;
-      const filterCat  = $('filter-category').value;
-      const filterType = $('filter-type').value;
-
-      // Compute totals from ALL entries (not filtered)
-      let totalIncome = 0, totalExpenses = 0;
-      entries.forEach(e => {
-        if (e.type === 'income')  totalIncome   += e.amount;
-        if (e.type === 'expense') totalExpenses += e.amount;
-      });
-      const balance = totalIncome - totalExpenses;
-      const savingsRate = totalIncome > 0 ? Math.round((balance/totalIncome)*100) : 0;
-      const total = totalIncome + totalExpenses;
-      const incPct = total > 0 ? Math.round((totalIncome/total)*100) : 50;
-      const expPct = 100 - incPct;
-
-      $('balance').textContent  = fmtSigned(balance);
-      $('income').textContent   = fmt(totalIncome);
-      $('expenses').textContent = fmt(totalExpenses);
-      $('savings-rate').textContent = `Savings rate: ${savingsRate}%`;
-
-      // Balance card color
-      const bc = $('balance-card');
-      bc.className = bc.className.replace(/from-\S+|to-\S+|glow-\S+/g,'').trim();
-      if (balance >= 0) {
-        bc.classList.add('from-cyan-600','to-blue-700','glow-cyan');
-      } else {
-        bc.classList.add('from-red-600','to-red-700','glow-red');
-      }
-
-      // Progress bars
-      $('income-bar').style.width  = incPct + '%';
-      $('expense-bar').style.width = expPct + '%';
-      $('income-pct').textContent  = incPct + '%';
-      $('expense-pct').textContent = expPct + '%';
-
-      // Filtered entries for list
-      const filtered = entries.filter(e => {
-        const catOk  = filterCat  === 'all' || e.category === filterCat;
-        const typeOk = filterType === 'all' || e.type     === filterType;
-        return catOk && typeOk;
-      });
-
-      const list = $('entries');
-      list.innerHTML = '';
-
-      if (!filtered.length) {
-        $('entries-empty').classList.remove('hidden');
-      } else {
-        $('entries-empty').classList.add('hidden');
-        // Render newest first — use the real index from `entries` for correct deletion
-        filtered.slice().reverse().forEach(entry => {
-          const realIdx = entries.indexOf(entry);
-          const isIncome = entry.type === 'income';
-          const li = document.createElement('li');
-          li.className = 'entry-item bg-slate-800 dark:bg-white rounded-2xl p-4 flex items-center gap-3 border border-slate-700/50 dark:border-slate-200 shadow-sm hover:border-cyan-400/40 dark:hover:border-cyan-400/40 transition-all';
-          li.innerHTML = `
-            <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0
-                        ${isIncome ? 'bg-green-500/15 dark:bg-green-100' : 'bg-red-500/15 dark:bg-red-100'}">
-              ${CAT_ICONS[entry.category]||'🔖'}
+<body class="budget-page min-h-screen bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-slate-100 transition-colors duration-300">
+    <!-- Login Modal -->
+    <div id="name-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 dark:bg-slate-900/80">
+        <div class="bg-white dark:bg-slate-800 w-full max-w-sm rounded-3xl p-8 shadow-2xl border border-slate-200 dark:border-slate-700 fade-up">
+            <div class="w-16 h-16 bg-cyan-500/10 rounded-2xl flex items-center justify-center mb-6 mx-auto">
+                <i class="ri-wallet-3-line text-3xl text-cyan-500"></i>
             </div>
-            <div class="flex-1 min-w-0">
-              <p class="font-semibold text-sm text-slate-100 dark:text-slate-900 truncate">${entry.description}</p>
-              <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">
-                ${entry.category.charAt(0).toUpperCase()+entry.category.slice(1)}
-                &bull; ${entry.mode.charAt(0).toUpperCase()+entry.mode.slice(1)}
-                ${entry.date ? '&bull; ' + entry.date : ''}
-              </p>
-            </div>
-            <div class="text-right flex-shrink-0">
-              <p class="font-bold ${isIncome ? 'text-green-400 dark:text-green-600' : 'text-red-400 dark:text-red-500'}">
-                ${isIncome ? '+' : '-'}${fmt(entry.amount)}
-              </p>
-              <p class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-0.5">${entry.type}</p>
-            </div>
-            <button onclick="deleteEntry(${realIdx})" title="Delete"
-                    class="ml-1 w-8 h-8 flex items-center justify-center rounded-xl text-slate-500 dark:text-slate-400 hover:bg-red-500/15 hover:text-red-400 dark:hover:text-red-500 transition-all flex-shrink-0">
-              <i class="ri-delete-bin-line text-base"></i>
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-white text-center mb-2">Welcome!</h2>
+            <p class="text-slate-500 dark:text-slate-400 text-center mb-8 text-sm">Enter your name to load your personal budget</p>
+            
+            <input id="name-input" type="text" placeholder="Your name…" 
+                class="w-full px-4 py-3 rounded-xl mb-4">
+            
+            <button onclick="submitName()" class="w-full py-3.5 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-cyan-600/20 active:scale-[0.98]">
+                Let's Go
             </button>
-          `;
-          list.appendChild(li);
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 backdrop-blur-xl bg-white/70 dark:bg-slate-900/70 border-b border-slate-200 dark:border-slate-800 px-4 sm:px-8 py-4">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <a id="back-link" href="projects.html" class="budget-icon-btn p-1.5 rounded-full inline-flex items-center justify-center">
+                    <i class="ri-arrow-left-line text-lg"></i>
+                </a>
+                <div>
+                    <h1 class="text-xl font-bold text-slate-900 dark:text-white leading-none">Budget Tracker</h1>
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1 uppercase tracking-widest font-semibold">Tracking for <span id="user-label" class="text-cyan-600 dark:text-cyan-400">—</span></p>
+                </div>
+            </div>
+            <button onclick="toggleTheme()" class="budget-icon-btn p-1.5 rounded-full inline-flex items-center justify-center">
+                <i id="theme-icon" class="ri-moon-line text-lg"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-8 py-8">
+        <div class="grid lg:grid-cols-12 gap-8">
+            <!-- Left: Overview -->
+            <div class="lg:col-span-7 space-y-8">
+                <!-- Balance Card -->
+                <div id="balance-card" class="relative overflow-hidden rounded-[2rem] p-8 text-white bg-gradient-to-br from-cyan-600 to-blue-700 shadow-xl shadow-cyan-900/20 fade-up d1">
+                    <div class="relative z-10">
+                        <p class="text-cyan-100 text-sm font-medium mb-1">Total Balance</p>
+                        <h2 id="balance" class="text-5xl font-black tracking-tight mb-6">₹0</h2>
+                        <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
+                            <i class="ri-pie-chart-line text-xs"></i>
+                            <span id="savings-rate" class="text-xs font-bold uppercase tracking-wider">Savings rate —</span>
+                        </div>
+                    </div>
+                    <!-- Decorative shapes -->
+                    <div class="absolute -top-12 -right-12 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+                    <div class="absolute -bottom-8 -left-8 w-40 h-40 bg-cyan-400/20 rounded-full blur-2xl"></div>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="app-card rounded-3xl p-6 fade-up d2">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center text-green-500">
+                                <i class="ri-arrow-left-down-line text-xl"></i>
+                            </div>
+                            <span class="text-sm font-semibold text-slate-500">Income</span>
+                        </div>
+                        <p id="income" class="text-2xl font-bold text-slate-900 dark:text-white">₹0</p>
+                    </div>
+                    <div class="app-card rounded-3xl p-6 fade-up d3">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center text-red-500">
+                                <i class="ri-arrow-right-up-line text-xl"></i>
+                            </div>
+                            <span class="text-sm font-semibold text-slate-500">Expenses</span>
+                        </div>
+                        <p id="expenses" class="text-2xl font-bold text-slate-900 dark:text-white">₹0</p>
+                    </div>
+                </div>
+
+                <!-- Breakdown -->
+                <div class="app-card rounded-3xl p-6 fade-up d4">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <i class="ri-bar-chart-2-line text-cyan-500"></i>
+                            Monthly Flow
+                        </h3>
+                        <div class="flex gap-4 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                            <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-cyan-500"></span> Income</span>
+                            <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-red-500"></span> Expenses</span>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs font-bold text-slate-500 uppercase tracking-wider">
+                                <span>Income</span>
+                                <span id="income-pct">0%</span>
+                            </div>
+                            <div class="h-3 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                                <div id="income-bar" class="prog-bar h-full bg-cyan-500 rounded-full shadow-lg shadow-cyan-500/30" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs font-bold text-slate-500 uppercase tracking-wider">
+                                <span>Expenses</span>
+                                <span id="expense-pct">0%</span>
+                            </div>
+                            <div class="h-3 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                                <div id="expense-bar" class="prog-bar h-full bg-red-500 rounded-full shadow-lg shadow-red-500/30" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart -->
+                <div class="app-card rounded-3xl p-8 fade-up d5">
+                    <h3 class="font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
+                        <i class="ri-donut-chart-line text-cyan-500"></i>
+                        Expenses by Category
+                    </h3>
+                    <div class="relative min-h-[300px] flex items-center justify-center">
+                        <canvas id="categoryChart"></canvas>
+                        <div id="chart-empty" class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                            <i class="ri-pie-chart-2-line text-4xl text-slate-300 dark:text-slate-700 mb-2"></i>
+                            <p class="text-sm font-medium">No expense data yet</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Actions & History -->
+            <div class="lg:col-span-5 space-y-8">
+                <!-- Add Entry Form -->
+                <div class="app-card rounded-[2rem] p-8 fade-up d2">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Add Entry</h3>
+                    <form id="entry-form" class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <input type="text" id="description" placeholder="Description" required
+                                class="col-span-2 px-4 py-3 rounded-xl text-sm transition-all">
+                            
+                            <div class="relative">
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">₹</span>
+                                <input type="number" id="amount" placeholder="Amount" required min="1"
+                                    class="w-full pl-7 pr-4 py-3 rounded-xl text-sm transition-all">
+                            </div>
+
+                            <select id="type" class="px-4 py-3 rounded-xl text-sm transition-all">
+                                <option value="income">💰 Income</option>
+                                <option value="expense">💸 Expense</option>
+                            </select>
+                            
+                            <select id="mode" class="px-4 py-3 rounded-xl text-sm transition-all">
+                                <option value="cash">💵 Cash</option>
+                                <option value="bank">🏦 Bank</option>
+                                <option value="upi">📱 UPI</option>
+                                <option value="card">💳 Card</option>
+                            </select>
+
+                            <select id="category" class="px-4 py-3 rounded-xl text-sm transition-all">
+                                <option value="general">📦 General</option>
+                                <option value="food">🍔 Food</option>
+                                <option value="travel">✈️ Travel</option>
+                                <option value="leisure">🎮 Leisure</option>
+                                <option value="education">📚 Education</option>
+                                <option value="investment">📈 Investment</option>
+                                <option value="health">🏥 Health</option>
+                                <option value="rent">🏠 Rent</option>
+                                <option value="utilities">⚡ Utilities</option>
+                                <option value="shopping">🛍️ Shopping</option>
+                                <option value="others">🔖 Others</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl transition-all hover:translate-y-[-2px] active:scale-[0.98]">
+                            Add Entry
+                        </button>
+                    </form>
+                </div>
+
+                <!-- History -->
+                <div class="space-y-6">
+                    <div class="flex items-center justify-between px-2">
+                        <h3 class="font-bold text-slate-900 dark:text-white flex items-center gap-2 text-lg">
+                            History
+                        </h3>
+                        <div class="flex items-center gap-2">
+                            <select id="filter-category" class="px-3 py-2 rounded-xl text-sm transition-all">
+                                <option value="all">All Categories</option>
+                                <option value="food">🍔 Food</option>
+                                <option value="travel">✈️ Travel</option>
+                                <option value="leisure">🎮 Leisure</option>
+                                <option value="education">📚 Education</option>
+                                <option value="investment">📈 Investment</option>
+                                <option value="health">🏥 Health</option>
+                                <option value="rent">🏠 Rent</option>
+                                <option value="utilities">⚡ Utilities</option>
+                                <option value="shopping">🛍️ Shopping</option>
+                                <option value="others">🔖 Others</option>
+                                <option value="general">📦 General</option>
+                            </select>
+                            <select id="filter-type" class="px-3 py-2 rounded-xl text-sm transition-all">
+                                <option value="all">All Types</option>
+                                <option value="income">💰 Income</option>
+                                <option value="expense">💸 Expense</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-3 px-2">
+                        <button onclick="exportCSV()" class="flex-1 py-2.5 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 rounded-xl text-xs font-bold uppercase tracking-wider transition-all">
+                            Export
+                        </button>
+                        <button onclick="clearAll()" class="flex-1 py-2.5 bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 rounded-xl text-xs font-bold uppercase tracking-wider transition-all">
+                            Clear All
+                        </button>
+                    </div>
+
+                    <ul id="entries" class="space-y-4 min-h-[400px]">
+                        <!-- Entries will be injected here -->
+                    </ul>
+
+                    <div id="entries-empty" class="hidden text-center py-20 bg-slate-100/50 dark:bg-slate-800/30 rounded-[2rem] border-2 border-dashed border-slate-200 dark:border-slate-800">
+                        <div class="w-16 h-16 bg-slate-200/50 dark:bg-slate-700/50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <i class="ri-file-list-3-line text-2xl text-slate-400 dark:text-slate-500"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-900 dark:text-white mb-1">No entries yet</h4>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Add your first income or expense above</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="max-w-6xl mx-auto px-4 sm:px-8 py-12 text-center">
+        <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em]">
+            &copy; 2026 Arpit Agarwala. Crafted with <i class="ri-heart-fill text-red-500 mx-1"></i>
+        </p>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 opacity-0 translate-y-4 z-[200] px-6 py-3 rounded-2xl flex items-center gap-3 pointer-events-none">
+        <i class="ri-check-double-line text-cyan-400 text-xl"></i>
+        <span id="toast-msg" class="text-sm font-bold uppercase tracking-widest">Done!</span>
+    </div>
+
+    <script>
+        const $ = id => document.getElementById(id);
+
+        // ── Category config ──
+        const CAT_ICONS = {
+            general: '📦', food: '🍔', travel: '✈️', leisure: '🎮', 
+            education: '📚', investment: '📈', health: '🏥', 
+            rent: '🏠', utilities: '⚡', shopping: '🛍️', others: '🔖'
+        };
+        const CAT_COLORS = [
+            '#06b6d4', '#8b5cf6', '#34d399', '#f59e0b', '#f87171',
+            '#60a5fa', '#a78bfa', '#fb923c', '#4ade80', '#e879f9', '#38bdf8'
+        ];
+
+        // ── User key (from URL param, set by modal) ──
+        let userParam = new URLSearchParams(window.location.search).get('user') || '';
+        let userKey = userParam;
+        let storageKey = userKey ? `budget-${userKey}` : '';
+        let entries = storageKey ? (JSON.parse(localStorage.getItem(storageKey)) || []) : [];
+        let categoryChart;
+
+        // Show or hide name modal
+        if (userKey) {
+            $('name-modal').style.display = 'none';
+            setUserLabel(userKey);
+        }
+
+        function submitName() {
+            const val = $('name-input').value.trim();
+            if (!val) return;
+
+            const safe = val.toLowerCase().replace(/\s+/g, '-');
+            const url = new URL(window.location.href);
+
+            url.searchParams.set('user', safe);
+            url.searchParams.set('theme', isDark() ? 'dark' : 'light');
+
+            window.location.href = `${url.pathname}?${url.searchParams.toString()}`;
+        }
+
+        $('name-input').addEventListener('keydown', e => {
+            if (e.key === 'Enter') submitName();
         });
-      }
 
-      updateChart(filterCat === 'all' ? 'all' : filterCat);
-    }
+        function setUserLabel(key) {
+            $('user-label').textContent = key.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        }
 
-    // ── Delete (uses real index — fixes the filter-index bug) ──
-    function deleteEntry(realIndex) {
-      entries.splice(realIndex, 1);
-      save();
-      showToast('Entry deleted');
-      updateUI();
-    }
+        // ── Format INR ──
+        function fmt(v) {
+            if (v >= 1e7) return `₹${(v / 1e7).toFixed(2)} Cr`;
+            if (v >= 1e5) return `₹${(v / 1e5).toFixed(2)} L`;
+            return `₹${Math.abs(v).toLocaleString('en-IN', { maximumFractionDigits: 0 })}`;
+        }
 
-    // ── Clear all ──
-    function clearAll() {
-      if (!entries.length) return;
-      // Custom confirm using a small toast prompt
-      if (!window._confirmClear) {
-        window._confirmClear = true;
-        showToast('Tap Clear All again to confirm ⚠️');
-        setTimeout(() => { window._confirmClear = false; }, 3000);
-        return;
-      }
-      window._confirmClear = false;
-      entries = [];
-      save();
-      showToast('All entries cleared');
-      updateUI();
-    }
+        function fmtSigned(v) {
+            const prefix = v >= 0 ? '₹' : '-₹';
+            const abs = Math.abs(v);
+            if (abs >= 1e7) return `${prefix}${(abs / 1e7).toFixed(2)} Cr`;
+            if (abs >= 1e5) return `${prefix}${(abs / 1e5).toFixed(2)} L`;
+            return `${prefix}${abs.toLocaleString('en-IN', { maximumFractionDigits: 0 })}`;
+        }
 
-    // ── Save ──
-    function save() {
-      if (storageKey) localStorage.setItem(storageKey, JSON.stringify(entries));
-    }
+        // ── Toast ──
+        function showToast(msg, color = 'cyan') {
+            const t = $('toast'), m = $('toast-msg');
+            m.textContent = msg;
+            t.style.opacity = '1';
+            t.style.transform = 'translateY(0) translateX(-50%)';
+            setTimeout(() => {
+                t.style.opacity = '0';
+                t.style.transform = 'translateY(16px) translateX(-50%)';
+            }, 2200);
+        }
 
-    // ── Form submit ──
-    $('entry-form').addEventListener('submit', e => {
-      e.preventDefault();
-      const desc   = $('description').value.trim();
-      const amount = parseFloat($('amount').value);
-      const type   = $('type').value;
-      const mode   = $('mode').value;
-      const cat    = $('category').value;
-      if (!desc || isNaN(amount) || amount <= 0) return;
-      const now = new Date();
-      const date = `${now.getDate()} ${now.toLocaleString('en-IN',{month:'short'})} ${now.getFullYear()}`;
-      entries.push({ description: desc, amount, type, mode, category: cat, date });
-      save();
-      $('entry-form').reset();
-      showToast(`${type === 'income' ? '💰' : '💸'} Entry added!`);
-      updateUI();
-    });
+        // ── Chart ──
+        function updateChart(filter = 'all') {
+            const canvas = $('categoryChart');
+            const expData = {};
 
-    // ── Export CSV ──
-    function exportCSV() {
-      if (!entries.length) { showToast('No entries to export'); return; }
-      const header = 'Description,Amount,Type,Mode,Category,Date';
-      const rows = entries.map(e =>
-        `"${e.description}",${e.amount},${e.type},${e.mode},${e.category},"${e.date||''}"`);
-      const csv = [header, ...rows].join('\n');
-      const blob = new Blob([csv], { type: 'text/csv' });
-      const url  = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = `budget-${userKey||'export'}.csv`;
-      a.click(); URL.revokeObjectURL(url);
-      showToast('📥 Exported to CSV!');
-    }
+            entries.forEach(e => {
+                if (e.type === 'expense' && (filter === 'all' || e.category === filter)) {
+                    expData[e.category] = (expData[e.category] || 0) + e.amount;
+                }
+            });
 
-    // ── Filters ──
-    $('filter-category').addEventListener('change', updateUI);
-    $('filter-type').addEventListener('change', updateUI);
+            const labels = Object.keys(expData);
+            const data = Object.values(expData);
 
-    // ── Theme ──
-    (function syncIcon(){
-      const icon = $('theme-icon');
-      const isDark = document.documentElement.classList.contains('dark');
-      icon.className = isDark ? 'ri-sun-line text-lg' : 'ri-moon-line text-lg';
-    })();
+            if (categoryChart) categoryChart.destroy();
 
-    function toggleTheme() {
-      const html = document.documentElement;
-      const icon = $('theme-icon');
-      const isDark = html.classList.contains('dark');
-      html.classList.toggle('dark', !isDark);
-      localStorage.setItem('theme', isDark ? 'light' : 'dark');
-      icon.className = isDark ? 'ri-moon-line text-lg' : 'ri-sun-line text-lg';
-      updateUI();
-    }
+            if (!labels.length) {
+                canvas.style.display = 'none';
+                $('chart-empty').classList.remove('hidden');
+                return;
+            }
 
-    // ── Init ──
-    updateUI();
-  </script>
+            canvas.style.display = 'block';
+            $('chart-empty').classList.add('hidden');
+
+            const isDark = document.documentElement.classList.contains('dark');
+            const textColor = isDark ? '#cbd5e1' : '#64748b';
+
+            categoryChart = new Chart(canvas.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: labels.map(l => `${CAT_ICONS[l] || '🔖'} ${l.charAt(0).toUpperCase() + l.slice(1)}`),
+                    datasets: [{
+                        data,
+                        backgroundColor: CAT_COLORS,
+                        borderWidth: 0,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    cutout: '65%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: textColor,
+                                font: { size: 12, weight: '600' },
+                                padding: 16,
+                                usePointStyle: true,
+                                pointStyleWidth: 8
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: c => ` ${c.label}: ${fmt(c.parsed)}`
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // ── Render entries ──
+        function updateUI() {
+            if (!storageKey) return;
+
+            const filterCat = $('filter-category').value;
+            const filterType = $('filter-type').value;
+
+            // Compute totals from ALL entries
+            let totalIncome = 0, totalExpenses = 0;
+            entries.forEach(e => {
+                if (e.type === 'income') totalIncome += e.amount;
+                if (e.type === 'expense') totalExpenses += e.amount;
+            });
+
+            const balance = totalIncome - totalExpenses;
+            const savingsRate = totalIncome > 0 ? Math.round((balance / totalIncome) * 100) : 0;
+            const total = totalIncome + totalExpenses;
+            const incPct = total > 0 ? Math.round((totalIncome / total) * 100) : 50;
+            const expPct = 100 - incPct;
+
+            $('balance').textContent = fmtSigned(balance);
+            $('income').textContent = fmt(totalIncome);
+            $('expenses').textContent = fmt(totalExpenses);
+            $('savings-rate').textContent = `Savings rate: ${savingsRate}%`;
+
+            // Balance card color
+            const bc = $('balance-card');
+            bc.className = bc.className.replace(/from-\S+|to-\S+|glow-\S+/g, '').trim();
+            if (balance >= 0) {
+                bc.classList.add('from-cyan-600', 'to-blue-700', 'glow-cyan');
+            } else {
+                bc.classList.add('from-red-600', 'to-red-700', 'glow-red');
+            }
+
+            // Progress bars
+            $('income-bar').style.width = incPct + '%';
+            $('expense-bar').style.width = expPct + '%';
+            $('income-pct').textContent = incPct + '%';
+            $('expense-pct').textContent = expPct + '%';
+
+            // Filtered entries for list
+            const filtered = entries.filter(e => {
+                const catOk = filterCat === 'all' || e.category === filterCat;
+                const typeOk = filterType === 'all' || e.type === filterType;
+                return catOk && typeOk;
+            });
+
+            const list = $('entries');
+            list.innerHTML = '';
+
+            if (!filtered.length) {
+                $('entries-empty').classList.remove('hidden');
+            } else {
+                $('entries-empty').classList.add('hidden');
+                // Render newest first
+                filtered.slice().reverse().forEach(entry => {
+                    const realIdx = entries.indexOf(entry);
+                    const isIncome = entry.type === 'income';
+                    const li = document.createElement('li');
+                    li.className = 'budget-entry-item entry-item rounded-2xl p-4 flex items-center gap-3 shadow-sm transition-all';
+
+                    li.innerHTML = `
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0 ${isIncome ? 'bg-green-500/10 dark:bg-green-500/15' : 'bg-red-500/10 dark:bg-red-500/15'}">
+                            ${CAT_ICONS[entry.category] || '🔖'}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="font-semibold text-sm text-slate-900 dark:text-slate-100 truncate">${entry.description}</p>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                                ${entry.category.charAt(0).toUpperCase() + entry.category.slice(1)} &bull; ${entry.mode.charAt(0).toUpperCase() + entry.mode.slice(1)} ${entry.date ? '&bull; ' + entry.date : ''}
+                            </p>
+                        </div>
+                        <div class="text-right flex-shrink-0">
+                            <p class="font-bold ${isIncome ? 'text-green-600 dark:text-green-400' : 'text-red-500 dark:text-red-400'}">
+                                ${isIncome ? '+' : '-'}${fmt(entry.amount)}
+                            </p>
+                            <p class="text-xs text-slate-400 dark:text-slate-500 uppercase tracking-wider mt-0.5">${entry.type}</p>
+                        </div>
+                        <button onclick="deleteEntry(${realIdx})" title="Delete" class="ml-1 w-8 h-8 flex items-center justify-center rounded-xl text-slate-500 dark:text-slate-400 hover:bg-red-500/10 hover:text-red-500 dark:hover:text-red-400 transition-all flex-shrink-0">
+                            <i class="ri-delete-bin-line text-base"></i>
+                        </button>
+                    `;
+                    list.appendChild(li);
+                });
+            }
+            updateChart(filterCat === 'all' ? 'all' : filterCat);
+        }
+
+        function deleteEntry(realIndex) {
+            entries.splice(realIndex, 1);
+            save();
+            showToast('Entry deleted');
+            updateUI();
+        }
+
+        function clearAll() {
+            if (!entries.length) return;
+            if (!window._confirmClear) {
+                window._confirmClear = true;
+                showToast('Tap Clear All again to confirm ⚠️');
+                setTimeout(() => { window._confirmClear = false; }, 3000);
+                return;
+            }
+            window._confirmClear = false;
+            entries = [];
+            save();
+            showToast('All entries cleared');
+            updateUI();
+        }
+
+        function save() {
+            if (storageKey) localStorage.setItem(storageKey, JSON.stringify(entries));
+        }
+
+        $('entry-form').addEventListener('submit', e => {
+            e.preventDefault();
+            const desc = $('description').value.trim();
+            const amount = parseFloat($('amount').value);
+            const type = $('type').value;
+            const mode = $('mode').value;
+            const cat = $('category').value;
+
+            if (!desc || isNaN(amount) || amount <= 0) return;
+
+            const now = new Date();
+            const date = `${now.getDate()} ${now.toLocaleString('en-IN', { month: 'short' })} ${now.getFullYear()}`;
+            
+            entries.push({ description: desc, amount, type, mode, category: cat, date });
+            save();
+            $('entry-form').reset();
+            showToast(`${type === 'income' ? '💰' : '💸'} Entry added!`);
+            updateUI();
+        });
+
+        function exportCSV() {
+            if (!entries.length) { showToast('No entries to export'); return; }
+            const header = 'Description,Amount,Type,Mode,Category,Date';
+            const rows = entries.map(e => `"${e.description}",${e.amount},${e.type},${e.mode},${e.category},"${e.date || ''}"`);
+            const csv = [header, ...rows].join('
+');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `budget-${userKey || 'export'}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('📥 Exported to CSV!');
+        }
+
+        $('filter-category').addEventListener('change', updateUI);
+        $('filter-type').addEventListener('change', updateUI);
+
+        // ── Theme ──
+        function isDark() {
+            return document.documentElement.classList.contains('dark');
+        }
+
+        function syncIcon() {
+            const icon = $('theme-icon');
+            if (!icon) return;
+            icon.className = isDark() ? 'ri-sun-line text-lg' : 'ri-moon-line text-lg';
+        }
+
+        function updateBackLink() {
+            const a = $('back-link');
+            if (a) a.href = 'projects.html?theme=' + (isDark() ? 'dark' : 'light');
+        }
+fix(budget): align theme logic with portfolio and extract CSS to global.css
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark() ? 'dark' : 'light');
+            syncIcon();
+            updateBackLink();
+            updateUI();
+        }
+
+        // ── Init ──
+        syncIcon();
+        updateBackLink();
+        updateUI();
+    </script>
 </body>
 </html>
