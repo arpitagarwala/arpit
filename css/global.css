@@ -1448,9 +1448,8 @@ html.dark .budget-page #filter-type:focus {
   color: #64748b;
 }
 
-/* ── Filter pills ── */
-/* Overrides the base .filter-pill to match the site's card-button aesthetic */
-.filter-pill {
+/* ── Filter pills (articles page only — scoped to avoid bleeding into projects/games) ── */
+.articles-page .filter-pill {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
@@ -1466,30 +1465,30 @@ html.dark .budget-page #filter-type:focus {
   line-height: 1.4;
 }
 
-.dark .filter-pill {
+.dark .articles-page .filter-pill {
   border-color: rgba(255, 255, 255, 0.1);
   color: #94a3b8;
 }
 
 /* Hover — non-active: border tint only */
-.filter-pill:not(.active):hover {
+.articles-page .filter-pill:not(.active):hover {
   border-color: rgba(34, 211, 238, 0.45);
   color: #0891b2;
 }
 
-.dark .filter-pill:not(.active):hover {
+.dark .articles-page .filter-pill:not(.active):hover {
   border-color: rgba(34, 211, 238, 0.4);
   color: #22d3ee;
 }
 
-/* Active — filled, matching category badge palette */
-html .filter-pill.active {
+/* Active — filled cyan, matching category badge palette */
+html .articles-page .filter-pill.active {
   background-color: #0891b2;
   border-color: #0891b2;
   color: #ffffff;
 }
 
-html.dark .filter-pill.active {
+html.dark .articles-page .filter-pill.active {
   background-color: #22d3ee;
   border-color: #22d3ee;
   color: #0f172a;
@@ -1630,11 +1629,4 @@ html.dark .filter-pill.active {
 
 .article-card:hover {
   transform: translateY(-2px);
-}
-
-/* ── Modal header meta ── */
-#modal-meta .article-meta-item,
-#modal-meta .article-meta-dot,
-#modal-meta .cat-badge {
-  /* inherits from classes above — no extra rules needed */
 }
