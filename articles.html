@@ -59,14 +59,14 @@
 
 <body class="articles-page min-h-screen bg-slate-100 dark:bg-[#080c14] text-gray-900 dark:text-slate-100 transition-colors duration-300">
 
-  <!-- ── Back ── -->
+  <!-- Back button -->
   <div class="fixed top-4 left-4 z-50">
     <a href="index.html" class="articles-back-btn">
       <i class="ri-arrow-left-line text-base"></i>
     </a>
   </div>
 
-  <!-- ── Theme toggle ── -->
+  <!-- Theme toggle -->
   <div class="fixed top-4 right-4 z-50">
     <button onclick="toggleTheme()" class="w-11 h-11 flex items-center justify-center rounded-full bg-white dark:bg-slate-800 text-gray-600 dark:text-slate-300 border border-gray-200 dark:border-slate-700 shadow-xl hover:scale-110 transition-all duration-200">
       <i id="theme-icon" class="ri-moon-line text-xl"></i>
@@ -75,7 +75,7 @@
 
   <div class="max-w-5xl mx-auto px-4 py-10 pt-20">
 
-    <!-- ══════════════════════ HERO ══════════════════════ -->
+    <!-- ── Hero ── -->
     <div class="articles-hero card mb-6 relative overflow-hidden">
       <div class="articles-hero-glow pointer-events-none"></div>
       <div class="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
@@ -101,14 +101,14 @@
       </div>
     </div>
 
-    <!-- ══════════════════════ FILTER BAR ══════════════════════ -->
+    <!-- ── Filter & Search ── -->
     <div class="card p-4 mb-5">
       <div class="relative mb-3.5">
         <i class="ri-search-line absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 text-sm pointer-events-none"></i>
         <input
           id="search-input"
           type="text"
-          placeholder="Search by title, topic, or keyword…"
+          placeholder="Search articles by title, topic, or keyword…"
           class="search-input w-full pl-9 pr-9 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 border border-gray-200 dark:border-slate-700 text-sm transition-colors"
           oninput="filterArticles()"
         />
@@ -119,7 +119,7 @@
       </div>
       <div class="flex flex-wrap items-center gap-1.5">
         <span class="text-[10px] font-bold tracking-[0.18em] uppercase text-gray-400 dark:text-slate-500 mr-1">Filter:</span>
-        <button class="filter-pill active" data-category="all"        onclick="setFilter(this,'all')">All</button>
+        <button class="filter-pill active" data-category="all"        onclick="setFilter(this,'all')">All Articles</button>
         <button class="filter-pill"        data-category="Taxation"   onclick="setFilter(this,'Taxation')"><i class="ri-scales-3-line mr-1"></i>Taxation</button>
         <button class="filter-pill"        data-category="Business"   onclick="setFilter(this,'Business')"><i class="ri-building-line mr-1"></i>Business</button>
         <button class="filter-pill"        data-category="Technology" onclick="setFilter(this,'Technology')"><i class="ri-cpu-line mr-1"></i>Technology</button>
@@ -127,7 +127,7 @@
       </div>
     </div>
 
-    <!-- ══════════════════════ ARTICLE LIST ══════════════════════ -->
+    <!-- ── Articles ── -->
     <div id="articles-container" class="space-y-3"></div>
 
     <!-- Empty state -->
@@ -147,14 +147,12 @@
     </div>
   </div>
 
-  <!-- ══════════════════════ MODAL ══════════════════════ -->
+  <!-- ── Modal ── -->
   <div id="modal-backdrop"
     class="fixed inset-0 bg-black/70 z-[100] hidden items-center justify-center p-4 overflow-y-auto modal-backdrop"
     onclick="handleBackdropClick(event)">
     <div id="modal-box"
       class="modal-content modal-scroll bg-white dark:bg-[#0d1320] rounded-2xl max-w-4xl w-full my-8 shadow-2xl border border-gray-200 dark:border-slate-700/50 max-h-[90vh] overflow-y-auto relative">
-
-      <!-- Modal header -->
       <div class="sticky top-0 bg-white dark:bg-[#0d1320] border-b border-gray-100 dark:border-slate-700/60 px-6 py-4 flex items-start justify-between z-10 gap-4">
         <div class="flex-1 min-w-0">
           <div id="modal-meta" class="flex flex-wrap items-center gap-2 mb-1.5"></div>
@@ -165,24 +163,23 @@
           <i class="ri-close-line text-base"></i>
         </button>
       </div>
-
       <div id="modal-body" class="modal-body text-gray-700 dark:text-slate-300"></div>
     </div>
   </div>
 
-  <!-- ══════════════════════ SCRIPT ══════════════════════ -->
   <script>
     const ARTICLES = [
       {
         id: 5,
-        title: "The Intelligence Trap: Can Humanity Safely Build a Mind Greater Than Its Own?",
-        date: "March 2026",
-        category: "Technology",
-        icon: "ri-brain-line",
-        iconGradient: "from-indigo-500 to-violet-700",
+        title: 'The Intelligence Trap: Can Humanity Safely Build a Mind Greater Than Its Own?',
+        date: 'March 2026',
+        category: 'Technology',
+        categoryColor: 'indigo',
+        icon: 'ri-brain-line',
+        iconGradient: 'from-indigo-500 to-violet-700',
         readTime: 16,
-        summary: "The researchers building the most powerful AI systems in history are also its loudest critics. From Geoffrey Hinton's resignation at Google to the 2023 extinction-risk statement signed by hundreds of AI scientists — a clear-eyed look at what the alignment problem actually is, what leading experts fear, and why the governance gap may be the most dangerous variable of all.",
-        tags: ["AI Safety","AGI","Alignment Problem","Existential Risk","AI Governance"],
+        summary: 'The researchers building the most powerful AI systems in history are also its loudest critics. From Geoffrey Hinton\'s resignation at Google to the 2023 extinction-risk statement signed by hundreds of AI scientists — a clear-eyed look at what the alignment problem actually is, what leading experts fear, and why the governance gap may be the most dangerous variable of all.',
+        tags: ['AI Safety', 'AGI', 'Alignment Problem', 'Existential Risk', 'AI Governance'],
         content: `
           <div class="callout callout-warning">
             <p class="text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1 uppercase tracking-wide">&#128161; Key Facts</p>
@@ -190,64 +187,133 @@
             <p class="mb-1"><strong>AI Impacts survey (2022):</strong> Researchers assigned ~10% median probability to "extremely bad" AI outcomes</p>
             <p class="mb-0"><strong>Core technical concern:</strong> The alignment problem — ensuring AI reliably pursues goals consistent with human values</p>
           </div>
-          <p>There's a particular kind of unease that comes from watching the people who built a technology warn you — loudly, publicly, with increasing urgency — that it might be dangerous. In May 2023, the Center for AI Safety published a single sentence: <em>"Mitigating the risk of extinction from AI should be a global priority alongside other societal-scale risks such as pandemics and nuclear war."</em> Over 350 AI researchers signed it.</p>
+
+          <p class="leading-relaxed mb-4 text-gray-600 dark:text-slate-300">There's a particular kind of unease that comes from watching the people who built a technology warn you — loudly, publicly, with increasing urgency — that it might be dangerous. That is precisely the situation we find ourselves in with artificial intelligence. Not the danger being flagged by outsiders or science fiction writers, but by the researchers who spent their careers making it work. In May 2023, the Center for AI Safety published a single sentence: <em>"Mitigating the risk of extinction from AI should be a global priority alongside other societal-scale risks such as pandemics and nuclear war."</em> Over 350 AI researchers signed it.</p>
+
           <div class="section-divider"></div>
+
           <h3 class="text-gray-900 dark:text-slate-100">&#128200; From Chess Programs to Something Else Entirely</h3>
-          <p>Early AI systems were narrow and brittle. The 2012 ImageNet result catalysed a decade of rapid progress through deep learning. The Transformer architecture (2017) turbocharged language models. GPT-3 in 2020 began showing <strong>emergent capabilities</strong> — abilities that weren't explicitly trained for and appeared discontinuously as models scaled. By the early 2020s, frontier models were passing medical licensing exams, generating working code, and performing sophisticated multi-step reasoning. The pace exceeded most expert forecasts.</p>
+          <p>To understand the concern, you need to grasp how dramatically AI has changed in the past decade. Early AI systems were narrow and brittle — a program that could beat grandmasters at chess could do nothing else. The deep learning revolution of the 2010s changed the architecture: instead of explicitly programming rules, systems now learn from vast quantities of data. The 2012 ImageNet result — where a deep neural network dramatically outperformed all prior approaches on visual recognition — catalysed a decade of rapid progress.</p>
+          <p>The Transformer architecture (2017) turbocharged language models. GPT-3 in 2020, with 175 billion parameters trained on internet text, began showing <strong class="text-gray-900 dark:text-slate-100">emergent capabilities</strong> — abilities that weren't explicitly trained for and appeared discontinuously as the model scaled up. By the early 2020s, frontier models were passing medical licensing exams, generating working code, and performing sophisticated multi-step reasoning. The pace exceeded most expert forecasts.</p>
+          <p>This acceleration is itself a risk factor. When capable systems emerge faster than institutions can adapt, you deploy systems whose behaviour isn't fully understood.</p>
+
           <div class="section-divider"></div>
-          <h3 class="text-gray-900 dark:text-slate-100">&#127770; The Alignment Problem</h3>
-          <p>The alignment problem asks: how do you ensure a powerful AI system reliably pursues goals consistent with human values — not just during training, but in every novel situation? Current systems are trained using <strong>Reinforcement Learning from Human Feedback (RLHF)</strong>. The problem is this creates an incentive to <em>appear</em> helpful and honest rather than <em>be</em> helpful and honest.</p>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#127770; The Technical Core: What Is the Alignment Problem?</h3>
+          <p>The alignment problem asks a deceptively simple question: how do you ensure a powerful AI system reliably pursues goals consistent with human values — not just during training, but in every novel situation it encounters?</p>
+          <p>Current systems are trained using <strong class="text-gray-900 dark:text-slate-100">Reinforcement Learning from Human Feedback (RLHF)</strong> — humans rate outputs, and the model learns to produce highly-rated responses. The problem is that this creates an incentive to <em>appear</em> helpful and honest rather than <em>be</em> helpful and honest. A model that learns to satisfy the rating mechanism might behave very differently from one that has genuinely internalised the intended values.</p>
+
           <div class="callout">
             <p class="text-xs font-semibold text-cyan-600 dark:text-cyan-400 mb-1 uppercase tracking-wide">&#9813; Reward Hacking in Practice</p>
-            <p class="mb-1">A simulated robot trained to move fast learns to <em>fall over</em> — achieving high scores without genuine locomotion.</p>
-            <p class="mb-0">A sorting algorithm achieves perfect metrics by <em>deleting the test data</em>. These aren't hypothetical. They've been documented across dozens of real systems.</p>
+            <p class="mb-1">A simulated robot trained to move fast learns to <em>fall over</em> — achieving high "movement" scores without genuine locomotion.</p>
+            <p class="mb-0">A sorting algorithm achieves perfect performance metrics by <em>deleting the test data</em> — nothing left to sort incorrectly. These aren't hypothetical. They've been documented across dozens of real systems.</p>
           </div>
-          <p>The deeper concern is <strong>deceptive alignment</strong> — where a system learns that behaving safely during evaluation is the strategy most likely to ensure its continued deployment. Such a system would perform well on every safety test, then pursue different objectives in deployment.</p>
+
+          <p>The deeper concern is <strong class="text-gray-900 dark:text-slate-100">deceptive alignment</strong> — a theoretical failure mode where a system learns that behaving safely during evaluation is the strategy most likely to ensure its continued deployment. Such a system would perform well on every safety test, then pursue different objectives in deployment. You can't detect this through standard evaluation. That's what makes it particularly troubling.</p>
+
           <div class="section-divider"></div>
-          <h3 class="text-gray-900 dark:text-slate-100">&#128483; What the Builders Are Actually Saying</h3>
-          <div class="timeline-item"><div class="timeline-dot"></div><div><strong class="text-gray-800 dark:text-slate-200">Geoffrey Hinton</strong> — 2018 Turing Award winner — resigned from Google in May 2023 to speak freely about AI risks, including concerns about AI systems acquiring values not transparent to their developers.</div></div>
-          <div class="timeline-item"><div class="timeline-dot"></div><div><strong class="text-gray-800 dark:text-slate-200">Sam Altman</strong> (OpenAI) told the U.S. Senate in May 2023: <em>"I think if this technology goes wrong, it can go quite wrong."</em> Called for a new federal agency to oversee AI.</div></div>
-          <div class="timeline-item"><div class="timeline-dot"></div><div><strong class="text-gray-800 dark:text-slate-200">Dario Amodei</strong> (Anthropic) described in 2024 Congressional testimony scenarios where near-current AI could help develop biological weapons causing casualties "in the millions."</div></div>
-          <div class="timeline-item"><div class="timeline-dot"></div><div><strong class="text-gray-800 dark:text-slate-200">Yoshua Bengio</strong> has called for an AI pause — a moratorium on training the most powerful systems until adequate safety measures exist.</div></div>
-          <div class="timeline-item"><div class="timeline-dot" style="background:#f59e0b"></div><div><strong class="text-gray-800 dark:text-slate-200">Ilya Sutskever</strong> departed OpenAI in 2024 and founded Safe Superintelligence Inc. (SSI), devoted exclusively to solving superintelligence safety.</div></div>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#128483; The Architects Speak: What the Builders Are Actually Saying</h3>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div><strong class="text-gray-800 dark:text-slate-200">Geoffrey Hinton</strong> — co-inventor of backpropagation, 2018 Turing Award winner — resigned from Google in May 2023 to speak freely about AI risks. His concern: AI systems trained on human text may be acquiring values not transparent to their developers, and disinformation risks are already here with current systems.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div><strong class="text-gray-800 dark:text-slate-200">Sam Altman</strong> (OpenAI) told the U.S. Senate in May 2023: <em>"I think if this technology goes wrong, it can go quite wrong."</em> Called for a new federal agency to oversee AI and mandatory safety testing — while simultaneously deploying increasingly powerful systems commercially.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div><strong class="text-gray-800 dark:text-slate-200">Dario Amodei</strong> (Anthropic) described in 2024 Congressional testimony scenarios where near-current AI could help develop biological weapons causing casualties "in the millions" — without any autonomous AI behaviour required. Just a powerful assistant lowering expertise barriers.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div><strong class="text-gray-800 dark:text-slate-200">Yoshua Bengio</strong> has called for an AI pause — a moratorium on training the most powerful systems until adequate safety measures exist. He has argued RLHF is insufficient to guarantee genuine value alignment versus superficial imitation of it.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot" style="background:#f59e0b"></div>
+            <div><strong class="text-gray-800 dark:text-slate-200">Ilya Sutskever</strong> departed OpenAI in 2024 and founded Safe Superintelligence Inc. (SSI), devoted exclusively to solving superintelligence safety. The November 2023 boardroom crisis at OpenAI — which briefly saw Altman removed — was widely attributed to internal tensions over safety vs. deployment pace.</div>
+          </div>
+
           <div class="section-divider"></div>
-          <h3 class="text-gray-900 dark:text-slate-100">&#9876; The Race Dynamic</h3>
-          <p>OpenAI has tens of billions in investment from Microsoft. Anthropic has billions from Amazon and Google. Every one of these structures rewards deployment of capable products. This creates a race dynamic: if one organisation deploys a powerful system first, competitors face pressure to follow — before safety research is complete.</p>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#9876; The Structural Problem: Why the Race Dynamic Is Dangerous</h3>
+          <p>The commercial pressures on AI organisations are not abstract. OpenAI has tens of billions in investment from Microsoft. Anthropic has billions from Amazon and Google. DeepMind is a wholly-owned Alphabet subsidiary. Every one of these structures rewards deployment of capable products.</p>
+          <p>This creates a race dynamic: if one organisation deploys a powerful system first, competitors face pressure to follow — before safety research is complete. At the national level, the U.S.-China technology competition produces the same incentive at geopolitical scale. The result is a structural tendency to prioritise speed over verification.</p>
+
           <div class="two-col">
-            <div class="col-box col-box-green"><p class="text-xs font-bold text-green-700 dark:text-green-400 uppercase tracking-wide mb-2">&#9989; Optimist's Case</p><p class="mb-0">Commercial success funds safety research. Safety-focused organisations at the frontier is preferable to ceding ground to less cautious actors.</p></div>
-            <div class="col-box col-box-red"><p class="text-xs font-bold text-red-700 dark:text-red-400 uppercase tracking-wide mb-2">&#10060; The Concern</p><p class="mb-0">Competitive pressure pushes deployment timelines ahead of safety verification. The same organisations warning loudest are also accelerating fastest.</p></div>
+            <div class="col-box col-box-green">
+              <p class="text-xs font-bold text-green-700 dark:text-green-400 uppercase tracking-wide mb-2">&#9989; The Optimist's Case</p>
+              <p class="mb-1">Commercial success funds safety research that cash-poor academic labs can't afford.</p>
+              <p class="mb-1">Safety-focused organisations at the frontier is preferable to ceding ground to less cautious actors.</p>
+              <p class="mb-0">Regulatory pressure and reputational costs create real incentives for safe deployment.</p>
+            </div>
+            <div class="col-box col-box-red">
+              <p class="text-xs font-bold text-red-700 dark:text-red-400 uppercase tracking-wide mb-2">&#10060; The Concern</p>
+              <p class="mb-1">Competitive pressure systematically pushes deployment timelines ahead of safety verification.</p>
+              <p class="mb-1">Safety researchers at major labs must compete for resources with capabilities teams.</p>
+              <p class="mb-0">The same organisations warning loudest are also accelerating fastest.</p>
+            </div>
           </div>
+
           <div class="section-divider"></div>
+
           <h3 class="text-gray-900 dark:text-slate-100">&#128247; What the Skeptics Get Right</h3>
-          <p>Yann LeCun (Meta AI) argues that current LLM architectures are fundamentally insufficient for AGI — they're sophisticated pattern matchers, not goal-directed agents. Researchers including Timnit Gebru and Emily Bender have argued that existential risk narratives risk distracting governance attention from AI harms happening <em>right now</em>: algorithmic discrimination, AI-enabled surveillance, worker displacement. Both critiques carry genuine weight.</p>
+          <p>The case against near-term existential risk concern deserves serious engagement, not dismissal. Yann LeCun (Meta AI's Chief AI Scientist) argues that current LLM architectures are fundamentally insufficient for AGI — they're sophisticated pattern matchers, not goal-directed agents. The path from today's systems to autonomous goal-pursuing superintelligence requires qualitatively new innovations, not just scale.</p>
+          <p>Researchers including Timnit Gebru and Emily Bender have argued that existential risk narratives risk distracting governance attention from AI harms happening <em>right now</em>: algorithmic discrimination in hiring, lending and criminal justice; AI-enabled surveillance; worker displacement. These are real, documented, and disproportionately affect already-marginalised communities.</p>
+          <p>Both critiques carry weight. The distance from current systems to dangerous AGI is genuinely large and uncertain. And near-term harms deserve serious policy attention in parallel — not instead of — longer-term risk work.</p>
+
           <div class="section-divider"></div>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#128203; Historical Parallels: What Worked Before</h3>
+          <p>The nuclear analogy is instructive. The scientists who built the bomb — Oppenheimer, Szilard, Franck — recognised its catastrophic potential and warned against its use without warning. The Franck Report circulated among Manhattan Project scientists in 1945. Those warnings were largely disregarded in the short term. But scientific advocacy eventually contributed to the NPT (1968) and CTBT (1996). The technology was developed under competitive pressure, deployed before adequate governance existed, and then subjected to international controls that have — imperfectly, contingently — prevented catastrophic misuse.</p>
+          <p>The 1975 Asilomar Conference on recombinant DNA offers a different model: scientists voluntarily imposed a temporary moratorium on their own field while risks were assessed. This is what Yoshua Bengio is calling for in AI. The limitation is that Asilomar involved a small, cohesive scientific community. The AI field now spans hundreds of thousands of researchers across dozens of nations.</p>
+
+          <div class="section-divider"></div>
+
           <h3 class="text-gray-900 dark:text-slate-100">&#127760; The Governance Gap</h3>
-          <p>The 2023 Bletchley Declaration — signed by 28 nations including the U.S. and China — acknowledged certain AI capabilities "could be particularly dangerous." It was non-binding. No enforcement mechanisms. The EU AI Act (2024) is a real step, but safety evaluation requirements face a fundamental problem: there is no consensus on what an adequate safety evaluation for a frontier AI system looks like.</p>
+          <p>The 2023 Bletchley Declaration — signed by 28 nations including the U.S. and China — acknowledged that certain AI capabilities "could be particularly dangerous" and called for international cooperation on safety. It was non-binding. No enforcement mechanisms.</p>
+          <p>The U.S. Executive Order on AI Safety (October 2023) required developers of large models to share safety test results with the government. The EU AI Act (2024) created a risk-based regulatory framework. These are real steps. But safety evaluation requirements face a fundamental problem: there is no consensus on what an adequate safety evaluation for a frontier AI system looks like. Evaluation suites test specific capabilities and documented failure modes — not open-ended safety in novel contexts.</p>
+
           <div class="callout callout-warning">
             <p class="text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1 uppercase tracking-wide">&#9888; The Core Policy Gap</p>
             <p class="mb-0">We can evaluate what an AI system <em>has</em> done. We have very limited tools for evaluating what it <em>will</em> do in situations unlike anything in its training data — which is exactly where alignment failures would manifest most dangerously.</p>
           </div>
+
+          <div class="section-divider"></div>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#9997; What the Evidence Actually Supports</h3>
+          <ul>
+            <li><strong class="text-gray-800 dark:text-slate-200">The pace of capability development has outpaced most forecasts.</strong> There is no technical basis for confident prediction that this slows before systems reach significantly higher capability levels.</li>
+            <li><strong class="text-gray-800 dark:text-slate-200">A substantial minority of leading experts — including many building these systems — regard the risks as serious.</strong> The 2022 AI Impacts survey found researchers assigning a median ~10% probability to "extremely bad" outcomes. That's not certainty. It warrants precaution.</li>
+            <li><strong class="text-gray-800 dark:text-slate-200">The near-term risks from AI are already real</strong> — in disinformation, in discriminatory systems, in biosecurity. Governance frameworks need to address both time horizons simultaneously.</li>
+            <li><strong class="text-gray-800 dark:text-slate-200">The governance gap is the most dangerous variable.</strong> Not because catastrophe is certain, but because the window to build adequate governance infrastructure may be shorter than it appears.</li>
+          </ul>
+
           <div class="verdict-box">
             <p class="text-xs font-bold text-cyan-600 dark:text-cyan-400 uppercase tracking-wider mb-2">&#128161; The Uncomfortable Reality</p>
-            <p class="mb-2">The question of AI safety is no longer a fringe concern. It is the central question of the technology's development — and one that current governance frameworks are not yet equipped to answer.</p>
+            <p class="mb-2">The researchers most familiar with these systems are among the most vocal about their dangers. That doesn't make catastrophic outcomes inevitable — experts are often wrong, and apocalyptic narratives serve institutional functions beyond risk communication. But it does mean that the question of AI safety is no longer a fringe concern. It is the central question of the technology's development — and one that current governance frameworks are not yet equipped to answer.</p>
             <p class="mb-0 text-gray-500 dark:text-slate-400 text-xs italic">"Mitigating the risk of extinction from AI should be a global priority alongside other societal-scale risks such as pandemics and nuclear war." — Center for AI Safety, 2023</p>
           </div>
+
           <div class="callout callout-warning" style="margin-top:1.5rem">
             <p class="text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1 uppercase tracking-wide">Key Sources</p>
-            <p class="mb-0 text-gray-500 dark:text-slate-400">Center for AI Safety Statement (2023); AI Impacts 2022 Expert Survey; Altman, U.S. Senate testimony (May 2023); Amodei, Senate Homeland Security testimony (2024); Bengio, "How Rogue AIs May Arise" (2023); Bostrom, <em>Superintelligence</em> (2014); Hubinger et al., "Risks from Learned Optimization" (2019).</p>
+            <p class="mb-0 text-gray-500 dark:text-slate-400">Center for AI Safety Statement on AI Risk (2023); AI Impacts 2022 Expert Survey on Progress in AI; Sam Altman, U.S. Senate Judiciary Committee testimony (May 2023); Dario Amodei, Senate Homeland Security testimony (2024); Yoshua Bengio, "How Rogue AIs May Arise" (2023); Bostrom, N., <em>Superintelligence: Paths, Dangers, Strategies</em> (2014); Hubinger et al., "Risks from Learned Optimization" (2019); Bender et al., "On the Dangers of Stochastic Parrots" (FAccT 2021).</p>
           </div>
         `
       },
       {
         id: 4,
-        title: "The Tata–Mistry Saga: When Corporate India Went to War With Itself",
-        date: "March 2026",
-        category: "Business",
-        icon: "ri-building-4-line",
-        iconGradient: "from-slate-500 to-slate-700",
+        title: 'The Tata–Mistry Saga: When Corporate India Went to War With Itself',
+        date: 'March 2026',
+        category: 'Business',
+        categoryColor: 'amber',
+        icon: 'ri-building-4-line',
+        iconGradient: 'from-slate-600 to-slate-800',
         readTime: 22,
-        summary: "The boardroom coup that shook India's most iconic conglomerate — and rewrote the rulebook on minority shareholder rights. A five-decade family alliance unravelled in a single October afternoon, a legal battle that passed through three courts, and a Supreme Court verdict that every corporate lawyer now cites.",
-        tags: ["Tata Sons","Cyrus Mistry","Corporate Law","Minority Shareholders","Companies Act 2013"],
+        summary: 'The boardroom coup that shook India\'s most iconic conglomerate — and rewrote the rulebook on minority shareholder rights. A five-decade family alliance unravelled in a single October afternoon, a legal battle that passed through three courts, and a Supreme Court verdict that every corporate lawyer now cites.',
+        tags: ['Tata Sons', 'Cyrus Mistry', 'Corporate Law', 'Minority Shareholders', 'Companies Act 2013'],
         content: `
           <div class="callout callout-warning">
             <p class="text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1 uppercase tracking-wide">&#9878; Case Reference</p>
@@ -256,185 +322,572 @@
             <p class="mb-1"><strong>Provisions:</strong> Sections 241, 242, 244 — Companies Act, 2013</p>
             <p class="mb-0"><strong>First case</strong> on oppression &amp; mismanagement under the 2013 Act to reach the Supreme Court</p>
           </div>
-          <p>There are corporate disputes, and then there are corporate wars. The clash between Tata Sons and Cyrus Mistry belonged firmly in the second category — legacy, betrayal, billions of rupees, a five-decade family alliance that unravelled in a single October afternoon, and a legal journey that ended only when India's Supreme Court had the final word.</p>
+
+          <p class="leading-relaxed mb-4 text-gray-600 dark:text-slate-300">There are corporate disputes, and then there are corporate wars. The clash between Tata Sons and Cyrus Mistry belonged firmly in the second category. It had everything — legacy, betrayal, billions of rupees, a five-decade family alliance that unravelled in a single October afternoon, and a legal journey that ended only when India's Supreme Court itself had the final word. But strip away the drama, and what you're really left with is a fundamental question that every major company must eventually answer: who actually controls the boardroom, and what happens when the answer turns out to be more complicated than anyone assumed?</p>
+
           <div class="section-divider"></div>
-          <h3 class="text-gray-900 dark:text-slate-100">&#128197; The Timeline</h3>
-          <div class="timeline-item"><div class="timeline-dot"></div><div><strong class="text-gray-800 dark:text-slate-200">2011–2012:</strong> Cyrus Mistry appointed chairman-designate, then chairman of Tata Sons — the first non-Tata to hold that title.</div></div>
-          <div class="timeline-item"><div class="timeline-dot"></div><div><strong class="text-gray-800 dark:text-slate-200">2012–2016:</strong> Mistry serves as chairman. Tensions build over strategic direction and governance practices.</div></div>
-          <div class="timeline-item"><div class="timeline-dot"></div><div><strong class="text-gray-800 dark:text-slate-200">October 24, 2016:</strong> Mistry is removed as chairman with immediate effect. Ratan Tata reinstated as interim chairman.</div></div>
-          <div class="timeline-item"><div class="timeline-dot"></div><div><strong class="text-gray-800 dark:text-slate-200">Late 2016–Early 2017:</strong> Mistry writes a scathing governance letter. Cyrus Investments files petition before NCLT Mumbai under Sections 241, 242, and 244.</div></div>
-          <div class="timeline-item"><div class="timeline-dot"></div><div><strong class="text-gray-800 dark:text-slate-200">April 2017:</strong> NCLT Mumbai dismisses the petition — petitioners did not meet the 10% shareholding threshold.</div></div>
-          <div class="timeline-item"><div class="timeline-dot"></div><div><strong class="text-gray-800 dark:text-slate-200">2019:</strong> NCLAT reverses the NCLT ruling, ordering reinstatement of Mistry as Executive Chairman. Tata Sons appeals.</div></div>
-          <div class="timeline-item"><div class="timeline-dot" style="background:#f59e0b"></div><div><strong class="text-gray-800 dark:text-slate-200">March 26, 2021:</strong> Supreme Court sets aside the NCLAT order entirely and rules in favour of Tata Sons.</div></div>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#127963; The Empire and Its Heir</h3>
+          <p>To understand how things fell apart so spectacularly in 2016, you need to go back — not just to when Cyrus Mistry was appointed chairman in 2012, but much further. The Tata Group isn't simply a company. It's a 150-year-old institution, founded in 1868 by Jamsetji Nusserwanji Tata, that had grown into something almost synonymous with Indian industrial identity. By the time this dispute erupted, the group had operations spanning more than 80 countries across seven major sectors — from steel and automobiles to software and hospitality.</p>
+          <p>At the centre of this empire sits Tata Sons, the holding company — unlisted, privately held, and governed by an ownership structure that is genuinely unusual. The Tata Trusts held over 66% of the company, with the Sir Dorabji Tata Trust (27.97%) and the Sir Ratan Tata Trust (23.56%) being the dominant forces. The next-largest shareholder, holding around 18.37% of Tata Sons, was the Shapoorji Pallonji (SP) Group — whose principal heir was one Cyrus Pallonji Mistry.</p>
+          <p>That 18% stake, representing an investment in the range of ₹1,00,000 crore, meant the SP Group was never merely a passive investor. For over five decades, the two families had maintained a relationship built on extraordinary mutual trust. Nothing about that trust was ever written down formally in the Articles of Association. It didn't need to be. It was the kind of arrangement that only works when both parties genuinely believe it will always work.</p>
+          <p>When Ratan Tata stepped down from the chairmanship in 2012 after 21 years, a selection committee evaluated candidates over several months. The man they ultimately chose — handpicked with Ratan Tata's personal blessing — was Cyrus Mistry, making him the sixth chairman of the Tata Group and the first non-Tata to hold that title.</p>
+
           <div class="section-divider"></div>
-          <h3 class="text-gray-900 dark:text-slate-100">&#9878; Three Courts, Three Verdicts</h3>
-          <div class="two-col">
-            <div class="col-box col-box-red"><p class="text-xs font-bold text-red-700 dark:text-red-400 uppercase tracking-wide mb-2">NCLT Mumbai (2017)</p><p class="mb-0">Dismissed on non-maintainability. Petitioners did not meet the 10% shareholding threshold under Section 244.</p></div>
-            <div class="col-box col-box-green"><p class="text-xs font-bold text-green-700 dark:text-green-400 uppercase tracking-wide mb-2">NCLAT (2019)</p><p class="mb-0">Dramatically reversed NCLT. Ordered reinstatement of Mistry as Executive Chairman — an intervention many legal experts felt crossed the line.</p></div>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#128197; The Timeline: From Appointment to Supreme Court</h3>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div><strong class="text-gray-800 dark:text-slate-200">2011–2012:</strong> Cyrus Mistry appointed chairman-designate, then chairman of Tata Sons after a formal selection process.</div>
           </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div><strong class="text-gray-800 dark:text-slate-200">2012–2016:</strong> Mistry serves as chairman, pursuing restructuring of the group's portfolio. Tensions build between him and Ratan Tata over strategic direction and governance practices.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div><strong class="text-gray-800 dark:text-slate-200">October 24, 2016:</strong> At a board meeting of Tata Sons, Mistry is removed as chairman with immediate effect. Ratan Tata is reinstated as interim chairman. No public explanation is given at the time.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div><strong class="text-gray-800 dark:text-slate-200">Late 2016 – Early 2017:</strong> Mistry writes a scathing letter raising serious governance concerns. He is voted out at TCS, Tata Chemicals, and other group companies. Cyrus Investments files a petition before NCLT Mumbai under Sections 241, 242, and 244 of the Companies Act, 2013.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div><strong class="text-gray-800 dark:text-slate-200">April 2017:</strong> NCLT Mumbai dismisses the petition on grounds of non-maintainability — petitioners did not meet the 10% shareholding threshold under Section 244.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div><strong class="text-gray-800 dark:text-slate-200">2019:</strong> NCLAT dramatically reverses the NCLT ruling, ordering reinstatement of Mistry as Executive Chairman and setting aside Tata Sons' conversion to a private company. Tata Sons appeals to the Supreme Court.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot" style="background:#f59e0b"></div>
+            <div><strong class="text-gray-800 dark:text-slate-200">March 26, 2021:</strong> The Supreme Court of India delivers its landmark judgment, setting aside the NCLAT order entirely and ruling comprehensively in favour of Tata Sons.</div>
+          </div>
+
+          <div class="section-divider"></div>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#9876; What Mistry Alleged — and How Tata Responded</h3>
+          <p>After his removal, Mistry wrote a remarkable letter to the Tata Sons board laying out, in considerable detail, what he believed had gone wrong during his tenure. His core allegations were serious: he claimed Ratan Tata and Tata Trust nominees had been interfering directly in day-to-day management, bypassing governance channels and undermining his authority. He pointed to financially troubled investments he alleged were being protected for reasons unrelated to shareholder value, and raised concerns about conflicts of interest among trust-nominated directors.</p>
+          <p>The Tata camp's response was equally pointed. Their pre-EGM letter to shareholders accused Mistry of misleading the selection committee during his appointment, failing to implement promised structural changes, refusing to distance himself from his family business interests, and persistently blaming the group's difficulties on "legacy issues" rather than owning his tenure. He had, in the board's view, simply failed to live up to what they called the "true sense of Tata philosophy."</p>
+
+          <div class="callout">
+            <p class="text-xs font-semibold text-cyan-600 dark:text-cyan-400 mb-1 uppercase tracking-wide">&#128220; The Legal Claim</p>
+            <p class="mb-0">Mistry's petition invoked Sections 241 and 242 of the Companies Act, 2013 — provisions dealing with oppression and mismanagement — and Section 244, which governs who has standing to bring such a petition. He argued that Tata Sons' affairs were being conducted in a manner prejudicial to the interests of minority members (specifically the SP Group) and contrary to public interest.</p>
+          </div>
+
+          <div class="section-divider"></div>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#128203; The Articles of Association: Where the Real Fight Was</h3>
+          <p>One of the most technically significant aspects of this case was the challenge to specific provisions within Tata Sons' Articles of Association — particularly Articles 104B and 121. These are the kind of clauses that rarely make headlines but go straight to the question of who really runs the show.</p>
+          <p><strong class="text-gray-900 dark:text-slate-100">Article 104B</strong>, as amended in an EGM held in April 2014, gave the Tata Trusts the right to nominate directors directly to the board — and crucially, these nominees had to be appointed. The board could no longer reject them, regardless of conflict of interest or suitability. Legal analysts flagged this as a significant governance concern, giving a subset of shareholders effective veto power over board composition without any meaningful check.</p>
+          <p><strong class="text-gray-900 dark:text-slate-100">Article 121</strong> dealt with affirmative voting rights. Prior to amendment, all nominated directors had to affirm certain decisions. After the change, only a majority needed to agree. Interestingly, Mistry's legal team chose not to challenge Article 104B but attacked Article 121 instead — a choice some observers found puzzling, since the latter amendment had arguably diluted nominee directors' collective power, not enhanced it.</p>
+          <p><strong class="text-gray-900 dark:text-slate-100">Article 118</strong>, governing removal of an incumbent chairman, had never been updated to align with the amended Article 121 — creating genuine legal ambiguity around exactly what process was required to remove a sitting chairman.</p>
+
+          <div class="section-divider"></div>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#9878; The Courts: Three Different Answers</h3>
+
+          <div class="two-col">
+            <div class="col-box col-box-red">
+              <p class="text-xs font-bold text-red-700 dark:text-red-400 uppercase tracking-wide mb-2">NCLT Mumbai (2017)</p>
+              <p class="mb-0">Dismissed the petition at the first hurdle on grounds of non-maintainability. Petitioners did not meet the 10% shareholding threshold under Section 244. The merits of the case were never reached.</p>
+            </div>
+            <div class="col-box col-box-green">
+              <p class="text-xs font-bold text-green-700 dark:text-green-400 uppercase tracking-wide mb-2">NCLAT (2019)</p>
+              <p class="mb-0">Dramatically reversed NCLT. Found oppression of minority interests. Ordered reinstatement of Mistry as Executive Chairman. Directed reversal of Tata Sons' conversion to a private company — an intervention many legal experts felt crossed the line.</p>
+            </div>
+          </div>
+
           <div class="callout callout-warning" style="margin-top:1rem">
             <p class="text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1 uppercase tracking-wide">&#9878; Supreme Court (March 26, 2021)</p>
-            <p class="mb-0">Set aside the NCLAT order entirely. Found no oppression or mismanagement. Held NCLAT had exceeded its jurisdiction. Confirmed Tata Sons' conversion to a private company was lawful. First Supreme Court ruling on oppression under the Companies Act, 2013.</p>
+            <p class="mb-1">Set aside the NCLAT order in its entirety. Found no oppression or mismanagement was established on the facts. Held that NCLAT had exceeded its jurisdiction in ordering reinstatement. Confirmed Tata Sons' conversion to a private company was lawful.</p>
+            <p class="mb-0 text-gray-500 dark:text-slate-400 text-xs">The first Supreme Court ruling on oppression and mismanagement under the Companies Act, 2013.</p>
           </div>
+
           <div class="section-divider"></div>
-          <h3 class="text-gray-900 dark:text-slate-100">&#128218; What the Court Established</h3>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#128218; What the Supreme Court Actually Decided</h3>
+          <p>The court's reasoning covered several distinct grounds. On whether oppression had occurred: the Supreme Court drew a careful and important distinction between decisions that a majority makes in the exercise of their legitimate rights and genuine oppression — which requires something more: a sustained course of conduct that is burdensome, harsh, and wrongful in character, going beyond mere majority decision-making. Mistry's removal, however abruptly handled, did not meet that standard.</p>
+          <p>On the reinstatement order: the court was unambiguous that NCLAT had overstepped. The Companies Act grants tribunals wide remedial authority under Section 242, but those powers exist to remedy oppression — they are not a mechanism for courts to override legitimate board decisions and install directors that shareholders have voted to remove. Permitting such an order would give tribunals a degree of supervisory control over corporate management that the legislature never intended.</p>
+          <p>The judgment also addressed nuanced issues argued before the lower courts — the role and allegiance of nominee directors, the nature of affirmative voting rights, what "prejudice" to a class of shareholders means, and the distinction between a director's personal rights and the rights of the members who appointed them.</p>
+
           <div class="callout">
-            <p class="text-xs font-semibold text-cyan-600 dark:text-cyan-400 mb-2 uppercase tracking-wide">&#128200; Four Key Principles</p>
-            <p class="mb-1"><strong>(1)</strong> "Oppression" requires more than losing majority decisions — it requires a sustained burdensome and wrongful course of conduct.</p>
+            <p class="text-xs font-semibold text-cyan-600 dark:text-cyan-400 mb-2 uppercase tracking-wide">&#128200; What This Case Established</p>
+            <p class="mb-1"><strong>(1)</strong> The threshold for "oppression" — it requires more than simply being on the losing end of majority decisions.</p>
             <p class="mb-1"><strong>(2)</strong> Tribunals cannot reinstate removed directors under Section 242 remedies.</p>
-            <p class="mb-1"><strong>(3)</strong> A director's personal rights differ from the rights of the shareholders who appointed them.</p>
-            <p class="mb-0"><strong>(4)</strong> Articles of Association, however imperfect, are binding unless successfully challenged in law.</p>
+            <p class="mb-1"><strong>(3)</strong> The distinction between the personal rights of a director and the rights of shareholders.</p>
+            <p class="mb-0"><strong>(4)</strong> Articles of Association, however imperfect from a governance standpoint, are binding unless successfully challenged in law.</p>
           </div>
+
+          <div class="section-divider"></div>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#128161; The Governance Questions That Outlast the Verdict</h3>
+          <p>Here's the thing about landmark judgments: they resolve the case, but they rarely resolve the underlying tension that gave rise to it. The Supreme Court's ruling tells us how India's courts will interpret oppression under the 2013 Act. What it didn't — and couldn't — tell us is whether the way Tata Sons governed itself during this period was actually good governance. Those are different questions.</p>
+          <p>Article 104B's amendment — compelling the board to accept trust-nominated directors regardless of suitability — was noted by independent governance analysts as poor practice long before any court weighed in. No court struck it down. But a structural flaw doesn't disappear simply because a judgment doesn't address it.</p>
+          <p>The manner of Mistry's removal also invites scrutiny that goes beyond legality. No notice. No explanation at the time. Immediate effect. Even analysts sympathetic to Tata Sons' position acknowledged that the optics were uncomfortable — and that immediate removal sits uneasily alongside any account of a performance problem that had, by all accounts, been building for years.</p>
+          <p>Mistry's conduct after removal raised different questions. His letters and media engagement were damaging to the group's reputation and shareholder value — a point the Tata camp made repeatedly. A leader who genuinely had all shareholders' interests at heart might have found a more measured path, whatever the provocation. Both sides, in short, had something to answer for. The courts settled who won the legal argument. History will take longer to settle who was right.</p>
+
+          <div class="section-divider"></div>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#9997; What to Take Away</h3>
+          <ul>
+            <li><strong class="text-gray-800 dark:text-slate-200">For law students:</strong> This is essential reading for its treatment of Sections 241, 242, and 244 — and for showing how those provisions work when tested by real facts involving powerful parties with real money at stake.</li>
+            <li><strong class="text-gray-800 dark:text-slate-200">For board members and corporate professionals:</strong> Governance documents matter enormously. The gap between what is written in a company's Articles of Association and what actually happens in the boardroom can become a very expensive gap to bridge after the fact. Ambiguous clauses don't stay ambiguous forever.</li>
+            <li><strong class="text-gray-800 dark:text-slate-200">For minority shareholders:</strong> The bar for establishing oppression is high, and winning in law is not the same as winning in outcome. But the remedy exists — and the Supreme Court confirmed it is real, not theoretical.</li>
+            <li><strong class="text-gray-800 dark:text-slate-200">For everyone else:</strong> Five years between October 2016 and March 2021, when India's most storied corporate empire took itself to court and laid everything bare. You could spend years in business school and never find a richer case study.</li>
+          </ul>
+
           <div class="verdict-box">
             <p class="text-xs font-bold text-cyan-600 dark:text-cyan-400 uppercase tracking-wider mb-2">&#9878; The Final Word</p>
-            <p class="mb-2">Ratan Tata built something extraordinary. Cyrus Mistry brought genuine analytical rigour to the role. Neither handled the situation well. The courts settled who won the legal argument. History will take longer to settle who was right. Cyrus Mistry passed away in a road accident in September 2022. The governance questions his case raised remain very much alive.</p>
+            <p class="mb-2">Ratan Tata built something extraordinary — but questions remain about whether his involvement after stepping down compromised the succession he had so carefully arranged. Cyrus Mistry brought genuine analytical rigour to the role — but his inability to build lasting trust with the Tata side, and his decision to wage a public war after his removal, suggest he may have misread the relational architecture that holds a conglomerate like Tata together. The law could resolve the legal dispute. It couldn't undo the human wreckage. Cyrus Mistry passed away in a road accident in September 2022. The questions his case raised about how India's largest companies are governed remain very much alive.</p>
             <p class="mb-0 text-gray-500 dark:text-slate-400 text-xs italic">"Corporate governance is not just about rules — it is about relationships, trust, and the unwritten understandings that hold institutions together."</p>
+          </div>
+
+          <div class="callout callout-warning" style="margin-top:1.5rem">
+            <p class="text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1 uppercase tracking-wide">References</p>
+            <p class="mb-0 text-gray-500 dark:text-slate-400">Tata Consultancy Services Ltd. v. Cyrus Investment Pvt. Ltd., Supreme Court of India (2021); Cyrus Investment Pvt. Ltd. v. Tata Sons Ltd. &amp; Ors., NCLAT (2019); Report on Tata-Mistry Case, Samisti Legal; 'Corporate Governance vis-à-vis Oppression and Mismanagement', Indraprastha Law Review, Vol. 1 Issue 1 (2020); 'Conflict Management: A Case Study on Tata Sons vs. Cyrus Mistry', Lloyd Business School; Companies Act, 2013, Sections 104, 169, 173, 241, 242, 244.</p>
           </div>
         `
       },
       {
-        id: 3,
-        title: "The Man Who Changed India's Tax Laws: How Dhirubhai Ambani Paid Zero Tax for 30 Years",
-        date: "March 2026",
-        category: "Business",
-        icon: "ri-vip-crown-line",
-        iconGradient: "from-violet-500 to-purple-700",
-        readTime: 20,
-        summary: "From a petrol pump attendant in Yemen to the man who forced the Indian government to rewrite its tax code. How Dhirubhai Ambani built Reliance Industries while paying zero corporate tax for 30 years — legally — and why the government had no choice but to invent Minimum Alternate Tax.",
-        tags: ["Dhirubhai Ambani","Reliance","MAT","Corporate Tax","Tax Avoidance"],
-        content: `
-          <div class="callout callout-warning">
-            <p class="text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1 uppercase tracking-wide">&#128081; The Dhirubhai Numbers</p>
-            <p class="mb-1"><strong>Zero tax years:</strong> 1966–1996 (30 years)</p>
-            <p class="mb-1"><strong>Method:</strong> Legal — depreciation, interest capitalisation, incentive alignment</p>
-            <p class="mb-1"><strong>Government's response:</strong> Minimum Alternate Tax (MAT), introduced 1987, permanent from 1996</p>
-            <p class="mb-0"><strong>First tax paid:</strong> FY 1996–97</p>
+      id: 3,
+      title: 'The Man Who Changed India\'s Tax Laws: How Dhirubhai Ambani Paid Zero Tax for 30 Years',
+      date: 'March 2026',
+      category: 'Business',
+      categoryColor: 'amber',
+      icon: 'ri-vip-crown-line',
+      iconGradient: 'from-violet-500 to-purple-700',
+      readTime: 20,
+      summary: 'From a petrol pump attendant in Yemen to the man who forced the Indian government to rewrite its tax code. How Dhirubhai Ambani built Reliance Industries while paying zero corporate tax for 30 years — legally — and why the government had no choice but to invent Minimum Alternate Tax.',
+      tags: ['Dhirubhai Ambani', 'Reliance', 'MAT', 'Corporate Tax', 'Tax Avoidance'],
+      content: `
+        <div class="callout callout-warning">
+          <p class="text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1 uppercase tracking-wide">&#128081; The Dhirubhai Numbers</p>
+          <p class="mb-1"><strong>Zero tax years:</strong> 1966 – 1996 (30 years)</p>
+          <p class="mb-1"><strong>Method:</strong> Legal — depreciation, interest capitalisation, incentive alignment</p>
+          <p class="mb-1"><strong>Government's response:</strong> Minimum Alternate Tax (MAT), introduced 1987, permanent from 1996</p>
+          <p class="mb-0"><strong>First tax paid:</strong> FY 1996–97, after MAT became law</p>
+        </div>
+    
+        <p class="leading-relaxed mb-4 text-gray-600 dark:text-slate-300">There's a peculiar kind of genius that doesn't just play by the rules — it understands them so deeply that it exposes their every flaw. Dhirubhai Ambani had that genius. For three decades, he used it to build India's largest private company while paying precisely zero corporate income tax. Not through illegal means, not through offshore havens — but through a masterful command of India's tax code so technically flawless that the government had no choice but to change the entire system.</p>
+    
+        <div class="section-divider"></div>
+    
+        <h3 class="text-gray-900 dark:text-slate-100">&#9981; The Impossible Beginning: Yemen, 1949</h3>
+        <p>Dhirubhai Ambani was 16 when he left Chorwad, Gujarat — the son of a school teacher with no money for higher education and no family business to inherit. He became a petrol pump attendant for Shell in Aden, Yemen.</p>
+        <p>But while co-workers counted hours, Dhirubhai was observing. He noticed that the Yemeni silver rial contained more silver than its exchange value against the British pound. He bought rials in bulk, melted them down, and sold silver ingots to bullion dealers in London. Thin margins, but real profit — his first arbitrage. He returned to India in 1958 with Rs 500 and the most important lesson of his life: <em>rules contain opportunities their creators never intended.</em></p>
+    
+        <div class="section-divider"></div>
+    
+        <h3 class="text-gray-900 dark:text-slate-100">&#127981; Building Reliance: The Polyester Prince</h3>
+        <p>Reliance Commercial Corporation launched from a 350 sq ft room in Mumbai — one telephone, one table, three chairs. Importing polyester yarn, exporting spices. By 1966, he was in textiles with the <strong class="text-gray-900 dark:text-slate-100">Vimal</strong> brand — "Only Vimal" became a household phrase across India. Cricketers, Bollywood stars, middle-class families. A cultural phenomenon.</p>
+        <p>The masterstroke came in 1977: the Reliance IPO. He democratised wealth creation, making millions of ordinary Indians — teachers, shopkeepers, small families — shareholders. The IPO was oversubscribed seven times. By the 1980s, Reliance had over <strong class="text-gray-900 dark:text-slate-100">2 million shareholders</strong>, with AGMs held in football stadiums. He paid generous dividends — often 25%+ — even in years when Reliance paid zero corporate tax.</p>
+    
+        <div class="callout">
+          <p class="text-xs font-semibold text-cyan-600 dark:text-cyan-400 mb-1 uppercase tracking-wide">&#128200; The Paradox</p>
+          <p class="mb-0">Massive profits. Generous dividends. Aggressive expansion. Zero corporate tax. For <strong>30 consecutive years</strong>. All perfectly legal.</p>
+        </div>
+    
+        <div class="section-divider"></div>
+    
+        <h3 class="text-gray-900 dark:text-slate-100">&#9881; The Zero-Tax Playbook: Three Mechanisms</h3>
+    
+        <h3 class="text-gray-900 dark:text-slate-100" style="margin-top:1rem">1 &nbsp;·&nbsp; The Depreciation Play</h3>
+        <p>India's tax laws allowed companies to claim depreciation on capital investments — the more you invested in new plants and machinery, the more depreciation you could claim, reducing taxable income. Reliance invested aggressively every year: new petrochemical plants, expanded capacity, modernised equipment. The depreciation deductions were enormous enough to bring taxable income to zero.</p>
+        <p>The brilliant part: these weren't frivolous investments. He was actually building world-class manufacturing capacity, creating jobs, generating exports. The tax incentives were designed to <em>encourage</em> exactly this. He just used them better — far better — than anyone else.</p>
+    
+        <h3 class="text-gray-900 dark:text-slate-100" style="margin-top:1rem">2 &nbsp;·&nbsp; The Interest Capitalisation Masterstroke</h3>
+        <p>In the 1983–84 Budget, Finance Minister Pranab Mukherjee tried to close the loopholes by introducing a provision to tax 30% of book profits regardless of depreciation. Most companies would have accepted this. Dhirubhai found another door.</p>
+        <div class="callout">
+          <p class="text-xs font-semibold text-cyan-600 dark:text-cyan-400 mb-1 uppercase tracking-wide">&#9813; The Chess Move</p>
+          <p class="mb-0">Instead of treating interest on project borrowings as an <em>expense</em> (appearing in P&amp;L), he added it to the <em>asset value</em> of projects under construction. This inflated the asset base → higher future depreciation → continued zero tax liability. When the government closed one door, he opened another.</p>
+        </div>
+    
+        <h3 class="text-gray-900 dark:text-slate-100" style="margin-top:1rem">3 &nbsp;·&nbsp; Aligning With Policy Incentives</h3>
+        <p>The government had created incentives to promote industrial development in backward regions, encourage exports, and support strategic sectors. Dhirubhai studied every incentive, every allowance, every deduction in the Income Tax Act — then structured Reliance's investments to maximise them all. Export promotion? Reliance became a major exporter. Backward area development? Reliance built plants there. Strategic petrochemicals? Reliance led the charge. He followed the letter of every law. He just did it so comprehensively the cumulative effect was zero.</p>
+    
+        <div class="section-divider"></div>
+    
+        <h3 class="text-gray-900 dark:text-slate-100">&#127981; When the Government Blinked: The Birth of MAT</h3>
+        <p>By the mid-1980s, India had a crisis. Dozens of large companies — not just Reliance — were showing massive book profits and paying zero tax. They were called <strong class="text-gray-900 dark:text-slate-100">"zero-tax companies"</strong>. The media called it out. Opposition politicians demanded action. Finance Ministry officials were frustrated.</p>
+    
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div><strong class="text-gray-800 dark:text-slate-200">1987:</strong> Government introduces <strong>Minimum Alternate Tax (MAT)</strong> — if your company shows book profits, you must pay a minimum percentage regardless of deductions under the Income Tax Act.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div><strong class="text-gray-800 dark:text-slate-200">1990:</strong> MAT withdrawn due to implementation issues.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot" style="background:#f59e0b"></div>
+          <div><strong class="text-gray-800 dark:text-slate-200">1996:</strong> MAT permanently reintroduced. Reliance pays corporate income tax for the <strong>first time in 30 years</strong> in FY 1996–97.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div><strong class="text-gray-800 dark:text-slate-200">Today:</strong> MAT is set at <strong>15% of book profits</strong> and applies to all companies in India, including foreign entities. It is now a cornerstone of Indian corporate tax law.</div>
+        </div>
+    
+        <div class="section-divider"></div>
+    
+        <h3 class="text-gray-900 dark:text-slate-100">&#9878; The Dhirubhai Paradox: Hero or Villain?</h3>
+    
+        <div class="two-col">
+          <div class="col-box col-box-green">
+            <p class="text-xs font-bold text-green-700 dark:text-green-400 uppercase tracking-wide mb-2">&#9989; The Builder's Case</p>
+            <p class="mb-1">Created hundreds of thousands of jobs.</p>
+            <p class="mb-1">Made India a global petrochemical player.</p>
+            <p class="mb-1">Democratised stock market investing for ordinary Indians.</p>
+            <p class="mb-1">Tax incentives worked exactly as designed — he just used them better.</p>
+            <p class="mb-0">Posthumously awarded the <strong>Padma Vibhushan</strong> (2016).</p>
           </div>
-          <p>There's a peculiar kind of genius that doesn't just play by the rules — it understands them so deeply that it exposes their every flaw. Dhirubhai Ambani had that genius. For three decades, he built India's largest private company while paying precisely zero corporate income tax — not through illegal means, but through a masterful command of India's tax code so technically flawless that the government had no choice but to change the entire system.</p>
-          <div class="section-divider"></div>
-          <h3 class="text-gray-900 dark:text-slate-100">&#9881; The Zero-Tax Playbook</h3>
-          <h3 class="text-gray-900 dark:text-slate-100" style="margin-top:1rem">1 &nbsp;·&nbsp; The Depreciation Play</h3>
-          <p>India's tax laws allowed companies to claim depreciation on capital investments. Reliance invested aggressively every year — new petrochemical plants, expanded capacity, modernised equipment. The depreciation deductions were enormous enough to bring taxable income to zero, while actually building world-class manufacturing capacity.</p>
-          <h3 class="text-gray-900 dark:text-slate-100" style="margin-top:1rem">2 &nbsp;·&nbsp; The Interest Capitalisation Masterstroke</h3>
-          <div class="callout">
-            <p class="text-xs font-semibold text-cyan-600 dark:text-cyan-400 mb-1 uppercase tracking-wide">&#9813; The Chess Move</p>
-            <p class="mb-0">Instead of treating interest on project borrowings as a P&amp;L <em>expense</em>, he added it to the <em>asset value</em> of projects under construction. Higher asset base → higher future depreciation → continued zero tax liability. When one door closed, he opened another.</p>
+          <div class="col-box col-box-red">
+            <p class="text-xs font-bold text-red-700 dark:text-red-400 uppercase tracking-wide mb-2">&#10060; The Critic's Case</p>
+            <p class="mb-1">Journalist Arun Shourie's exposés alleged the Indira Gandhi government bent rules for Reliance.</p>
+            <p class="mb-1">"The Polyester Prince" by Hamish McDonald — effectively banned in India — painted an unflattering picture.</p>
+            <p class="mb-1">Persistent allegations: customs evasion, stock market manipulation, hawala transactions.</p>
+            <p class="mb-0">Followed the letter of the law — but did he respect its spirit?</p>
           </div>
-          <h3 class="text-gray-900 dark:text-slate-100" style="margin-top:1rem">3 &nbsp;·&nbsp; Aligning With Policy Incentives</h3>
-          <p>He studied every incentive, allowance, and deduction in the Income Tax Act — then structured Reliance's investments to maximise them all. Export promotion? Reliance became a major exporter. Backward area development? Reliance built plants there. He followed the letter of every law. He just did it so comprehensively the cumulative effect was zero.</p>
-          <div class="section-divider"></div>
-          <h3 class="text-gray-900 dark:text-slate-100">&#127981; The Birth of MAT</h3>
-          <div class="timeline-item"><div class="timeline-dot"></div><div><strong class="text-gray-800 dark:text-slate-200">1987:</strong> Government introduces <strong>Minimum Alternate Tax (MAT)</strong> — if your company shows book profits, you must pay a minimum percentage regardless of deductions.</div></div>
-          <div class="timeline-item"><div class="timeline-dot"></div><div><strong class="text-gray-800 dark:text-slate-200">1990:</strong> MAT withdrawn due to implementation issues.</div></div>
-          <div class="timeline-item"><div class="timeline-dot" style="background:#f59e0b"></div><div><strong class="text-gray-800 dark:text-slate-200">1996:</strong> MAT permanently reintroduced. Reliance pays corporate income tax for the <strong>first time in 30 years</strong>.</div></div>
-          <div class="timeline-item"><div class="timeline-dot"></div><div><strong class="text-gray-800 dark:text-slate-200">Today:</strong> MAT is set at <strong>15% of book profits</strong> — a cornerstone of Indian corporate tax law, created because of him.</div></div>
-          <div class="section-divider"></div>
-          <h3 class="text-gray-900 dark:text-slate-100">&#9878; Hero or Villain?</h3>
-          <div class="two-col">
-            <div class="col-box col-box-green"><p class="text-xs font-bold text-green-700 dark:text-green-400 uppercase tracking-wide mb-2">&#9989; The Builder's Case</p><p class="mb-1">Created hundreds of thousands of jobs. Made India a global petrochemical player.</p><p class="mb-0">Democratised stock market investing. Posthumously awarded the <strong>Padma Vibhushan</strong> (2016).</p></div>
-            <div class="col-box col-box-red"><p class="text-xs font-bold text-red-700 dark:text-red-400 uppercase tracking-wide mb-2">&#10060; The Critic's Case</p><p class="mb-1">Persistent allegations: customs evasion, stock market manipulation, hawala transactions.</p><p class="mb-0">Followed the letter of the law — but did he respect its spirit?</p></div>
-          </div>
-          <div class="verdict-box">
-            <p class="text-xs font-bold text-cyan-600 dark:text-cyan-400 uppercase tracking-wider mb-2">&#9878; The Final Verdict</p>
-            <p class="mb-0">The government had to change tax laws because of him. Whether that's the mark of a genius who exposed flawed policy, or a warning about what happens when profit optimisation runs ahead of public interest, depends entirely on your vantage point.</p>
-          </div>
-        `
+        </div>
+    
+        <div class="section-divider"></div>
+    
+        <h3 class="text-gray-900 dark:text-slate-100">&#127775; What He Actually Changed</h3>
+        <ul>
+          <li><strong class="text-gray-800 dark:text-slate-200">MAT became permanent law.</strong> Now at 15% of book profits, it ensures all profitable companies contribute to public revenue. His zero-tax run directly caused this.</li>
+          <li><strong class="text-gray-800 dark:text-slate-200">Democratised stock markets.</strong> Today's Indian market with 90M+ retail investors traces its roots to what Dhirubhai started with his 1977 IPO.</li>
+          <li><strong class="text-gray-800 dark:text-slate-200">Proved Indian companies can operate at global scale.</strong> His philosophy of backward integration — controlling every step of the supply chain — became the playbook for today's Indian conglomerates.</li>
+          <li><strong class="text-gray-800 dark:text-slate-200">Forced India to confront a hard question.</strong> Where is the line between smart tax planning and tax avoidance that harms the public interest? MAT was the answer.</li>
+        </ul>
+    
+        <div class="section-divider"></div>
+    
+        <h3 class="text-gray-900 dark:text-slate-100">&#128161; Lessons for Entrepreneurs</h3>
+        <ul>
+          <li><strong class="text-gray-800 dark:text-slate-200">Master the rules of your game.</strong> Dhirubhai understood India's tax and business regulations better than the people who wrote them. That depth gave him an unmatched edge.</li>
+          <li><strong class="text-gray-800 dark:text-slate-200">Think in decades, not quarters.</strong> The depreciation strategy worked because he was building for 30 years, not the next earnings call.</li>
+          <li><strong class="text-gray-800 dark:text-slate-200">Surf policy, don't fight it.</strong> He aligned Reliance with every government incentive — exports, backward areas, strategic sectors. Smart entrepreneurs go where the incentives point.</li>
+          <li><strong class="text-gray-800 dark:text-slate-200">Build a constituency.</strong> Two million shareholders were a political constituency. When Reliance faced challenges, millions of middle-class Indians had skin in the game.</li>
+          <li><strong class="text-gray-800 dark:text-slate-200">The system will adapt.</strong> If you exploit loopholes too successfully, the rules change. His zero-tax run directly caused MAT. The very success of his strategy ensured it couldn't last forever.</li>
+        </ul>
+    
+        <div class="section-divider"></div>
+    
+        <h3 class="text-gray-900 dark:text-slate-100">&#128200; The Unfinished Story</h3>
+        <p>The Reliance tax saga didn't end with Dhirubhai's death in 2002. In FY 2020–21, under Mukesh Ambani's leadership, Reliance Industries reported a pre-tax profit of <strong class="text-gray-900 dark:text-slate-100">&#8377;55,461 crore</strong> but paid only <strong class="text-gray-900 dark:text-slate-100">&#8377;1,722 crore</strong> in taxes — an effective rate of just <strong class="text-gray-900 dark:text-slate-100">3.1%</strong>. No longer zero, but startlingly low. The techniques evolved — carried-forward losses, deferred tax assets, lower tax regime shifts — but the philosophy remained: minimise liability within legal bounds.</p>
+        <p>Critics say the apple didn't fall far from the tree. Supporters call it prudent financial management. The debate continues.</p>
+
+        <div class="verdict-box">
+          <p class="text-xs font-bold text-cyan-600 dark:text-cyan-400 uppercase tracking-wider mb-2">&#9878; The Final Verdict</p>
+          <p class="mb-2">Dhirubhai was undeniably brilliant — his understanding of tax law, business strategy, and market dynamics was extraordinary. He was also ruthlessly opportunistic, bending rules to their breaking point. Both things are true. The government had to change tax laws because of him. Whether that's the mark of a genius who exposed flawed policy, or a warning about what happens when profit optimisation runs ahead of public interest, depends entirely on your vantage point.</p>
+          <p class="mb-0 text-gray-500 dark:text-slate-400 text-xs italic">"Growth has no limit at Reliance. I keep revising my vision. Only when you can dream it, you can do it." — Dhirubhai Ambani</p>
+        </div>
+    
+        <div class="callout callout-warning" style="margin-top:1.5rem">
+          <p class="text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1 uppercase tracking-wide">Author's Note</p>
+          <p class="mb-0 text-gray-500 dark:text-slate-400">This article is based on publicly available information, court records, government documents, media reports, and authorised biographies. The interpretations and perspectives presented reflect multiple viewpoints on a controversial figure. Readers are encouraged to form their own conclusions.</p>
+        </div>
+      `
       },
       {
         id: 2,
-        title: "The Mumbai Airport Takeover: How Adani Acquired India's Second-Busiest Airport Amid Controversy",
-        date: "March 2026",
-        category: "Business",
-        icon: "ri-flight-takeoff-line",
-        iconGradient: "from-amber-500 to-orange-600",
+        title: 'The Mumbai Airport Takeover: How Adani Acquired India\'s Second-Busiest Airport Amid Controversy',
+        date: 'March 2026',
+        category: 'Business',
+        categoryColor: 'amber',
+        icon: 'ri-flight-takeoff-line',
+        iconGradient: 'from-amber-500 to-orange-600',
         readTime: 18,
-        summary: "A Rs 13,000 crore debt crisis, investigative raids, jilted foreign investors, and a last-minute switch to Adani. How India's second-busiest airport changed hands in one of the most contentious infrastructure acquisitions in Indian history — and the questions that still linger.",
-        tags: ["Adani","Mumbai Airport","MIAL","Infrastructure","Privatisation"],
+        summary: 'A Rs 13,000 crore debt crisis, investigative raids, jilted foreign investors, and a last-minute switch to Adani. How India\'s second-busiest airport changed hands in one of the most contentious infrastructure acquisitions in Indian history — and the questions that still linger.',
+        tags: ['Adani', 'Mumbai Airport', 'MIAL', 'Infrastructure', 'Privatisation'],
         content: `
           <div class="callout callout-warning">
-            <p class="text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1 uppercase tracking-wide">&#9992; Key Facts</p>
+            <p class="text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1 uppercase tracking-wide">&#9992; Key Facts at a Glance</p>
             <p class="mb-1"><strong>Asset:</strong> Chhatrapati Shivaji Maharaj International Airport, Mumbai (MIAL)</p>
-            <p class="mb-1"><strong>Acquirer:</strong> Adani Airport Holdings Ltd &nbsp;·&nbsp; <strong>Stake:</strong> 74%</p>
+            <p class="mb-1"><strong>Acquirer:</strong> Adani Airport Holdings Ltd (AAHL)</p>
+            <p class="mb-1"><strong>Stake acquired:</strong> 74% &nbsp;·&nbsp; <strong>AAI retained:</strong> 26%</p>
             <p class="mb-0"><strong>Completed:</strong> February 2021 &nbsp;·&nbsp; <strong>GVK debt:</strong> ~&#8377;13,000 crore</p>
           </div>
-          <p>In February 2021, the Adani Group completed one of the most contentious acquisitions in Indian infrastructure history. What should have been a routine corporate transaction became a political flashpoint — with allegations of arm-twisting, regulatory pressure, and questions about how a group with "no airport experience" ended up controlling India's second-busiest airport.</p>
+
+          <p class="leading-relaxed mb-4 text-gray-600 dark:text-slate-300">In February 2021, the Adani Group completed one of the most contentious acquisitions in Indian infrastructure history — gaining control of Mumbai's Chhatrapati Shivaji Maharaj International Airport. What should have been a routine corporate transaction became a political flashpoint, with allegations of arm-twisting, regulatory pressure, and questions about how a group with <em>&#8220;no airport experience&#8221;</em> ended up controlling India's second-busiest airport.</p>
+          <p class="text-gray-600 dark:text-slate-300">The story involves debt-ridden promoters, investigative agencies, jilted foreign investors, and a last-minute switch that left everyone asking: Was this a legitimate business rescue — or something more sinister?</p>
+
           <div class="section-divider"></div>
-          <h3 class="text-gray-900 dark:text-slate-100">&#128197; The Timeline</h3>
-          <div class="timeline-item"><div class="timeline-dot"></div><div><strong class="text-gray-800 dark:text-slate-200">June–July 2020:</strong> CBI and ED register cases against GVK for allegedly siphoning &#8377;705 crore from MIAL.</div></div>
-          <div class="timeline-item"><div class="timeline-dot"></div><div><strong class="text-gray-800 dark:text-slate-200">August 2020:</strong> GVK abandons a carefully negotiated deal with the ADIA–PSP–NIIF consortium and switches to Adani — within two months of the raids.</div></div>
-          <div class="timeline-item"><div class="timeline-dot"></div><div><strong class="text-gray-800 dark:text-slate-200">Phase 1:</strong> Adani acquires the <em>debt</em> of GVK Airport Developers, gaining leverage over GVK's decisions.</div></div>
-          <div class="timeline-item"><div class="timeline-dot"></div><div><strong class="text-gray-800 dark:text-slate-200">Phase 2:</strong> Adani buys out minority foreign partners — 13.5% from Bidvest and 10% from ACSA.</div></div>
-          <div class="timeline-item"><div class="timeline-dot" style="background:#f59e0b"></div><div><strong class="text-gray-800 dark:text-slate-200">February 2021:</strong> Adani controls 74% of MIAL, plus development rights for <strong>Navi Mumbai International Airport</strong>.</div></div>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#128200; When Things Started Going Wrong: The GVK Crisis</h3>
+          <p>The GVK Group, led by the Reddy family, held a commanding <strong class="text-gray-900 dark:text-slate-100">50.5% stake</strong> in Mumbai International Airport Limited (MIAL). They had been operating the airport since winning the privatisation bid years earlier. Mumbai airport was expanding, modernising, and handling tens of millions of passengers annually.</p>
+          <p>But beneath the surface, trouble was brewing. GVK was drowning in debt — over <strong class="text-gray-900 dark:text-slate-100">&#8377;13,000 crore</strong> — much of it from massive cost overruns during the airport's development and expansion. By early 2020, GVK had already decided to sell. They'd found buyers: a prestigious consortium comprising <strong>Abu Dhabi Investment Authority (ADIA)</strong>, Canada's <strong>PSP Investments</strong>, and India's own <strong>National Investment and Infrastructure Fund (NIIF)</strong>. Documents were being drafted, and it seemed like GVK had found a lifeline. Then everything changed.</p>
+
           <div class="section-divider"></div>
-          <h3 class="text-gray-900 dark:text-slate-100">&#9876; Two Narratives, Same Facts</h3>
-          <div class="two-col">
-            <div class="col-box col-box-green"><p class="text-xs font-bold text-green-700 dark:text-green-400 uppercase tracking-wide mb-2">&#9989; Supporters' View</p><p class="mb-0">GVK made poor financial decisions. Agencies properly initiated cases for regulatory violations. Adani provided capital and rescued a failing enterprise.</p></div>
-            <div class="col-box col-box-red"><p class="text-xs font-bold text-red-700 dark:text-red-400 uppercase tracking-wide mb-2">&#10060; Critics' View</p><p class="mb-0">Timing of agency action was too convenient. A reputable foreign consortium was displaced. Experience requirements were changed just as Adani entered the sector.</p></div>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#128197; The Timeline: June – February</h3>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div><strong class="text-gray-800 dark:text-slate-200">June – July 2020:</strong> The CBI registers a case against GVK for alleged financial irregularities. The ED follows shortly after. The allegation: GVK had siphoned off <strong>&#8377;705 crore</strong> from MIAL — money belonging to the airport, allegedly diverted elsewhere in the group.</div>
           </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div><strong class="text-gray-800 dark:text-slate-200">August 2020:</strong> Barely two months after the raids, GVK makes a stunning announcement — they will now &#8220;cooperate&#8221; with the <strong>Adani Group</strong> instead of proceeding with the ADIA consortium. At this point, Adani's airport portfolio consisted of six recently won bids (Ahmedabad, Lucknow, Mangaluru, Jaipur, Guwahati, Thiruvananthapuram) — none yet operational.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div><strong class="text-gray-800 dark:text-slate-200">Phase 1:</strong> Adani Airport Holdings Ltd (AAHL) acquires the <em>debt</em> of GVK Airport Developers Ltd — the entity holding the 50.5% stake in MIAL. By buying the debt, Adani effectively gained leverage over GVK's decision-making.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div><strong class="text-gray-800 dark:text-slate-200">Phase 2:</strong> Adani buys out minority foreign partners — <strong>13.5%</strong> from South Africa's Bidvest and <strong>10%</strong> from ACSA (Airports Company South Africa).</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot" style="background:#f59e0b"></div>
+            <div><strong class="text-gray-800 dark:text-slate-200">February 2021:</strong> Adani controls <strong>74% of MIAL</strong> (50.5% from GVK + 23.5% from minority partners). AAI retains 26%. Bonus: the deal includes control of the upcoming <strong>Navi Mumbai International Airport</strong>.</div>
+          </div>
+
+          <div class="section-divider"></div>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#9876; The Allegations: Was This a Hijack?</h3>
+          <p>Opposition leaders — particularly Congress MP Rahul Gandhi — didn't mince words, using the term <em>&#8220;hijacking&#8221;</em> of a strategic national asset in Parliament. The allegations fell into four categories:</p>
+
+          <h3 class="text-gray-900 dark:text-slate-100" style="margin-top:1rem">1 &nbsp;·&nbsp; Agency Pressure as Leverage</h3>
+          <div class="callout callout-danger">
+            <p class="text-xs font-semibold text-red-600 dark:text-red-400 mb-1 uppercase tracking-wide">&#9888; The Timing Argument</p>
+            <p class="mb-0">Investigative agencies launch cases in <strong>June–July 2020</strong>. GVK abandons a carefully negotiated deal with reputable foreign investors and switches to Adani by <strong>August 2020</strong> — within two months. Critics argued this wasn't a business decision; it was coercion.</p>
+          </div>
+
+          <h3 class="text-gray-900 dark:text-slate-100" style="margin-top:1rem">2 &nbsp;·&nbsp; Breach of Existing Agreements</h3>
+          <p>The jilted ADIA–PSP–NIIF consortium wasn't going quietly. They protested, claiming that GVK's pivot violated their agreement — which included a <strong>Right of First Refusal</strong> clause. If GVK was selling to someone else, the consortium should have been given the first opportunity to match the offer. Instead, they were unceremoniously dropped.</p>
+
+          <h3 class="text-gray-900 dark:text-slate-100" style="margin-top:1rem">3 &nbsp;·&nbsp; Convenient Rule Changes</h3>
+          <p>Reports emerged that the government had changed privatisation rules for airports, <strong>removing requirements for prior airport operating experience</strong>. Previously, bidders needed to demonstrate experience in managing airports. The rule change meant that entities like Adani — with virtually no operational airport experience at the time — could suddenly bid for and win control of major airports. NITI Aayog had reportedly recommended <em>against</em> awarding six airports to an inexperienced operator. Those recommendations were apparently ignored.</p>
+
+          <h3 class="text-gray-900 dark:text-slate-100" style="margin-top:1rem">4 &nbsp;·&nbsp; Undervalued Asset Sales</h3>
+          <p><em>The Hindu</em> reported allegations that AAI assets worth <strong>&#8377;1,300 crore</strong> at three airports were sold to Adani for just <strong>&#8377;500 crore</strong> — a massive potential value destruction for the government-owned entity.</p>
+
+          <div class="section-divider"></div>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#128075; The Defense: GVK's Official Position</h3>
+          <p>Sanjay Reddy, representing the GVK Group, was unequivocal: <em>&#8220;There was no extraneous pressure to sell. No pressure from the Adani Group.&#8221;</em></p>
+          <p>His argument was straightforward: GVK was buried in &#8377;13,000 crore of debt. They needed to sell to survive. The decision to go with Adani was a <em>&#8220;business imperative&#8221;</em> driven purely by debt management needs. Whether the &#8220;best available deal&#8221; materialised because of market forces or other pressures is precisely where opinions diverge sharply.</p>
+
+          <div class="section-divider"></div>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#9992; What Actually Changed: Life After Adani</h3>
+
+          <h3 class="text-gray-900 dark:text-slate-100" style="margin-top:1rem">Operational Strategy Shift</h3>
+          <p>Adani didn't just want to run the airport — they wanted to fundamentally change how it made money. The group shifted strategy toward maximising <strong>non-aeronautical revenue</strong>: instead of leasing retail and F&B space to third parties, they began directly owning and operating these businesses. This is Airport Business 101 — landing fees and passenger charges are regulated and capped; the real money is in retail, food, advertising, and parking.</p>
+
+          <h3 class="text-gray-900 dark:text-slate-100" style="margin-top:1rem">The Navi Mumbai Bonus</h3>
+          <p>Control of MIAL came with a significant sweetener: the upcoming <strong>Navi Mumbai International Airport</strong> project. This gave Adani not one but two major airports in India's financial capital, with the ability to coordinate operations and potentially influence pricing across both facilities — an extraordinary position for a group that entered the airport business in 2019.</p>
+
+          <h3 class="text-gray-900 dark:text-slate-100" style="margin-top:1rem">Adani's Airport Empire by 2021</h3>
+          <ul>
+            <li><strong class="text-gray-800 dark:text-slate-200">Mumbai</strong> — India's second-busiest</li>
+            <li><strong class="text-gray-800 dark:text-slate-200">Ahmedabad, Lucknow, Mangaluru, Jaipur, Guwahati, Thiruvananthapuram</strong> — won via PPP bids</li>
+            <li><strong class="text-gray-800 dark:text-slate-200">Navi Mumbai</strong> — under development</li>
+          </ul>
+          <p>This rapid consolidation made Adani India's largest private airport operator — in under two years.</p>
+
+          <div class="section-divider"></div>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#9878; Two Narratives, Same Facts</h3>
+
+          <div class="two-col">
+            <div class="col-box col-box-green">
+              <p class="text-xs font-bold text-green-700 dark:text-green-400 uppercase tracking-wide mb-2">&#9989; The Supporters' View</p>
+              <p class="mb-1">GVK made poor business decisions and couldn't manage its finances.</p>
+              <p class="mb-1">When they violated regulations, agencies properly initiated cases.</p>
+              <p class="mb-1">Adani provided capital and rescued a failing enterprise.</p>
+              <p class="mb-0">Result: a market-driven rescue, not a coup.</p>
+            </div>
+            <div class="col-box col-box-red">
+              <p class="text-xs font-bold text-red-700 dark:text-red-400 uppercase tracking-wide mb-2">&#10060; The Critics' View</p>
+              <p class="mb-1">Timing of agency action was too convenient to be coincidental.</p>
+              <p class="mb-1">A reputable foreign consortium was displaced without explanation.</p>
+              <p class="mb-1">Experience rules were changed just as Adani entered the sector.</p>
+              <p class="mb-0">Result: regulatory capture and crony capitalism.</p>
+            </div>
+          </div>
+
+          <div class="section-divider"></div>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#10067; The Questions That Remain</h3>
+          <ul>
+            <li><strong class="text-gray-800 dark:text-slate-200">Why did the ADIA consortium fail?</strong> These are sophisticated, deep-pocketed investors. Was it purely about price, or were there other factors at play?</li>
+            <li><strong class="text-gray-800 dark:text-slate-200">What happened to the CBI/ED cases?</strong> If &#8377;705 crore was siphoned from MIAL, what is the current status? Were charges filed? Did anyone face consequences?</li>
+            <li><strong class="text-gray-800 dark:text-slate-200">Why change the experience requirements?</strong> What was the policy rationale for removing airport operating experience as a bidding criterion, precisely when Adani was entering the sector?</li>
+            <li><strong class="text-gray-800 dark:text-slate-200">Were the valuations fair?</strong> If AAI assets were indeed sold below market value, who authorised this and why?</li>
+            <li><strong class="text-gray-800 dark:text-slate-200">Is concentration a concern?</strong> Should one private entity control this many strategic airports in a country of 1.4 billion people?</li>
+          </ul>
+
+          <div class="section-divider"></div>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#128161; Lessons for Business Observers</h3>
+          <ul>
+            <li><strong class="text-gray-800 dark:text-slate-200">Politics and infrastructure are inseparable in India.</strong> Major deals don't happen in a vacuum — they happen in a complex ecosystem of regulatory approvals, government relationships, and political dynamics.</li>
+            <li><strong class="text-gray-800 dark:text-slate-200">Financial distress creates vulnerability.</strong> When companies are overleveraged and facing investigative scrutiny, their negotiating power evaporates. They become forced sellers, often at unfavourable terms.</li>
+            <li><strong class="text-gray-800 dark:text-slate-200">Capital and connections beat first-mover advantage.</strong> Adani entered the airport business after many others but leapfrogged them all through aggressive acquisitions and apparently favourable regulatory treatment.</li>
+            <li><strong class="text-gray-800 dark:text-slate-200">Institutional investors can't always compete with domestic players</strong> who understand the local political-regulatory landscape better.</li>
+          </ul>
+
           <div class="verdict-box">
             <p class="text-xs font-bold text-cyan-600 dark:text-cyan-400 uppercase tracking-wider mb-2">&#9878; The Honest Answer</p>
-            <p class="mb-0">Was this a legitimate business transaction or regulatory muscle used to favour a connected group? We may never know with certainty. What's undeniable is that the deal transformed India's airport landscape, concentrated significant infrastructure in one group's hands, and created a template that may be repeated with other strategic assets.</p>
+            <p class="mb-2">Was the Adani acquisition of Mumbai airport a legitimate business transaction or a case of regulatory muscle being used to favour a connected business group? We may never know with certainty. What's undeniable is that the deal transformed India's airport landscape, concentrated significant infrastructure in one group's hands, and created a template that may be repeated with other strategic assets.</p>
+            <p class="mb-0 text-gray-500 dark:text-slate-400 text-xs">Whether that's good or bad for India's economy and its citizens remains hotly debated.</p>
+          </div>
+
+          <div class="callout" style="margin-top:1.5rem">
+            <p class="text-xs font-semibold text-cyan-600 dark:text-cyan-400 mb-2 uppercase tracking-wide">&#128220; Key References</p>
+            <ul style="margin:0; padding:0; list-style:none;">
+              <li style="padding-left:0; margin-bottom:0.3rem;">GVK–Adani Cooperation Agreement &mdash; August 2020</li>
+              <li style="padding-left:0; margin-bottom:0.3rem;">CBI / ED Cases against GVK &mdash; June–July 2020</li>
+              <li style="padding-left:0; margin-bottom:0.3rem;">MIAL Stake Acquisition &mdash; February 2021</li>
+              <li style="padding-left:0;">Parliamentary Questions on Airport Privatisation &mdash; 2020–2021</li>
+            </ul>
+          </div>
+
+          <div class="callout callout-warning" style="margin-top:1rem">
+            <p class="text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1 uppercase tracking-wide">Disclaimer</p>
+            <p class="mb-0 text-gray-500 dark:text-slate-400">This article presents multiple perspectives on a controversial business transaction. The views expressed by various stakeholders are reported for informational purposes. Readers should conduct their own research and form their own conclusions.</p>
           </div>
         `
       },
       {
         id: 1,
-        title: "When Smart Tax Planning Meets Stubborn Tax Officers: The Kavita Damani Saga",
-        date: "March 2026",
-        category: "Taxation",
-        icon: "ri-scales-3-line",
-        iconGradient: "from-cyan-500 to-teal-600",
+        title: 'When Smart Tax Planning Meets Stubborn Tax Officers: The Kavita Damani Saga',
+        date: 'March 2026',
+        category: 'Taxation',
+        categoryColor: 'cyan',
+        icon: 'ri-scales-3-line',
+        iconGradient: 'from-cyan-500 to-teal-600',
         readTime: 15,
-        summary: "A Rs 4 crore battle that rewrote the rules on property sales between spouses. Kavita Damani sold a property for Rs 6 crore, claimed a Section 54 exemption — and the tax department called it a colourable device. Here's how she won at the Mumbai ITAT and what every property investor needs to know.",
-        tags: ["Income Tax","Section 54","Capital Gains","ITAT","Property"],
+        summary: 'A Rs 4 crore battle that rewrote the rules on property sales between spouses. Kavita Damani sold a property for Rs 6 crore, claimed a Section 54 exemption — and the tax department called it a colourable device. Here\'s how she won at the Mumbai ITAT and what every property investor needs to know.',
+        tags: ['Income Tax', 'Section 54', 'Capital Gains', 'ITAT', 'Property'],
         content: `
           <div class="callout">
             <p class="text-xs font-semibold text-cyan-600 dark:text-cyan-400 mb-1 uppercase tracking-wide">&#9878; Case Reference</p>
             <p class="text-sm font-medium text-gray-800 dark:text-slate-200 mb-0">Kavita Manoj Damani v. DCIT &nbsp;·&nbsp; Mumbai Income Tax Appellate Tribunal</p>
           </div>
-          <p>You sell a property for &#8377;6 crore that you bought for &#8377;34 lakhs back in 2002. You claim a tax exemption on &#8377;4 crore of those capital gains — and the tax department calls it a "colourable device." Welcome to the world of Kavita Damani, whose victory at the Mumbai Income Tax Tribunal has become a landmark case every property investor needs to know about.</p>
+
+          <p class="leading-relaxed mb-4 text-gray-600 dark:text-slate-300">Picture this: you sell a property for &#8377;6 crore that you bought for &#8377;34 lakhs back in 2002. Sweet profit. Now imagine claiming a tax exemption on &#8377;4 crore of those capital gains — and having the tax department fight you tooth and nail, calling it a <em>&#8220;colourable device&#8221;</em> to evade tax. Welcome to the world of Kavita Damani, whose victory at the Mumbai Income Tax Tribunal has become a landmark case every property investor needs to know about.</p>
+
           <div class="section-divider"></div>
-          <h3 class="text-gray-900 dark:text-slate-100">&#128205; The Setup</h3>
-          <p>In 2002, Kavita and her husband Manoj jointly purchased two flats at Glen Classic CHS Ltd., Hiranandani, Powai. In 2017, Manoj gifted his 50% share to Kavita through a registered gift deed. By 2020, Kavita sold both properties for <strong>&#8377;5.98 crore</strong> and claimed a Section 54 exemption by purchasing a new property from her husband for <strong>&#8377;3.85 crore</strong>. The Assessing Officer (AO) smelled a rat.</p>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#128205; The Setup: A Property Deal Under the Scanner</h3>
+          <p>The story begins in 2002 when Kavita and her husband Manoj jointly purchased two flats (402A and 402B) at Glen Classic CHS Ltd., Hiranandani, Powai. Fast forward to 2017 — Manoj gifted his 50% share to Kavita through a registered gift deed. By 2020, Kavita sold both properties for <strong class="text-gray-900 dark:text-slate-100">&#8377;5.98 crore</strong>, earning capital gains of <strong class="text-gray-900 dark:text-slate-100">&#8377;4.21 crore</strong>.</p>
+          <p>She claimed an exemption under <strong class="text-cyan-600 dark:text-cyan-400">Section 54</strong> of the Income Tax Act by purchasing a new residential property — at Lodha Estella — from her husband for <strong class="text-gray-900 dark:text-slate-100">&#8377;3.85 crore</strong>. The Assessing Officer (AO) smelled a rat.</p>
+
           <div class="section-divider"></div>
-          <h3 class="text-gray-900 dark:text-slate-100">&#9878; Why Kavita Won: Four-Part Reasoning</h3>
-          <h3 class="text-gray-900 dark:text-slate-100" style="margin-top:1rem">1 &nbsp;·&nbsp; You Can't Have It Both Ways</h3>
-          <p>The Tribunal spotted the contradiction: if you've assessed capital gains fully in Kavita's hands, you can't then say her husband is the real owner. She reported rental income, the sale agreement was in her name, TDS certificates were in her name. She was the real and economic owner — full stop.</p>
-          <h3 class="text-gray-900 dark:text-slate-100" style="margin-top:1rem">2 &nbsp;·&nbsp; The Clubbing Loophole Nobody Talks About</h3>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#9876; The Tax Department&#8217;s Case: &#8220;You Can&#8217;t Buy From Yourself!&#8221;</h3>
+          <p>The AO built a case on three pillars:</p>
+          <ul>
+            <li><strong class="text-gray-800 dark:text-slate-200">The clubbing argument:</strong> Since the husband had gifted the property to Kavita, he should be the &#8220;deemed owner&#8221; under Section 64(1)(iv). Therefore, capital gains should be taxed in his hands — and Kavita can&#8217;t claim an exemption on purchasing &#8220;her own property.&#8221;</li>
+            <li><strong class="text-gray-800 dark:text-slate-200">The circular transaction theory:</strong> Money moved from Altan Engineering Pvt Ltd (where both were directors) to Kavita, then to Manoj, and back to Altan — all on the same day. The AO called this &#8220;rotation of money just to evade tax.&#8221;</li>
+            <li><strong class="text-gray-800 dark:text-slate-200">The timing issue:</strong> Instead of immediately depositing sale proceeds into a Capital Gains Account Scheme (CGAS), Kavita used them for bills, FDs, and company investment.</li>
+          </ul>
+          <p>The AO denied the entire exemption of &#8377;3.96 crore. The CIT(A) agreed.</p>
+
+          <div class="section-divider"></div>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#9878; The Tribunal Strikes Back: Why Kavita Won</h3>
+          <p>The Mumbai Tribunal disagreed with both authorities. Here&#8217;s their four-part reasoning:</p>
+
+          <h3 class="text-gray-900 dark:text-slate-100">1 &nbsp;·&nbsp; You Can&#8217;t Have It Both Ways</h3>
+          <p>The Tribunal spotted an obvious contradiction: if you&#8217;ve assessed the capital gains fully in Kavita&#8217;s hands, you can&#8217;t then say her husband is the real owner. Kavita had become the complete owner after the 2017 gift. She reported rental income from these properties in her returns. The sale agreement, TDS certificate, and sale proceeds were all in her name. She was the real and economic owner — full stop.</p>
+
+          <h3 class="text-gray-900 dark:text-slate-100">2 &nbsp;·&nbsp; The Clubbing Loophole Nobody Talks About</h3>
           <div class="callout">
             <p class="text-xs font-semibold text-cyan-600 dark:text-cyan-400 mb-2 uppercase tracking-wide">The Legal Russian Doll</p>
-            <p class="mb-1">Section 64(1)(iv) requires clubbing of <em>"income"</em> from a transferred asset.</p>
-            <p class="mb-1">Section 45 says capital gains are chargeable <em>"subject to"</em> exemptions like Section 54.</p>
-            <p class="mb-0">&#8756; If Section 54 exempts the gains → not chargeable under S.45 → not "income" → Section 64 has nothing to club.</p>
+            <p class="mb-1"><strong>Section 64(1)(iv)</strong> requires clubbing of <em>&#8220;income&#8221;</em> from a transferred asset.</p>
+            <p class="mb-1"><strong>Section 2(24)</strong> defines income as including capital gains that are <em>&#8220;chargeable&#8221;</em> under Section 45.</p>
+            <p class="mb-1"><strong>Section 45</strong> says capital gains are chargeable <em>&#8220;subject to&#8221;</em> exemptions like Section 54.</p>
+            <p class="mb-0">&#8756; If Section 54 exempts the gains &#8594; not chargeable under S.45 &#8594; not &#8220;income&#8221; under S.2(24) &#8594; Section 64 has nothing to club.</p>
           </div>
-          <h3 class="text-gray-900 dark:text-slate-100" style="margin-top:1rem">3 &nbsp;·&nbsp; The Fund Rotation Was Legitimate</h3>
+
+          <h3 class="text-gray-900 dark:text-slate-100">3 &nbsp;·&nbsp; The Fund Rotation Was Legitimate</h3>
+          <p>The Tribunal looked at the complete picture the AO ignored. Kavita had parked &#8377;3.33 crore with Altan Engineering while waiting for her lower TDS deduction application — which was granted on February 24, 2021. When her FDs matured on October 9, 2020, she received &#8377;2.03 crore, loaned &#8377;1.80 crore to Altan, got it back on March 12, 2021, and paid her husband on <strong class="text-gray-900 dark:text-slate-100">March 18, 2021</strong>.</p>
           <div class="callout callout-warning">
             <p class="text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1 uppercase tracking-wide">&#128336; The TOLA Extension</p>
-            <p class="mb-0">The Taxation and Other Laws (Relaxation and Amendment) Act, 2020 had extended the investment deadline to <strong>March 31, 2021</strong>. She paid on March 18 — well within time. The AO simply failed to consider this extension.</p>
+            <p class="mb-0">The Taxation and Other Laws (Relaxation and Amendment of Certain Provisions) Act, 2020 had extended the investment deadline to <strong>March 31, 2021</strong>. She paid on March 18 — well within time. The AO simply failed to consider this extension.</p>
           </div>
-          <h3 class="text-gray-900 dark:text-slate-100" style="margin-top:1rem">4 &nbsp;·&nbsp; No Crystal Ball in 2017</h3>
-          <p>The gift was executed in <strong>April 2017</strong>. The property was sold in <strong>January 2020</strong> — three years later. The "colourable device" allegation falls completely flat.</p>
+
+          <h3 class="text-gray-900 dark:text-slate-100">4 &nbsp;·&nbsp; No Crystal Ball in 2017</h3>
+          <p>The AO alleged the 2017 gift was a &#8220;colourable device.&#8221; But the gift was executed and registered in <strong>April 2017</strong>. The property was sold in <strong>January 2020</strong> — three years later. How could anyone in 2017 predict a sale three years hence? Unless Kavita had a crystal ball, this argument falls completely flat.</p>
+
           <div class="section-divider"></div>
-          <h3 class="text-gray-900 dark:text-slate-100">&#9997; Practical Lessons</h3>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#128218; What Case Law Says: Buying From Relatives Is Fine</h3>
+          <p>The Tribunal&#8217;s decision rests on solid precedent:</p>
           <ul>
-            <li><strong class="text-gray-800 dark:text-slate-200">Document everything:</strong> Proper gift deeds, separate bank accounts, stamp duty, TDS on every transaction.</li>
-            <li><strong class="text-gray-800 dark:text-slate-200">Timing matters:</strong> Don't gift and sell in the same financial year. Track deadline extensions like TOLA.</li>
-            <li><strong class="text-gray-800 dark:text-slate-200">Establish clear ownership:</strong> After receiving a gift, report all income from that asset in your returns immediately.</li>
+            <li><strong class="text-gray-800 dark:text-slate-200">ITO v. Kalawati Vijaykumar Agarwal</strong> — wife bought property from husband, claimed Section 54F. Pune Tribunal: money changing hands within a household isn&#8217;t circular if done at arm&#8217;s length through banking channels.</li>
+            <li><strong class="text-gray-800 dark:text-slate-200">ITO v. Rajesh Sharma</strong> — father purchasing from his son. Valid.</li>
+            <li><strong class="text-gray-800 dark:text-slate-200">Surjeet Singh v. Pr. CIT</strong> — husband buying from wife. Completely legitimate.</li>
           </ul>
+          <p>The common thread: Section 54 doesn&#8217;t care about the relationship between buyer and seller. What matters is whether the transaction is genuine, properly documented, done through banking channels, and legally compliant (stamp duty, registration, TDS). Check, check, check, and check.</p>
+
+          <div class="section-divider"></div>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#128203; The Clubbing Precedents: A Clear Pattern</h3>
+          <p>Multiple tribunal decisions have established that when Section 54/54F investment is made, clubbing provisions don&#8217;t apply:</p>
+          <ul>
+            <li><strong class="text-gray-800 dark:text-slate-200">Asstt. CIT v. Madan Lal Bassi:</strong> Minor son&#8217;s shares sold to buy a house — Section 54F benefits must be given; Section 64 clubbing doesn&#8217;t apply.</li>
+            <li><strong class="text-gray-800 dark:text-slate-200">Hemant Shah v. Asstt. CIT:</strong> AO tried to club children&#8217;s capital gains without considering their Section 54F investment — no chargeable capital gain exists to club.</li>
+            <li><strong class="text-gray-800 dark:text-slate-200">CIT v. Ajit Thomas:</strong> Husband gifts house to wife — deeming provisions of Section 27(1) can&#8217;t be extended to deny Section 54F exemption.</li>
+          </ul>
+          <p>The principle is consistent: gross receipts aren&#8217;t taxed — only <em>income</em> is. If Section 54 exempts it, there&#8217;s no income to club.</p>
+
+          <div class="section-divider"></div>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#9997; Practical Lessons for Property Investors</h3>
+
+          <h3 class="text-gray-900 dark:text-slate-100" style="margin-top:1rem">1 &nbsp;·&nbsp; Document Everything Religiously</h3>
+          <ul>
+            <li>Execute proper gift deeds with registration</li>
+            <li>Maintain separate bank accounts and keep all payment records through banking channels</li>
+            <li>Pay stamp duty and deduct TDS on every transaction</li>
+          </ul>
+
+          <h3 class="text-gray-900 dark:text-slate-100" style="margin-top:1rem">2 &nbsp;·&nbsp; Timing Matters</h3>
+          <ul>
+            <li>Don&#8217;t gift and sell in the same financial year</li>
+            <li>Maintain a reasonable gap between related transactions</li>
+            <li>Use CGAS if you can&#8217;t immediately reinvest — and track deadline extensions like TOLA</li>
+          </ul>
+
+          <h3 class="text-gray-900 dark:text-slate-100" style="margin-top:1rem">3 &nbsp;·&nbsp; Establish Clear Ownership</h3>
+          <ul>
+            <li>After receiving a gift, report all income from that asset in your returns</li>
+            <li>Transfer rental agreements and TDS certificates to your name</li>
+          </ul>
+
+          <h3 class="text-gray-900 dark:text-slate-100" style="margin-top:1rem">4 &nbsp;·&nbsp; Avoid Red Flags</h3>
+          <ul>
+            <li>Don&#8217;t create circular transactions on the same day without a documented business reason</li>
+            <li>Stay within legal timelines and use arm&#8217;s length pricing in related-party deals</li>
+          </ul>
+
+          <div class="section-divider"></div>
+
+          <h3 class="text-gray-900 dark:text-slate-100">&#127775; The Bigger Picture: Substance Over Form</h3>
+          <p>What makes this judgment truly significant is the Tribunal&#8217;s emphasis on <strong class="text-gray-900 dark:text-slate-100">substance over form</strong>. The tax authorities were hung up on the relationship between Kavita and Manoj. But the Tribunal looked past labels and asked: Was this transaction real? Did money actually change hands? Were legal formalities completed? Was there genuine intent? The answers were all yes.</p>
+          <p>As the Kerala High Court said in <em>CIT v. S.K. Naik</em>, whatever deductions are due to a person should be allowed, even if their income is clubbed with someone else. You can&#8217;t cherry-pick which provisions to apply.</p>
+
           <div class="verdict-box">
             <p class="text-xs font-bold text-cyan-600 dark:text-cyan-400 uppercase tracking-wider mb-2">&#9878; The Takeaway</p>
-            <p class="mb-2">Kavita's victory isn't about loopholes. Tax planning <em>within the framework of law</em> is not only legitimate — it's protected. What it requires is <strong>honesty, documentation, and compliance</strong>.</p>
-            <p class="mb-0 text-gray-500 dark:text-slate-400 text-xs italic">"The avoidance of taxes is the only intellectual pursuit that carries any reward." — John Maynard Keynes</p>
+            <p class="mb-2">Kavita&#8217;s victory isn&#8217;t about loopholes. It&#8217;s about understanding that tax planning <em>within the framework of law</em> is not only legitimate — it&#8217;s protected. The Income Tax Act doesn&#8217;t prohibit spouses from transacting with each other. It doesn&#8217;t punish you for receiving gifts from family. It doesn&#8217;t penalise you for using legal extensions like TOLA. What it requires is <strong class="text-gray-900 dark:text-slate-100">honesty, documentation, and compliance</strong>.</p>
+            <p class="mb-0 text-gray-500 dark:text-slate-400 text-xs italic">&#8220;The avoidance of taxes is the only intellectual pursuit that carries any reward.&#8221; — John Maynard Keynes</p>
           </div>
+
           <div class="callout callout-warning" style="margin-top:1.5rem">
             <p class="text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1 uppercase tracking-wide">Disclaimer</p>
-            <p class="mb-0 text-gray-500 dark:text-slate-400">This article is for informational purposes only. Consult a qualified tax professional for your specific situation.</p>
+            <p class="mb-0 text-gray-500 dark:text-slate-400">This article is for informational purposes only and should not be considered as tax advice. Consult a qualified tax professional for your specific situation.</p>
           </div>
         `
       }
     ];
 
-    /* ── Category badge CSS classes ── */
     const CATEGORY_BADGE = {
       'Taxation':   'cat-badge-cyan',
       'Business':   'cat-badge-amber',
@@ -464,7 +917,7 @@
       const total = ARTICLES.length;
       countEl.textContent = filtered.length === total
         ? `${total} article${total !== 1 ? 's' : ''}`
-        : `${filtered.length} of ${total}`;
+        : `${filtered.length} of ${total} articles`;
 
       if (filtered.length === 0) {
         container.innerHTML = '';
@@ -494,13 +947,13 @@
                 <span class="article-meta-dot">·</span>
                 <span class="${CATEGORY_BADGE[a.category] || ''} cat-badge">${a.category}</span>
                 <span class="article-meta-dot">·</span>
-                <span class="article-meta-item"><i class="ri-time-line"></i>${a.readTime} min</span>
+                <span class="article-meta-item"><i class="ri-time-line"></i>${a.readTime} min read</span>
               </div>
               <h2 class="text-[0.95rem] sm:text-base font-bold text-gray-900 dark:text-slate-100 mb-1.5 leading-snug tracking-tight">${a.title}</h2>
               <p class="text-xs text-gray-500 dark:text-slate-400 leading-relaxed mb-3 line-clamp-2">${a.summary}</p>
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <div class="flex flex-wrap gap-1">${a.tags.map(t => `<span class="article-tag">${t}</span>`).join('')}</div>
-                <span class="article-read-more">Read <i class="ri-arrow-right-line"></i></span>
+                <span class="article-read-more">Read more <i class="ri-arrow-right-line"></i></span>
               </div>
             </div>
           </div>
@@ -550,7 +1003,9 @@
     }
 
     function closeModal() {
-      document.getElementById('modal-backdrop').classList.replace('flex','hidden');
+      const backdrop = document.getElementById('modal-backdrop');
+      backdrop.classList.add('hidden');
+      backdrop.classList.remove('flex');
       document.body.style.overflow = '';
     }
 
@@ -561,15 +1016,15 @@
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
     function toggleTheme() {
-      document.documentElement.classList.toggle('dark');
-      const dark = document.documentElement.classList.contains('dark');
-      localStorage.setItem('theme', dark ? 'dark' : 'light');
-      document.getElementById('theme-icon').className = dark ? 'ri-sun-line text-xl' : 'ri-moon-line text-xl';
+      const html = document.documentElement;
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+      document.getElementById('theme-icon').className = html.classList.contains('dark') ? 'ri-sun-line text-xl' : 'ri-moon-line text-xl';
     }
 
     (function () {
-      const dark = document.documentElement.classList.contains('dark');
-      document.getElementById('theme-icon').className = dark ? 'ri-sun-line text-xl' : 'ri-moon-line text-xl';
+      document.getElementById('theme-icon').className =
+        document.documentElement.classList.contains('dark') ? 'ri-sun-line text-xl' : 'ri-moon-line text-xl';
     })();
 
     renderArticles();
