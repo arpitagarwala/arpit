@@ -57,116 +57,123 @@
   <link rel="stylesheet" href="global.css">
 </head>
 
-<body class="articles-page min-h-screen bg-slate-100 dark:bg-[#080c14] text-gray-900 dark:text-slate-100 transition-colors duration-300">
+<!-- body bg matches home page exactly -->
+<body class="articles-page min-h-screen bg-slate-100 dark:bg-[#080c14] text-gray-900 dark:text-slate-100 transition-colors duration-300 flex items-start justify-center py-12 px-4">
 
-  <!-- Back button -->
-  <div class="fixed top-4 left-4 z-50">
-    <a href="index.html" class="articles-back-btn">
-      <i class="ri-arrow-left-line text-base"></i>
-    </a>
-  </div>
-
-  <!-- Theme toggle -->
+  <!-- Theme toggle — same as home page, fixed top-right -->
   <div class="fixed top-4 right-4 z-50">
     <button onclick="toggleTheme()" class="w-11 h-11 flex items-center justify-center rounded-full bg-white dark:bg-slate-800 text-gray-600 dark:text-slate-300 border border-gray-200 dark:border-slate-700 shadow-xl hover:scale-110 transition-all duration-200">
       <i id="theme-icon" class="ri-moon-line text-xl"></i>
     </button>
   </div>
 
-  <div class="max-w-5xl mx-auto px-4 py-10 pt-20">
+  <!-- Main grid — same max-w-5xl as home page -->
+  <main class="w-full max-w-5xl">
 
-    <!-- ── Hero ── -->
-    <div class="articles-hero card mb-6 relative overflow-hidden">
-      <div class="articles-hero-glow pointer-events-none"></div>
-      <div class="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
-        <div>
-          <div class="flex items-center gap-2 mb-2.5">
-            <span class="articles-eyebrow-pill"><i class="ri-quill-pen-line mr-1"></i>Writing</span>
+    <!-- ═══════════════════════════════════════════
+         ROW 1: Page header card (spans full width)
+         Matches home page "EXPLORE" card style
+    ═══════════════════════════════════════════ -->
+    <div class="card p-5 mb-4">
+      <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+
+        <!-- Left: back + title -->
+        <div class="flex items-center gap-3 flex-1 min-w-0">
+          <a href="index.html"
+            class="flex-shrink-0 w-9 h-9 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-slate-700/60 text-gray-500 dark:text-slate-400 border border-gray-200 dark:border-slate-600/60 hover:border-cyan-400 dark:hover:border-cyan-500 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all duration-150">
+            <i class="ri-arrow-left-line text-sm"></i>
+          </a>
+          <div>
+            <p class="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 dark:text-slate-500 leading-none mb-1">Portfolio</p>
+            <h1 class="text-lg font-extrabold text-gray-900 dark:text-white leading-none tracking-tight flex items-center gap-2">
+              <i class="ri-article-line text-orange-500 dark:text-orange-400 text-base"></i>
+              Articles
+              <span class="text-xs font-semibold text-gray-400 dark:text-slate-500 bg-gray-100 dark:bg-slate-700/60 px-2 py-0.5 rounded-full">5</span>
+            </h1>
           </div>
-          <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight mb-2 leading-tight">Articles</h1>
-          <p class="text-sm text-gray-500 dark:text-slate-400 max-w-sm leading-relaxed">
-            In-depth analysis on Finance, Taxation, Business, and Technology — written to inform, not to overwhelm.
-          </p>
         </div>
-        <div class="flex sm:flex-col gap-3 sm:items-end">
-          <div class="articles-stat-pill">
-            <span class="articles-stat-num">5</span>
-            <span class="articles-stat-label">Articles</span>
-          </div>
-          <div class="articles-stat-pill">
-            <span class="articles-stat-num">91</span>
-            <span class="articles-stat-label">Min total</span>
-          </div>
+
+        <!-- Right: search -->
+        <div class="relative sm:w-64">
+          <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 text-sm pointer-events-none"></i>
+          <input
+            id="search-input"
+            type="text"
+            placeholder="Search articles…"
+            class="search-input w-full pl-8 pr-8 py-2 rounded-xl bg-gray-100 dark:bg-slate-700/60 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 border border-gray-200 dark:border-slate-600/60 text-xs transition-colors"
+            oninput="filterArticles()"
+          />
+          <button id="clear-search" onclick="clearSearch()"
+            class="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-300 transition-colors hidden">
+            <i class="ri-close-circle-fill text-sm"></i>
+          </button>
         </div>
+      </div>
+
+      <!-- Filter row — same label style as "EXPLORE" on home -->
+      <div class="flex flex-wrap items-center gap-1.5 mt-3.5 pt-3.5 border-t border-gray-100 dark:border-slate-700/50">
+        <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 dark:text-slate-500 mr-0.5">Filter:</span>
+        <button class="art-filter active" data-category="all"        onclick="setFilter(this,'all')">All</button>
+        <button class="art-filter"        data-category="Taxation"   onclick="setFilter(this,'Taxation')"><i class="ri-scales-3-line"></i>Taxation</button>
+        <button class="art-filter"        data-category="Business"   onclick="setFilter(this,'Business')"><i class="ri-building-line"></i>Business</button>
+        <button class="art-filter"        data-category="Technology" onclick="setFilter(this,'Technology')"><i class="ri-cpu-line"></i>Technology</button>
+        <span id="result-count" class="ml-auto text-[10px] font-semibold text-gray-400 dark:text-slate-500 tabular-nums"></span>
       </div>
     </div>
 
-    <!-- ── Filter & Search ── -->
-    <div class="card p-4 mb-5">
-      <div class="relative mb-3.5">
-        <i class="ri-search-line absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 text-sm pointer-events-none"></i>
-        <input
-          id="search-input"
-          type="text"
-          placeholder="Search articles by title, topic, or keyword…"
-          class="search-input w-full pl-9 pr-9 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 border border-gray-200 dark:border-slate-700 text-sm transition-colors"
-          oninput="filterArticles()"
-        />
-        <button id="clear-search" onclick="clearSearch()"
-          class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 hover:text-gray-700 dark:hover:text-slate-200 transition-colors hidden">
-          <i class="ri-close-circle-fill text-sm"></i>
-        </button>
-      </div>
-      <div class="flex flex-wrap items-center gap-1.5">
-        <span class="text-[10px] font-bold tracking-[0.18em] uppercase text-gray-400 dark:text-slate-500 mr-1">Filter:</span>
-        <button class="filter-pill active" data-category="all"        onclick="setFilter(this,'all')">All Articles</button>
-        <button class="filter-pill"        data-category="Taxation"   onclick="setFilter(this,'Taxation')"><i class="ri-scales-3-line mr-1"></i>Taxation</button>
-        <button class="filter-pill"        data-category="Business"   onclick="setFilter(this,'Business')"><i class="ri-building-line mr-1"></i>Business</button>
-        <button class="filter-pill"        data-category="Technology" onclick="setFilter(this,'Technology')"><i class="ri-cpu-line mr-1"></i>Technology</button>
-        <span id="result-count" class="ml-auto text-xs text-gray-400 dark:text-slate-500 font-medium whitespace-nowrap tabular-nums"></span>
-      </div>
-    </div>
-
-    <!-- ── Articles ── -->
-    <div id="articles-container" class="space-y-3"></div>
+    <!-- ═══════════════════════════════════════════
+         ROW 2: Articles grid
+         Same 2-col grid pattern as home nav cards
+    ═══════════════════════════════════════════ -->
+    <div id="articles-container" class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4"></div>
 
     <!-- Empty state -->
-    <div id="no-results" class="hidden flex-col items-center justify-center py-20 text-center">
-      <div class="w-16 h-16 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4 mx-auto">
-        <i class="ri-search-eye-line text-2xl text-gray-300 dark:text-slate-600"></i>
+    <div id="no-results" class="hidden flex-col items-center justify-center py-20 text-center card mb-4">
+      <div class="w-12 h-12 rounded-2xl bg-gray-100 dark:bg-slate-700/60 flex items-center justify-center mb-3 mx-auto">
+        <i class="ri-search-eye-line text-xl text-gray-300 dark:text-slate-600"></i>
       </div>
-      <h3 class="text-base font-bold text-gray-500 dark:text-slate-400 mb-1">No articles found</h3>
-      <p class="text-sm text-gray-400 dark:text-slate-500 mb-4">Try a different search term or clear your filters.</p>
-      <button onclick="clearSearch(); setFilter(document.querySelector('[data-category=all]'), 'all')"
-        class="text-xs font-semibold text-cyan-600 dark:text-cyan-400 hover:underline">Clear all filters</button>
+      <p class="text-sm font-semibold text-gray-500 dark:text-slate-400 mb-1">No articles found</p>
+      <p class="text-xs text-gray-400 dark:text-slate-500 mb-3">Try a different keyword or clear the filter.</p>
+      <button onclick="clearSearch(); setFilter(document.querySelector('[data-category=all]'),'all')"
+        class="text-xs font-semibold text-cyan-600 dark:text-cyan-400 hover:underline">Clear filters</button>
     </div>
 
-    <!-- Footer -->
-    <div class="mt-8 text-center py-3.5 px-6 rounded-2xl bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700/30 text-sm text-gray-400 dark:text-slate-500">
+    <!-- Footer — identical to home page footer -->
+    <div class="text-center py-3.5 px-6 rounded-2xl bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700/30 text-sm text-gray-400 dark:text-slate-500">
       &copy; 2026 Arpit Agarwala. Engineered with <span class="text-red-400">&#10084;&#65039;</span>
     </div>
-  </div>
 
-  <!-- ── Modal ── -->
+  </main>
+
+  <!-- ═══════════════════════════════════════════
+       MODAL — same style as home page cards
+  ═══════════════════════════════════════════ -->
   <div id="modal-backdrop"
-    class="fixed inset-0 bg-black/70 z-[100] hidden items-center justify-center p-4 overflow-y-auto modal-backdrop"
+    class="fixed inset-0 bg-black/70 dark:bg-black/80 z-[100] hidden items-center justify-center p-4 overflow-y-auto modal-backdrop"
     onclick="handleBackdropClick(event)">
+
     <div id="modal-box"
-      class="modal-content modal-scroll bg-white dark:bg-[#0d1320] rounded-2xl max-w-4xl w-full my-8 shadow-2xl border border-gray-200 dark:border-slate-700/50 max-h-[90vh] overflow-y-auto relative">
-      <div class="sticky top-0 bg-white dark:bg-[#0d1320] border-b border-gray-100 dark:border-slate-700/60 px-6 py-4 flex items-start justify-between z-10 gap-4">
+      class="modal-content modal-scroll bg-white dark:bg-gray-900 rounded-2xl max-w-4xl w-full my-8 shadow-2xl border border-gray-200 dark:border-slate-700/50 max-h-[90vh] overflow-y-auto relative">
+
+      <!-- Modal sticky header -->
+      <div class="sticky top-0 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-slate-700/60 px-6 py-4 flex items-start justify-between z-10 gap-4">
         <div class="flex-1 min-w-0">
           <div id="modal-meta" class="flex flex-wrap items-center gap-2 mb-1.5"></div>
           <h2 id="modal-title" class="text-lg sm:text-xl font-extrabold text-gray-900 dark:text-slate-100 leading-snug tracking-tight"></h2>
         </div>
         <button onclick="closeModal()"
-          class="flex-shrink-0 w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center text-gray-400 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-100 hover:bg-gray-200 dark:hover:bg-slate-700 transition-all mt-0.5">
+          class="flex-shrink-0 w-8 h-8 rounded-xl bg-gray-100 dark:bg-slate-800 flex items-center justify-center text-gray-400 dark:text-slate-500 hover:text-gray-700 dark:hover:text-slate-200 hover:bg-gray-200 dark:hover:bg-slate-700 transition-all">
           <i class="ri-close-line text-base"></i>
         </button>
       </div>
+
       <div id="modal-body" class="modal-body text-gray-700 dark:text-slate-300"></div>
     </div>
   </div>
 
+  <!-- ═══════════════════════════════════════════
+       DATA
+  ═══════════════════════════════════════════ -->
   <script>
     const ARTICLES = [
       {
@@ -174,8 +181,9 @@
         title: 'The Intelligence Trap: Can Humanity Safely Build a Mind Greater Than Its Own?',
         date: 'March 2026',
         category: 'Technology',
-        categoryColor: 'indigo',
         icon: 'ri-brain-line',
+        iconBg: 'bg-indigo-50 dark:bg-indigo-500/10',
+        iconColor: 'text-indigo-500 dark:text-indigo-400',
         iconGradient: 'from-indigo-500 to-violet-700',
         readTime: 16,
         summary: 'The researchers building the most powerful AI systems in history are also its loudest critics. From Geoffrey Hinton\'s resignation at Google to the 2023 extinction-risk statement signed by hundreds of AI scientists — a clear-eyed look at what the alignment problem actually is, what leading experts fear, and why the governance gap may be the most dangerous variable of all.',
@@ -308,8 +316,9 @@
         title: 'The Tata–Mistry Saga: When Corporate India Went to War With Itself',
         date: 'March 2026',
         category: 'Business',
-        categoryColor: 'amber',
         icon: 'ri-building-4-line',
+        iconBg: 'bg-slate-100 dark:bg-slate-500/10',
+        iconColor: 'text-slate-600 dark:text-slate-400',
         iconGradient: 'from-slate-600 to-slate-800',
         readTime: 22,
         summary: 'The boardroom coup that shook India\'s most iconic conglomerate — and rewrote the rulebook on minority shareholder rights. A five-decade family alliance unravelled in a single October afternoon, a legal battle that passed through three courts, and a Supreme Court verdict that every corporate lawyer now cites.',
@@ -456,8 +465,9 @@
       title: 'The Man Who Changed India\'s Tax Laws: How Dhirubhai Ambani Paid Zero Tax for 30 Years',
       date: 'March 2026',
       category: 'Business',
-      categoryColor: 'amber',
       icon: 'ri-vip-crown-line',
+      iconBg: 'bg-violet-50 dark:bg-violet-500/10',
+      iconColor: 'text-violet-500 dark:text-violet-400',
       iconGradient: 'from-violet-500 to-purple-700',
       readTime: 20,
       summary: 'From a petrol pump attendant in Yemen to the man who forced the Indian government to rewrite its tax code. How Dhirubhai Ambani built Reliance Industries while paying zero corporate tax for 30 years — legally — and why the government had no choice but to invent Minimum Alternate Tax.',
@@ -596,8 +606,9 @@
         title: 'The Mumbai Airport Takeover: How Adani Acquired India\'s Second-Busiest Airport Amid Controversy',
         date: 'March 2026',
         category: 'Business',
-        categoryColor: 'amber',
         icon: 'ri-flight-takeoff-line',
+        iconBg: 'bg-amber-50 dark:bg-amber-500/10',
+        iconColor: 'text-amber-500 dark:text-amber-400',
         iconGradient: 'from-amber-500 to-orange-600',
         readTime: 18,
         summary: 'A Rs 13,000 crore debt crisis, investigative raids, jilted foreign investors, and a last-minute switch to Adani. How India\'s second-busiest airport changed hands in one of the most contentious infrastructure acquisitions in Indian history — and the questions that still linger.',
@@ -758,8 +769,9 @@
         title: 'When Smart Tax Planning Meets Stubborn Tax Officers: The Kavita Damani Saga',
         date: 'March 2026',
         category: 'Taxation',
-        categoryColor: 'cyan',
         icon: 'ri-scales-3-line',
+        iconBg: 'bg-cyan-50 dark:bg-cyan-500/10',
+        iconColor: 'text-cyan-500 dark:text-cyan-400',
         iconGradient: 'from-cyan-500 to-teal-600',
         readTime: 15,
         summary: 'A Rs 4 crore battle that rewrote the rules on property sales between spouses. Kavita Damani sold a property for Rs 6 crore, claimed a Section 54 exemption — and the tax department called it a colourable device. Here\'s how she won at the Mumbai ITAT and what every property investor needs to know.',
@@ -888,10 +900,11 @@
       }
     ];
 
+    /* ── Category config ── */
     const CATEGORY_BADGE = {
-      'Taxation':   'cat-badge-cyan',
-      'Business':   'cat-badge-amber',
-      'Technology': 'cat-badge-indigo',
+      'Taxation':   { cls: 'cat-badge-cyan',   label: 'Taxation'   },
+      'Business':   { cls: 'cat-badge-amber',  label: 'Business'   },
+      'Technology': { cls: 'cat-badge-indigo', label: 'Technology' },
     };
 
     let activeCategory = 'all';
@@ -928,32 +941,49 @@
       noResults.classList.add('hidden');
       noResults.classList.remove('visible');
 
+      const badge = a => CATEGORY_BADGE[a.category] || { cls: '', label: a.category };
+
       container.innerHTML = filtered.map((a, i) => `
         <article
           onclick="openModal(${a.id})"
-          class="article-card card p-4 sm:p-5 cursor-pointer"
-          style="animation-delay:${i * 0.05}s"
+          class="art-card card p-5 cursor-pointer"
+          style="animation-delay:${i * 0.04}s"
           role="button" tabindex="0"
           onkeydown="if(event.key==='Enter'||event.key===' ')openModal(${a.id})"
-          aria-label="Read article: ${a.title}"
+          aria-label="Read: ${a.title}"
         >
-          <div class="flex items-start gap-4">
-            <div class="flex-shrink-0 w-11 h-11 bg-gradient-to-br ${a.iconGradient} rounded-xl flex items-center justify-center shadow-md">
-              <i class="${a.icon} text-lg text-white"></i>
+          <div class="flex items-start gap-3.5">
+
+            <!-- Icon — same style as home page nav icons -->
+            <div class="flex-shrink-0 nav-icon ${a.iconBg}">
+              <i class="${a.icon} ${a.iconColor}"></i>
             </div>
+
+            <!-- Content -->
             <div class="flex-1 min-w-0">
+              <!-- Meta -->
               <div class="flex flex-wrap items-center gap-1.5 mb-1.5">
-                <span class="article-meta-item"><i class="ri-calendar-line"></i>${a.date}</span>
-                <span class="article-meta-dot">·</span>
-                <span class="${CATEGORY_BADGE[a.category] || ''} cat-badge">${a.category}</span>
-                <span class="article-meta-dot">·</span>
-                <span class="article-meta-item"><i class="ri-time-line"></i>${a.readTime} min read</span>
+                <span class="${badge(a).cls} cat-badge">${badge(a).label}</span>
+                <span class="art-meta-dot">·</span>
+                <span class="art-meta"><i class="ri-time-line"></i>${a.readTime} min read</span>
+                <span class="art-meta-dot">·</span>
+                <span class="art-meta"><i class="ri-calendar-line"></i>${a.date}</span>
               </div>
-              <h2 class="text-[0.95rem] sm:text-base font-bold text-gray-900 dark:text-slate-100 mb-1.5 leading-snug tracking-tight">${a.title}</h2>
+
+              <!-- Title -->
+              <h2 class="text-sm sm:text-[0.9375rem] font-bold text-gray-900 dark:text-slate-100 leading-snug tracking-tight mb-1.5">${a.title}</h2>
+
+              <!-- Summary -->
               <p class="text-xs text-gray-500 dark:text-slate-400 leading-relaxed mb-3 line-clamp-2">${a.summary}</p>
+
+              <!-- Tags + CTA row -->
               <div class="flex flex-wrap items-center justify-between gap-2">
-                <div class="flex flex-wrap gap-1">${a.tags.map(t => `<span class="article-tag">${t}</span>`).join('')}</div>
-                <span class="article-read-more">Read more <i class="ri-arrow-right-line"></i></span>
+                <div class="flex flex-wrap gap-1">
+                  ${a.tags.map(t => `<span class="art-tag">${t}</span>`).join('')}
+                </div>
+                <span class="art-cta nav-arrow opacity-100 text-cyan-500 dark:text-cyan-400 flex items-center gap-1 text-xs font-semibold flex-shrink-0">
+                  Read <i class="ri-arrow-right-line text-xs"></i>
+                </span>
               </div>
             </div>
           </div>
@@ -976,7 +1006,7 @@
 
     function setFilter(btn, category) {
       activeCategory = category;
-      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.art-filter').forEach(p => p.classList.remove('active'));
       btn.classList.add('active');
       renderArticles();
     }
@@ -984,13 +1014,14 @@
     function openModal(id) {
       const article = ARTICLES.find(a => a.id === id);
       if (!article) return;
+      const badge = CATEGORY_BADGE[article.category] || { cls: '', label: article.category };
       document.getElementById('modal-title').textContent = article.title;
       document.getElementById('modal-meta').innerHTML = `
-        <span class="article-meta-item"><i class="ri-calendar-line"></i>${article.date}</span>
-        <span class="article-meta-dot">·</span>
-        <span class="${CATEGORY_BADGE[article.category] || ''} cat-badge">${article.category}</span>
-        <span class="article-meta-dot">·</span>
-        <span class="article-meta-item"><i class="ri-time-line"></i>${article.readTime} min read</span>
+        <span class="${badge.cls} cat-badge">${badge.label}</span>
+        <span class="art-meta-dot">·</span>
+        <span class="art-meta"><i class="ri-time-line"></i>${article.readTime} min read</span>
+        <span class="art-meta-dot">·</span>
+        <span class="art-meta"><i class="ri-calendar-line"></i>${article.date}</span>
       `;
       document.getElementById('modal-body').innerHTML = article.content;
       const backdrop = document.getElementById('modal-backdrop');
@@ -1003,9 +1034,7 @@
     }
 
     function closeModal() {
-      const backdrop = document.getElementById('modal-backdrop');
-      backdrop.classList.add('hidden');
-      backdrop.classList.remove('flex');
+      document.getElementById('modal-backdrop').classList.replace('flex','hidden');
       document.body.style.overflow = '';
     }
 
@@ -1016,19 +1045,18 @@
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
     function toggleTheme() {
-      const html = document.documentElement;
-      html.classList.toggle('dark');
-      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
-      document.getElementById('theme-icon').className = html.classList.contains('dark') ? 'ri-sun-line text-xl' : 'ri-moon-line text-xl';
+      document.documentElement.classList.toggle('dark');
+      const dark = document.documentElement.classList.contains('dark');
+      localStorage.setItem('theme', dark ? 'dark' : 'light');
+      document.getElementById('theme-icon').className = dark ? 'ri-sun-line text-xl' : 'ri-moon-line text-xl';
     }
 
     (function () {
-      document.getElementById('theme-icon').className =
-        document.documentElement.classList.contains('dark') ? 'ri-sun-line text-xl' : 'ri-moon-line text-xl';
+      const dark = document.documentElement.classList.contains('dark');
+      document.getElementById('theme-icon').className = dark ? 'ri-sun-line text-xl' : 'ri-moon-line text-xl';
     })();
 
     renderArticles();
   </script>
-
 </body>
 </html>
