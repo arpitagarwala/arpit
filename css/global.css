@@ -1630,3 +1630,319 @@ html.dark .articles-page .filter-pill.active {
 .article-card:hover {
   transform: translateY(-2px);
 }
+
+/* ═══════════════════════════════════════════════════════════
+   MODAL BODY — ENHANCED READABILITY
+   These rules override the base modal-body styles from
+   global.css to improve hierarchy, spacing, and scannability.
+═══════════════════════════════════════════════════════════ */
+
+/* ── Wrapper padding & base font ── */
+.modal-body {
+  font-size: 0.9375rem !important;  /* 15px — readable without being large */
+  line-height: 1.85 !important;
+  padding: 2rem 2.25rem 3rem !important;
+  color: #374151;
+}
+
+.dark .modal-body {
+  color: #cbd5e1;
+}
+
+@media (max-width: 640px) {
+  .modal-body {
+    font-size: 0.9rem !important;
+    padding: 1.25rem 1.25rem 2.5rem !important;
+  }
+}
+
+/* ── Paragraph spacing — breathing room between blocks ── */
+.modal-body p {
+  font-size: 0.9375rem !important;
+  line-height: 1.85 !important;
+  margin-top: 0 !important;
+  margin-bottom: 1.25rem !important;   /* tighter than before — 1.25rem vs 1.75rem */
+  color: #374151;
+}
+
+.dark .modal-body p {
+  color: #cbd5e1;
+}
+
+/* ── H3 section headers — large, clear, well-spaced ── */
+.modal-body h3 {
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+  letter-spacing: -0.012em !important;
+  color: #0f172a !important;
+  margin-top: 2.25rem !important;
+  margin-bottom: 0.875rem !important;
+  padding-bottom: 0.5rem !important;
+  border-bottom: 2px solid rgba(8, 145, 178, 0.18) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+.dark .modal-body h3 {
+  color: #f1f5f9 !important;
+  border-bottom-color: rgba(34, 211, 238, 0.18) !important;
+}
+
+/* Sub-headings (those with inline style= like "1 · The Depreciation Play") */
+.modal-body h3[style] {
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+  color: #0891b2 !important;
+  margin-top: 1.75rem !important;
+  margin-bottom: 0.5rem !important;
+  padding-bottom: 0 !important;
+  border-bottom: none !important;
+  letter-spacing: -0.005em !important;
+  display: block !important;
+}
+
+.dark .modal-body h3[style] {
+  color: #22d3ee !important;
+}
+
+/* First child — no extra top margin */
+.modal-body > *:first-child {
+  margin-top: 0 !important;
+}
+
+/* ── Section divider — gradient rule ── */
+.modal-body .section-divider {
+  height: 1px !important;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(8, 145, 178, 0.3) 20%,
+    rgba(8, 145, 178, 0.3) 80%,
+    transparent
+  ) !important;
+  margin: 2rem 0 !important;
+  border: none !important;
+}
+
+.dark .modal-body .section-divider {
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(34, 211, 238, 0.25) 20%,
+    rgba(34, 211, 238, 0.25) 80%,
+    transparent
+  ) !important;
+}
+
+/* ── Callout boxes ── */
+.modal-body .callout {
+  background: rgba(8, 145, 178, 0.05) !important;
+  border-left: 3px solid #0891b2 !important;
+  border-radius: 0 0.6rem 0.6rem 0 !important;
+  padding: 1rem 1.25rem !important;
+  margin: 1.5rem 0 !important;   /* was 2rem — tighter to feel part of surrounding text */
+}
+
+.dark .modal-body .callout {
+  background: rgba(34, 211, 238, 0.05) !important;
+  border-left-color: #22d3ee !important;
+}
+
+.modal-body .callout-warning {
+  background: rgba(217, 119, 6, 0.06) !important;
+  border-left-color: #d97706 !important;
+}
+
+.dark .modal-body .callout-warning {
+  background: rgba(251, 191, 36, 0.06) !important;
+  border-left-color: #fbbf24 !important;
+}
+
+.modal-body .callout-danger {
+  background: rgba(220, 38, 38, 0.05) !important;
+  border-left-color: #dc2626 !important;
+}
+
+.dark .modal-body .callout-danger {
+  background: rgba(239, 68, 68, 0.06) !important;
+  border-left-color: #ef4444 !important;
+}
+
+/* Text inside callouts — slightly smaller, relaxed spacing */
+.modal-body .callout p,
+.modal-body .callout div {
+  font-size: 0.875rem !important;
+  line-height: 1.75 !important;
+  margin-bottom: 0.4rem !important;
+  color: #374151;
+}
+
+.dark .modal-body .callout p,
+.dark .modal-body .callout div {
+  color: #cbd5e1;
+}
+
+.modal-body .callout p:last-child,
+.modal-body .callout div:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* ── Verdict / summary box ── */
+.modal-body .verdict-box {
+  background: rgba(8, 145, 178, 0.04) !important;
+  border: 1px solid rgba(8, 145, 178, 0.2) !important;
+  border-radius: 0.85rem !important;
+  padding: 1.35rem 1.5rem !important;
+  margin: 1.75rem 0 !important;
+}
+
+.dark .modal-body .verdict-box {
+  background: rgba(34, 211, 238, 0.04) !important;
+  border-color: rgba(34, 211, 238, 0.18) !important;
+}
+
+.modal-body .verdict-box p {
+  font-size: 0.9rem !important;
+  line-height: 1.8 !important;
+  margin-bottom: 0.6rem !important;
+  color: #374151;
+}
+
+.dark .modal-body .verdict-box p {
+  color: #cbd5e1;
+}
+
+.modal-body .verdict-box p:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* ── Timeline ── */
+.modal-body .timeline-item {
+  display: flex !important;
+  gap: 0.875rem !important;
+  margin-bottom: 1rem !important;    /* was 1.35rem */
+  font-size: 0.9rem !important;
+  line-height: 1.75 !important;
+  color: #374151;
+}
+
+.dark .modal-body .timeline-item {
+  color: #cbd5e1;
+}
+
+.modal-body .timeline-dot {
+  flex-shrink: 0 !important;
+  width: 0.6rem !important;
+  height: 0.6rem !important;
+  border-radius: 50% !important;
+  background: #0891b2 !important;
+  margin-top: 0.5rem !important;
+  box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.12) !important;
+}
+
+.dark .modal-body .timeline-dot {
+  background: #22d3ee !important;
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1) !important;
+}
+
+/* ── Two-column comparison boxes ── */
+.modal-body .two-col {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 0.875rem !important;
+  margin: 1.5rem 0 !important;
+}
+
+@media (max-width: 560px) {
+  .modal-body .two-col {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+.modal-body .col-box {
+  border-radius: 0.6rem !important;
+  padding: 1rem 1.125rem !important;
+}
+
+.modal-body .col-box p {
+  font-size: 0.875rem !important;
+  line-height: 1.7 !important;
+  margin-bottom: 0.4rem !important;
+}
+
+.modal-body .col-box p:last-child {
+  margin-bottom: 0 !important;
+}
+
+.modal-body .col-box-green {
+  background: rgba(22, 163, 74, 0.045) !important;
+  border: 1px solid rgba(22, 163, 74, 0.18) !important;
+}
+
+.dark .modal-body .col-box-green {
+  background: rgba(34, 197, 94, 0.06) !important;
+  border-color: rgba(34, 197, 94, 0.18) !important;
+}
+
+.modal-body .col-box-red {
+  background: rgba(220, 38, 38, 0.045) !important;
+  border: 1px solid rgba(220, 38, 38, 0.18) !important;
+}
+
+.dark .modal-body .col-box-red {
+  background: rgba(239, 68, 68, 0.06) !important;
+  border-color: rgba(239, 68, 68, 0.18) !important;
+}
+
+/* ── Lists — clean indented bullets ── */
+.modal-body ul {
+  margin-bottom: 1.25rem !important;
+  padding-left: 0 !important;
+  list-style: none !important;
+}
+
+.modal-body ul li {
+  position: relative !important;
+  padding-left: 1.5rem !important;
+  margin-bottom: 0.65rem !important;
+  line-height: 1.75 !important;
+  font-size: 0.9rem !important;
+  color: #374151;
+}
+
+.dark .modal-body ul li {
+  color: #cbd5e1;
+}
+
+/* Triangle bullet — more distinct than a dash */
+.modal-body ul li::before {
+  content: '▸' !important;
+  position: absolute !important;
+  left: 0 !important;
+  font-size: 0.7rem !important;
+  top: 0.32rem !important;
+  color: #0891b2 !important;
+}
+
+.dark .modal-body ul li::before {
+  color: #22d3ee !important;
+}
+
+/* ── Scrollbar — thin, themed ── */
+.modal-scroll::-webkit-scrollbar        { width: 5px; }
+.modal-scroll::-webkit-scrollbar-track  { background: transparent; }
+.modal-scroll::-webkit-scrollbar-thumb  {
+  background: rgba(8, 145, 178, 0.25);
+  border-radius: 99px;
+}
+.modal-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(8, 145, 178, 0.5);
+}
+.dark .modal-scroll::-webkit-scrollbar-thumb {
+  background: rgba(34, 211, 238, 0.2);
+}
+.dark .modal-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(34, 211, 238, 0.4);
+}
