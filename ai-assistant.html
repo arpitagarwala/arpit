@@ -83,38 +83,39 @@
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 
-<body class="h-screen flex items-center justify-center p-3 relative overflow-hidden">
-
+<body class="h-screen w-full flex flex-col sm:flex-row items-center justify-center sm:p-4 md:p-6 overflow-hidden relative">
   <div class="bg-mesh"></div>
-
-  <!-- Back Button -->
-  <div class="fixed top-3 left-3 z-50">
-    <a href="index.html" class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-800/80 backdrop-blur border border-slate-700 text-slate-300 hover:border-indigo-400 hover:text-indigo-400 transition-all duration-150 shadow-lg">
-      <i class="ri-arrow-left-line text-base"></i>
-    </a>
+  <!-- Dynamic Background Matrix Effect -->
+  <div class="fixed inset-0 z-0 pointer-events-none opacity-50 bg-[#0a0e1a] flex flex-wrap gap-1 content-start overflow-hidden">
+    <div class="w-full h-full absolute inset-0 bg-gradient-to-t from-[#0a0e1a] via-transparent to-[#0a0e1a] z-10"></div>
+    <div id="binary-rain" class="w-full h-full text-[10px] sm:text-xs text-indigo-500/20 font-mono tracking-widest absolute inset-0 z-0 animate-pulse"></div>
   </div>
 
-  <!-- Chat Container -->
-  <div id="app" class="z-10 w-full max-w-3xl h-[92vh] chat-bg rounded-3xl flex flex-col shadow-2xl overflow-hidden">
-
+  <!-- Chat Widget Container -->
+  <div id="app" class="z-10 w-full h-full sm:h-[90vh] sm:max-w-4xl bg-slate-900/80 backdrop-blur-xl border-0 sm:border border-indigo-400/20 sm:rounded-[2rem] shadow-2xl flex flex-col overflow-hidden relative">
+    
     <!-- Header -->
-    <header class="px-5 py-4 border-b border-white/8 flex items-center gap-3.5 bg-white/[0.02] shrink-0">
-      <div class="w-11 h-11 rounded-full bg-gradient-to-tr from-indigo-500 to-cyan-400 flex items-center justify-center avatar-glow shrink-0">
-        <i class="ri-robot-2-fill text-xl text-white"></i>
+    <header class="px-4 sm:px-6 py-4 sm:py-5 border-b border-indigo-500/10 flex items-center justify-between bg-slate-900/90 shadow-sm z-20 shrink-0">
+      <div class="flex items-center gap-3 sm:gap-4">
+        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-indigo-600 flex items-center justify-center shadow-[0_0_20px_rgba(79,70,229,0.4)] border border-indigo-400/30">
+          <i class="ri-robot-2-fill text-xl sm:text-2xl text-white"></i>
+        </div>
+        <div>
+          <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white leading-tight">Arpit's AI Avatar</h1>
+          <p class="text-[10px] sm:text-[12px] text-indigo-300/80 font-mono tracking-wide">RAG-Powered Technical Assistant</p>
+        </div>
       </div>
-      <div class="flex-1 min-w-0">
-        <h1 class="text-base font-extrabold tracking-tight text-white leading-tight">Arpit's AI</h1>
-        <p class="text-[10px] text-indigo-300 font-semibold tracking-wider uppercase flex items-center gap-1.5">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span id="status-text">Online</span>
-        </p>
+      
+      <div class="flex items-center gap-1 sm:gap-2">
+        <a href="index.html" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition">
+          <i class="ri-home-line text-lg"></i>
+        </a>
+        <button onclick="clearChat()" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-xl text-slate-400 hover:text-red-400 hover:bg-red-400/10 transition">
+          <i class="ri-delete-bin-line text-lg"></i>
+        </button>
       </div>
-      <button onclick="clearChat()" title="Clear chat" class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 hover:text-white hover:bg-white/5 transition">
-        <i class="ri-delete-bin-line text-base"></i>
-      </button>
     </header>
 
-    <!-- Messages -->
     <main id="chat-box" class="flex-1 px-4 py-5 overflow-y-auto flex flex-col gap-4">
       <!-- Welcome message -->
       <div class="flex items-end gap-2.5 msg-in">
