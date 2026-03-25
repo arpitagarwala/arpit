@@ -43,13 +43,13 @@
     body { font-family: 'Inter', sans-serif; }
 
     .glass {
-      background: rgba(15, 23, 42, .72);
+      background: rgba(255,255,255,.78);
       backdrop-filter: blur(22px);
-      border: 1px solid rgba(255,255,255,.08);
+      border: 1px solid rgba(0,0,0,.08);
     }
     .dark .glass {
-      background: rgba(255,255,255,.78);
-      border: 1px solid rgba(0,0,0,.08);
+      background: rgba(15, 23, 42, .72);
+      border: 1px solid rgba(255,255,255,.08);
     }
 
     @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
@@ -122,17 +122,17 @@
       </h1>
 
       <!-- Dynamic page label -->
-      <p id="page-label" class="text-cyan-400 dark:text-cyan-600 font-bold text-xs uppercase tracking-widest mb-5 fade-up" style="animation-delay:.12s">
+      <p id="page-label" class="text-cyan-600 dark:text-cyan-400 font-bold text-xs uppercase tracking-widest mb-5 fade-up" style="animation-delay:.12s">
         — Page Under Construction —
       </p>
 
-      <p class="text-slate-400 dark:text-slate-500 text-sm leading-relaxed max-w-xs mx-auto fade-up" style="animation-delay:.16s">
+      <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed max-w-xs mx-auto fade-up" style="animation-delay:.16s">
         This section is being carefully crafted. Check back soon — it'll be worth the wait!
       </p>
 
       <!-- Progress bar -->
       <div class="mt-8 mb-1 fade-up" style="animation-delay:.22s">
-        <div class="flex justify-between text-xs text-slate-400 dark:text-slate-500 mb-2">
+        <div class="flex justify-between text-xs text-slate-500 dark:text-slate-400 mb-2">
           <span>Progress</span>
           <span>Almost there…</span>
         </div>

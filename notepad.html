@@ -43,9 +43,19 @@
 
   <script>
     (function(){
-      const t=localStorage.getItem('theme');
-      const d=window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if(t==='dark'||(!t&&d)) document.documentElement.classList.add('dark');
+      var param = new URLSearchParams(window.location.search).get('theme');
+      var stored = localStorage.getItem('theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var theme;
+      if (param === 'dark' || param === 'light') {
+        theme = param;
+        localStorage.setItem('theme', theme);
+      } else if (stored === 'dark' || stored === 'light') {
+        theme = stored;
+      } else {
+        theme = prefersDark ? 'dark' : 'light';
+      }
+      if (theme === 'dark') document.documentElement.classList.add('dark');
       else document.documentElement.classList.remove('dark');
     })();
   </script>
@@ -167,19 +177,19 @@
   </style>
 </head>
 
-<body class="theme-cyan bg-slate-900 dark:bg-gray-50 text-slate-100 dark:text-slate-900 min-h-screen transition-colors duration-300">
+<body class="theme-cyan bg-gray-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-300">
 
   <!-- TOAST -->
   <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 opacity-0 translate-y-4 pointer-events-none px-4">
-    <div id="toast-msg" class="px-4 py-2.5 rounded-xl text-sm font-semibold bg-slate-800 dark:bg-white text-slate-100 dark:text-slate-900 border border-slate-700 dark:border-slate-200 shadow-xl max-w-[90vw] text-center"></div>
+    <div id="toast-msg" class="px-4 py-2.5 rounded-xl text-sm font-semibold bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-700 shadow-xl max-w-[90vw] text-center"></div>
   </div>
 
   <!-- CONFIRM MODAL -->
   <div id="confirm-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/60 dark:bg-black/20 px-4">
-    <div class="bg-slate-800 dark:bg-white rounded-3xl shadow-2xl p-6 w-full max-w-xs border border-slate-700 dark:border-slate-200">
-      <p id="confirm-msg" class="text-slate-200 dark:text-slate-800 font-semibold text-center mb-5 text-sm"></p>
+    <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl p-6 w-full max-w-xs border border-slate-200 dark:border-slate-700">
+      <p id="confirm-msg" class="text-slate-800 dark:text-slate-200 font-semibold text-center mb-5 text-sm"></p>
       <div class="flex gap-2.5">
-        <button onclick="confirmResolve(false)" class="flex-1 py-2.5 rounded-xl border border-slate-600 dark:border-slate-300 text-slate-300 dark:text-slate-600 font-semibold text-sm hover:bg-slate-700 dark:hover:bg-slate-100 transition-colors active:scale-95">Cancel</button>
+        <button onclick="confirmResolve(false)" class="flex-1 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 font-semibold text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors active:scale-95">Cancel</button>
         <button onclick="confirmResolve(true)"  class="flex-1 py-2.5 rounded-xl bg-red-500 text-white font-bold text-sm hover:bg-red-600 transition-colors active:scale-95">Delete</button>
       </div>
     </div>
@@ -188,13 +198,13 @@
   <!-- BACK + THEME -->
   <div class="fixed top-4 left-4 z-50">
     <a href="projects.html"
-       class="w-11 h-11 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-700 dark:border-slate-200 text-slate-300 dark:text-slate-700 hover:border-cyan-400 hover:text-cyan-400 shadow-lg transition-all active:scale-95">
+       class="w-11 h-11 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-cyan-400 hover:text-cyan-400 shadow-lg transition-all active:scale-95">
       <i class="ri-arrow-left-line text-lg"></i>
     </a>
   </div>
   <div class="fixed top-4 right-4 z-50">
     <button onclick="toggleTheme()"
-            class="w-11 h-11 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-700 dark:border-slate-200 text-slate-300 dark:text-slate-700 hover:border-cyan-400 hover:text-cyan-400 shadow-lg transition-all active:scale-95">
+            class="w-11 h-11 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-cyan-400 hover:text-cyan-400 shadow-lg transition-all active:scale-95">
       <i id="theme-icon" class="text-lg"></i>
     </button>
   </div>
@@ -208,7 +218,7 @@
         <i class="ri-sticky-note-2-fill text-3xl text-white"></i>
       </div>
       <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight">Notes</h1>
-      <p class="mt-2 text-slate-400 dark:text-slate-500 text-sm">
+      <p class="mt-2 text-slate-500 dark:text-slate-400 text-sm">
         <span id="note-count">0</span> notes &bull; Last: <span id="last-edited">Never</span>
       </p>
     </div>
@@ -266,11 +276,11 @@
       <div class="relative">
         <i class="ri-search-line absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
         <input type="text" id="search-input" placeholder="Search notes…" oninput="renderNotes()"
-               class="w-full pl-11 pr-4 py-3 rounded-xl bg-slate-800 dark:bg-white border border-slate-700 dark:border-slate-200 text-slate-100 dark:text-slate-900 placeholder-slate-500 dark:placeholder-slate-400 focus:ring-2 focus:ring-cyan-500 outline-none text-sm transition-all">
+               class="w-full pl-11 pr-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:ring-2 focus:ring-cyan-500 outline-none text-sm transition-all">
       </div>
       <div class="flex gap-2.5">
         <select id="color-filter" onchange="renderNotes()"
-                class="flex-1 px-3.5 py-3 rounded-xl bg-slate-800 dark:bg-white border border-slate-700 dark:border-slate-200 text-slate-200 dark:text-slate-800 focus:ring-2 focus:ring-cyan-500 outline-none text-sm transition-all cursor-pointer">
+                class="flex-1 px-3.5 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-cyan-500 outline-none text-sm transition-all cursor-pointer">
           <option value="all">🎨 All</option>
           <option value="cyan">🩵 Cyan</option>
           <option value="emerald">💚 Emerald</option>
@@ -281,13 +291,13 @@
           <option value="pink">🩷 Pink</option>
           <option value="slate">🩶 Slate</option>
         </select>
-        <div class="flex bg-slate-800 dark:bg-white rounded-xl border border-slate-700 dark:border-slate-200 p-1 gap-1">
+        <div class="flex bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-1 gap-1">
           <button onclick="setSort('newest')" id="sort-newest" class="sort-btn active text-xs font-bold px-3 py-1.5 rounded-lg">New</button>
           <button onclick="setSort('oldest')" id="sort-oldest" class="sort-btn text-xs font-bold px-3 py-1.5 rounded-lg">Old</button>
           <button onclick="setSort('az')"     id="sort-az"     class="sort-btn text-xs font-bold px-3 py-1.5 rounded-lg">A–Z</button>
         </div>
         <button onclick="clearAllNotes()"
-                class="flex items-center gap-1.5 px-4 py-3 rounded-xl bg-slate-800 dark:bg-white border border-slate-700 dark:border-red-200 text-red-400 dark:text-red-500 hover:border-red-500 text-sm font-semibold transition-all active:scale-95">
+                class="flex items-center gap-1.5 px-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-red-200 dark:border-slate-700 text-red-500 dark:text-red-400 hover:border-red-500 text-sm font-semibold transition-all active:scale-95">
           <i class="ri-delete-bin-line"></i>
           <span class="hidden sm:inline">Clear</span>
         </button>
@@ -298,13 +308,13 @@
     <div class="fade-up d4">
       <div id="notes-container" class="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-0"></div>
       <div id="empty-state" class="hidden text-center py-16">
-        <i class="ri-sticky-note-line text-5xl text-slate-600 dark:text-slate-300 block mb-3"></i>
-        <p class="text-slate-500 dark:text-slate-400 font-medium">No notes found</p>
-        <p class="text-slate-600 dark:text-slate-300 text-sm mt-1">Create your first note above</p>
+        <i class="ri-sticky-note-line text-5xl text-slate-300 dark:text-slate-600 block mb-3"></i>
+        <p class="text-slate-400 dark:text-slate-500 font-medium">No notes found</p>
+        <p class="text-slate-300 dark:text-slate-600 text-sm mt-1">Create your first note above</p>
       </div>
     </div>
 
-    <div class="text-center text-xs text-slate-500 dark:text-slate-400 py-4">
+    <div class="text-center text-xs text-slate-400 dark:text-slate-500 py-4">
       © 2026 Arpit Agarwala
     </div>
   </div>

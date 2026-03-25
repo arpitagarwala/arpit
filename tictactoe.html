@@ -76,33 +76,33 @@
       cursor: pointer;
       transition: background-color 0.15s ease, transform 0.1s ease, border-color 0.15s ease;
       border-radius: 0.875rem;
-      border: 1.5px solid rgba(255,255,255,0.07);
-      background: rgba(17,24,39,0.8);
+      border: 1.5px solid #e5e7eb;
+      background: #f8fafc;
       display: flex;
       align-items: center;
       justify-content: center;
       aspect-ratio: 1;
     }
-    .dark .cell { background: #f8fafc; border-color: #e5e7eb; }
-    .cell:hover:not(.taken) { background: rgba(34,211,238,0.08); border-color: rgba(34,211,238,0.3); }
-    .dark .cell:hover:not(.taken) { background: rgba(34,211,238,0.05); border-color: rgba(34,211,238,0.25); }
+    .dark .cell { background: rgba(17,24,39,0.8); border-color: rgba(255,255,255,0.07); }
+    .cell:hover:not(.taken) { background: rgba(34,211,238,0.05); border-color: rgba(34,211,238,0.25); }
+    .dark .cell:hover:not(.taken) { background: rgba(34,211,238,0.08); border-color: rgba(34,211,238,0.3); }
     .cell:active:not(.taken) { transform: scale(0.93); }
     .cell.win-cell {
-      background: rgba(34,211,238,0.12) !important;
+      background: rgba(34,211,238,0.07) !important;
       border-color: rgba(34,211,238,0.5) !important;
       box-shadow: 0 0 18px rgba(34,211,238,0.15);
     }
-    .dark .cell.win-cell { background: rgba(34,211,238,0.07) !important; }
+    .dark .cell.win-cell { background: rgba(34,211,238,0.12) !important; }
 
     /* Mode toggle pills */
     .mode-pill {
       transition: all 0.15s ease;
     }
     .mode-pill.active {
-      background: #22d3ee; color: #0f172a; border-color: #22d3ee;
+      background: #0891b2; color: #fff; border-color: #0891b2;
     }
     .dark .mode-pill.active {
-      background: #0891b2; color: #fff; border-color: #0891b2;
+      background: #22d3ee; color: #0f172a; border-color: #22d3ee;
     }
 
     /* Score pop */
@@ -137,18 +137,18 @@
   </style>
 </head>
 
-<body class="min-h-screen bg-[#080c14] dark:bg-slate-100 text-slate-100 dark:text-gray-900 transition-colors duration-300">
+<body class="min-h-screen bg-[#080c14] dark:bg-slate-100 text-gray-900 dark:text-slate-100 transition-colors duration-300">
 
   <!-- Back -->
   <div class="fixed top-3 left-3 z-50">
-    <a href="games.html" class="bg-slate-800 dark:bg-white text-slate-300 dark:text-gray-600 p-1.5 rounded-full shadow-md inline-flex border border-slate-700 dark:border-gray-200 hover:border-cyan-400 transition-all duration-150">
+    <a href="games.html" class="bg-white dark:bg-slate-800 text-slate-300 dark:text-gray-600 p-1.5 rounded-full shadow-md inline-flex border border-slate-700 dark:border-gray-200 hover:border-cyan-400 transition-all duration-150">
       <i class="ri-arrow-left-line text-lg"></i>
     </a>
   </div>
 
   <!-- Theme -->
   <div class="fixed top-3 right-3 z-50">
-    <button onclick="toggleTheme()" class="bg-slate-800 dark:bg-white text-slate-300 dark:text-gray-600 p-1.5 rounded-full shadow-md border border-slate-700 dark:border-gray-200 hover:border-cyan-400 transition-all duration-150">
+    <button onclick="toggleTheme()" class="bg-white dark:bg-slate-800 text-slate-300 dark:text-gray-600 p-1.5 rounded-full shadow-md border border-slate-700 dark:border-gray-200 hover:border-cyan-400 transition-all duration-150">
       <i id="theme-icon" class="ri-sun-line text-lg"></i>
     </button>
   </div>
@@ -211,7 +211,7 @@
     <div class="w-full grid grid-cols-3 gap-2">
       <div class="bg-slate-900/50 dark:bg-white rounded-xl border border-slate-700/50 dark:border-gray-200 p-3 text-center shadow-sm">
         <p id="lbl-x" class="text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-gray-400 mb-1">Player X</p>
-        <p id="sc-x" class="text-2xl font-black text-cyan-400 dark:text-cyan-600">0</p>
+        <p id="sc-x" class="text-2xl font-black text-cyan-600 dark:text-cyan-400">0</p>
       </div>
       <div class="bg-slate-900/50 dark:bg-white rounded-xl border border-slate-700/50 dark:border-gray-200 p-3 text-center shadow-sm">
         <p class="text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-gray-400 mb-1">Draws</p>
@@ -219,7 +219,7 @@
       </div>
       <div class="bg-slate-900/50 dark:bg-white rounded-xl border border-slate-700/50 dark:border-gray-200 p-3 text-center shadow-sm">
         <p id="lbl-o" class="text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-gray-400 mb-1">Player O</p>
-        <p id="sc-o" class="text-2xl font-black text-violet-400 dark:text-violet-600">0</p>
+        <p id="sc-o" class="text-2xl font-black text-violet-600 dark:text-violet-400">0</p>
       </div>
     </div>
 
@@ -331,7 +331,7 @@
     function updateStatus() {
       const dot = document.getElementById('turn-dot');
       const txt = document.getElementById('status-txt');
-      dot.className = `w-2.5 h-2.5 rounded-full pulse ${current==='X' ? 'bg-cyan-400 dark:bg-cyan-600' : 'bg-violet-400 dark:bg-violet-600'}`;
+      dot.className = `w-2.5 h-2.5 rounded-full pulse ${current==='X' ? 'bg-cyan-600 dark:bg-cyan-400' : 'bg-violet-600 dark:bg-violet-400'}`;
       if (mode === 'ai') {
         txt.textContent = current === humanSym ? `Your turn (${humanSym})` : 'AI is thinking…';
       } else {

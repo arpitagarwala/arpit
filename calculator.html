@@ -50,8 +50,8 @@
       if (param === 'dark' || param === 'light') { theme = param; localStorage.setItem('theme', theme); }
       else if (stored === 'dark' || stored === 'light') { theme = stored; }
       else { theme = prefersDark ? 'dark' : 'light'; }
-              if (theme === 'dark') { document.documentElement.classList.remove('dark'); }
-              else { document.documentElement.classList.add('dark'); }
+              if (theme === 'dark') { document.documentElement.classList.add('dark'); }
+              else { document.documentElement.classList.remove('dark'); }
     })();
   </script>
 
@@ -65,26 +65,26 @@
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="css/global.css">
 </head>
-<body class="min-h-screen flex items-center justify-center bg-slate-950 dark:bg-slate-100 text-slate-50 dark:text-slate-900 transition-colors duration-300 p-4">
+<body class="min-h-screen flex items-center justify-center bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-50 transition-colors duration-300 p-4">
 
   <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 opacity-0 translate-y-4 pointer-events-none">
-    <div id="toast-msg" class="px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-800 dark:bg-white text-slate-100 dark:text-slate-900 border border-slate-700 dark:border-slate-200 shadow-lg"></div>
+    <div id="toast-msg" class="px-5 py-2.5 rounded-xl text-sm font-semibold bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-700 shadow-lg"></div>
   </div>
 
   <div class="fixed top-4 left-4 z-50">
     <a href="projects.html"
-       class="internal-link w-10 h-10 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-700 dark:border-slate-200 text-slate-300 dark:text-slate-700 hover:border-cyan-400 hover:text-cyan-400 shadow-lg transition-all">
+       class="internal-link w-10 h-10 flex items-center justify-center rounded-full bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-cyan-500 dark:hover:border-cyan-400 hover:text-cyan-600 dark:hover:text-cyan-400 shadow-lg transition-all">
       <i class="ri-arrow-left-line text-lg"></i>
     </a>
   </div>
 
   <div class="fixed top-4 right-4 z-50 flex gap-2">
     <button onclick="toggleHistory()"
-            class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-700 dark:border-slate-200 text-slate-300 dark:text-slate-700 hover:border-cyan-400 hover:text-cyan-400 shadow-lg transition-all">
+            class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-cyan-400 hover:text-cyan-400 shadow-lg transition-all">
       <i class="ri-history-line text-lg"></i>
     </button>
     <button onclick="toggleTheme()"
-            class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-700 dark:border-slate-200 text-slate-300 dark:text-slate-700 hover:border-cyan-400 hover:text-cyan-400 shadow-lg transition-all">
+            class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-cyan-400 hover:text-cyan-400 shadow-lg transition-all">
       <i id="theme-icon" class="text-lg"></i>
     </button>
   </div>
@@ -95,12 +95,12 @@
 
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
-          <span class="text-[10px] uppercase tracking-[.18em] font-bold text-slate-400 dark:text-slate-500">Calculator</span>
-          <span class="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 dark:text-emerald-600 border border-emerald-500/20">v3.0</span>
+          <span class="text-[10px] uppercase tracking-[.18em] font-bold text-slate-500 dark:text-slate-400">Calculator</span>
+          <span class="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">v3.0</span>
         </div>
         <div class="flex items-center gap-2">
-          <div id="memory-indicator" class="hidden text-[9px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 dark:text-amber-600 border border-amber-500/20">M</div>
-          <div id="angle-badge" onclick="toggleAngle()" class="hidden text-[9px] px-2 py-0.5 rounded-full bg-violet-500/10 text-violet-400 dark:text-violet-600 border border-violet-500/20">DEG</div>
+          <div id="memory-indicator" class="hidden text-[9px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">M</div>
+          <div id="angle-badge" onclick="toggleAngle()" class="hidden text-[9px] px-2 py-0.5 rounded-full bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20">DEG</div>
         </div>
       </div>
 
@@ -111,8 +111,8 @@
       </div>
 
       <div class="flex flex-col items-end gap-1 px-1">
-        <div id="history-current" class="h-5 text-xs text-slate-400 dark:text-slate-500 mono truncate w-full text-right"></div>
-        <div id="display" class="w-full text-right text-5xl font-bold tracking-tight truncate mono text-slate-50 dark:text-slate-900 leading-tight">0</div>
+        <div id="history-current" class="h-5 text-xs text-slate-500 dark:text-slate-400 mono truncate w-full text-right"></div>
+        <div id="display" class="w-full text-right text-5xl font-bold tracking-tight truncate mono text-slate-900 dark:text-slate-50 leading-tight">0</div>
       </div>
 
       <div id="sci-panel" class="hidden grid grid-cols-4 gap-2">
@@ -131,7 +131,7 @@
       </div>
 
       <div id="unit-panel" class="hidden flex flex-col gap-3">
-        <select id="unit-cat" onchange="renderUnitSelects()" class="w-full px-3 py-2 rounded-xl bg-white/5 dark:bg-black/5 border border-white/10 dark:border-black/10 text-slate-200 dark:text-slate-800 text-sm outline-none focus:ring-2 focus:ring-cyan-500">
+        <select id="unit-cat" onchange="renderUnitSelects()" class="w-full px-3 py-2 rounded-xl bg-white/5 dark:bg-black/5 border border-white/10 dark:border-black/10 text-slate-800 dark:text-slate-200 text-sm outline-none focus:ring-2 focus:ring-cyan-500">
           <option value="length">Length</option>
           <option value="weight">Weight</option>
           <option value="temp">Temperature</option>
@@ -141,15 +141,15 @@
         </select>
         <div class="flex gap-2 items-center">
           <div class="flex-1 flex flex-col gap-1">
-            <select id="unit-from" class="w-full px-3 py-2 rounded-xl bg-white/5 dark:bg-black/5 border border-white/10 dark:border-black/10 text-slate-200 dark:text-slate-800 text-xs outline-none focus:ring-2 focus:ring-cyan-500"></select>
-            <input id="unit-input" type="number" value="1" oninput="convertUnit()" class="w-full px-3 py-2 rounded-xl bg-white/5 dark:bg-black/5 border border-white/10 dark:border-black/10 text-slate-200 dark:text-slate-800 text-sm outline-none focus:ring-2 focus:ring-cyan-500 mono">
+            <select id="unit-from" class="w-full px-3 py-2 rounded-xl bg-white/5 dark:bg-black/5 border border-white/10 dark:border-black/10 text-slate-800 dark:text-slate-200 text-xs outline-none focus:ring-2 focus:ring-cyan-500"></select>
+            <input id="unit-input" type="number" value="1" oninput="convertUnit()" class="w-full px-3 py-2 rounded-xl bg-white/5 dark:bg-black/5 border border-white/10 dark:border-black/10 text-slate-800 dark:text-slate-200 text-sm outline-none focus:ring-2 focus:ring-cyan-500 mono">
           </div>
-          <button onclick="swapUnits()" class="w-8 h-8 flex items-center justify-center rounded-xl bg-cyan-500/15 text-cyan-400 dark:text-cyan-600 border border-cyan-500/20 hover:bg-cyan-500/25 flex-shrink-0 transition-colors">
+          <button onclick="swapUnits()" class="w-8 h-8 flex items-center justify-center rounded-xl bg-cyan-500/15 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20 hover:bg-cyan-500/25 flex-shrink-0 transition-colors">
             <i class="ri-arrow-left-right-line text-sm"></i>
           </button>
           <div class="flex-1 flex flex-col gap-1">
-            <select id="unit-to" onchange="convertUnit()" class="w-full px-3 py-2 rounded-xl bg-white/5 dark:bg-black/5 border border-white/10 dark:border-black/10 text-slate-200 dark:text-slate-800 text-xs outline-none focus:ring-2 focus:ring-cyan-500"></select>
-            <div id="unit-result" class="w-full px-3 py-2 rounded-xl bg-cyan-500/8 border border-cyan-500/15 text-cyan-300 dark:text-cyan-700 text-sm font-bold mono">1</div>
+            <select id="unit-to" onchange="convertUnit()" class="w-full px-3 py-2 rounded-xl bg-white/5 dark:bg-black/5 border border-white/10 dark:border-black/10 text-slate-800 dark:text-slate-200 text-xs outline-none focus:ring-2 focus:ring-cyan-500"></select>
+            <div id="unit-result" class="w-full px-3 py-2 rounded-xl bg-cyan-500/8 border border-cyan-500/15 text-cyan-700 dark:text-cyan-300 text-sm font-bold mono">1</div>
           </div>
         </div>
       </div>
@@ -166,31 +166,31 @@
         <button onclick="appendNumber('7')"    class="btn-ripple btn-num h-12 rounded-2xl text-lg font-semibold transition-all active:scale-95">7</button>
         <button onclick="appendNumber('8')"    class="btn-ripple btn-num h-12 rounded-2xl text-lg font-semibold transition-all active:scale-95">8</button>
         <button onclick="appendNumber('9')"    class="btn-ripple btn-num h-12 rounded-2xl text-lg font-semibold transition-all active:scale-95">9</button>
-        <button onclick="appendOperator('/')" class="btn-ripple btn-op  h-12 rounded-2xl font-bold text-xl transition-all active:scale-95">÷</button>
+        <button onclick="appendOperator('/')" class="btn-ripple btn-op h-12 rounded-2xl font-bold text-xl transition-all active:scale-95">÷</button>
         <button onclick="appendNumber('4')"    class="btn-ripple btn-num h-12 rounded-2xl text-lg font-semibold transition-all active:scale-95">4</button>
         <button onclick="appendNumber('5')"    class="btn-ripple btn-num h-12 rounded-2xl text-lg font-semibold transition-all active:scale-95">5</button>
         <button onclick="appendNumber('6')"    class="btn-ripple btn-num h-12 rounded-2xl text-lg font-semibold transition-all active:scale-95">6</button>
-        <button onclick="appendOperator('*')" class="btn-ripple btn-op  h-12 rounded-2xl font-bold text-xl transition-all active:scale-95">×</button>
+        <button onclick="appendOperator('*')" class="btn-ripple btn-op h-12 rounded-2xl font-bold text-xl transition-all active:scale-95">×</button>
         <button onclick="appendNumber('1')"    class="btn-ripple btn-num h-12 rounded-2xl text-lg font-semibold transition-all active:scale-95">1</button>
         <button onclick="appendNumber('2')"    class="btn-ripple btn-num h-12 rounded-2xl text-lg font-semibold transition-all active:scale-95">2</button>
         <button onclick="appendNumber('3')"    class="btn-ripple btn-num h-12 rounded-2xl text-lg font-semibold transition-all active:scale-95">3</button>
-        <button onclick="appendOperator('-')" class="btn-ripple btn-op  h-12 rounded-2xl font-bold text-xl transition-all active:scale-95">−</button>
+        <button onclick="appendOperator('-')" class="btn-ripple btn-op h-12 rounded-2xl font-bold text-xl transition-all active:scale-95">−</button>
         <button onclick="appendNumber('.')"  class="btn-ripple btn-num h-12 rounded-2xl text-xl font-bold transition-all active:scale-95">.</button>
         <button onclick="appendNumber('0')"  class="btn-ripple btn-num h-12 rounded-2xl text-lg font-semibold transition-all active:scale-95">0</button>
-        <button onclick="toggleSign()"        class="btn-ripple btn-fn  h-12 rounded-2xl font-bold text-sm transition-all active:scale-95">+/−</button>
-        <button onclick="appendOperator('+')" class="btn-ripple btn-op  h-12 rounded-2xl font-bold text-xl transition-all active:scale-95">+</button>
+        <button onclick="toggleSign()"        class="btn-ripple btn-fn h-12 rounded-2xl font-bold text-sm transition-all active:scale-95">+/−</button>
+        <button onclick="appendOperator('+')" class="btn-ripple btn-op h-12 rounded-2xl font-bold text-xl transition-all active:scale-95">+</button>
         <button onclick="calculate()" class="btn-ripple btn-eq col-span-4 h-12 rounded-2xl text-white font-bold text-2xl transition-all active:scale-[.98]">=</button>
       </div>
     </div>
 
     <div id="history-sidebar" class="hidden fade-up d2 w-full lg:w-72 glass rounded-[2rem] shadow-xl p-5 flex flex-col gap-4 max-h-[480px]">
       <div class="flex items-center justify-between border-b border-white/8 dark:border-black/8 pb-3">
-        <span class="font-bold text-sm flex items-center gap-2 text-slate-300 dark:text-slate-700">
+        <span class="font-bold text-sm flex items-center gap-2 text-slate-700 dark:text-slate-300">
           <i class="ri-history-line"></i> History
         </span>
         <div class="flex gap-3">
-          <button onclick="copyHistory()"  class="text-xs text-cyan-400 dark:text-cyan-600 font-semibold hover:underline">Copy All</button>
-          <button onclick="clearHistory()" class="text-xs text-rose-400 dark:text-rose-600 font-semibold hover:underline">Clear</button>
+          <button onclick="copyHistory()"  class="text-xs text-cyan-600 dark:text-cyan-400 font-semibold hover:underline">Copy All</button>
+          <button onclick="clearHistory()" class="text-xs text-rose-600 dark:text-rose-400 font-semibold hover:underline">Clear</button>
         </div>
       </div>
       <div id="history-panel" class="flex-1 overflow-y-auto pr-1 flex flex-col gap-1">
@@ -228,11 +228,11 @@
     function toggleTheme() {
       const isDark = document.documentElement.classList.contains('dark');
       document.documentElement.classList.toggle('dark', !isDark);
-              localStorage.setItem('theme', isDark ? 'dark' : 'light');
+              localStorage.setItem('theme', isDark ? 'light' : 'dark');
               document.getElementById('theme-icon').className = isDark ? 'ri-sun-line text-lg' : 'ri-moon-line text-lg';
           updateAllLinks();
     }
-                function isDark() { return !document.documentElement.classList.contains('dark'); }
+                function isDark() { return document.documentElement.classList.contains('dark'); }
     function updateAllLinks() {
       document.querySelectorAll('a.internal-link').forEach(a => {
         const url = new URL(a.href, location.href);
@@ -435,8 +435,8 @@
       }
       panel.innerHTML = historyList.map(item => `
         <div class="hist-item flex flex-col items-end gap-0.5 px-2 py-2 rounded-xl cursor-pointer" onclick="useHistory('${item.result}')">
-          <span class="text-[10px] text-slate-400 dark:text-slate-500 mono truncate w-full text-right">${item.calc} =</span>
-          <span class="text-sm font-bold mono text-slate-200 dark:text-slate-800">${item.result}</span>
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 mono truncate w-full text-right">${item.calc} =</span>
+          <span class="text-sm font-bold mono text-slate-800 dark:text-slate-200">${item.result}</span>
         </div>
       `).join('');
     }

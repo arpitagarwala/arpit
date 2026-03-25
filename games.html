@@ -80,7 +80,7 @@
   No dark: prefix = light theme styles
   dark:           = dark theme styles
 -->
-<body class="min-h-screen bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-slate-100 transition-colors duration-300">
+<body class="min-h-screen bg-slate-50 dark:bg-slate-900 text-gray-900 dark:text-slate-100 transition-colors duration-300">
 
   <!-- Back Button -->
   <div class="fixed top-3 left-3 z-50">
@@ -98,143 +98,205 @@
 
   <div class="max-w-5xl mx-auto px-3 py-8 pt-14">
 
-    <!-- Header -->
-    <div class="mb-5">
-      <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-slate-100 tracking-tight mb-1">&#x1F3AE; Games</h1>
-      <p class="text-gray-500 dark:text-slate-400 text-sm max-w-xl">Fun, interactive games — classics reimagined with a fresh coat of design. Play, learn, challenge yourself.</p>
-    </div>
-
-    <!-- Stats bar -->
-    <div class="flex flex-wrap gap-3 mb-5">
-      <div class="flex items-center gap-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700/50 rounded-xl px-4 py-2.5 text-sm shadow-sm">
-        <i class="ri-gamepad-line text-cyan-600 dark:text-cyan-400"></i>
-        <span id="total-count" class="font-bold text-gray-900 dark:text-white">0</span>
-        <span class="text-gray-500 dark:text-slate-400">Games Available</span>
-      </div>
-      <div class="flex items-center gap-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700/50 rounded-xl px-4 py-2.5 text-sm shadow-sm">
-        <i class="ri-add-circle-line text-emerald-600 dark:text-emerald-400"></i>
-        <span class="text-gray-500 dark:text-slate-400">More Coming Soon</span>
+    <!-- Premium Header -->
+    <div class="mb-6">
+      <div class="flex items-end gap-4 mb-2">
+        <div>
+          <h1 class="text-4xl sm:text-5xl font-black tracking-tight leading-none" style="background:linear-gradient(135deg,#22d3ee,#818cf8,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Games</h1>
+          <div style="height:3px;width:60px;background:linear-gradient(90deg,#22d3ee,#818cf8);border-radius:99px;margin-top:6px;"></div>
+        </div>
+        <p class="text-gray-500 dark:text-slate-400 text-sm max-w-lg pb-1">Fully playable browser games — classics rebuilt with physics, AI, and neon aesthetics.</p>
       </div>
     </div>
 
-    <!-- Search -->
-    <div class="bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700/50 p-3 sm:p-4 mb-5 shadow-sm">
-      <div class="relative">
-        <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-400 text-base pointer-events-none"></i>
-        <input id="search-input" type="text" placeholder="Search games by name, genre, or tag…"
-          class="search-input w-full pl-9 pr-9 py-2.5 rounded-lg bg-gray-100 dark:bg-slate-700 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-400 border border-gray-200 dark:border-slate-600 transition-colors text-sm"
+    <!-- Stats + Search row -->
+    <div class="flex flex-wrap gap-3 mb-4 items-center">
+      <div class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium border border-gray-200 dark:border-slate-700/50 bg-white/70 dark:bg-slate-800/70 backdrop-blur shadow-sm">
+        <i class="ri-gamepad-line text-cyan-500"></i>
+        <span class="font-bold text-gray-900 dark:text-white" id="total-count">0</span>
+        <span class="text-gray-500 dark:text-slate-400">Games</span>
+      </div>
+      <div class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium border border-gray-200 dark:border-slate-700/50 bg-white/70 dark:bg-slate-800/70 backdrop-blur shadow-sm">
+        <i class="ri-star-line text-yellow-500"></i>
+        <span class="font-bold text-gray-900 dark:text-white" id="featured-count">0</span>
+        <span class="text-gray-500 dark:text-slate-400">Featured</span>
+      </div>
+      <div class="ml-auto relative">
+        <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 text-sm pointer-events-none"></i>
+        <input id="search-input" type="text" placeholder="Search games…"
+          class="search-input pl-9 pr-8 py-2.5 rounded-xl bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 border border-gray-200 dark:border-slate-700/50 text-sm w-56 focus:outline-none focus:border-cyan-400 dark:focus:border-cyan-500 transition-colors shadow-sm"
           oninput="handleSearch()" />
-        <button id="clear-btn" onclick="clearSearch()" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-200 transition-colors hidden">
-          <i class="ri-close-circle-fill text-base"></i>
-        </button>
+        <button id="clear-btn" onclick="clearSearch()" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hidden"><i class="ri-close-line"></i></button>
       </div>
-      <div class="flex items-center justify-between mt-2 px-0.5">
-        <span class="text-xs text-gray-400 dark:text-slate-500">Tip: try "classic" or "2 player" or "memory"</span>
-        <span id="result-count" class="text-xs text-gray-400 dark:text-slate-500 font-medium"></span>
-      </div>
+    </div>
+
+    <!-- Genre Filters -->
+    <div class="flex flex-wrap gap-2 mb-5" id="genre-filters">
+      <button onclick="setGenre('all',this)" class="genre-chip active-chip px-4 py-1.5 rounded-full text-xs font-700 border border-cyan-500/40 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 cursor-pointer transition-all">All</button>
     </div>
 
     <!-- Grid -->
-    <div id="games-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+    <div id="games-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5"></div>
 
     <!-- Empty State -->
-    <div id="no-results" class="flex-col items-center justify-center py-16 text-center">
+    <div id="no-results" class="flex-col items-center justify-center py-16 text-center hidden">
       <i class="ri-search-eye-line text-4xl text-gray-300 dark:text-slate-600 mb-3"></i>
       <h3 class="text-lg font-bold text-gray-500 dark:text-slate-400 mb-2">No games found.</h3>
-      <p class="text-gray-400 dark:text-slate-500 text-sm mb-3">Try a different search term.</p>
-      <button onclick="clearSearch()" class="text-sm text-cyan-600 dark:text-cyan-400 hover:underline font-medium">Clear search</button>
+      <p class="text-gray-400 dark:text-slate-500 text-sm mb-3">Try a different filter or search.</p>
+      <button onclick="clearSearch()" class="text-sm text-cyan-600 dark:text-cyan-400 hover:underline font-medium">Clear</button>
     </div>
 
     <!-- Footer -->
-    <div class="mt-8 bg-white dark:bg-slate-800 text-gray-400 dark:text-slate-400 rounded-xl border border-gray-200 dark:border-slate-700/50 px-5 py-3 text-xs text-center shadow-sm">
+    <div class="mt-8 text-center py-3.5 px-6 rounded-2xl bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700/30 text-sm text-gray-400 dark:text-slate-500">
       &copy; 2026 Arpit Agarwala. Engineered with <span class="text-red-400">&#10084;&#65039;</span>
     </div>
   </div>
 
+
   <script>
     const GAMES = [
       {
-        href: 'tictactoe.html',
-        title: 'Tic Tac Toe',
-        description: 'The classic 3×3 grid strategy game. Battle a friend locally or challenge the unbeatable AI powered by the Minimax algorithm. Track scores across rounds.',
-        icon: 'ri-layout-grid-line',
-        gradient: 'from-cyan-500 to-blue-600',
-        genre: 'Classic',
-        tags: ['2 Player', 'vs AI', 'Minimax', 'Strategy'],
-        difficulty: 2,
-        featured: true,
-        players: '1–2',
-        cta: 'Play Now'
+        href: 'assets/games/2048.html', title: '2048',
+        sub: 'Slide & merge number tiles',
+        icon: 'ri-grid-fill', gradient: 'from-orange-400 to-amber-500',
+        genre: 'Puzzle', featured: true, players: '1',
+        tags: ['Brain', 'Logic', 'Undo', 'Swipe']
       },
       {
-        href: 'memory.html',
-        title: 'Memory Cards',
-        description: 'Flip and match all emoji pairs before time flies! Three difficulty levels, combo streaks, best time tracking, and smooth 3D card animations.',
-        icon: 'ri-stack-line',
-        gradient: 'from-violet-500 to-purple-600',
-        genre: 'Memory',
-        tags: ['Solo', 'Brain', 'Combos', 'Timer'],
-        difficulty: 1,
-        featured: true,
-        players: '1',
-        cta: 'Play Now'
+        href: 'assets/games/asteroids.html', title: 'Asteroids',
+        sub: 'Blast space rocks to survive',
+        icon: 'ri-rocket-line', gradient: 'from-slate-500 to-blue-900',
+        genre: 'Arcade', featured: true, players: '1',
+        tags: ['Physics', 'Survival', 'Waves']
+      },
+      {
+        href: 'assets/games/city-builder.html', title: 'City Builder',
+        sub: 'Design a futuristic neon city',
+        icon: 'ri-building-line', gradient: 'from-blue-600 to-indigo-800',
+        genre: 'Simulation', featured: true, players: '1',
+        tags: ['Strategy', 'Builder', 'Real-time']
+      },
+      {
+        href: 'assets/games/flappy.html', title: 'Flappy Block',
+        sub: 'Neon endless flyer',
+        icon: 'ri-arrow-up-circle-line', gradient: 'from-cyan-500 to-blue-600',
+        genre: 'Arcade', featured: true, players: '1',
+        tags: ['Endless', 'Skill', 'High Score']
+      },
+      {
+        href: 'memory.html', title: 'Memory Cards',
+        sub: 'Match emoji pairs vs timer',
+        icon: 'ri-stack-line', gradient: 'from-violet-500 to-purple-600',
+        genre: 'Memory', featured: true, players: '1',
+        tags: ['Solo', 'Brain', 'Combos']
+      },
+      {
+        href: 'assets/games/clicker.html', title: 'Money Clicker',
+        sub: 'CA-themed idle empire',
+        icon: 'ri-coin-line', gradient: 'from-amber-400 to-orange-500',
+        genre: 'Idle', featured: true, players: '1',
+        tags: ['Finance', 'Idle', 'Strategy']
+      },
+      {
+        href: 'assets/games/pong.html', title: 'Pong',
+        sub: 'Classic neon arcade paddle',
+        icon: 'ri-ping-pong-line', gradient: 'from-fuchsia-600 to-purple-600',
+        genre: 'Arcade', featured: false, players: '1',
+        tags: ['Classic', 'Action', 'vs AI']
+      },
+      {
+        href: 'assets/games/asmr-rain.html', title: 'Rain ASMR',
+        sub: 'Immersive ambient relaxation',
+        icon: 'ri-heavy-showers-line', gradient: 'from-blue-400 to-cyan-500',
+        genre: 'ASMR', featured: true, players: '1',
+        tags: ['Relax', 'Ambient', 'Fullscreen']
+      },
+      {
+        href: 'assets/games/snake.html', title: 'Snake',
+        sub: 'Neon glow retro classic',
+        icon: 'ri-guide-fill', gradient: 'from-emerald-400 to-green-600',
+        genre: 'Arcade', featured: true, players: '1',
+        tags: ['Classic', 'Skill', 'Mobile']
+      },
+      {
+        href: 'assets/games/sudoku.html', title: 'Sudoku',
+        sub: 'Logic puzzles with hints',
+        icon: 'ri-pencil-ruler-2-line', gradient: 'from-teal-400 to-emerald-500',
+        genre: 'Puzzle', featured: true, players: '1',
+        tags: ['Logic', 'Notes Mode', 'Timer']
+      },
+      {
+        href: 'tictactoe.html', title: 'Tic Tac Toe',
+        sub: '2P or vs Minimax AI',
+        icon: 'ri-layout-grid-line', gradient: 'from-cyan-500 to-blue-600',
+        genre: 'Classic', featured: true, players: '1-2',
+        tags: ['2 Player', 'vs AI', 'Strategy']
+      },
+      {
+        href: 'market-sim.html', title: 'Trading Sim',
+        sub: 'Virtual stock market game',
+        icon: 'ri-stock-line', gradient: 'from-emerald-500 to-teal-600',
+        genre: 'Simulation', featured: true, players: '1',
+        tags: ['Finance', 'Trading', 'Real-time']
       }
     ];
 
-    let activeSearch = '';
+    let activeSearch = '', activeGenre = 'all';
+
+    function buildGenreFilters() {
+      const genres = ['all', ...new Set(GAMES.map(g => g.genre))];
+      const bar = document.getElementById('genre-filters');
+      bar.innerHTML = genres.map(g => `
+        <button onclick="setGenre('${g}',this)" class="genre-chip ${g==='all'?'active-chip':''} px-4 py-1.5 rounded-full text-xs font-semibold border cursor-pointer transition-all
+          ${g==='all' ? 'border-cyan-500/40 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400' : 'border-gray-200 dark:border-slate-700/50 bg-white dark:bg-slate-800 text-gray-500 dark:text-slate-400 hover:border-cyan-400/50 hover:text-cyan-500'}">${g==='all'?'All':g}</button>
+      `).join('');
+    }
+
+    function setGenre(g, btn) {
+      activeGenre = g;
+      document.querySelectorAll('.genre-chip').forEach(b => {
+        const isActive = b.textContent.trim() === (g==='all'?'All':g);
+        b.className = `genre-chip px-4 py-1.5 rounded-full text-xs font-semibold border cursor-pointer transition-all ${isActive
+          ? 'border-cyan-500/40 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 active-chip'
+          : 'border-gray-200 dark:border-slate-700/50 bg-white dark:bg-slate-800 text-gray-500 dark:text-slate-400 hover:border-cyan-400/50 hover:text-cyan-500'}`;
+      });
+      renderGames();
+    }
 
     function renderGames() {
       const grid    = document.getElementById('games-grid');
       const noRes   = document.getElementById('no-results');
-      const countEl = document.getElementById('result-count');
       const totalEl = document.getElementById('total-count');
+      const featuredEl = document.getElementById('featured-count');
       const q       = activeSearch.toLowerCase().trim();
 
-      const filtered = GAMES.filter(g =>
-        !q || g.title.toLowerCase().includes(q)
-           || g.description.toLowerCase().includes(q)
-           || g.tags.some(t => t.toLowerCase().includes(q))
-           || g.genre.toLowerCase().includes(q)
-      );
+      const filtered = GAMES.filter(g => {
+        const matchGenre = activeGenre === 'all' || g.genre === activeGenre;
+        const matchQ = !q || g.title.toLowerCase().includes(q)
+          || g.sub.toLowerCase().includes(q)
+          || g.tags.some(t => t.toLowerCase().includes(q))
+          || g.genre.toLowerCase().includes(q);
+        return matchGenre && matchQ;
+      });
 
       totalEl.textContent = GAMES.length;
-      countEl.textContent = filtered.length === GAMES.length
-        ? `${GAMES.length} game${GAMES.length !== 1 ? 's' : ''}`
-        : `${filtered.length} of ${GAMES.length}`;
+      if (featuredEl) featuredEl.textContent = GAMES.filter(g=>g.featured).length;
 
-      if (filtered.length === 0) { grid.innerHTML = ''; noRes.classList.add('visible'); return; }
-      noRes.classList.remove('visible');
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        noRes.classList.remove('hidden'); noRes.classList.add('flex');
+        return;
+      }
+      noRes.classList.add('hidden'); noRes.classList.remove('flex');
 
       grid.innerHTML = filtered.map((g, i) => `
-        <div class="game-card" style="animation-delay:${i * 55}ms">
-          <a href="${g.href}" class="card-link h-full bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700/50 hover:border-cyan-500 dark:hover:border-cyan-400 shadow-sm hover:shadow-xl flex flex-col overflow-hidden block">
-            <div class="h-1 w-full bg-gradient-to-r ${g.gradient} flex-shrink-0"></div>
-            <div class="p-4 sm:p-5 flex flex-col flex-1">
-              <div class="flex items-start justify-between mb-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br ${g.gradient} flex items-center justify-center shadow-md">
-                  <i class="${g.icon} text-xl text-white"></i>
-                </div>
-                ${g.featured ? `<span class="text-xs font-bold px-2 py-0.5 rounded-full border border-cyan-400/40 dark:border-cyan-500/30 bg-cyan-50 dark:bg-cyan-900/20 flex items-center gap-1"><span class="featured-text">\u2B50 Featured</span></span>` : ''}
-              </div>
-              <h2 class="text-sm font-bold text-gray-900 dark:text-slate-100 mb-0.5">${g.title}</h2>
-              <span class="text-xs text-gray-400 dark:text-slate-400 mb-2 flex items-center gap-3">
-                <span class="flex items-center gap-1"><i class="ri-gamepad-line"></i> ${g.genre}</span>
-                <span class="flex items-center gap-1"><i class="ri-user-line"></i> ${g.players} Player${g.players !== '1' ? 's' : ''}</span>
-              </span>
-              <p class="text-xs text-gray-500 dark:text-slate-400 leading-relaxed mb-3 flex-1">${g.description}</p>
-              <div class="flex flex-wrap gap-1 mb-3">
-                ${g.tags.map(t => `<span class="text-xs bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-300 px-2 py-0.5 rounded-full">${t}</span>`).join('')}
-              </div>
-              <div class="flex items-center justify-between pt-2.5 border-t border-gray-100 dark:border-slate-700/50">
-                <div class="flex items-center gap-1">
-                  <span class="text-xs text-gray-400 dark:text-slate-500 mr-1">Difficulty</span>
-                  ${[1, 2, 3].map(d => `<span class="w-1.5 h-1.5 rounded-full ${d <= g.difficulty ? 'dot-on' : 'dot-off'}"></span>`).join('')}
-                </div>
-                <span class="text-xs font-semibold text-cyan-600 dark:text-cyan-400 flex items-center gap-1">${g.cta} <i class="ri-arrow-right-line"></i></span>
-              </div>
-            </div>
-          </a>
-        </div>
+        <a href="${g.href}" class="group bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700/50 hover:border-cyan-500 dark:hover:border-cyan-400 shadow-sm hover:shadow-lg p-4 flex flex-col items-center text-center transition-all duration-200" style="animation:fadeUp .35s ease ${i*40}ms both">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br ${g.gradient} flex items-center justify-center shadow-lg mb-3 group-hover:scale-110 transition-transform duration-200">
+            <i class="${g.icon} text-2xl text-white"></i>
+          </div>
+          <h2 class="text-xs font-bold text-gray-900 dark:text-slate-100 mb-0.5 leading-tight">${g.title}</h2>
+          <p class="text-[10px] text-gray-400 dark:text-slate-500 leading-snug">${g.sub}</p>
+        </a>
       `).join('');
     }
 
@@ -246,35 +308,20 @@
 
     function clearSearch() {
       document.getElementById('search-input').value = '';
-      activeSearch = '';
+      activeSearch = ''; activeGenre = 'all';
       document.getElementById('clear-btn').classList.add('hidden');
+      buildGenreFilters();
       renderGames();
     }
 
     /* ── Theme helpers ── */
-    function isDark() {
-      return document.documentElement.classList.contains('dark');
-    }
+    function isDark() { return document.documentElement.classList.contains('dark'); }
+    function syncIcon() { document.getElementById('theme-icon').className = isDark() ? 'ri-sun-line text-lg' : 'ri-moon-line text-lg'; }
+    function updateBackLink() { var a = document.getElementById('back-link'); if (a) a.href = 'index.html?theme=' + (isDark() ? 'dark' : 'light'); }
+    function toggleTheme() { document.documentElement.classList.toggle('dark'); localStorage.setItem('theme', isDark() ? 'dark' : 'light'); syncIcon(); updateBackLink(); }
 
-    function syncIcon() {
-      document.getElementById('theme-icon').className = isDark() ? 'ri-sun-line text-lg' : 'ri-moon-line text-lg';
-    }
+    syncIcon(); updateBackLink(); buildGenreFilters(); renderGames();
 
-    function updateBackLink() {
-      var a = document.getElementById('back-link');
-      if (a) a.href = 'index.html?theme=' + (isDark() ? 'dark' : 'light');
-    }
-
-    function toggleTheme() {
-      document.documentElement.classList.toggle('dark');
-      localStorage.setItem('theme', isDark() ? 'dark' : 'light');
-      syncIcon();
-      updateBackLink();
-    }
-
-    syncIcon();
-    updateBackLink();
-    renderGames();
   </script>
 </body>
 </html>
