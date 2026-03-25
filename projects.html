@@ -88,7 +88,7 @@
   No dark: prefix = light theme styles
   dark:           = dark theme styles
 -->
-<body class="min-h-screen bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-slate-100 transition-colors duration-300">
+<body class="min-h-screen bg-slate-50 dark:bg-slate-900 text-gray-900 dark:text-slate-100 transition-colors duration-300">
 
   <!-- Back Button -->
   <div class="fixed top-3 left-3 z-50">
@@ -106,154 +106,213 @@
 
   <div class="max-w-5xl mx-auto px-3 py-8 pt-14">
 
-    <!-- Header -->
-    <div class="mb-5">
-      <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-slate-100 tracking-tight mb-1">🚀 Projects</h1>
-      <p class="text-gray-500 dark:text-slate-400 text-sm max-w-xl">Tools, experiments, and mini-products — built with care, utility, and a sprinkle of creativity.</p>
+    <!-- Premium Header -->
+    <div class="mb-6">
+      <div class="flex items-end gap-4 mb-2">
+        <div>
+          <h1 class="text-4xl sm:text-5xl font-black tracking-tight leading-none" style="background:linear-gradient(135deg,#10b981,#22d3ee,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Projects</h1>
+          <div style="height:3px;width:72px;background:linear-gradient(90deg,#10b981,#22d3ee);border-radius:99px;margin-top:6px;"></div>
+        </div>
+        <p class="text-gray-500 dark:text-slate-400 text-sm max-w-lg pb-1">Finance tools, productivity apps, and interactive experiments — engineered with precision.</p>
+      </div>
     </div>
 
-    <!-- Search + Filter -->
-    <div class="bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700/50 p-3 sm:p-4 mb-5 shadow-sm">
-      <div class="relative mb-3">
-        <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-400 text-base pointer-events-none"></i>
-        <input id="search-input" type="text" placeholder="Search by name, feature, or tag…"
-               class="search-input w-full pl-9 pr-8 py-2.5 rounded-lg bg-gray-100 dark:bg-slate-700 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-400 border border-gray-200 dark:border-slate-600 transition-colors text-sm"
-               oninput="handleSearch()" />
-        <button id="clear-btn" onclick="clearSearch()" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-200 transition-colors hidden">
-          <i class="ri-close-circle-fill text-base"></i>
-        </button>
+    <!-- Stats + Search row -->
+    <div class="flex flex-wrap gap-3 mb-4 items-center">
+      <div class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium border border-gray-200 dark:border-slate-700/50 bg-white/70 dark:bg-slate-800/70 backdrop-blur shadow-sm">
+        <i class="ri-rocket-line text-emerald-500"></i>
+        <span class="font-bold text-gray-900 dark:text-white" id="total-count">0</span>
+        <span class="text-gray-500 dark:text-slate-400">Projects</span>
       </div>
-      <div class="flex flex-wrap gap-1.5 items-center">
-        <span class="text-xs font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider mr-1">Category:</span>
-        <button class="filter-pill active text-xs font-medium px-2.5 py-1 rounded-full border border-gray-300 dark:border-slate-600 text-gray-600 dark:text-slate-300 hover:border-cyan-500 dark:hover:border-cyan-400 transition-all duration-150" data-cat="all" onclick="setFilter(this,'all')">All</button>
-        <button class="filter-pill text-xs font-medium px-2.5 py-1 rounded-full border border-gray-300 dark:border-slate-600 text-gray-600 dark:text-slate-300 hover:border-cyan-500 dark:hover:border-cyan-400 transition-all duration-150" data-cat="Finance" onclick="setFilter(this,'Finance')"><i class="ri-funds-line mr-1"></i>Finance Tools</button>
-        <button class="filter-pill text-xs font-medium px-2.5 py-1 rounded-full border border-gray-300 dark:border-slate-600 text-gray-600 dark:text-slate-300 hover:border-cyan-500 dark:hover:border-cyan-400 transition-all duration-150" data-cat="Utility" onclick="setFilter(this,'Utility')"><i class="ri-tools-line mr-1"></i>Utilities</button>
-        <span id="result-count" class="ml-auto text-xs text-gray-400 dark:text-slate-500 font-medium whitespace-nowrap"></span>
+      <div class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium border border-gray-200 dark:border-slate-700/50 bg-white/70 dark:bg-slate-800/70 backdrop-blur shadow-sm">
+        <i class="ri-star-line text-yellow-500"></i>
+        <span class="font-bold text-gray-900 dark:text-white" id="featured-count">0</span>
+        <span class="text-gray-500 dark:text-slate-400">Featured</span>
       </div>
+      <div class="ml-auto relative">
+        <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 text-sm pointer-events-none"></i>
+        <input id="search-input" type="text" placeholder="Search projects…"
+          class="search-input pl-9 pr-8 py-2.5 rounded-xl bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 border border-gray-200 dark:border-slate-700/50 text-sm w-56 focus:outline-none focus:border-emerald-400 dark:focus:border-emerald-500 transition-colors shadow-sm"
+          oninput="handleSearch()" />
+        <button id="clear-btn" onclick="clearSearch()" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hidden"><i class="ri-close-line"></i></button>
+      </div>
+    </div>
+
+    <!-- Category Filters -->
+    <div class="flex flex-wrap gap-2 mb-5" id="cat-filters">
+      <!-- Built dynamically by JS -->
     </div>
 
     <!-- Grid -->
-    <div id="projects-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+    <div id="projects-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5"></div>
 
     <!-- Empty State -->
-    <div id="no-results" class="flex-col items-center justify-center py-16 text-center">
+    <div id="no-results" class="hidden flex-col items-center justify-center py-16 text-center">
       <i class="ri-search-eye-line text-4xl text-gray-300 dark:text-slate-600 mb-3"></i>
       <h3 class="text-lg font-bold text-gray-500 dark:text-slate-400 mb-2">No projects found.</h3>
-      <p class="text-gray-400 dark:text-slate-500 text-sm mb-3">Try a different search term or clear the filter.</p>
-      <button onclick="clearSearch();setFilter(document.querySelector('[data-cat=all]'),'all')" class="text-sm text-cyan-600 dark:text-cyan-400 hover:underline font-medium">Clear all filters</button>
+      <p class="text-gray-400 dark:text-slate-500 text-sm mb-3">Try a different filter or search.</p>
+      <button onclick="clearSearch()" class="text-sm text-emerald-600 dark:text-emerald-400 hover:underline font-medium">Clear</button>
     </div>
 
     <!-- Footer -->
-    <div class="mt-8 bg-white dark:bg-slate-800 text-gray-400 dark:text-slate-400 rounded-xl border border-gray-200 dark:border-slate-700/50 px-5 py-3 text-xs text-center shadow-sm">
+    <div class="mt-8 text-center py-3.5 px-6 rounded-2xl bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700/30 text-sm text-gray-400 dark:text-slate-500">
       &copy; 2026 Arpit Agarwala. Engineered with <span class="text-red-400">&#10084;&#65039;</span>
     </div>
   </div>
 
+
   <script>
     const PROJECTS = [
       {
-        href: 'sip.html', title: 'SIP Calculator',
-        description: 'Simulate Systematic Investment Plans, compare two portfolios side-by-side, and visualize compound growth with Chart.js.',
-        icon: 'ri-line-chart-line', gradient: 'from-cyan-500 to-blue-600',
-        category: 'Finance', tags: ['Chart.js', 'Investing', 'Compound Interest'],
-        complexity: 3, featured: true, cta: 'Open Calculator'
+        href: 'ai-assistant.html', title: 'AI Chat',
+        sub: 'Simulated chatbot interface',
+        icon: 'ri-robot-2-fill', gradient: 'from-indigo-600 to-violet-700',
+        category: 'Utility', featured: true,
+        tags: ['AI', 'Simulation', 'Chat Interface']
+      },
+      {
+        href: 'expense-splitter.html', title: 'Bill Splitter',
+        sub: 'Split expenses with friends',
+        icon: 'ri-group-line', gradient: 'from-violet-500 to-purple-600',
+        category: 'Finance', featured: false,
+        tags: ['Bill Splitting', 'Export', 'Finance']
       },
       {
         href: 'budget.html', title: 'Budget Tracker',
-        description: 'Log income and expenses, visualize spending with pie charts, and track savings goals — all stored locally per user.',
+        sub: 'Income, expenses & savings',
         icon: 'ri-pie-chart-2-line', gradient: 'from-emerald-500 to-teal-600',
-        category: 'Finance', tags: ['Charts', 'Local Storage', 'Personal Finance'],
-        complexity: 3, featured: false, cta: 'Open Tracker'
+        category: 'Finance', featured: false,
+        tags: ['Charts', 'Local Storage', 'Personal Finance']
       },
       {
-        href: 'expense-splitter.html', title: 'Expense Splitter',
-        description: 'Split bills with friends using custom ratios, edit history on the fly, and export the final summary instantly.',
-        icon: 'ri-group-line', gradient: 'from-violet-500 to-purple-600',
-        category: 'Finance', tags: ['Bill Splitting', 'Export', 'Custom Ratios'],
-        complexity: 2, featured: false, cta: 'Split Bills'
-      },
-      {
-        href: 'calculator.html', title: 'Modern Calculator',
-        description: 'A glassmorphism-styled calculator with full keyboard support, operator chaining, history log, and memory functions.',
+        href: 'calculator.html', title: 'Calculator',
+        sub: 'Keyboard-ready with history',
         icon: 'ri-calculator-line', gradient: 'from-orange-500 to-red-500',
-        category: 'Utility', tags: ['Keyboard Support', 'History Log', 'Memory Functions', 'Glassmorphism'],
-        complexity: 3, featured: true, cta: 'Open Calculator'
+        category: 'Utility', featured: true,
+        tags: ['Keyboard', 'History Log', 'Glassmorphism']
+      },
+      {
+        href: 'clock.html', title: 'Clock',
+        sub: 'Digital + analog world clock',
+        icon: 'ri-time-line', gradient: 'from-slate-500 to-slate-700',
+        category: 'Utility', featured: false,
+        tags: ['Real-time', 'Analog', 'World Clocks']
+      },
+      {
+        href: 'fintech-hub.html', title: 'FinTech Hub',
+        sub: 'Banking dashboard & cards',
+        icon: 'ri-bank-card-line', gradient: 'from-blue-600 to-indigo-700',
+        category: 'Finance', featured: true,
+        tags: ['React', 'Dashboard', 'Banking']
+      },
+      {
+        href: 'network.html', title: 'Neural Network',
+        sub: '3D particle system (WebGL)',
+        icon: 'ri-shape-2-fill', gradient: 'from-slate-700 to-slate-900',
+        category: 'Utility', featured: true,
+        tags: ['Three.js', 'WebGL', 'Physics']
       },
       {
         href: 'notepad.html', title: 'Notepad',
-        description: 'A private, zero-server notepad that autosaves everything in your browser. No account, no cloud, no tracking.',
+        sub: 'Private auto-saving notes',
         icon: 'ri-sticky-note-line', gradient: 'from-yellow-500 to-amber-500',
-        category: 'Utility', tags: ['Privacy First', 'Auto-save', 'Local Storage'],
-        complexity: 1, featured: false, cta: 'Open Notepad'
+        category: 'Utility', featured: false,
+        tags: ['Privacy', 'Auto-save', 'Local Storage']
       },
       {
-        href: 'clock.html', title: 'Live Clock',
-        description: 'A dual digital + analog clock with world clocks, floating settings panel, and theme toggle.',
-        icon: 'ri-time-line', gradient: 'from-slate-400 to-slate-600',
-        category: 'Utility', tags: ['Real-time', 'Analog + Digital', 'World Clocks'],
-        complexity: 2, featured: false, cta: 'Open Clock'
+        href: 'pathfinder.html', title: 'Pathfinder',
+        sub: 'A* & Dijkstra visualizer',
+        icon: 'ri-route-line', gradient: 'from-indigo-500 to-purple-600',
+        category: 'Utility', featured: true,
+        tags: ['Algorithms', 'DSA', 'Visualizer']
+      },
+      {
+        href: 'pomodoro-gamified.html', title: 'Pomodoro',
+        sub: 'Focus timer with XP & ranks',
+        icon: 'ri-fire-fill', gradient: 'from-purple-500 to-indigo-600',
+        category: 'Utility', featured: false,
+        tags: ['Productivity', 'Gamification', 'RPG']
+      },
+      {
+        href: 'github-readme-maker.html', title: 'README Maker',
+        sub: 'Auto-generate GitHub READMEs',
+        icon: 'ri-github-fill', gradient: 'from-gray-700 to-gray-900',
+        category: 'Utility', featured: false,
+        tags: ['Automation', 'Markdown', 'GitHub']
+      },
+      {
+        href: 'sip.html', title: 'SIP Calculator',
+        sub: 'Mutual fund growth simulator',
+        icon: 'ri-line-chart-line', gradient: 'from-cyan-500 to-blue-600',
+        category: 'Finance', featured: true,
+        tags: ['Chart.js', 'Investing', 'Compound Interest']
+      },
+      {
+        href: 'typing-speed.html', title: 'Typing Test',
+        sub: 'Live WPM & accuracy tracker',
+        icon: 'ri-keyboard-line', gradient: 'from-cyan-400 to-blue-500',
+        category: 'Utility', featured: true,
+        tags: ['Educational', 'Skill', 'WPM']
       }
     ];
 
     let activeCategory = 'all', activeSearch = '';
 
+    function buildCatFilters() {
+      const cats = ['all', ...new Set(PROJECTS.map(p => p.category))];
+      const bar = document.getElementById('cat-filters');
+      bar.innerHTML = cats.map(c => `
+        <button onclick="setCat('${c}',this)" class="cat-chip ${c==='all'?'active-chip':''} px-4 py-1.5 rounded-full text-xs font-semibold border cursor-pointer transition-all
+          ${c==='all' ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' : 'border-gray-200 dark:border-slate-700/50 bg-white dark:bg-slate-800 text-gray-500 dark:text-slate-400 hover:border-emerald-400/50 hover:text-emerald-500'}">${c==='all'?'All':c}</button>
+      `).join('');
+    }
+
+    function setCat(c, btn) {
+      activeCategory = c;
+      document.querySelectorAll('.cat-chip').forEach(b => {
+        const isActive = b.textContent.trim() === (c==='all'?'All':c);
+        b.className = `cat-chip px-4 py-1.5 rounded-full text-xs font-semibold border cursor-pointer transition-all ${isActive
+          ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 active-chip'
+          : 'border-gray-200 dark:border-slate-700/50 bg-white dark:bg-slate-800 text-gray-500 dark:text-slate-400 hover:border-emerald-400/50 hover:text-emerald-500'}`;
+      });
+      renderProjects();
+    }
+
     function renderProjects() {
       const grid = document.getElementById('projects-grid');
       const noResults = document.getElementById('no-results');
-      const countEl = document.getElementById('result-count');
+      const totalEl = document.getElementById('total-count');
+      const featuredEl = document.getElementById('featured-count');
       const query = activeSearch.toLowerCase().trim();
 
       const filtered = PROJECTS.filter(p => {
         const matchCat = activeCategory === 'all' || p.category === activeCategory;
         const matchQ = !query
           || p.title.toLowerCase().includes(query)
-          || p.description.toLowerCase().includes(query)
+          || p.sub.toLowerCase().includes(query)
           || p.tags.some(t => t.toLowerCase().includes(query))
           || p.category.toLowerCase().includes(query);
         return matchCat && matchQ;
       });
 
-      countEl.textContent = filtered.length === PROJECTS.length
-        ? `${PROJECTS.length} projects`
-        : `${filtered.length} of ${PROJECTS.length} projects`;
+      if (totalEl) totalEl.textContent = PROJECTS.length;
+      if (featuredEl) featuredEl.textContent = PROJECTS.filter(p=>p.featured).length;
 
       if (filtered.length === 0) {
         grid.innerHTML = '';
-        noResults.classList.add('visible');
+        noResults.classList.remove('hidden'); noResults.classList.add('flex');
         return;
       }
-      noResults.classList.remove('visible');
+      noResults.classList.add('hidden'); noResults.classList.remove('flex');
 
       grid.innerHTML = filtered.map((p, i) => `
-        <div class="project-card" style="animation-delay:${i * 55}ms">
-          <a href="${p.href}?theme=${isDark() ? 'dark' : 'light'}" class="card-link h-full bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700/50 hover:border-cyan-500 dark:hover:border-cyan-400 shadow-sm hover:shadow-xl flex flex-col overflow-hidden block">
-            <div class="h-1 w-full bg-gradient-to-r ${p.gradient} flex-shrink-0"></div>
-            <div class="p-4 sm:p-5 flex flex-col flex-1">
-              <div class="flex items-start justify-between mb-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br ${p.gradient} flex items-center justify-center shadow-md">
-                  <i class="${p.icon} text-xl text-white"></i>
-                </div>
-                ${p.featured ? `<span class="text-xs font-bold px-2 py-0.5 rounded-full border border-cyan-400/40 dark:border-cyan-500/30 bg-cyan-50 dark:bg-cyan-900/20 flex items-center gap-1"><span class="featured-text">⭐ Featured</span></span>` : ''}
-              </div>
-              <h2 class="text-sm font-bold text-gray-900 dark:text-slate-100 mb-0.5">${p.title}</h2>
-              <span class="text-xs text-gray-400 dark:text-slate-400 mb-2 flex items-center gap-1">
-                <i class="${p.category === 'Finance' ? 'ri-funds-line' : 'ri-tools-line'}"></i>
-                ${p.category === 'Finance' ? 'Finance Tool' : 'Utility'}
-              </span>
-              <p class="text-xs text-gray-500 dark:text-slate-400 leading-relaxed mb-3 flex-1">${p.description}</p>
-              <div class="flex flex-wrap gap-1 mb-3">
-                ${p.tags.map(t => `<span class="text-xs bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-300 px-2 py-0.5 rounded-full">${t}</span>`).join('')}
-              </div>
-              <div class="flex items-center justify-between pt-2.5 border-t border-gray-100 dark:border-slate-700/50">
-                <div class="flex items-center gap-1">
-                  <span class="text-xs text-gray-400 dark:text-slate-500 mr-1">Complexity</span>
-                  ${[1, 2, 3].map(d => `<span class="w-1.5 h-1.5 rounded-full ${d <= p.complexity ? 'dot-on' : 'dot-off'}"></span>`).join('')}
-                </div>
-                <span class="text-xs font-semibold text-cyan-600 dark:text-cyan-400 flex items-center gap-1">${p.cta} <i class="ri-arrow-right-line"></i></span>
-              </div>
-            </div>
-          </a>
-        </div>
+        <a href="${p.href}?theme=${isDark() ? 'dark' : 'light'}" class="group bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700/50 hover:border-emerald-500 dark:hover:border-emerald-400 shadow-sm hover:shadow-lg p-4 flex flex-col items-center text-center transition-all duration-200" style="animation:fadeUp .35s ease ${i*40}ms both">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br ${p.gradient} flex items-center justify-center shadow-lg mb-3 group-hover:scale-110 transition-transform duration-200">
+            <i class="${p.icon} text-2xl text-white"></i>
+          </div>
+          <h2 class="text-xs font-bold text-gray-900 dark:text-slate-100 mb-0.5 leading-tight">${p.title}</h2>
+          <p class="text-[10px] text-gray-400 dark:text-slate-500 leading-snug">${p.sub}</p>
+        </a>
       `).join('');
     }
 
@@ -265,17 +324,14 @@
 
     function clearSearch() {
       document.getElementById('search-input').value = '';
-      activeSearch = '';
+      activeSearch = ''; activeCategory = 'all';
       document.getElementById('clear-btn').classList.add('hidden');
-      renderProjects();
+      buildCatFilters(); renderProjects();
     }
 
-    function setFilter(btn, cat) {
-      activeCategory = cat;
-      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      renderProjects();
-    }
+    // Legacy setFilter used by old HTML — route to new setCat
+    function setFilter(btn, cat) { setCat(cat, btn); }
+
 
     /* ── Theme helpers ── */
     // .dark on <html> = dark theme. No .dark = light theme. Simple & standard.
@@ -303,6 +359,7 @@
 
     syncIcon();
     updateBackLink();
+    buildCatFilters();
     renderProjects();
   </script>
 </body>

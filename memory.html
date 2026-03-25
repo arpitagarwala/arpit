@@ -86,12 +86,12 @@
       justify-content:center;
     }
     .card-back{
-      background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.1);
-    }
-    .dark .card-back{
       background:rgba(0,0,0,.05);
       border:1px solid rgba(0,0,0,.1);
+    }
+    .dark .card-back{
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.1);
     }
     .card-front{
       transform:rotateY(180deg);
@@ -142,20 +142,20 @@
 
     /* ── Difficulty tab ── */
     .diff-tab{transition:all .2s;}
-    .diff-tab.active{background:rgba(6,182,212,.18);color:#06b6d4;border-color:rgba(6,182,212,.35);}
-    .dark .diff-tab.active{background:rgba(6,182,212,.15);color:#0891b2;border-color:rgba(6,182,212,.3);}
-    .diff-tab:not(.active){color:rgba(255,255,255,.5);border-color:transparent;}
-    .dark .diff-tab:not(.active){color:rgba(0,0,0,.4);border-color:transparent;}
+    .diff-tab.active{background:rgba(6,182,212,.15);color:#0891b2;border-color:rgba(6,182,212,.3);}
+    .dark .diff-tab.active{background:rgba(6,182,212,.18);color:#06b6d4;border-color:rgba(6,182,212,.35);}
+    .diff-tab:not(.active){color:rgba(0,0,0,.4);border-color:transparent;}
+    .dark .diff-tab:not(.active){color:rgba(255,255,255,.5);border-color:transparent;}
 
     /* ── Stat card ── */
     .stat-card{
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.08);
+      background:rgba(0,0,0,.04);
+      border:1px solid rgba(0,0,0,.08);
       border-radius:1rem;
     }
     .dark .stat-card{
-      background:rgba(0,0,0,.04);
-      border:1px solid rgba(0,0,0,.08);
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
     }
 
     /* ── Timer warning ── */
@@ -197,7 +197,7 @@
     <!-- Header -->
     <div class="fade-up text-center">
       <h1 class="text-3xl font-extrabold tracking-tight mb-1">🃏 Memory Cards</h1>
-      <p class="text-sm text-slate-400 dark:text-slate-500">Flip & match all pairs as fast as you can!</p>
+      <p class="text-sm text-slate-500 dark:text-slate-400">Flip & match all pairs as fast as you can!</p>
     </div>
 
     <!-- Difficulty -->
@@ -210,20 +210,20 @@
     <!-- Stats bar -->
     <div class="fade-up grid grid-cols-4 gap-2.5">
       <div class="stat-card flex flex-col items-center justify-center py-3 gap-0.5">
-        <span id="stat-time" class="text-xl font-extrabold mono text-cyan-400 dark:text-cyan-600">0:00</span>
-        <span class="text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-wider">Time</span>
+        <span id="stat-time" class="text-xl font-extrabold mono text-cyan-600 dark:text-cyan-400">0:00</span>
+        <span class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider">Time</span>
       </div>
       <div class="stat-card flex flex-col items-center justify-center py-3 gap-0.5">
-        <span id="stat-moves" class="text-xl font-extrabold mono text-violet-400 dark:text-violet-600">0</span>
-        <span class="text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-wider">Moves</span>
+        <span id="stat-moves" class="text-xl font-extrabold mono text-violet-600 dark:text-violet-400">0</span>
+        <span class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider">Moves</span>
       </div>
       <div class="stat-card flex flex-col items-center justify-center py-3 gap-0.5">
-        <span id="stat-matches" class="text-xl font-extrabold mono text-emerald-400 dark:text-emerald-600">0</span>
-        <span class="text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-wider">Matches</span>
+        <span id="stat-matches" class="text-xl font-extrabold mono text-emerald-600 dark:text-emerald-400">0</span>
+        <span class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider">Matches</span>
       </div>
       <div class="stat-card flex flex-col items-center justify-center py-3 gap-0.5">
-        <span id="stat-best" class="text-xl font-extrabold mono text-amber-400 dark:text-amber-600">--</span>
-        <span class="text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-wider">Best</span>
+        <span id="stat-best" class="text-xl font-extrabold mono text-amber-600 dark:text-amber-400">--</span>
+        <span class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider">Best</span>
       </div>
     </div>
 
@@ -241,31 +241,31 @@
 
   <!-- Win Overlay -->
   <div id="win-overlay" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-    <div id="win-modal" class="w-full max-w-sm bg-slate-900 dark:bg-white rounded-3xl border border-slate-700 dark:border-slate-200 shadow-2xl p-8 flex flex-col items-center gap-5 text-center">
+    <div id="win-modal" class="w-full max-w-sm bg-white dark:bg-slate-800 rounded-3xl border border-slate-700 dark:border-slate-200 shadow-2xl p-8 flex flex-col items-center gap-5 text-center">
       <div class="text-6xl" id="win-trophy">🏆</div>
       <div>
-        <h2 class="text-2xl font-extrabold mb-1 text-slate-50 dark:text-slate-900">You Won!</h2>
-        <p class="text-sm text-slate-400 dark:text-slate-500" id="win-sub"></p>
+        <h2 class="text-2xl font-extrabold mb-1 text-slate-900 dark:text-slate-50">You Won!</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400" id="win-sub"></p>
       </div>
       <div class="w-full grid grid-cols-3 gap-3">
         <div class="stat-card py-3 flex flex-col items-center gap-0.5">
-          <span id="win-time"  class="text-lg font-extrabold text-cyan-400 dark:text-cyan-600 mono"></span>
-          <span class="text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-wider">Time</span>
+          <span id="win-time"  class="text-lg font-extrabold text-cyan-600 dark:text-cyan-400 mono"></span>
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider">Time</span>
         </div>
         <div class="stat-card py-3 flex flex-col items-center gap-0.5">
-          <span id="win-moves" class="text-lg font-extrabold text-violet-400 dark:text-violet-600 mono"></span>
-          <span class="text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-wider">Moves</span>
+          <span id="win-moves" class="text-lg font-extrabold text-violet-600 dark:text-violet-400 mono"></span>
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider">Moves</span>
         </div>
         <div class="stat-card py-3 flex flex-col items-center gap-0.5">
-          <span id="win-score" class="text-lg font-extrabold text-amber-400 dark:text-amber-600 mono"></span>
-          <span class="text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-wider">Score</span>
+          <span id="win-score" class="text-lg font-extrabold text-amber-600 dark:text-amber-400 mono"></span>
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider">Score</span>
         </div>
       </div>
       <div id="win-best-banner" class="hidden w-full py-2.5 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold text-sm">
         🎉 New Best Time!
       </div>
       <div class="flex gap-3 w-full">
-        <button onclick="closeWin()" class="flex-1 py-3 rounded-2xl border border-slate-700 dark:border-slate-200 text-slate-300 dark:text-slate-700 font-semibold text-sm hover:bg-white/5 dark:hover:bg-black/5 transition-all">Close</button>
+        <button onclick="closeWin()" class="flex-1 py-3 rounded-2xl border border-slate-700 dark:border-slate-200 text-slate-700 dark:text-slate-300 font-semibold text-sm hover:bg-white/5 dark:hover:bg-black/5 transition-all">Close</button>
         <button onclick="initGame()" class="flex-1 py-3 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold text-sm shadow-md hover:opacity-90 active:scale-95 transition-all">Play Again</button>
       </div>
     </div>

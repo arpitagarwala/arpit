@@ -1,0 +1,15 @@
+name = "arpit-chatbot"
+main = "worker.js"
+compatibility_date = "2024-09-23"
+
+# KV namespace for storing the knowledge base (chunks + embeddings)
+# After creating the namespace, paste the IDs below:
+# Run: npx wrangler kv namespace create "KNOWLEDGE_BASE"
+# Run: npx wrangler kv namespace create "KNOWLEDGE_BASE" --preview
+[[kv_namespaces]]
+binding = "KNOWLEDGE_BASE"
+id = "d75b970c89b84e44b3435dc12a1eaffd"
+preview_id = "2cfac5e3c4ba415092cb2c6845b74bbe"
+
+[vars]
+ALLOWED_ORIGIN = "*"

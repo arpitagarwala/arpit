@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CA Money Clicker – Arpit Agarwala</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{background:#030a14;font-family:'Inter',sans-serif;min-height:100vh;color:#e2e8f0;overflow-x:hidden;}
+    ::-webkit-scrollbar{width:4px;} ::-webkit-scrollbar-thumb{background:rgba(34,211,238,0.2);border-radius:99px;}
+
+    #back-btn{position:fixed;top:16px;left:16px;z-index:50;width:38px;height:38px;border-radius:50%;background:rgba(5,15,30,0.85);backdrop-filter:blur(10px);border:1px solid rgba(34,211,238,0.2);color:rgba(147,210,255,0.7);display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:18px;transition:all .2s;}
+    #back-btn:hover{border-color:rgba(34,211,238,0.5);color:#22d3ee;}
+
+    .app{max-width:860px;margin:0 auto;padding:64px 16px 32px;}
+
+    /* Header */
+    .header{text-align:center;margin-bottom:28px;}
+    .header h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;background:linear-gradient(135deg,#22d3ee,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
+    .header p{color:rgba(148,163,184,0.6);font-size:.9rem;}
+
+    /* Big click zone */
+    #click-zone{
+      width:clamp(160px,28vw,220px);height:clamp(160px,28vw,220px);
+      border-radius:50%;border:3px solid rgba(34,211,238,0.3);
+      background:radial-gradient(circle at 35% 35%, rgba(34,211,238,0.15), rgba(10,30,60,0.9));
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      cursor:pointer;margin:0 auto 20px;
+      box-shadow:0 0 40px rgba(34,211,238,0.12),0 0 80px rgba(34,211,238,0.05);
+      transition:transform .08s,box-shadow .08s;
+      position:relative;overflow:visible;
+    }
+    #click-zone:active{transform:scale(0.93);box-shadow:0 0 20px rgba(34,211,238,0.25);}
+    #click-zone .coin{font-size:clamp(3rem,8vw,5rem);line-height:1;pointer-events:none;}
+    #click-zone .earn-label{font-size:.7rem;color:rgba(34,211,238,0.6);margin-top:4px;letter-spacing:.1em;pointer-events:none;}
+
+    /* Float labels */
+    .float-coin{position:fixed;pointer-events:none;font-weight:800;color:#22d3ee;font-size:1rem;z-index:999;animation:floatUp .9s ease forwards;}
+    @keyframes floatUp{to{opacity:0;transform:translateY(-80px) scale(0.8);}}
+
+    /* Stats bar */
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
+    .stat-box{background:rgba(15,25,50,0.7);border:1px solid rgba(34,211,238,0.12);border-radius:14px;padding:14px 12px;text-align:center;}
+    .stat-label{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(148,163,184,0.45);margin-bottom:4px;}
+    .stat-val{font-size:1.2rem;font-weight:800;color:#22d3ee;font-variant-numeric:tabular-nums;}
+
+    /* Passive income ticker */
+    #ps-ticker{text-align:center;color:rgba(34,211,238,0.45);font-size:.8rem;margin-bottom:24px;font-weight:500;}
+
+    /* Buildings grid */
+    .section-title{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(148,163,184,0.4);margin-bottom:12px;}
+    .buildings{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    @media(min-width:600px){.buildings{grid-template-columns:repeat(4,1fr);}}
+    .bld{background:rgba(15,25,50,0.75);border:1px solid rgba(34,211,238,0.1);border-radius:16px;padding:14px 12px;cursor:pointer;transition:all .18s;position:relative;}
+    .bld:hover:not(.locked){border-color:rgba(34,211,238,0.4);background:rgba(30,50,90,0.5);transform:translateY(-2px);}
+    .bld.locked{opacity:0.4;cursor:not-allowed;}
+    .bld.affordable{border-color:rgba(34,211,238,0.35);box-shadow:0 0 14px rgba(34,211,238,0.08);}
+    .bld-icon{font-size:1.8rem;margin-bottom:6px;}
+    .bld-name{font-size:.72rem;font-weight:700;color:#e2e8f0;margin-bottom:2px;}
+    .bld-owned{font-size:.65rem;color:rgba(34,211,238,0.6);margin-bottom:6px;}
+    .bld-cost{font-size:.7rem;font-weight:700;color:#22d3ee;background:rgba(34,211,238,0.08);border-radius:8px;padding:3px 8px;display:inline-block;}
+    .bld-ps{font-size:.6rem;color:rgba(148,163,184,0.45);margin-top:3px;}
+    .bld-cnt{position:absolute;top:8px;right:10px;font-size:.7rem;font-weight:800;color:rgba(34,211,238,0.7);}
+
+    /* Prestige */
+    #prestige-btn{display:block;width:100%;margin-top:24px;padding:14px;border-radius:14px;background:linear-gradient(135deg,rgba(139,92,246,0.15),rgba(236,72,153,0.1));border:1px solid rgba(139,92,246,0.3);color:rgba(200,180,255,0.8);font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.06em;}
+    #prestige-btn:hover{background:linear-gradient(135deg,rgba(139,92,246,0.3),rgba(236,72,153,0.2));border-color:rgba(139,92,246,0.6);}
+    #prestige-btn.hidden{display:none;}
+
+    /* Milestones */
+    .milestones{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px;}
+    .badge{background:rgba(255,165,0,0.1);border:1px solid rgba(255,165,0,0.25);border-radius:20px;padding:4px 12px;font-size:.7rem;color:rgba(255,190,80,0.8);font-weight:600;}
+  </style>
+</head>
+<body>
+  <a id="back-btn" href="../../games.html">&#8592;</a>
+
+  <div class="app">
+    <div class="header">
+      <h1>💼 CA Money Clicker</h1>
+      <p>Build your Chartered Accountant empire. Click to earn. Invest to grow.</p>
+    </div>
+
+    <div id="click-zone">
+      <div class="coin">₹</div>
+      <div class="earn-label">+<span id="per-click">1</span> per click</div>
+    </div>
+
+    <div id="ps-ticker">⚡ <span id="ps-val">0</span> / sec passive income</div>
+
+    <div class="stats">
+      <div class="stat-box"><div class="stat-label">Balance</div><div class="stat-val" id="bal-val">₹0</div></div>
+      <div class="stat-box"><div class="stat-label">Total Earned</div><div class="stat-val" id="total-val">₹0</div></div>
+      <div class="stat-box"><div class="stat-label">Prestige</div><div class="stat-val" id="prestige-val">×1</div></div>
+    </div>
+
+    <div class="section-title">Income Buildings</div>
+    <div class="buildings" id="buildings-grid"></div>
+
+    <button id="prestige-btn" class="hidden" onclick="doPrestige()">
+      🌟 Prestige — Reset for ×<span id="prestige-mult">2</span> multiplier
+    </button>
+
+    <div class="milestones" id="milestones"></div>
+  </div>
+
+  <script>
+  // ── Data ──
+  const BUILDINGS = [
+    { id:'intern',  name:'CA Intern',      icon:'📚', base:10,   ps:0.1,  click:0.5,  desc:'Grinding the basics' },
+    { id:'junior',  name:'Junior CA',      icon:'🧾', base:80,   ps:0.5,  click:1,    desc:'Audit & compliance' },
+    { id:'firm',    name:'CA Practice',    icon:'🏢', base:500,  ps:2,    click:3,    desc:'Your own practice' },
+    { id:'tax',     name:'Tax Consultant', icon:'📊', base:2200, ps:8,    click:8,    desc:'Tax planning maven' },
+    { id:'mca',     name:'MCA Filing Firm',icon:'🖥️', base:8000, ps:25,   click:15,   desc:'Corporate compliance' },
+    { id:'audit',   name:'Audit Partner',  icon:'🔍', base:28000,ps:75,   click:40,   desc:'Big 4 calibre' },
+    { id:'invest',  name:'Investment Bank',icon:'📈', base:100000,ps:200, click:100,  desc:'Finance powerhouse' },
+    { id:'empire',  name:'Finance Empire', icon:'🏦', base:500000,ps:800, click:400,  desc:'Legend of the street' },
+  ];
+  const MILESTONES = [
+    {val:100,'label':'First Century ₹'},
+    {val:1000,'label':'₹1K Milestone'},
+    {val:10000,'label':'₹10K Club'},
+    {val:100000,'label':'Lakhpati'},
+    {val:1000000,'label':'Crorepati'},
+    {val:10000000,'label':'Finance God'},
+  ];
+
+  // ── State ──
+  let state = JSON.parse(localStorage.getItem('ca-clicker') || '{}');
+  function def(k, v) { if (state[k] === undefined) state[k] = v; }
+  def('bal', 0); def('total', 0); def('prestige', 1); def('owned', {});
+  def('badges', []);
+
+  function save() { localStorage.setItem('ca-clicker', JSON.stringify(state)); }
+
+  function perClick() {
+    let base = 1;
+    BUILDINGS.forEach(b => base += (state.owned[b.id]||0) * b.click);
+    return Math.ceil(base * state.prestige);
+  }
+
+  function perSec() {
+    let ps = 0;
+    BUILDINGS.forEach(b => ps += (state.owned[b.id]||0) * b.ps);
+    return ps * state.prestige;
+  }
+
+  function buildingCost(b) {
+    return Math.ceil(b.base * Math.pow(1.15, state.owned[b.id]||0));
+  }
+
+  // ── Click handler ──
+  document.getElementById('click-zone').addEventListener('click', e => {
+    const earn = perClick();
+    state.bal   += earn;
+    state.total += earn;
+    save();
+    updateUI();
+    spawnFloat(e.clientX, e.clientY, `+₹${fmt(earn)}`);
+    checkMilestones();
+  });
+
+  // ── Float label ──
+  function spawnFloat(x, y, text) {
+    const el = document.createElement('div');
+    el.className = 'float-coin';
+    el.textContent = text;
+    el.style.left = x + 'px'; el.style.top = y + 'px';
+    document.body.appendChild(el);
+    el.addEventListener('animationend', () => el.remove());
+  }
+
+  // ── Buildings ──
+  function buildBuildingGrid() {
+    const grid = document.getElementById('buildings-grid');
+    grid.innerHTML = BUILDINGS.map(b => `
+      <div class="bld ${state.bal < buildingCost(b) ? '' : 'affordable'}" id="bld-${b.id}" onclick="buy('${b.id}')">
+        <div class="bld-cnt">${state.owned[b.id]||0}</div>
+        <div class="bld-icon">${b.icon}</div>
+        <div class="bld-name">${b.name}</div>
+        <div class="bld-owned">${b.desc}</div>
+        <div class="bld-cost">₹${fmt(buildingCost(b))}</div>
+        <div class="bld-ps">+${b.ps}/s +${b.click}/click</div>
+      </div>`).join('');
+  }
+
+  function buy(id) {
+    const b = BUILDINGS.find(x => x.id === id);
+    const cost = buildingCost(b);
+    if (state.bal < cost) return;
+    state.bal -= cost;
+    state.owned[b.id] = (state.owned[b.id]||0) + 1;
+    save(); updateUI();
+  }
+
+  // ── Prestige ──
+  function doPrestige() {
+    if (state.total < 100000) return;
+    const mult = Math.floor(state.total / 100000) + 1;
+    state.prestige = mult;
+    state.bal = 0; state.total = 0; state.owned = {};
+    save(); updateUI(); buildBuildingGrid();
+  }
+
+  // ── Milestones ──
+  function checkMilestones() {
+    MILESTONES.forEach(m => {
+      if (state.total >= m.val && !state.badges.includes(m.label)) {
+        state.badges.push(m.label);
+        save();
+        renderBadges();
+      }
+    });
+  }
+
+  function renderBadges() {
+    document.getElementById('milestones').innerHTML =
+      state.badges.map(b => `<div class="badge">🏆 ${b}</div>`).join('');
+  }
+
+  // ── Format numbers ──
+  function fmt(n) {
+    if (n >= 1e7) return (n/1e7).toFixed(1)+'Cr';
+    if (n >= 1e5) return (n/1e5).toFixed(1)+'L';
+    if (n >= 1e3) return (n/1e3).toFixed(1)+'K';
+    return Math.floor(n).toString();
+  }
+
+  // ── UI update ──
+  function updateUI() {
+    document.getElementById('bal-val').textContent   = '₹'+fmt(state.bal);
+    document.getElementById('total-val').textContent = '₹'+fmt(state.total);
+    document.getElementById('prestige-val').textContent = '×'+state.prestige;
+    document.getElementById('per-click').textContent = fmt(perClick());
+    document.getElementById('ps-val').textContent    = fmt(perSec());
+    // Prestige btn
+    const pb = document.getElementById('prestige-btn');
+    if (state.total >= 100000) {
+      pb.classList.remove('hidden');
+      document.getElementById('prestige-mult').textContent = Math.floor(state.total/100000)+1;
+    } else pb.classList.add('hidden');
+    // Update building grid cheaply
+    BUILDINGS.forEach(b => {
+      const el = document.getElementById('bld-'+b.id);
+      if (!el) return;
+      const cost = buildingCost(b);
+      el.classList.toggle('affordable', state.bal >= cost);
+      el.querySelector('.bld-cost').textContent = '₹'+fmt(cost);
+      el.querySelector('.bld-cnt').textContent  = state.owned[b.id]||0;
+    });
+  }
+
+  // ── Passive income tick ──
+  let lastTick = Date.now();
+  setInterval(() => {
+    const now = Date.now();
+    const dt = (now - lastTick) / 1000;
+    lastTick = now;
+    const earn = perSec() * dt;
+    if (earn > 0) { state.bal += earn; state.total += earn; }
+    save(); updateUI(); checkMilestones();
+  }, 250);
+
+  // ── Init ──
+  buildBuildingGrid(); updateUI(); renderBadges();
+
+  // Back link
+  const stored = localStorage.getItem('theme');
+  document.getElementById('back-btn').href = `../../games.html?theme=${stored==='dark'?'dark':'light'}`;
+  </script>
+</body>
+</html>

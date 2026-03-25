@@ -51,8 +51,8 @@
       if (param === 'dark' || param === 'light') { theme = param; localStorage.setItem('theme', theme); }
       else if (stored === 'dark' || stored === 'light') { theme = stored; }
       else { theme = prefersDark ? 'dark' : 'light'; }
-              if (theme === 'dark') { document.documentElement.classList.remove('dark'); }
-              else { document.documentElement.classList.add('dark'); }
+              if (theme === 'dark') { document.documentElement.classList.add('dark'); }
+              else { document.documentElement.classList.remove('dark'); }
     })();
   </script>
 
@@ -67,12 +67,12 @@
 <link rel="stylesheet" href="css/global.css">
 </head>
 
-<body class="bg-slate-950 dark:bg-slate-50 text-slate-100 dark:text-slate-900 min-h-screen transition-colors duration-300">
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-300">
 
   <!-- ── Back Button ── -->
   <div class="fixed top-4 left-4 z-50">
     <a href="projects.html"
-       class="internal-link w-10 h-10 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-700 dark:border-slate-200 text-slate-300 dark:text-slate-700 hover:border-cyan-400 dark:hover:border-cyan-400 hover:text-cyan-400 dark:hover:text-cyan-500 shadow-lg transition-all duration-200">
+       class="internal-link w-10 h-10 flex items-center justify-center rounded-full bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-cyan-500 dark:hover:border-cyan-400 hover:text-cyan-600 dark:hover:text-cyan-400 shadow-lg transition-all duration-200">
       <i class="ri-arrow-left-line text-lg"></i>
     </a>
   </div>
@@ -80,7 +80,7 @@
   <!-- ── Theme Toggle ── -->
   <div class="fixed top-4 right-4 z-50">
     <button onclick="toggleTheme()"
-            class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-700 dark:border-slate-200 text-slate-300 dark:text-slate-700 hover:border-cyan-400 dark:hover:border-cyan-400 hover:text-cyan-400 dark:hover:text-cyan-500 shadow-lg transition-all duration-200">
+            class="w-10 h-10 flex items-center justify-center rounded-full bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-cyan-500 dark:hover:border-cyan-400 hover:text-cyan-600 dark:hover:text-cyan-400 shadow-lg transition-all duration-200">
       <i id="theme-icon" class="text-lg"></i>
     </button>
   </div>
@@ -93,51 +93,51 @@
       <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg glow-cyan mb-4">
         <i class="ri-line-chart-line text-3xl text-white"></i>
       </div>
-      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-100 dark:text-slate-900">SIP Calculator</h1>
-      <p class="mt-2 text-slate-400 dark:text-slate-500 text-sm">Plan your wealth systematically. Visualise, compare and grow.</p>
+      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">SIP Calculator</h1>
+      <p class="mt-2 text-slate-500 dark:text-slate-400 text-sm">Plan your wealth systematically. Visualise, compare and grow.</p>
     </div>
 
     <!-- COMPARE TOGGLE + STEP-UP ROW -->
     <div class="flex flex-wrap items-center justify-center gap-3 fade-up fade-up-2">
       <!-- Compare -->
-      <label class="inline-flex items-center gap-3 cursor-pointer bg-slate-800 dark:bg-white px-4 py-2.5 rounded-2xl shadow border border-slate-700 dark:border-slate-200 hover:border-cyan-400 dark:hover:border-cyan-400 transition-all duration-200">
+      <label class="inline-flex items-center gap-3 cursor-pointer bg-white dark:bg-slate-800 px-4 py-2.5 rounded-2xl shadow border border-slate-200 dark:border-slate-700 hover:border-cyan-400 dark:hover:border-cyan-400 transition-all duration-200">
         <input type="checkbox" id="compareToggle" class="sr-only">
-        <div id="toggle-track" class="toggle-track relative w-11 h-6 bg-slate-600 dark:bg-slate-300 rounded-full">
+        <div id="toggle-track" class="toggle-track relative w-11 h-6 bg-slate-300 dark:bg-slate-600 rounded-full">
           <div id="toggle-thumb" class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-250"></div>
         </div>
-        <span class="text-sm font-semibold text-slate-300 dark:text-slate-700">Compare Two SIPs</span>
+        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">Compare Two SIPs</span>
       </label>
 
       <!-- Step-up toggle -->
-      <label class="inline-flex items-center gap-3 cursor-pointer bg-slate-800 dark:bg-white px-4 py-2.5 rounded-2xl shadow border border-slate-700 dark:border-slate-200 hover:border-cyan-400 dark:hover:border-cyan-400 transition-all duration-200">
+      <label class="inline-flex items-center gap-3 cursor-pointer bg-white dark:bg-slate-800 px-4 py-2.5 rounded-2xl shadow border border-slate-200 dark:border-slate-700 hover:border-cyan-400 dark:hover:border-cyan-400 transition-all duration-200">
         <input type="checkbox" id="stepupToggle" class="sr-only">
-        <div id="stepup-track" class="toggle-track relative w-11 h-6 bg-slate-600 dark:bg-slate-300 rounded-full">
+        <div id="stepup-track" class="toggle-track relative w-11 h-6 bg-slate-300 dark:bg-slate-600 rounded-full">
           <div id="stepup-thumb" class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-250"></div>
         </div>
-        <span class="text-sm font-semibold text-slate-300 dark:text-slate-700">Step-up SIP</span>
+        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">Step-up SIP</span>
         <span data-tip="Annual % increase in monthly investment" class="text-slate-500 text-xs"><i class="ri-question-line"></i></span>
       </label>
 
       <!-- Inflation toggle -->
-      <label class="inline-flex items-center gap-3 cursor-pointer bg-slate-800 dark:bg-white px-4 py-2.5 rounded-2xl shadow border border-slate-700 dark:border-slate-200 hover:border-cyan-400 dark:hover:border-cyan-400 transition-all duration-200">
+      <label class="inline-flex items-center gap-3 cursor-pointer bg-white dark:bg-slate-800 px-4 py-2.5 rounded-2xl shadow border border-slate-200 dark:border-slate-700 hover:border-cyan-400 dark:hover:border-cyan-400 transition-all duration-200">
         <input type="checkbox" id="inflationToggle" class="sr-only">
-        <div id="inflation-track" class="toggle-track relative w-11 h-6 bg-slate-600 dark:bg-slate-300 rounded-full">
+        <div id="inflation-track" class="toggle-track relative w-11 h-6 bg-slate-300 dark:bg-slate-600 rounded-full">
           <div id="inflation-thumb" class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-250"></div>
         </div>
-        <span class="text-sm font-semibold text-slate-300 dark:text-slate-700">Inflation Adjusted</span>
+        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">Inflation Adjusted</span>
         <span data-tip="Shows real purchasing power of maturity amount" class="text-slate-500 text-xs"><i class="ri-question-line"></i></span>
       </label>
     </div>
 
     <!-- STEP-UP RATE INPUT (hidden until toggled) -->
     <div id="stepup-panel" class="hidden fade-up">
-      <div class="max-w-sm mx-auto bg-slate-800 dark:bg-white p-5 rounded-2xl border border-cyan-500/40 dark:border-cyan-400/40 shadow">
+      <div class="max-w-sm mx-auto bg-white dark:bg-slate-800 p-5 rounded-2xl border border-cyan-400/40 dark:border-cyan-500/40 shadow">
         <div class="flex items-center justify-between mb-3">
-          <label class="text-sm font-semibold text-cyan-400 dark:text-cyan-600"><i class="ri-arrow-up-circle-line mr-1"></i>Annual Step-up Rate</label>
+          <label class="text-sm font-semibold text-cyan-600 dark:text-cyan-400"><i class="ri-arrow-up-circle-line mr-1"></i>Annual Step-up Rate</label>
           <div class="flex items-center gap-1">
             <input type="number" id="stepup-input" value="10" min="1" max="50" step="1"
-                   class="w-16 px-2 py-1 text-right font-bold text-cyan-400 dark:text-cyan-600 bg-slate-700 dark:bg-cyan-50 rounded-lg border border-slate-600 dark:border-cyan-200 focus:ring-2 focus:ring-cyan-500 outline-none text-sm">
-            <span class="text-cyan-400 dark:text-cyan-600 font-bold">%</span>
+                   class="w-16 px-2 py-1 text-right font-bold text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-slate-700 rounded-lg border border-cyan-200 dark:border-slate-600 focus:ring-2 focus:ring-cyan-500 outline-none text-sm">
+            <span class="text-cyan-600 dark:text-cyan-400 font-bold">%</span>
           </div>
         </div>
         <input type="range" id="stepup-range" min="1" max="50" step="1" value="10" class="w-full range-cyan">
@@ -147,13 +147,13 @@
 
     <!-- INFLATION RATE INPUT (hidden until toggled) -->
     <div id="inflation-panel" class="hidden fade-up">
-      <div class="max-w-sm mx-auto bg-slate-800 dark:bg-white p-5 rounded-2xl border border-violet-500/40 dark:border-violet-400/40 shadow">
+      <div class="max-w-sm mx-auto bg-white dark:bg-slate-800 p-5 rounded-2xl border border-violet-400/40 dark:border-violet-500/40 shadow">
         <div class="flex items-center justify-between mb-3">
-          <label class="text-sm font-semibold text-violet-400 dark:text-violet-600"><i class="ri-funds-line mr-1"></i>Expected Inflation Rate</label>
+          <label class="text-sm font-semibold text-violet-600 dark:text-violet-400"><i class="ri-funds-line mr-1"></i>Expected Inflation Rate</label>
           <div class="flex items-center gap-1">
             <input type="number" id="inflation-input" value="6" min="1" max="20" step="0.5"
-                   class="w-16 px-2 py-1 text-right font-bold text-violet-400 dark:text-violet-600 bg-slate-700 dark:bg-violet-50 rounded-lg border border-slate-600 dark:border-violet-200 focus:ring-2 focus:ring-violet-500 outline-none text-sm">
-            <span class="text-violet-400 dark:text-violet-600 font-bold">%</span>
+                   class="w-16 px-2 py-1 text-right font-bold text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-slate-700 rounded-lg border border-violet-200 dark:border-slate-600 focus:ring-2 focus:ring-violet-500 outline-none text-sm">
+            <span class="text-violet-600 dark:text-violet-400 font-bold">%</span>
           </div>
         </div>
         <input type="range" id="inflation-range" min="1" max="20" step="0.5" value="6" class="w-full range-violet">
@@ -165,22 +165,22 @@
     <div id="input-container" class="grid grid-cols-1 gap-5 fade-up fade-up-3">
 
       <!-- SIP A -->
-      <div class="app-card bg-slate-800 dark:bg-white p-6 rounded-3xl shadow-xl border border-slate-700/50 dark:border-slate-200">
+      <div class="app-card bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-700/50">
         <div class="flex items-center gap-3 mb-6">
           <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow">
             <i class="ri-bar-chart-fill text-white text-lg"></i>
           </div>
-          <h2 id="sip-a-title" class="text-lg font-bold text-slate-100 dark:text-slate-900">SIP</h2>
+          <h2 id="sip-a-title" class="text-lg font-bold text-slate-900 dark:text-slate-100">SIP</h2>
         </div>
         <div class="space-y-5">
           <!-- Amount -->
           <div>
             <div class="flex items-center justify-between mb-2">
-              <label class="text-sm font-medium text-slate-400 dark:text-slate-500">Monthly Investment</label>
+              <label class="text-sm font-medium text-slate-500 dark:text-slate-400">Monthly Investment</label>
               <div class="flex items-center gap-1.5">
-                <span class="font-bold text-cyan-400 dark:text-cyan-600">₹</span>
+                <span class="font-bold text-cyan-600 dark:text-cyan-400">₹</span>
                 <input type="number" id="a-amount-input" min="500" max="100000" step="100"
-                       class="w-28 px-3 py-1.5 text-right font-semibold text-slate-100 dark:text-slate-900 bg-slate-700 dark:bg-cyan-50 rounded-xl border border-slate-600 dark:border-cyan-200 focus:ring-2 focus:ring-cyan-500 outline-none transition-all text-sm">
+                       class="w-28 px-3 py-1.5 text-right font-semibold text-slate-900 dark:text-slate-100 bg-cyan-50 dark:bg-slate-700 rounded-xl border border-cyan-200 dark:border-slate-600 focus:ring-2 focus:ring-cyan-500 outline-none transition-all text-sm">
               </div>
             </div>
             <input type="range" id="a-amount-range" min="500" max="100000" step="100" class="w-full range-cyan">
@@ -189,11 +189,11 @@
           <!-- Rate -->
           <div>
             <div class="flex items-center justify-between mb-2">
-              <label class="text-sm font-medium text-slate-400 dark:text-slate-500">Expected Annual Return</label>
+              <label class="text-sm font-medium text-slate-500 dark:text-slate-400">Expected Annual Return</label>
               <div class="flex items-center gap-1.5">
                 <input type="number" id="a-rate-input" min="1" max="30" step="0.1"
-                       class="w-20 px-3 py-1.5 text-right font-semibold text-slate-100 dark:text-slate-900 bg-slate-700 dark:bg-cyan-50 rounded-xl border border-slate-600 dark:border-cyan-200 focus:ring-2 focus:ring-cyan-500 outline-none transition-all text-sm">
-                <span class="font-bold text-cyan-400 dark:text-cyan-600">%</span>
+                       class="w-20 px-3 py-1.5 text-right font-semibold text-slate-900 dark:text-slate-100 bg-cyan-50 dark:bg-slate-700 rounded-xl border border-cyan-200 dark:border-slate-600 focus:ring-2 focus:ring-cyan-500 outline-none transition-all text-sm">
+                <span class="font-bold text-cyan-600 dark:text-cyan-400">%</span>
               </div>
             </div>
             <input type="range" id="a-rate-range" min="1" max="30" step="0.1" class="w-full range-cyan">
@@ -202,11 +202,11 @@
           <!-- Years -->
           <div>
             <div class="flex items-center justify-between mb-2">
-              <label class="text-sm font-medium text-slate-400 dark:text-slate-500">Time Period</label>
+              <label class="text-sm font-medium text-slate-500 dark:text-slate-400">Time Period</label>
               <div class="flex items-center gap-1.5">
                 <input type="number" id="a-years-input" min="1" max="50" step="1"
-                       class="w-20 px-3 py-1.5 text-right font-semibold text-slate-100 dark:text-slate-900 bg-slate-700 dark:bg-cyan-50 rounded-xl border border-slate-600 dark:border-cyan-200 focus:ring-2 focus:ring-cyan-500 outline-none transition-all text-sm">
-                <span class="font-medium text-cyan-400 dark:text-cyan-600 text-sm">Yrs</span>
+                       class="w-20 px-3 py-1.5 text-right font-semibold text-slate-900 dark:text-slate-100 bg-cyan-50 dark:bg-slate-700 rounded-xl border border-cyan-200 dark:border-slate-600 focus:ring-2 focus:ring-cyan-500 outline-none transition-all text-sm">
+                <span class="font-medium text-cyan-600 dark:text-cyan-400 text-sm">Yrs</span>
               </div>
             </div>
             <input type="range" id="a-years-range" min="1" max="50" step="1" class="w-full range-cyan">
@@ -216,21 +216,21 @@
       </div>
 
       <!-- SIP B -->
-      <div id="sip-b-panel" class="hidden app-card bg-slate-800 dark:bg-white p-6 rounded-3xl shadow-xl border border-slate-700/50 dark:border-slate-200">
+      <div id="sip-b-panel" class="hidden app-card bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-700/50">
         <div class="flex items-center gap-3 mb-6">
           <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow">
             <i class="ri-bar-chart-2-fill text-white text-lg"></i>
           </div>
-          <h2 class="text-lg font-bold text-slate-100 dark:text-slate-900">SIP B</h2>
+          <h2 class="text-lg font-bold text-slate-900 dark:text-slate-100">SIP B</h2>
         </div>
         <div class="space-y-5">
           <div>
             <div class="flex items-center justify-between mb-2">
-              <label class="text-sm font-medium text-slate-400 dark:text-slate-500">Monthly Investment</label>
+              <label class="text-sm font-medium text-slate-500 dark:text-slate-400">Monthly Investment</label>
               <div class="flex items-center gap-1.5">
-                <span class="font-bold text-violet-400 dark:text-violet-600">₹</span>
+                <span class="font-bold text-violet-600 dark:text-violet-400">₹</span>
                 <input type="number" id="b-amount-input" min="500" max="100000" step="100"
-                       class="w-28 px-3 py-1.5 text-right font-semibold text-slate-100 dark:text-slate-900 bg-slate-700 dark:bg-violet-50 rounded-xl border border-slate-600 dark:border-violet-200 focus:ring-2 focus:ring-violet-500 outline-none transition-all text-sm">
+                       class="w-28 px-3 py-1.5 text-right font-semibold text-slate-900 dark:text-slate-100 bg-violet-50 dark:bg-slate-700 rounded-xl border border-violet-200 dark:border-slate-600 focus:ring-2 focus:ring-violet-500 outline-none transition-all text-sm">
               </div>
             </div>
             <input type="range" id="b-amount-range" min="500" max="100000" step="100" class="w-full range-violet">
@@ -238,11 +238,11 @@
           </div>
           <div>
             <div class="flex items-center justify-between mb-2">
-              <label class="text-sm font-medium text-slate-400 dark:text-slate-500">Expected Annual Return</label>
+              <label class="text-sm font-medium text-slate-500 dark:text-slate-400">Expected Annual Return</label>
               <div class="flex items-center gap-1.5">
                 <input type="number" id="b-rate-input" min="1" max="30" step="0.1"
-                       class="w-20 px-3 py-1.5 text-right font-semibold text-slate-100 dark:text-slate-900 bg-slate-700 dark:bg-violet-50 rounded-xl border border-slate-600 dark:border-violet-200 focus:ring-2 focus:ring-violet-500 outline-none transition-all text-sm">
-                <span class="font-bold text-violet-400 dark:text-violet-600">%</span>
+                       class="w-20 px-3 py-1.5 text-right font-semibold text-slate-900 dark:text-slate-100 bg-violet-50 dark:bg-slate-700 rounded-xl border border-violet-200 dark:border-slate-600 focus:ring-2 focus:ring-violet-500 outline-none transition-all text-sm">
+                <span class="font-bold text-violet-600 dark:text-violet-400">%</span>
               </div>
             </div>
             <input type="range" id="b-rate-range" min="1" max="30" step="0.1" class="w-full range-violet">
@@ -250,11 +250,11 @@
           </div>
           <div>
             <div class="flex items-center justify-between mb-2">
-              <label class="text-sm font-medium text-slate-400 dark:text-slate-500">Time Period</label>
+              <label class="text-sm font-medium text-slate-500 dark:text-slate-400">Time Period</label>
               <div class="flex items-center gap-1.5">
                 <input type="number" id="b-years-input" min="1" max="50" step="1"
-                       class="w-20 px-3 py-1.5 text-right font-semibold text-slate-100 dark:text-slate-900 bg-slate-700 dark:bg-violet-50 rounded-xl border border-slate-600 dark:border-violet-200 focus:ring-2 focus:ring-violet-500 outline-none transition-all text-sm">
-                <span class="font-medium text-violet-400 dark:text-violet-600 text-sm">Yrs</span>
+                       class="w-20 px-3 py-1.5 text-right font-semibold text-slate-900 dark:text-slate-100 bg-violet-50 dark:bg-slate-700 rounded-xl border border-violet-200 dark:border-slate-600 focus:ring-2 focus:ring-violet-500 outline-none transition-all text-sm">
+                <span class="font-medium text-violet-600 dark:text-violet-400 text-sm">Yrs</span>
               </div>
             </div>
             <input type="range" id="b-years-range" min="1" max="50" step="1" class="w-full range-violet">
@@ -346,19 +346,19 @@
     </div>
 
     <!-- CHART -->
-    <div class="app-card fade-up fade-up-5 bg-slate-800 dark:bg-white p-6 rounded-3xl shadow-xl border border-slate-700/50 dark:border-slate-200">
+    <div class="app-card fade-up fade-up-5 bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-700/50">
       <div class="flex items-center justify-between mb-5">
-        <h3 class="font-bold text-slate-200 dark:text-slate-800 flex items-center gap-2">
+        <h3 class="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
           <i class="ri-line-chart-line text-cyan-400"></i> Growth Projection
         </h3>
         <!-- Chart type tabs -->
-        <div class="flex gap-1 bg-slate-700 dark:bg-slate-100 rounded-xl p-1">
+        <div class="flex gap-1 bg-slate-100 dark:bg-slate-700 rounded-xl p-1">
           <button onclick="setChartType('line')" id="tab-line"
-                  class="tab-btn active text-xs font-semibold px-3 py-1.5 rounded-lg text-slate-300 dark:text-slate-600 hover:text-cyan-400 transition-colors">
+                  class="tab-btn active text-xs font-semibold px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-cyan-400 transition-colors">
             Line
           </button>
           <button onclick="setChartType('bar')" id="tab-bar"
-                  class="tab-btn text-xs font-semibold px-3 py-1.5 rounded-lg text-slate-300 dark:text-slate-600 hover:text-cyan-400 transition-colors">
+                  class="tab-btn text-xs font-semibold px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-cyan-400 transition-colors">
             Bar
           </button>
         </div>
@@ -367,9 +367,9 @@
     </div>
 
     <!-- YEAR-BY-YEAR TABLE -->
-    <div class="app-card fade-up fade-up-5 bg-slate-800 dark:bg-white rounded-3xl shadow-xl border border-slate-700/50 dark:border-slate-200 overflow-hidden">
-      <button onclick="toggleTable()" class="w-full flex items-center justify-between px-6 py-4 hover:bg-slate-700/40 dark:hover:bg-slate-50 transition-colors">
-        <span class="font-bold text-slate-200 dark:text-slate-800 flex items-center gap-2">
+    <div class="app-card fade-up fade-up-5 bg-white dark:bg-slate-800 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-700/50 overflow-hidden">
+      <button onclick="toggleTable()" class="w-full flex items-center justify-between px-6 py-4 hover:bg-slate-50 dark:hover:bg-slate-700/40 transition-colors">
+        <span class="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
           <i class="ri-table-line text-cyan-400"></i> Year-by-Year Breakdown
         </span>
         <i id="table-chevron" class="ri-arrow-down-s-line text-slate-400 transition-transform duration-300"></i>
@@ -378,12 +378,12 @@
         <div class="overflow-x-auto">
           <table class="w-full text-sm">
             <thead>
-              <tr class="bg-slate-700/50 dark:bg-slate-100">
-                <th class="text-left px-6 py-3 font-semibold text-slate-300 dark:text-slate-600">Year</th>
-                <th class="text-right px-6 py-3 font-semibold text-slate-300 dark:text-slate-600">Invested</th>
-                <th class="text-right px-6 py-3 font-semibold text-slate-300 dark:text-slate-600">Corpus Value</th>
-                <th class="text-right px-6 py-3 font-semibold text-slate-300 dark:text-slate-600">Gains</th>
-                <th class="text-right px-6 py-3 font-semibold text-cyan-400 dark:text-cyan-600" id="b-col-header" style="display:none">SIP B Corpus</th>
+              <tr class="bg-slate-100 dark:bg-slate-700/50">
+                <th class="text-left px-6 py-3 font-semibold text-slate-600 dark:text-slate-300">Year</th>
+                <th class="text-right px-6 py-3 font-semibold text-slate-600 dark:text-slate-300">Invested</th>
+                <th class="text-right px-6 py-3 font-semibold text-slate-600 dark:text-slate-300">Corpus Value</th>
+                <th class="text-right px-6 py-3 font-semibold text-slate-600 dark:text-slate-300">Gains</th>
+                <th class="text-right px-6 py-3 font-semibold text-cyan-600 dark:text-cyan-400" id="b-col-header" style="display:none">SIP B Corpus</th>
               </tr>
             </thead>
             <tbody id="year-table"></tbody>
@@ -393,7 +393,7 @@
     </div>
 
     <!-- FOOTER -->
-    <div class="text-center text-xs text-slate-500 dark:text-slate-400 py-4">
+    <div class="text-center text-xs text-slate-400 dark:text-slate-500 py-4">
       &copy; 2026 Arpit Agarwala. Crafted with <span class="text-red-400">♥</span>
     </div>
   </div>
@@ -485,9 +485,8 @@
     function drawChart(rowsA, rowsB) {
       const labels = rowsA.map(r => `Yr ${r.year}`);
       const isDark = document.documentElement.classList.contains('dark');
-      const textColor = isDark ? '#475569' : '#94a3b8';
-      const gridColor = isDark ? '#f1f5f9' : '#1e293b';
-
+      const textColor = isDark ? '#94a3b8' : '#475569';
+      
       if (sipChart) sipChart.destroy();
       const ctx = $('sipChart').getContext('2d');
 
@@ -526,8 +525,8 @@
             }
           },
           scales: {
-            x: { ticks: { color: textColor, font: { size: 11 } }, grid: { color: gridColor } },
-            y: { ticks: { color: textColor, font: { size: 11 }, callback: v => fmt(v) }, grid: { color: gridColor } }
+            x: { ticks: { color: textColor, font: { size: 11 } }, grid: { display: false } },
+            y: { ticks: { color: textColor, font: { size: 11 }, callback: v => fmt(v) }, grid: { display: false } }
           }
         }
       });
@@ -540,12 +539,12 @@
       bCol.style.display = rowsB.length ? '' : 'none';
       tbody.innerHTML = rowsA.map((r, i) => {
         const bCell = rowsB.length ? `<td class="text-right px-6 py-3 text-violet-400 dark:text-violet-600 font-semibold">${fmt(rowsB[i]?.corpus ?? 0)}</td>` : '';
-        const alt = i % 2 === 0 ? 'bg-slate-700/20 dark:bg-slate-50' : '';
-        return `<tr class="${alt} border-t border-slate-700/30 dark:border-slate-100">
+        const alt = i % 2 === 0 ? 'bg-slate-50 dark:bg-slate-700/20' : '';
+        return `<tr class="${alt} border-t border-slate-200 dark:border-slate-700/30">
           <td class="px-6 py-3 font-semibold text-slate-300 dark:text-slate-700">Year ${r.year}</td>
-          <td class="text-right px-6 py-3 text-slate-400 dark:text-slate-500">${fmt(r.invested)}</td>
-          <td class="text-right px-6 py-3 text-cyan-400 dark:text-cyan-600 font-semibold">${fmt(r.corpus)}</td>
-          <td class="text-right px-6 py-3 text-green-400 dark:text-green-600">${fmt(r.gains)}</td>
+          <td class="text-right px-6 py-3 text-slate-500 dark:text-slate-400">${fmt(r.invested)}</td>
+          <td class="text-right px-6 py-3 text-cyan-600 dark:text-cyan-400 font-semibold">${fmt(r.corpus)}</td>
+          <td class="text-right px-6 py-3 text-green-600 dark:text-green-400">${fmt(r.gains)}</td>
           ${bCell}
         </tr>`;
       }).join('');
@@ -693,15 +692,15 @@
       const icon = $('theme-icon');
       const isDark = html.classList.contains('dark');
       html.classList.toggle('dark', !isDark);
-              localStorage.setItem('theme', isDark ? 'dark' : 'light');
-              icon.className = isDark ? 'ri-sun-line text-lg' : 'ri-moon-line text-lg';
+              localStorage.setItem('theme', isDark ? 'light' : 'dark');
+              icon.className = isDark ? 'ri-moon-line text-lg' : 'ri-sun-line text-lg';
       update();
       updateAllLinks();
     }
 
 
     // ── Theme helpers ──
-            function isDark() { return !document.documentElement.classList.contains('dark'); }
+            function isDark() { return document.documentElement.classList.contains('dark'); }
     function updateAllLinks() {
       var theme = isDark() ? 'dark' : 'light';
       document.querySelectorAll('a.internal-link').forEach(function (a) {

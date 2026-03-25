@@ -1,0 +1,15 @@
+{
+  "name": "ca-chatbot-worker",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.9",
+    "pdf-parse": "^1.1.1"
+  }
+}

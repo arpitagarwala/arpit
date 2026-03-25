@@ -1,0 +1,16 @@
+{
+  "name": "arpit-chatbot-worker",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npx wrangler dev",
+    "deploy": "npx wrangler deploy",
+    "ingest": "node ingest.js"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  },
+  "dependencies": {
+    "pdf-parse": "^2.4.5"
+  }
+}

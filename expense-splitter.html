@@ -75,31 +75,31 @@
   </style>
 </head>
 
-<body class="bg-slate-950 dark:bg-slate-50 text-slate-100 dark:text-slate-900 min-h-screen transition-colors duration-300">
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-300">
 
   <!-- TOAST -->
   <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 opacity-0 translate-y-4 pointer-events-none">
-    <div id="toast-msg" class="px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-800 dark:bg-white text-slate-100 dark:text-slate-900 border border-slate-700 dark:border-slate-200 shadow-lg"></div>
+    <div id="toast-msg" class="px-5 py-2.5 rounded-xl text-sm font-semibold bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-700 shadow-lg"></div>
   </div>
 
   <!-- CONFIRM MODAL -->
-  <div id="confirm-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/60 dark:bg-white/50 backdrop-blur-sm">
-    <div class="bg-slate-800 dark:bg-white rounded-3xl shadow-2xl p-7 w-full max-w-xs mx-4 border border-slate-700 dark:border-slate-200">
-      <p id="confirm-msg" class="text-slate-200 dark:text-slate-800 font-semibold text-center mb-5"></p>
+  <div id="confirm-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/60 dark:bg-black/70 backdrop-blur-sm">
+    <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl p-7 w-full max-w-xs mx-4 border border-slate-200 dark:border-slate-700">
+      <p id="confirm-msg" class="text-slate-800 dark:text-slate-200 font-semibold text-center mb-5"></p>
       <div class="flex gap-3">
-        <button onclick="confirmResolve(false)" class="flex-1 py-2.5 rounded-xl border border-slate-600 dark:border-slate-300 text-slate-300 dark:text-slate-600 font-semibold text-sm hover:bg-slate-700 dark:hover:bg-slate-100 transition-colors">Cancel</button>
+        <button onclick="confirmResolve(false)" class="flex-1 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 font-semibold text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">Cancel</button>
         <button onclick="confirmResolve(true)"  class="flex-1 py-2.5 rounded-xl bg-red-500 text-white font-bold text-sm hover:bg-red-600 transition-colors">Confirm</button>
       </div>
     </div>
   </div>
 
   <!-- EDIT PERSON MODAL -->
-  <div id="edit-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/60 dark:bg-white/50 backdrop-blur-sm">
-    <div class="bg-slate-800 dark:bg-white rounded-3xl shadow-2xl p-7 w-full max-w-xs mx-4 border border-slate-700 dark:border-slate-200">
-      <h3 class="font-bold text-slate-100 dark:text-slate-900 mb-4 text-center">Edit Name</h3>
-      <input id="edit-input" type="text" class="w-full px-4 py-3 rounded-xl bg-slate-700 dark:bg-slate-100 border border-slate-600 dark:border-slate-300 text-slate-100 dark:text-slate-900 focus:ring-2 focus:ring-cyan-500 outline-none text-sm mb-4">
+  <div id="edit-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/60 dark:bg-black/70 backdrop-blur-sm">
+    <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl p-7 w-full max-w-xs mx-4 border border-slate-200 dark:border-slate-700">
+      <h3 class="font-bold text-slate-900 dark:text-slate-100 mb-4 text-center">Edit Name</h3>
+      <input id="edit-input" type="text" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-cyan-500 outline-none text-sm mb-4">
       <div class="flex gap-3">
-        <button onclick="editResolve(false)" class="flex-1 py-2.5 rounded-xl border border-slate-600 dark:border-slate-300 text-slate-300 dark:text-slate-600 font-semibold text-sm">Cancel</button>
+        <button onclick="editResolve(false)" class="flex-1 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 font-semibold text-sm">Cancel</button>
         <button onclick="editResolve(true)"  class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold text-sm">Save</button>
       </div>
     </div>
@@ -108,7 +108,7 @@
   <!-- BACK -->
   <div class="fixed top-4 left-4 z-50">
     <a href="projects.html"
-       class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-700 dark:border-slate-200 text-slate-300 dark:text-slate-700 hover:border-cyan-400 dark:hover:border-cyan-400 hover:text-cyan-400 shadow-lg transition-all">
+       class="internal-link w-10 h-10 flex items-center justify-center rounded-full bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-cyan-500 dark:hover:border-cyan-400 hover:text-cyan-600 dark:hover:text-cyan-400 shadow-lg transition-all">
       <i class="ri-arrow-left-line text-lg"></i>
     </a>
   </div>
@@ -116,7 +116,7 @@
   <!-- THEME -->
   <div class="fixed top-4 right-4 z-50">
     <button onclick="toggleTheme()"
-            class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-700 dark:border-slate-200 text-slate-300 dark:text-slate-700 hover:border-cyan-400 dark:hover:border-cyan-400 hover:text-cyan-400 shadow-lg transition-all">
+            class="w-10 h-10 flex items-center justify-center rounded-full bg-white/90 dark:bg-slate-800/90 backdrop-blur border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-cyan-500 dark:hover:border-cyan-400 hover:text-cyan-600 dark:hover:text-cyan-400 shadow-lg transition-all">
       <i id="theme-icon" class="text-lg"></i>
     </button>
   </div>
@@ -130,40 +130,40 @@
         <i class="ri-group-line text-3xl text-white"></i>
       </div>
       <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight">Expense Splitter</h1>
-      <p class="mt-2 text-slate-400 dark:text-slate-500 text-sm">Split bills fairly. Settle up simply.</p>
+      <p class="mt-2 text-slate-500 dark:text-slate-400 text-sm">Split bills fairly. Settle up simply.</p>
     </div>
 
     <!-- STATS ROW -->
     <div class="grid grid-cols-3 gap-3 fade-up d2">
-      <div class="app-card bg-slate-800 dark:bg-white rounded-2xl p-4 shadow border border-slate-700/50 dark:border-slate-200 text-center">
-        <p class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">People</p>
-        <p id="stat-people" class="text-2xl font-extrabold text-cyan-400 dark:text-cyan-600">0</p>
+      <div class="app-card bg-white dark:bg-slate-800 rounded-2xl p-4 shadow border border-slate-200 dark:border-slate-700/50 text-center">
+        <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">People</p>
+        <p id="stat-people" class="text-2xl font-extrabold text-cyan-600 dark:text-cyan-400">0</p>
       </div>
-      <div class="app-card bg-slate-800 dark:bg-white rounded-2xl p-4 shadow border border-slate-700/50 dark:border-slate-200 text-center">
-        <p class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">Expenses</p>
-        <p id="stat-txns" class="text-2xl font-extrabold text-violet-400 dark:text-violet-600">0</p>
+      <div class="app-card bg-white dark:bg-slate-800 rounded-2xl p-4 shadow border border-slate-200 dark:border-slate-700/50 text-center">
+        <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Expenses</p>
+        <p id="stat-txns" class="text-2xl font-extrabold text-violet-600 dark:text-violet-400">0</p>
       </div>
-      <div class="app-card bg-slate-800 dark:bg-white rounded-2xl p-4 shadow border border-slate-700/50 dark:border-slate-200 text-center">
-        <p class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">Total Spent</p>
-        <p id="stat-total" class="text-2xl font-extrabold text-green-400 dark:text-green-600">₹0</p>
+      <div class="app-card bg-white dark:bg-slate-800 rounded-2xl p-4 shadow border border-slate-200 dark:border-slate-700/50 text-center">
+        <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Total Spent</p>
+        <p id="stat-total" class="text-2xl font-extrabold text-green-600 dark:text-green-400">₹0</p>
       </div>
     </div>
 
     <!-- PEOPLE CARD -->
-    <div class="fade-up d3 app-card bg-slate-800 dark:bg-white p-6 rounded-3xl shadow-xl border border-slate-700/50 dark:border-slate-200">
-      <h2 class="font-bold text-slate-200 dark:text-slate-800 flex items-center gap-2 mb-5">
+    <div class="fade-up d3 app-card bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-700/50">
+      <h2 class="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2 mb-5">
         <i class="ri-group-fill text-cyan-400"></i> People
       </h2>
       <div class="flex gap-2 mb-4">
         <input type="text" id="personName" placeholder="Add person's name…"
-               class="flex-1 px-4 py-3 rounded-xl bg-slate-700 dark:bg-slate-100 border border-slate-600 dark:border-slate-300 text-slate-100 dark:text-slate-900 placeholder-slate-400 dark:placeholder-slate-400 focus:ring-2 focus:ring-cyan-500 outline-none text-sm transition-all">
+               class="flex-1 px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:ring-2 focus:ring-cyan-500 outline-none text-sm transition-all">
         <button onclick="addPerson()"
                 class="px-5 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold text-sm hover:opacity-90 transition-opacity shadow-md flex items-center gap-1.5">
           <i class="ri-add-line text-base"></i> Add
         </button>
       </div>
       <div id="peopleList" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-        <div id="people-empty" class="col-span-full py-6 text-center text-slate-500 dark:text-slate-400 text-sm">
+        <div id="people-empty" class="col-span-full py-6 text-center text-slate-400 dark:text-slate-500 text-sm">
           <i class="ri-user-add-line text-3xl block mb-2 opacity-40"></i>
           Add people to get started
         </div>
@@ -171,24 +171,24 @@
     </div>
 
     <!-- ADD EXPENSE CARD -->
-    <div class="fade-up d4 app-card bg-slate-800 dark:bg-white p-6 rounded-3xl shadow-xl border border-slate-700/50 dark:border-slate-200">
-      <h2 class="font-bold text-slate-200 dark:text-slate-800 flex items-center gap-2 mb-5">
+    <div class="fade-up d4 app-card bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-700/50">
+      <h2 class="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2 mb-5">
         <i class="ri-add-circle-fill text-cyan-400"></i> Add Expense
       </h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
         <input id="expenseTitle" type="text" placeholder="Expense title e.g. Dinner"
-               class="px-4 py-3 rounded-xl bg-slate-700 dark:bg-slate-100 border border-slate-600 dark:border-slate-300 text-slate-100 dark:text-slate-900 placeholder-slate-400 dark:placeholder-slate-400 focus:ring-2 focus:ring-cyan-500 outline-none text-sm transition-all">
+               class="px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:ring-2 focus:ring-cyan-500 outline-none text-sm transition-all">
         <div class="relative">
-          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-400 dark:text-cyan-600 font-bold text-sm">₹</span>
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-600 dark:text-cyan-400 font-bold text-sm">₹</span>
           <input id="expenseAmount" type="number" placeholder="Amount" min="1"
-                 class="w-full pl-7 pr-4 py-3 rounded-xl bg-slate-700 dark:bg-slate-100 border border-slate-600 dark:border-slate-300 text-slate-100 dark:text-slate-900 placeholder-slate-400 dark:placeholder-slate-400 focus:ring-2 focus:ring-cyan-500 outline-none text-sm transition-all">
+                 class="w-full pl-7 pr-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:ring-2 focus:ring-cyan-500 outline-none text-sm transition-all">
         </div>
         <select id="paidBy"
-                class="px-4 py-3 rounded-xl bg-slate-700 dark:bg-slate-100 border border-slate-600 dark:border-slate-300 text-slate-100 dark:text-slate-900 focus:ring-2 focus:ring-cyan-500 outline-none text-sm transition-all">
+                class="px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-cyan-500 outline-none text-sm transition-all">
           <option disabled selected value="">Paid by…</option>
         </select>
         <select id="splitType" onchange="updateSplitInputs()"
-                class="px-4 py-3 rounded-xl bg-slate-700 dark:bg-slate-100 border border-slate-600 dark:border-slate-300 text-slate-100 dark:text-slate-900 focus:ring-2 focus:ring-cyan-500 outline-none text-sm transition-all">
+                class="px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-cyan-500 outline-none text-sm transition-all">
           <option value="equal">Split equally</option>
           <option value="custom">Split by custom amount</option>
           <option value="percent">Split by percentage</option>
@@ -196,7 +196,7 @@
       </div>
 
       <!-- Split inputs -->
-      <div id="splitInputs" class="space-y-2 border-t border-slate-700/50 dark:border-slate-200 pt-4 mt-2"></div>
+      <div id="splitInputs" class="space-y-2 border-t border-slate-200 dark:border-slate-700/50 pt-4 mt-2"></div>
 
       <button onclick="addExpense()"
               class="w-full mt-4 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold hover:opacity-90 transition-opacity shadow-lg flex items-center justify-center gap-2">
@@ -206,7 +206,7 @@
 
     <!-- TABS: Transactions / Balances / Settlement -->
     <div class="fade-up d5">
-      <div class="flex bg-slate-800 dark:bg-white rounded-2xl p-1 border border-slate-700/50 dark:border-slate-200 shadow mb-4">
+      <div class="flex bg-white dark:bg-slate-800 rounded-2xl p-1 border border-slate-200 dark:border-slate-700/50 shadow mb-4">
         <button onclick="setTab('txn')" id="tab-txn"
                 class="tab-btn active flex-1 py-2.5 rounded-xl text-sm font-bold transition-all">
           <i class="ri-receipt-line mr-1"></i> Transactions
@@ -222,16 +222,16 @@
       </div>
 
       <!-- TRANSACTIONS PANEL -->
-      <div id="panel-txn" class="app-card bg-slate-800 dark:bg-white p-6 rounded-3xl shadow-xl border border-slate-700/50 dark:border-slate-200">
+      <div id="panel-txn" class="app-card bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-700/50">
         <div class="flex items-center justify-between mb-4">
-          <h3 class="font-bold text-slate-200 dark:text-slate-800">All Expenses</h3>
+          <h3 class="font-bold text-slate-800 dark:text-slate-200">All Expenses</h3>
           <button onclick="exportCSV()"
-                  class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-700 dark:bg-slate-100 border border-slate-600 dark:border-slate-300 text-slate-300 dark:text-slate-600 hover:border-cyan-400 hover:text-cyan-400 text-xs font-semibold transition-all">
+                  class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-cyan-400 hover:text-cyan-400 text-xs font-semibold transition-all">
             <i class="ri-download-2-line"></i> Export CSV
           </button>
         </div>
         <ul id="transactionList" class="space-y-3">
-          <li class="text-center py-10 text-slate-500 dark:text-slate-400" id="txn-empty">
+          <li class="text-center py-10 text-slate-400 dark:text-slate-500" id="txn-empty">
             <i class="ri-inbox-line text-4xl block mb-2 opacity-40"></i>
             No expenses yet
           </li>
@@ -239,10 +239,10 @@
       </div>
 
       <!-- BALANCES PANEL -->
-      <div id="panel-balance" class="hidden app-card bg-slate-800 dark:bg-white p-6 rounded-3xl shadow-xl border border-slate-700/50 dark:border-slate-200">
-        <h3 class="font-bold text-slate-200 dark:text-slate-800 mb-4">Individual Balances</h3>
+      <div id="panel-balance" class="hidden app-card bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-700/50">
+        <h3 class="font-bold text-slate-800 dark:text-slate-200 mb-4">Individual Balances</h3>
         <ul id="balanceList" class="space-y-3">
-          <li class="text-center py-10 text-slate-500 dark:text-slate-400">
+          <li class="text-center py-10 text-slate-400 dark:text-slate-500">
             <i class="ri-user-line text-4xl block mb-2 opacity-40"></i>
             Add people to see balances
           </li>
@@ -250,10 +250,10 @@
       </div>
 
       <!-- SETTLE UP PANEL -->
-      <div id="panel-settle" class="hidden app-card bg-slate-800 dark:bg-white p-6 rounded-3xl shadow-xl border border-slate-700/50 dark:border-slate-200">
-        <h3 class="font-bold text-slate-200 dark:text-slate-800 mb-4">Settlement Plan</h3>
+      <div id="panel-settle" class="hidden app-card bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-700/50">
+        <h3 class="font-bold text-slate-800 dark:text-slate-200 mb-4">Settlement Plan</h3>
         <div id="settleList" class="space-y-3">
-          <div class="text-center py-10 text-slate-500 dark:text-slate-400">
+          <div class="text-center py-10 text-slate-400 dark:text-slate-500">
             <i class="ri-check-line text-4xl block mb-2 opacity-40"></i>
             Everyone is settled up!
           </div>
@@ -262,7 +262,7 @@
     </div>
 
     <!-- FOOTER -->
-    <div class="text-center text-xs text-slate-500 dark:text-slate-400 py-4">
+    <div class="text-center text-xs text-slate-400 dark:text-slate-500 py-4">
       &copy; 2026 Arpit Agarwala. Crafted with <span class="text-red-400">♥</span>
     </div>
   </div>
@@ -344,9 +344,9 @@
       }
       empty.classList.add('hidden');
       list.innerHTML = people.map((p,i) => `
-        <div class="slide-in flex items-center gap-2 bg-slate-700/60 dark:bg-slate-100 px-3 py-2.5 rounded-2xl border border-slate-600/50 dark:border-slate-200">
+        <div class="slide-in flex items-center gap-2 bg-slate-100 dark:bg-slate-700/60 px-3 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-600/50">
           <div class="w-8 h-8 rounded-xl ${avClass(i)} flex items-center justify-center text-white text-xs font-bold flex-shrink-0">${initials(p)}</div>
-          <span class="text-sm font-semibold truncate flex-1 text-slate-200 dark:text-slate-800">${p}</span>
+          <span class="text-sm font-semibold truncate flex-1 text-slate-800 dark:text-slate-200">${p}</span>
           <button onclick="editPerson(${i})" title="Edit" class="text-slate-400 hover:text-cyan-400 transition-colors"><i class="ri-edit-line text-sm"></i></button>
           <button onclick="deletePerson(${i})" title="Remove" class="text-slate-400 hover:text-red-400 transition-colors"><i class="ri-user-unfollow-line text-sm"></i></button>
         </div>
@@ -409,46 +409,46 @@
       const container = $('splitInputs');
       const type = $('splitType').value;
       if (!people.length) {
-        container.innerHTML = '<p class="text-sm text-slate-500 dark:text-slate-400 text-center py-2">Add people first to split expenses</p>';
+        container.innerHTML = '<p class="text-sm text-slate-400 dark:text-slate-500 text-center py-2">Add people first to split expenses</p>';
         return;
       }
       if (type === 'equal') {
         container.innerHTML = `
-          <p class="text-xs text-slate-400 dark:text-slate-500 mb-2">Select who's included in the split:</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mb-2">Select who's included in the split:</p>
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
             ${people.map((p,i)=>`
-              <label class="flex items-center gap-2.5 bg-slate-700/50 dark:bg-slate-100 px-3 py-2.5 rounded-xl border border-slate-600/50 dark:border-slate-200 cursor-pointer hover:border-cyan-400/50 transition-all">
+              <label class="flex items-center gap-2.5 bg-slate-100 dark:bg-slate-700/50 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600/50 cursor-pointer hover:border-cyan-400/50 transition-all">
                 <input type="checkbox" checked value="${p}" class="person-check">
                 <div class="w-6 h-6 rounded-lg ${avClass(i)} flex items-center justify-center text-white text-xs font-bold">${initials(p)}</div>
-                <span class="text-sm font-medium text-slate-200 dark:text-slate-800 truncate">${p}</span>
+                <span class="text-sm font-medium text-slate-800 dark:text-slate-200 truncate">${p}</span>
               </label>
             `).join('')}
           </div>`;
       } else if (type === 'custom') {
         container.innerHTML = `
-          <p class="text-xs text-slate-400 dark:text-slate-500 mb-2">Enter each person's share (must add up to total):</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mb-2">Enter each person's share (must add up to total):</p>
           <div class="space-y-2">
             ${people.map((p,i)=>`
               <div class="flex items-center gap-3">
                 <div class="w-7 h-7 rounded-lg ${avClass(i)} flex items-center justify-center text-white text-xs font-bold flex-shrink-0">${initials(p)}</div>
-                <span class="text-sm font-medium text-slate-200 dark:text-slate-800 flex-1">${p}</span>
+                <span class="text-sm font-medium text-slate-800 dark:text-slate-200 flex-1">${p}</span>
                 <div class="relative">
-                  <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-cyan-400 dark:text-cyan-600 text-xs font-bold">₹</span>
-                  <input type="number" class="person-input pl-6 pr-3 py-2 w-28 bg-slate-700 dark:bg-slate-100 rounded-xl border border-slate-600 dark:border-slate-300 text-slate-100 dark:text-slate-900 text-sm outline-none focus:ring-2 focus:ring-cyan-500" placeholder="0" data-person="${p}" min="0">
+                  <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-cyan-600 dark:text-cyan-400 text-xs font-bold">₹</span>
+                  <input type="number" class="person-input pl-6 pr-3 py-2 w-28 bg-slate-100 dark:bg-slate-700 rounded-xl border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-100 text-sm outline-none focus:ring-2 focus:ring-cyan-500" placeholder="0" data-person="${p}" min="0">
                 </div>
               </div>
             `).join('')}
           </div>`;
       } else {
         container.innerHTML = `
-          <p class="text-xs text-slate-400 dark:text-slate-500 mb-2">Enter each person's percentage (must add up to 100%):</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mb-2">Enter each person's percentage (must add up to 100%):</p>
           <div class="space-y-2">
             ${people.map((p,i)=>`
               <div class="flex items-center gap-3">
                 <div class="w-7 h-7 rounded-lg ${avClass(i)} flex items-center justify-center text-white text-xs font-bold flex-shrink-0">${initials(p)}</div>
-                <span class="text-sm font-medium text-slate-200 dark:text-slate-800 flex-1">${p}</span>
+                <span class="text-sm font-medium text-slate-800 dark:text-slate-200 flex-1">${p}</span>
                 <div class="relative">
-                  <input type="number" class="person-pct pr-8 pl-3 py-2 w-24 bg-slate-700 dark:bg-slate-100 rounded-xl border border-slate-600 dark:border-slate-300 text-slate-100 dark:text-slate-900 text-sm outline-none focus:ring-2 focus:ring-cyan-500" placeholder="0" data-person="${p}" min="0" max="100">
+                  <input type="number" class="person-pct pr-8 pl-3 py-2 w-24 bg-slate-100 dark:bg-slate-700 rounded-xl border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-100 text-sm outline-none focus:ring-2 focus:ring-cyan-500" placeholder="0" data-person="${p}" min="0" max="100">
                   <span class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs">%</span>
                 </div>
               </div>
@@ -523,19 +523,19 @@
         const pIdx = people.indexOf(t.paidBy);
         const splits = Object.entries(t.splits)
           .filter(([,a]) => a > 0)
-          .map(([p,a]) => `<span class="inline-flex items-center gap-1 bg-slate-700 dark:bg-slate-200 px-2 py-0.5 rounded-lg text-xs">${p}: ${fmt(a)}</span>`)
+          .map(([p,a]) => `<span class="inline-flex items-center gap-1 bg-slate-200 dark:bg-slate-700 px-2 py-0.5 rounded-lg text-xs">${p}: ${fmt(a)}</span>`)
           .join(' ');
         return `
-          <li class="slide-in bg-slate-700/50 dark:bg-slate-100 rounded-2xl p-4 border border-slate-600/50 dark:border-slate-200 hover:border-cyan-400/40 dark:hover:border-cyan-400/40 transition-all">
+          <li class="slide-in bg-slate-100 dark:bg-slate-700/50 rounded-2xl p-4 border border-slate-200 dark:border-slate-600/50 hover:border-cyan-400/40 dark:hover:border-cyan-400/40 transition-all">
             <div class="flex items-start gap-3">
               <div class="w-10 h-10 rounded-xl ${avClass(pIdx >= 0 ? pIdx : 0)} flex items-center justify-center text-white text-sm font-bold flex-shrink-0">${initials(t.paidBy)}</div>
               <div class="flex-1 min-w-0">
                 <div class="flex items-start justify-between gap-2">
-                  <p class="font-bold text-slate-100 dark:text-slate-900 truncate">${t.title}</p>
-                  <p class="font-extrabold text-cyan-400 dark:text-cyan-600 flex-shrink-0">${fmt(t.amount)}</p>
+                  <p class="font-bold text-slate-900 dark:text-slate-100 truncate">${t.title}</p>
+                  <p class="font-extrabold text-cyan-600 dark:text-cyan-400 flex-shrink-0">${fmt(t.amount)}</p>
                 </div>
-                <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">
-                  Paid by <span class="font-semibold text-slate-300 dark:text-slate-700">${t.paidBy}</span>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                  Paid by <span class="font-semibold text-slate-700 dark:text-slate-300">${t.paidBy}</span>
                   ${t.date ? `· ${t.date}` : ''}
                 </p>
                 <div class="flex flex-wrap gap-1 mt-2">${splits}</div>
@@ -579,13 +579,13 @@
     function renderBalances() {
       const list = $('balanceList');
       if (!people.length) {
-        list.innerHTML = '<li class="text-center py-10 text-slate-500 dark:text-slate-400"><i class="ri-user-line text-4xl block mb-2 opacity-40"></i>Add people to see balances</li>';
+        list.innerHTML = '<li class="text-center py-10 text-slate-400 dark:text-slate-500"><i class="ri-user-line text-4xl block mb-2 opacity-40"></i>Add people to see balances</li>';
         return;
       }
       const bal = computeBalances();
       list.innerHTML = Object.entries(bal).map(([p, b], i) => {
-        const color   = b > 0 ? 'text-green-400 dark:text-green-600' : b < 0 ? 'text-red-400 dark:text-red-500' : 'text-slate-400 dark:text-slate-400';
-        const bgColor = b > 0 ? 'bg-green-500/10 dark:bg-green-50' : b < 0 ? 'bg-red-500/10 dark:bg-red-50' : 'bg-slate-700/30 dark:bg-slate-100';
+        const color   = b > 0 ? 'text-green-600 dark:text-green-400' : b < 0 ? 'text-red-500 dark:text-red-400' : 'text-slate-500 dark:text-slate-400';
+        const bgColor = b > 0 ? 'bg-green-50 dark:bg-green-900/20' : b < 0 ? 'bg-red-50 dark:bg-red-900/20' : 'bg-slate-100 dark:bg-slate-700/30';
         const icon    = b > 0 ? 'ri-arrow-down-circle-fill' : b < 0 ? 'ri-arrow-up-circle-fill' : 'ri-checkbox-circle-fill';
         const label   = b > 0 ? `gets back ${fmt(b)}` : b < 0 ? `owes ${fmt(b)}` : 'settled up ✓';
         const pIdx    = people.indexOf(p);
@@ -593,7 +593,7 @@
           <li class="slide-in flex items-center gap-3 ${bgColor} rounded-2xl p-4 border border-transparent hover:border-cyan-400/20 transition-all">
             <div class="w-10 h-10 rounded-xl ${avClass(pIdx >= 0 ? pIdx : i)} flex items-center justify-center text-white text-sm font-bold flex-shrink-0">${initials(p)}</div>
             <div class="flex-1">
-              <p class="font-bold text-slate-200 dark:text-slate-900">${p}</p>
+              <p class="font-bold text-slate-900 dark:text-slate-200">${p}</p>
             </div>
             <div class="flex items-center gap-1.5 ${color}">
               <i class="${icon} text-lg"></i>
@@ -607,7 +607,7 @@
     function renderSettlement() {
       const container = $('settleList');
       if (!people.length || !transactions.length) {
-        container.innerHTML = '<div class="text-center py-10 text-slate-500 dark:text-slate-400"><i class="ri-check-line text-4xl block mb-2 opacity-40"></i>Everyone is settled up!</div>';
+        container.innerHTML = '<div class="text-center py-10 text-slate-400 dark:text-slate-500"><i class="ri-check-line text-4xl block mb-2 opacity-40"></i>Everyone is settled up!</div>';
         return;
       }
       const bal = computeBalances();
@@ -626,7 +626,7 @@
       }
 
       if (!settlements.length) {
-        container.innerHTML = '<div class="text-center py-10 text-green-400 dark:text-green-600 font-bold"><i class="ri-checkbox-circle-line text-4xl block mb-2"></i>All settled! 🎉</div>';
+        container.innerHTML = '<div class="text-center py-10 text-green-600 dark:text-green-400 font-bold"><i class="ri-checkbox-circle-line text-4xl block mb-2"></i>All settled! 🎉</div>';
         return;
       }
 
@@ -634,16 +634,16 @@
         const fromIdx = people.indexOf(s.from);
         const toIdx   = people.indexOf(s.to);
         return `
-          <div class="slide-in flex items-center gap-3 bg-slate-700/40 dark:bg-slate-100 rounded-2xl p-4 border border-slate-600/50 dark:border-slate-200">
+          <div class="slide-in flex items-center gap-3 bg-slate-100 dark:bg-slate-700/40 rounded-2xl p-4 border border-slate-200 dark:border-slate-600/50">
             <div class="w-9 h-9 rounded-xl ${avClass(fromIdx>=0?fromIdx:i)} flex items-center justify-center text-white text-xs font-bold">${initials(s.from)}</div>
             <div class="flex-1 text-center">
-              <p class="text-xs text-slate-400 dark:text-slate-500 mb-0.5">pays</p>
-              <p class="font-extrabold text-cyan-400 dark:text-cyan-600 text-lg">${fmt(s.amt)}</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mb-0.5">pays</p>
+              <p class="font-extrabold text-cyan-600 dark:text-cyan-400 text-lg">${fmt(s.amt)}</p>
             </div>
-            <i class="ri-arrow-right-line text-cyan-500 dark:text-cyan-400 text-xl settle-arrow"></i>
+            <i class="ri-arrow-right-line text-cyan-400 dark:text-cyan-500 text-xl settle-arrow"></i>
             <div class="flex-1 text-center">
-              <p class="text-xs text-slate-400 dark:text-slate-500 mb-0.5">to</p>
-              <p class="font-bold text-slate-200 dark:text-slate-800">${s.to}</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mb-0.5">to</p>
+              <p class="font-bold text-slate-800 dark:text-slate-200">${s.to}</p>
             </div>
             <div class="w-9 h-9 rounded-xl ${avClass(toIdx>=0?toIdx:i+1)} flex items-center justify-center text-white text-xs font-bold">${initials(s.to)}</div>
           </div>`;

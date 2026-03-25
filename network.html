@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neural WebGL Network – Arpit Agarwala</title>
+  <meta name="description" content="Interactive 3D particle network simulation built with Three.js." />
+  
+  <script>
+    // Theme is mostly forced dark for WebGL, but we sync it for nav UI
+    (function () {
+      var param = new URLSearchParams(window.location.search).get('theme');
+      var stored = localStorage.getItem('theme');
+      var theme = param || stored || 'dark'; // Default dark for this specific page
+      if (theme === 'dark') document.documentElement.classList.add('dark');
+      else document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', theme);
+    })();
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class'}</script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/global.css">
+
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      touch-action: none; /* Prevent scroll on canvas */
+    }
+    #canvas-container {
+      position: absolute;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 0;
+      background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
+    }
+    .dark #canvas-container {
+      background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
+    }
+    html:not(.dark) #canvas-container {
+      background: radial-gradient(circle at center, #f8fafc 0%, #e2e8f0 100%);
+    }
+
+    /* UI Overlay */
+    #ui-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      pointer-events: none; /* Let clicks pass through to canvas by default */
+    }
+    .pointer-events-auto { pointer-events: auto; }
+  </style>
+</head>
+
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-300">
+
+  <div id="canvas-container"></div>
+
+  <!-- UI OVERLAY -->
+  <div id="ui-layer" class="flex flex-col">
+    <!-- TOP NAV -->
+    <div class="p-4 sm:p-6 flex justify-between items-start pointer-events-auto">
+      <div class="flex items-center gap-4">
+        <a href="projects.html" class="internal-link w-10 h-10 flex items-center justify-center rounded-full bg-white/10 dark:bg-slate-800/50 backdrop-blur border border-slate-200/20 dark:border-slate-700/50 hover:bg-white/20 dark:hover:bg-slate-700/80 transition-all text-slate-900 dark:text-white shadow-lg">
+          <i class="ri-arrow-left-line text-lg"></i>
+        </a>
+        <div class="bg-white/10 dark:bg-slate-800/50 backdrop-blur border border-slate-200/20 dark:border-slate-700/50 px-4 py-2.5 rounded-2xl shadow-lg">
+          <h1 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white tracking-tight leading-none mb-0.5">Neural WebGL Network</h1>
+          <p class="text-[10px] sm:text-xs text-slate-600 dark:text-slate-400 font-semibold uppercase tracking-wider">Three.js Particle Physics</p>
+        </div>
+      </div>
+      
+      <button onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 dark:bg-slate-800/50 backdrop-blur border border-slate-200/20 dark:border-slate-700/50 hover:bg-white/20 dark:hover:bg-slate-700/80 transition-all text-slate-900 dark:text-white shadow-lg">
+        <i id="theme-icon" class="text-lg"></i>
+      </button>
+    </div>
+
+    <!-- BOTTOM CONTROLS -->
+    <div class="mt-auto p-4 sm:p-8 pointer-events-auto flex flex-col sm:flex-row items-end sm:items-center justify-between gap-4">
+      <div class="bg-white/10 dark:bg-slate-800/50 backdrop-blur border border-slate-200/20 dark:border-slate-700/50 px-5 py-4 rounded-3xl shadow-2xl max-w-sm">
+        <div class="flex items-center gap-2 mb-2">
+          <i class="ri-drag-move-line text-cyan-400"></i>
+          <span class="text-sm font-bold text-slate-900 dark:text-white">Interactive Physics</span>
+        </div>
+        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+          Click and hold to contract the network toward a central gravitational pull. Release to let the nodes expand back to their stable bounds. Drag to rotate the camera.
+        </p>
+        <button id="toggle-auto-btn" class="w-full py-2 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-700 dark:text-cyan-400 border border-cyan-500/30 rounded-xl text-xs font-bold transition-all active:scale-95 flex items-center justify-center gap-2">
+          <i class="ri-magic-line"></i> Auto-Rotate: ON
+        </button>
+      </div>
+
+      <div class="flex flex-col items-end gap-2 text-right">
+        <div class="bg-white/10 dark:bg-slate-800/50 backdrop-blur border border-slate-200/20 dark:border-slate-700/50 px-3 py-1.5 rounded-xl shadow-lg flex items-center gap-2">
+          <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
+          <span class="text-[10px] sm:text-xs font-bold text-slate-900 dark:text-white tracking-widest uppercase">750 Nodes</span>
+        </div>
+        <div class="text-[9px] text-slate-500 font-mono tracking-widest uppercase">WebGL 2.0</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  
+  <script>
+    // ─── THEME SYNC ───
+    function isDark() { return document.documentElement.classList.contains('dark'); }
+    (function syncIcon() {
+      document.getElementById('theme-icon').className = isDark() ? 'ri-sun-line text-lg' : 'ri-moon-line text-lg';
+    })();
+    function toggleTheme() {
+      const html = document.documentElement;
+      const d = html.classList.toggle('dark');
+      localStorage.setItem('theme', d ? 'dark' : 'light');
+      document.getElementById('theme-icon').className = d ? 'ri-sun-line text-lg' : 'ri-moon-line text-lg';
+      updateAllLinks();
+      updateEngineColors();
+    }
+    function updateAllLinks() {
+      const theme = isDark() ? 'dark' : 'light';
+      document.querySelectorAll('a.internal-link').forEach(a => {
+        const url = new URL(a.href, location.href);
+        url.searchParams.set('theme', theme);
+        a.href = url.toString();
+      });
+    }
+    document.addEventListener('DOMContentLoaded', updateAllLinks);
+
+    // ─── THREE.JS ENGINE ───
+    let scene, camera, renderer;
+    let particles, linesMesh;
+    let positions, velocities, originalPositions;
+    const NUM_PARTICLES = 750;
+    const MAX_DISTANCE = 120; // connect nodes within this distance
+    
+    // Interaction states
+    let isContracting = false;
+    let autoRotate = true;
+    let targetRotationX = 0;
+    let targetRotationY = 0;
+    let mouseX = 0, mouseY = 0;
+    let windowHalfX = window.innerWidth / 2;
+    let windowHalfY = window.innerHeight / 2;
+    
+    // Physics Config
+    const BOUND = 400;
+    const RETURN_SPEED = 0.05;
+    const CONTRACT_SPEED = 0.1;
+    const GRAVITY_CENTER = new THREE.Vector3(0, 0, 0);
+
+    const matColorDark = new THREE.Color(0x06b6d4); // cyan-500
+    const matColorLight = new THREE.Color(0x2563eb); // blue-600
+    
+    let pMaterial, lMaterial;
+
+    function init() {
+      const container = document.getElementById('canvas-container');
+      
+      scene = new THREE.Scene();
+      // Scene bg is handled by CSS body gradients (renderer has alpha)
+
+      camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 2000);
+      camera.position.z = 800;
+
+      // ── Nodes ──
+      const geometry = new THREE.BufferGeometry();
+      positions = new Float32Array(NUM_PARTICLES * 3);
+      originalPositions = new Float32Array(NUM_PARTICLES * 3);
+      velocities = [];
+
+      for ( let i = 0; i < NUM_PARTICLES; i ++ ) {
+        // Random spherical distribution
+        const r = BOUND * Math.cbrt(Math.random());
+        const theta = Math.random() * 2 * Math.PI;
+        const phi = Math.acos(2 * Math.random() - 1);
+        
+        const x = r * Math.sin(phi) * Math.cos(theta);
+        const y = r * Math.sin(phi) * Math.sin(theta);
+        const z = r * Math.cos(phi);
+
+        positions[ i * 3 ]     = x;
+        positions[ i * 3 + 1 ] = y;
+        positions[ i * 3 + 2 ] = z;
+
+        originalPositions[ i * 3 ]     = x;
+        originalPositions[ i * 3 + 1 ] = y;
+        originalPositions[ i * 3 + 2 ] = z;
+
+        velocities.push(new THREE.Vector3(
+          (Math.random() - 0.5) * 2,
+          (Math.random() - 0.5) * 2,
+          (Math.random() - 0.5) * 2
+        ));
+      }
+
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+      // Sprites for particles
+      const sprite = new THREE.TextureLoader().load( 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAa0lEQVQYV2NkgIL/QEDGwMDAwMCETQBIEmQAmwZQyP///zEIExYWZkCWA+mFybHh0qBwYgALkE4GBgYGJiYmBhgHphbEANMgmEywTlyagboR7DSwtGBJgKwIJgaSBBkAV4RMA0mCDABrQQDntyc31p83rQAAAABJRU5ErkJggg==' ); // tiny circle
+
+      pMaterial = new THREE.PointsMaterial({
+        color: isDark() ? matColorDark : matColorLight,
+        size: 8,
+        map: sprite,
+        blending: THREE.AdditiveBlending,
+        transparent: true,
+        opacity: 0.8,
+        depthWrite: false
+      });
+
+      particles = new THREE.Points(geometry, pMaterial);
+      scene.add(particles);
+
+      // ── Lines ──
+      // Dynamic lines buffer (max possible pairs is extremely large, we allocate a safe chunk)
+      const linesGeo = new THREE.BufferGeometry();
+      // 750 nodes -> safe allocation for up to 3000 connections (6000 vertices)
+      const linesPos = new Float32Array(6000 * 3); 
+      linesGeo.setAttribute('position', new THREE.BufferAttribute(linesPos, 3).setUsage(THREE.DynamicDrawUsage));
+      
+      lMaterial = new THREE.LineBasicMaterial({
+        color: isDark() ? matColorDark : matColorLight,
+        transparent: true,
+        opacity: 0.15,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      });
+
+      linesMesh = new THREE.LineSegments(linesGeo, lMaterial);
+      scene.add(linesMesh);
+
+      // ── Renderer ──
+      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      container.appendChild(renderer.domElement);
+
+      // ── Listeners ──
+      container.addEventListener('pointerdown', onPointerDown, false);
+      container.addEventListener('pointerup', onPointerUp, false);
+      container.addEventListener('pointermove', onPointerMove, false);
+      container.addEventListener('pointerleave', onPointerUp, false);
+      window.addEventListener('resize', onWindowResize, false);
+      
+      document.getElementById('toggle-auto-btn').addEventListener('click', () => {
+        autoRotate = !autoRotate;
+        document.getElementById('toggle-auto-btn').innerHTML = autoRotate ? '<i class="ri-magic-line"></i> Auto-Rotate: ON' : '<i class="ri-stop-mini-line"></i> Auto-Rotate: OFF';
+      });
+
+      animate();
+    }
+
+    function updateEngineColors() {
+      if(!pMaterial) return;
+      const c = isDark() ? matColorDark : matColorLight;
+      pMaterial.color = c;
+      lMaterial.color = c;
+      // blending modes
+      pMaterial.blending = isDark() ? THREE.AdditiveBlending : THREE.NormalBlending;
+      lMaterial.blending = isDark() ? THREE.AdditiveBlending : THREE.NormalBlending;
+      lMaterial.opacity = isDark() ? 0.15 : 0.3;
+    }
+
+    function onWindowResize() {
+      windowHalfX = window.innerWidth / 2;
+      windowHalfY = window.innerHeight / 2;
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    // Interactive Camera & Physics Hooks
+    let isDragging = false;
+    let previousMousePosition = { x: 0, y: 0 };
+
+    function onPointerDown(e) {
+      isContracting = true;
+      isDragging = true;
+    }
+
+    function onPointerUp(e) {
+      isContracting = false;
+      isDragging = false;
+    }
+
+    function onPointerMove(e) {
+      // Relative for parallax
+      mouseX = e.clientX - windowHalfX;
+      mouseY = e.clientY - windowHalfY;
+
+      if (isDragging && !autoRotate) {
+        // manual rotation
+        const deltaMove = { x: e.offsetX - previousMousePosition.x, y: e.offsetY - previousMousePosition.y };
+        scene.rotation.y += deltaMove.x * 0.005;
+        scene.rotation.x += deltaMove.y * 0.005;
+      }
+      
+      previousMousePosition = { x: e.offsetX, y: e.offsetY };
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      render();
+    }
+
+    function render() {
+      if (autoRotate) {
+        targetRotationX = mouseY * 0.0002;
+        targetRotationY = mouseX * 0.0002;
+        scene.rotation.x += 0.002;
+        scene.rotation.y += 0.004;
+      }
+
+      // Physics logic
+      let vertexpos = 0;
+      const posAttr = particles.geometry.attributes.position;
+      const linesPosArr = linesMesh.geometry.attributes.position.array;
+
+      for (let i = 0; i < NUM_PARTICLES; i++) {
+        // Current positions
+        let px = posAttr.getX(i);
+        let py = posAttr.getY(i);
+        let pz = posAttr.getZ(i);
+
+        // Original positions
+        let ox = originalPositions[i * 3];
+        let oy = originalPositions[i * 3 + 1];
+        let oz = originalPositions[i * 3 + 2];
+
+        // Velocity
+        let v = velocities[i];
+
+        if (isContracting) {
+          // Move towards center 0,0,0
+          const dx = (GRAVITY_CENTER.x - px) * CONTRACT_SPEED;
+          const dy = (GRAVITY_CENTER.y - py) * CONTRACT_SPEED;
+          const dz = (GRAVITY_CENTER.z - pz) * CONTRACT_SPEED;
+          // Apply chaos
+          px += dx + (Math.random() - 0.5)*10;
+          py += dy + (Math.random() - 0.5)*10;
+          pz += dz + (Math.random() - 0.5)*10;
+        } else {
+          // Move towards original
+          px += (ox - px) * RETURN_SPEED;
+          py += (oy - py) * RETURN_SPEED;
+          pz += (oz - pz) * RETURN_SPEED;
+          
+          // Apply slight persistent ambient floating
+          px += Math.sin(Date.now() * 0.001 + i) * 0.5;
+          py += Math.cos(Date.now() * 0.001 + i) * 0.5;
+        }
+
+        posAttr.setXYZ(i, px, py, pz);
+
+        // Line Connections (O(N^2) optimization: only check forward)
+        for (let j = i + 1; j < NUM_PARTICLES; j++) {
+          const jx = posAttr.getX(j);
+          const jy = posAttr.getY(j);
+          const jz = posAttr.getZ(j);
+
+          const distSq = (px-jx)*(px-jx) + (py-jy)*(py-jy) + (pz-jz)*(pz-jz);
+
+          if (distSq < MAX_DISTANCE * MAX_DISTANCE) {
+            // Draw line
+            if (vertexpos < linesPosArr.length - 6) {
+              linesPosArr[vertexpos++] = px;
+              linesPosArr[vertexpos++] = py;
+              linesPosArr[vertexpos++] = pz;
+              linesPosArr[vertexpos++] = jx;
+              linesPosArr[vertexpos++] = jy;
+              linesPosArr[vertexpos++] = jz;
+            }
+          }
+        }
+      }
+
+      // Clear the rest of the lines array
+      for (let k = vertexpos; k < linesPosArr.length; k++) {
+        linesPosArr[k] = 0;
+      }
+
+      posAttr.needsUpdate = true;
+      linesMesh.geometry.attributes.position.needsUpdate = true;
+      linesMesh.geometry.setDrawRange(0, vertexpos / 3);
+
+      camera.position.x += (mouseX * 0.5 - camera.position.x) * 0.05;
+      camera.position.y += (-mouseY * 0.5 - camera.position.y) * 0.05;
+      camera.lookAt(scene.position);
+
+      renderer.render(scene, camera);
+    }
+
+    // Run
+    init();
+
+  </script>
+</body>
+</html>

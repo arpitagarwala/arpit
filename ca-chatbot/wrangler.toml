@@ -1,0 +1,12 @@
+name = "ca-chatbot"
+main = "worker.js"
+compatibility_date = "2024-03-24"
+
+# Run: npx wrangler kv namespace create "CA_KNOWLEDGE"
+[[kv_namespaces]]
+binding = "CA_KNOWLEDGE"
+id = "eff3c01506c04572b76e311330700aad"
+preview_id = "c5a42887f2074da38ca87a0814498ca4"
+
+[vars]
+ALLOWED_ORIGIN = "*"
