@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Neon Pong – Arpit Agarwala</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{background:#010208;font-family:'Inter',sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;overflow:hidden;user-select:none;}
+    canvas{display:block;}
+
+    #back-btn{position:fixed;top:16px;left:16px;z-index:50;width:38px;height:38px;border-radius:50%;background:rgba(5,10,25,0.85);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);color:rgba(200,220,255,0.7);display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:18px;transition:all .2s;}
+    #back-btn:hover{border-color:rgba(96,165,250,0.5);color:#60a5fa;}
+
+    /* Overlay screens */
+    #screen{position:fixed;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;background:rgba(1,2,8,0.88);backdrop-filter:blur(6px);}
+    #screen.hidden{display:none;}
+    .sbox{background:rgba(5,10,25,0.97);border:1px solid rgba(96,165,250,0.2);border-radius:22px;padding:36px 44px;text-align:center;max-width:360px;width:90%;}
+    .s-title{font-size:2rem;font-weight:900;color:#60a5fa;margin-bottom:8px;text-shadow:0 0 20px rgba(96,165,250,0.4);}
+    .s-sub{color:rgba(148,163,184,0.65);font-size:.85rem;margin-bottom:20px;line-height:1.7;}
+    .s-btn{display:inline-block;padding:12px 32px;background:linear-gradient(135deg,#3b82f6,#1d4ed8);border-radius:12px;color:#fff;font-weight:700;font-size:.95rem;cursor:pointer;border:none;transition:all .18s;margin:4px;}
+    .s-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(59,130,246,0.4);}
+    .s-btn.secondary{background:rgba(30,50,80,0.6);border:1px solid rgba(96,165,250,0.2);}
+    .s-btn.secondary:hover{box-shadow:none;background:rgba(30,50,80,0.9);}
+    .diff-row{display:flex;gap:8px;justify-content:center;margin:12px 0;}
+    .d-btn{padding:6px 14px;border-radius:20px;border:1px solid rgba(96,165,250,0.2);background:transparent;color:rgba(148,163,184,0.7);font-size:.78rem;font-weight:600;cursor:pointer;transition:all .15s;}
+    .d-btn.active,.d-btn:hover{background:rgba(96,165,250,0.12);border-color:rgba(96,165,250,0.5);color:#60a5fa;}
+    .score-large{font-size:2.8rem;font-weight:900;color:#fff;font-variant-numeric:tabular-nums;margin:10px 0;}
+
+    /* Settings panel */
+    #settings{position:fixed;top:16px;right:16px;z-index:20;display:flex;gap:6px;}
+    .hud-pill{background:rgba(5,10,25,0.85);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:6px 14px;color:rgba(200,220,255,0.65);font-size:.75rem;font-weight:600;cursor:pointer;transition:all .15s;}
+    .hud-pill:hover{border-color:rgba(96,165,250,0.4);color:#60a5fa;}
+  </style>
+</head>
+<body>
+  <a id="back-btn" href="../../games.html">&#8592;</a>
+  <div id="settings">
+    <div class="hud-pill" onclick="pauseToggle()" id="pause-btn">⏸ Pause</div>
+    <div class="hud-pill" onclick="showMenu()">☰ Menu</div>
+  </div>
+
+  <canvas id="cvs"></canvas>
+
+  <div id="screen">
+    <div class="sbox" id="sbox-start">
+      <div class="s-title">🏓 Neon Pong</div>
+      <div class="s-sub">Play against a reactive AI paddle.<br>First to <b id="win-target-lbl">7</b> points wins.</div>
+      <div style="font-size:.7rem;color:rgba(148,163,184,0.45);margin-bottom:8px;letter-spacing:.1em;text-transform:uppercase">Difficulty</div>
+      <div class="diff-row">
+        <button class="d-btn" onclick="setDiff('easy',this)">Easy</button>
+        <button class="d-btn active" onclick="setDiff('medium',this)">Medium</button>
+        <button class="d-btn" onclick="setDiff('hard',this)">Hard</button>
+        <button class="d-btn" onclick="setDiff('insane',this)">Insane</button>
+      </div>
+      <div style="font-size:.7rem;color:rgba(148,163,184,0.45);margin-bottom:8px;letter-spacing:.1em;text-transform:uppercase">First to</div>
+      <div class="diff-row">
+        <button class="d-btn" onclick="setWinTarget(5,this)">5</button>
+        <button class="d-btn active" onclick="setWinTarget(7,this)">7</button>
+        <button class="d-btn" onclick="setWinTarget(11,this)">11</button>
+      </div>
+      <button class="s-btn" onclick="startGame()">Serve!</button>
+    </div>
+  </div>
+
+  <script>
+  const cvs = document.getElementById('cvs');
+  const ctx = cvs.getContext('2d');
+
+  let W, H;
+  function resize() { W = cvs.width = window.innerWidth; H = cvs.height = window.innerHeight; }
+  window.addEventListener('resize', resize); resize();
+
+  // ── Config ──
+  let diffConfig = { easy:0.045, medium:0.08, hard:0.12, insane:0.18 };
+  let diff = 'medium', aiSpeed = diffConfig[diff];
+  let winTarget = 7, paused = false, running = false;
+
+  function setDiff(d, btn) {
+    diff = d; aiSpeed = diffConfig[d];
+    document.querySelectorAll('.d-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  function setWinTarget(n, btn) {
+    winTarget = n;
+    document.getElementById('win-target-lbl').textContent = n;
+    document.querySelectorAll('.d-btn').forEach(b => { if ([5,7,11].includes(parseInt(b.textContent))) b.classList.remove('active'); });
+    btn.classList.add('active');
+  }
+
+  // ── State ──
+  const PH = () => H * 0.14, PW = () => W * 0.012;
+  const BALL_R = () => W * 0.008;
+
+  let p1, p2, ball, p1Score, p2Score, rallyCount, rafId;
+
+  function startGame() {
+    document.getElementById('screen').classList.add('hidden');
+    p1Score = 0; p2Score = 0; rallyCount = 0;
+    resetBall(); resetPaddles();
+    running = true; paused = false;
+    document.getElementById('pause-btn').textContent = '⏸ Pause';
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(loop);
+  }
+
+  function resetPaddles() {
+    p1 = { y: H/2 - PH()/2 };
+    p2 = { y: H/2 - PH()/2 };
+  }
+
+  function resetBall(dir = 0) {
+    const ang = (Math.random() * 0.4 - 0.2) + (dir === 0 ? (Math.random() > 0.5 ? 0 : Math.PI) : (dir > 0 ? 0 : Math.PI));
+    const spd = W * 0.007;
+    ball = { x: W/2, y: H/2, vx: Math.cos(ang)*spd, vy: Math.sin(ang)*spd };
+    rallyCount = 0;
+  }
+
+  // ── Player control ──
+  let mouseY = H/2, touchY = H/2;
+  document.addEventListener('mousemove', e => mouseY = e.clientY);
+  document.addEventListener('touchmove', e => { e.preventDefault(); touchY = e.touches[0].clientY; }, {passive:false});
+
+  // ── Loop ──
+  function loop() {
+    rafId = requestAnimationFrame(loop);
+    if (!running || paused) return;
+
+    // Player paddle follows mouse/touch
+    const target = Math.max(touchY, mouseY) === H/2 ? mouseY : touchY;
+    p1.y += (target - PH()/2 - p1.y) * 0.25;
+    p1.y  = Math.max(0, Math.min(H - PH(), p1.y));
+
+    // AI paddle
+    const aiTarget = ball.y - PH()/2 + (Math.random()-0.5) * H * (0.12 - aiSpeed * 0.2);
+    p2.y += (aiTarget - p2.y) * aiSpeed;
+    p2.y  = Math.max(0, Math.min(H - PH(), p2.y));
+
+    // Ball
+    ball.x += ball.vx; ball.y += ball.vy;
+
+    // Wall bounce
+    if (ball.y - BALL_R() < 0) { ball.y = BALL_R(); ball.vy = Math.abs(ball.vy); }
+    if (ball.y + BALL_R() > H)  { ball.y = H - BALL_R(); ball.vy = -Math.abs(ball.vy); }
+
+    // Paddle hits
+    const pw = PW(), ph = PH(), br = BALL_R();
+    // P1 (left)
+    if (ball.vx < 0 && ball.x - br < pw*2 + 30 && ball.x - br > pw + 28 &&
+        ball.y > p1.y && ball.y < p1.y + ph) {
+      ball.vx = Math.abs(ball.vx) * 1.04;
+      const rel = (ball.y - p1.y) / ph - 0.5;
+      ball.vy = rel * W * 0.016 + ball.vy * 0.3;
+      rallyCount++;
+      capSpeed();
+    }
+    // P2 (right)
+    if (ball.vx > 0 && ball.x + br > W - pw*2 - 30 && ball.x + br < W - pw - 28 &&
+        ball.y > p2.y && ball.y < p2.y + ph) {
+      ball.vx = -Math.abs(ball.vx) * 1.04;
+      const rel = (ball.y - p2.y) / ph - 0.5;
+      ball.vy = rel * W * 0.016 + ball.vy * 0.3;
+      rallyCount++;
+      capSpeed();
+    }
+
+    // Scoring
+    if (ball.x < 0) { p2Score++; if (checkWin()) return; resetBall(1); }
+    if (ball.x > W) { p1Score++; if (checkWin()) return; resetBall(-1); }
+
+    draw();
+  }
+
+  function capSpeed() {
+    const maxSpd = W * 0.018;
+    const spd = Math.hypot(ball.vx, ball.vy);
+    if (spd > maxSpd) { ball.vx *= maxSpd/spd; ball.vy *= maxSpd/spd; }
+  }
+
+  function checkWin() {
+    if (p1Score >= winTarget || p2Score >= winTarget) {
+      running = false;
+      showResult();
+      return true;
+    }
+    return false;
+  }
+
+  function showResult() {
+    const won = p1Score >= winTarget;
+    const screen = document.getElementById('screen');
+    screen.classList.remove('hidden');
+    screen.innerHTML = `<div class="sbox">
+      <div class="s-title" style="color:${won?'#22d3ee':'#f87171'}">${won ? '🏆 You Win!' : '💀 You Lose'}</div>
+      <div style="display:flex;gap:16px;justify-content:center;margin:16px 0">
+        <div style="text-align:center"><div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(148,163,184,0.45);margin-bottom:4px">You</div>
+          <div class="score-large">${p1Score}</div></div>
+        <div style="font-size:2rem;align-self:center;color:rgba(148,163,184,0.3)">:</div>
+        <div style="text-align:center"><div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(148,163,184,0.45);margin-bottom:4px">AI</div>
+          <div class="score-large">${p2Score}</div></div>
+      </div>
+      <button class="s-btn" onclick="startGame()">Rematch</button>
+      <button class="s-btn secondary" onclick="showMenu()">Menu</button>
+    </div>`;
+  }
+
+  function showMenu() {
+    running = false;
+    const screen = document.getElementById('screen');
+    screen.classList.remove('hidden');
+    screen.innerHTML = `<div class="sbox" id="sbox-start">
+      <div class="s-title">🏓 Neon Pong</div>
+      <div class="s-sub">Play against a reactive AI paddle.<br>First to <b id="win-target-lbl">${winTarget}</b> points wins.</div>
+      <div style="font-size:.7rem;color:rgba(148,163,184,0.45);margin-bottom:8px;letter-spacing:.1em;text-transform:uppercase">Difficulty</div>
+      <div class="diff-row">
+        <button class="d-btn ${diff==='easy'?'active':''}" onclick="setDiff('easy',this)">Easy</button>
+        <button class="d-btn ${diff==='medium'?'active':''}" onclick="setDiff('medium',this)">Medium</button>
+        <button class="d-btn ${diff==='hard'?'active':''}" onclick="setDiff('hard',this)">Hard</button>
+        <button class="d-btn ${diff==='insane'?'active':''}" onclick="setDiff('insane',this)">Insane</button>
+      </div>
+      <div style="font-size:.7rem;color:rgba(148,163,184,0.45);margin-bottom:8px;letter-spacing:.1em;text-transform:uppercase">First to</div>
+      <div class="diff-row">
+        <button class="d-btn ${winTarget===5?'active':''}" onclick="setWinTarget(5,this)">5</button>
+        <button class="d-btn ${winTarget===7?'active':''}" onclick="setWinTarget(7,this)">7</button>
+        <button class="d-btn ${winTarget===11?'active':''}" onclick="setWinTarget(11,this)">11</button>
+      </div>
+      <button class="s-btn" onclick="startGame()">Serve!</button>
+    </div>`;
+  }
+
+  function pauseToggle() {
+    if (!running) return;
+    paused = !paused;
+    document.getElementById('pause-btn').textContent = paused ? '▶ Resume' : '⏸ Pause';
+  }
+
+  // ── Draw ──
+  function draw() {
+    ctx.fillStyle = '#010208';
+    ctx.fillRect(0, 0, W, H);
+
+    // Center line
+    ctx.setLineDash([H*0.02, H*0.02]);
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(W/2, 0); ctx.lineTo(W/2, H); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Score
+    ctx.fillStyle = 'rgba(255,255,255,0.08)';
+    ctx.font = `900 ${H*0.18}px Inter`;
+    ctx.textAlign = 'center';
+    ctx.fillText(p1Score, W/2 - W*0.15, H*0.25);
+    ctx.fillText(p2Score, W/2 + W*0.15, H*0.25);
+    ctx.textAlign = 'left';
+
+    const pw = PW(), ph = PH(), br = BALL_R();
+
+    // Paddles
+    drawPaddle(30, p1.y, pw, ph, '#22d3ee');
+    drawPaddle(W-30-pw, p2.y, pw, ph, '#f472b6');
+
+    // Ball
+    ctx.shadowBlur = 20; ctx.shadowColor = '#fff';
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.arc(ball.x, ball.y, br, 0, Math.PI*2); ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Rally streak indicator
+    if (rallyCount > 3) {
+      ctx.fillStyle = `rgba(251,191,36,${Math.min(rallyCount/12, 0.9)})`;
+      ctx.font = `bold ${W*0.02}px Inter`;
+      ctx.textAlign = 'center';
+      ctx.fillText(`🔥 Rally ×${rallyCount}`, W/2, H*0.94);
+      ctx.textAlign = 'left';
+    }
+  }
+
+  function drawPaddle(x, y, w, h, color) {
+    ctx.shadowBlur = 18; ctx.shadowColor = color;
+    const g = ctx.createLinearGradient(x, y, x+w, y+h);
+    g.addColorStop(0, color); g.addColorStop(1, color+'88');
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.roundRect(x, y, w, h, w/2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  }
+
+  // Back link
+  const stored = localStorage.getItem('theme');
+  document.getElementById('back-btn').href = `../../games.html?theme=${stored==='dark'?'dark':'light'}`;
+  </script>
+</body>
+</html>

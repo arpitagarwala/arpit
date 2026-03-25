@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sudoku – Arpit Agarwala</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{background:#050f1f;font-family:'Inter',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;color:#e2e8f0;padding:60px 16px 32px;}
+    ::-webkit-scrollbar{width:4px;} ::-webkit-scrollbar-thumb{background:rgba(34,211,238,0.2);border-radius:99px;}
+
+    #back-btn{position:fixed;top:16px;left:16px;z-index:50;width:38px;height:38px;border-radius:50%;background:rgba(5,15,30,0.85);backdrop-filter:blur(10px);border:1px solid rgba(34,211,238,0.2);color:rgba(147,210,255,0.7);display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:18px;transition:all .2s;}
+    #back-btn:hover{border-color:rgba(34,211,238,0.5);color:#22d3ee;}
+
+    h1{font-size:2rem;font-weight:900;background:linear-gradient(135deg,#22d3ee,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px;}
+    .subtitle{color:rgba(148,163,184,0.5);font-size:.82rem;margin-bottom:18px;}
+
+    /* Controls row */
+    .ctrl-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:16px;}
+    .diff-btn{padding:7px 16px;border-radius:20px;border:1px solid rgba(34,211,238,0.2);background:transparent;color:rgba(148,163,184,0.7);font-size:.78rem;font-weight:600;cursor:pointer;transition:all .18s;}
+    .diff-btn.active,.diff-btn:hover{background:rgba(34,211,238,0.12);border-color:rgba(34,211,238,0.5);color:#22d3ee;}
+    .action-btn{padding:7px 16px;border-radius:20px;background:rgba(30,50,80,0.6);border:1px solid rgba(34,211,238,0.15);color:rgba(200,220,255,0.75);font-size:.78rem;font-weight:600;cursor:pointer;transition:all .18s;}
+    .action-btn:hover{border-color:rgba(34,211,238,0.5);color:#22d3ee;}
+    .action-btn.notes-on{background:rgba(34,211,238,0.15);border-color:rgba(34,211,238,0.5);color:#22d3ee;}
+
+    /* Stats row */
+    .stats-row{display:flex;gap:14px;margin-bottom:16px;}
+    .stat{background:rgba(15,25,50,0.7);border:1px solid rgba(34,211,238,0.12);border-radius:12px;padding:8px 18px;text-align:center;}
+    .stat-label{font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:rgba(148,163,184,0.4);margin-bottom:2px;}
+    .stat-val{font-size:1.2rem;font-weight:800;color:#22d3ee;font-variant-numeric:tabular-nums;}
+
+    /* Grid */
+    #grid-wrap{position:relative;}
+    #grid{
+      display:grid;grid-template-columns:repeat(9,1fr);
+      border:2px solid rgba(34,211,238,0.5);
+      border-radius:10px;overflow:hidden;
+      box-shadow:0 0 30px rgba(34,211,238,0.1);
+      width:clamp(288px,min(92vw,92vh - 260px),504px);
+      aspect-ratio:1;
+    }
+    .cell{
+      display:flex;align-items:center;justify-content:center;
+      border:1px solid rgba(34,211,238,0.1);
+      background:rgba(10,20,45,0.8);
+      font-size:clamp(14px,3.5vw,22px);
+      font-weight:700;
+      cursor:pointer;
+      position:relative;
+      transition:background .12s;
+      aspect-ratio:1;
+    }
+    .cell.given{color:#e2e8f0;cursor:default;}
+    .cell.user{color:#22d3ee;}
+    .cell.error{color:#f87171;background:rgba(248,113,113,0.12);}
+    .cell.selected{background:rgba(34,211,238,0.15)!important;outline:2px solid rgba(34,211,238,0.6);}
+    .cell.same-num{background:rgba(34,211,238,0.07)!important;}
+    .cell.related{background:rgba(34,211,238,0.04)!important;}
+    /* Box borders */
+    .cell:nth-child(3n){border-right:2px solid rgba(34,211,238,0.4);}
+    .cell:nth-child(9n){border-right:none;}
+    .cell-row-3 .cell,.cell-row-6 .cell{border-bottom:2px solid rgba(34,211,238,0.4);}
+
+    /* Notes mode */
+    .cell.notes-cell{font-size:clamp(5px,1.2vw,8px);font-weight:600;color:rgba(147,210,255,0.6);}
+    .notes-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);width:100%;height:100%;padding:2px;}
+    .note-n{display:flex;align-items:center;justify-content:center;font-size:clamp(5px,1.1vw,7px);color:rgba(147,210,255,0.7);font-weight:700;}
+
+    /* Number pad */
+    #numpad{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap;justify-content:center;}
+    .num-btn{width:42px;height:42px;border-radius:10px;border:1px solid rgba(34,211,238,0.2);background:rgba(15,25,50,0.7);color:#e2e8f0;font-size:1.05rem;font-weight:700;cursor:pointer;transition:all .15s;}
+    .num-btn:hover{background:rgba(34,211,238,0.15);border-color:rgba(34,211,238,0.5);color:#22d3ee;}
+    .num-btn.erase{color:#f87171;border-color:rgba(248,113,113,0.25);}
+    .num-btn.erase:hover{background:rgba(248,113,113,0.12);}
+
+    /* Toast */
+    #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(10,25,50,0.95);border:1px solid rgba(34,211,238,0.3);border-radius:12px;padding:10px 22px;color:#22d3ee;font-weight:700;font-size:.88rem;z-index:100;opacity:0;transition:opacity .25s;pointer-events:none;}
+    #toast.show{opacity:1;}
+
+    /* Victory */
+    #victory{position:fixed;inset:0;z-index:80;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(5,15,30,0.92);backdrop-filter:blur(10px);}
+    #victory.show{display:flex;}
+    .victory-box{background:rgba(10,25,55,0.97);border:1px solid rgba(34,211,238,0.3);border-radius:24px;padding:44px 52px;text-align:center;max-width:360px;width:90%;}
+    .victory-title{font-size:2.2rem;font-weight:900;color:#22d3ee;margin-bottom:8px;}
+    .victory-sub{color:rgba(148,163,184,0.7);margin-bottom:24px;font-size:.9rem;}
+    .victory-time{font-size:3rem;font-weight:900;color:#fff;font-variant-numeric:tabular-nums;}
+    .btn-new{display:inline-block;margin-top:20px;padding:14px 36px;background:linear-gradient(135deg,#22d3ee,#0891b2);border-radius:14px;color:#fff;font-weight:700;cursor:pointer;border:none;font-size:1rem;transition:all .2s;}
+    .btn-new:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(34,211,238,0.35);}
+  </style>
+</head>
+<body>
+  <a id="back-btn" href="../../games.html">&#8592;</a>
+
+  <h1>🔢 Sudoku</h1>
+  <div class="subtitle">Fill the grid — every row, column, and 3×3 box must contain 1–9</div>
+
+  <div class="ctrl-row">
+    <button class="diff-btn active" onclick="setDiff('easy',this)">Easy</button>
+    <button class="diff-btn" onclick="setDiff('medium',this)">Medium</button>
+    <button class="diff-btn" onclick="setDiff('hard',this)">Hard</button>
+    <button class="diff-btn" onclick="setDiff('expert',this)">Expert</button>
+    <button class="action-btn" onclick="newGame()">New Game</button>
+    <button class="action-btn" onclick="useHint()">Hint (<span id="hints">3</span>)</button>
+    <button class="action-btn" id="notes-btn" onclick="toggleNotes()">✏️ Notes</button>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat"><div class="stat-label">Time</div><div class="stat-val" id="timer-val">0:00</div></div>
+    <div class="stat"><div class="stat-label">Errors</div><div class="stat-val" id="errors-val">0</div></div>
+    <div class="stat"><div class="stat-label">Best</div><div class="stat-val" id="best-val">—</div></div>
+  </div>
+
+  <div id="grid-wrap">
+    <div id="grid"></div>
+  </div>
+
+  <div id="numpad">
+    <button class="num-btn erase" onclick="enterNum(0)">✕</button>
+    <button class="num-btn" onclick="enterNum(1)">1</button>
+    <button class="num-btn" onclick="enterNum(2)">2</button>
+    <button class="num-btn" onclick="enterNum(3)">3</button>
+    <button class="num-btn" onclick="enterNum(4)">4</button>
+    <button class="num-btn" onclick="enterNum(5)">5</button>
+    <button class="num-btn" onclick="enterNum(6)">6</button>
+    <button class="num-btn" onclick="enterNum(7)">7</button>
+    <button class="num-btn" onclick="enterNum(8)">8</button>
+    <button class="num-btn" onclick="enterNum(9)">9</button>
+  </div>
+
+  <div id="toast"></div>
+  <div id="victory">
+    <div class="victory-box">
+      <div class="victory-title">🎉 Solved!</div>
+      <div class="victory-sub">Excellent work. Puzzle completed in:</div>
+      <div class="victory-time" id="v-time">0:00</div>
+      <button class="btn-new" onclick="newGame();document.getElementById('victory').classList.remove('show')">New Puzzle</button>
+    </div>
+  </div>
+
+  <script>
+  // ── Difficulty config (clues remaining) ──
+  const DIFF = { easy:46, medium:36, hard:28, expert:22 };
+  let difficulty = 'easy';
+  let grid = []; // 81 cells: { given, value, notes:Set }
+  let solution = [];
+  let selected = -1;
+  let notesMode = false;
+  let hints = 3, errors = 0, elapsed = 0, timerActive = false, timerInterval;
+  let best = JSON.parse(localStorage.getItem('sudoku-best') || '{}');
+  document.getElementById('best-val').textContent = best[difficulty] ? fmtTime(best[difficulty]) : '—';
+
+  // ── Sudoku generator ──
+  function isValid(board, pos, num) {
+    const row = Math.floor(pos/9), col = pos%9;
+    for (let c=0;c<9;c++) if (board[row*9+c]===num&&c!==col) return false;
+    for (let r=0;r<9;r++) if (board[r*9+col]===num&&r!==row) return false;
+    const br=Math.floor(row/3)*3, bc=Math.floor(col/3)*3;
+    for (let r=br;r<br+3;r++) for (let c=bc;c<bc+3;c++) if (board[r*9+c]===num&&r*9+c!==pos) return false;
+    return true;
+  }
+
+  function solve(board) {
+    const empty = board.indexOf(0);
+    if (empty === -1) return true;
+    const nums=[1,2,3,4,5,6,7,8,9].sort(()=>Math.random()-0.5);
+    for (const n of nums) {
+      if (isValid(board, empty, n)) {
+        board[empty] = n;
+        if (solve(board)) return true;
+        board[empty] = 0;
+      }
+    }
+    return false;
+  }
+
+  function generatePuzzle() {
+    const board = Array(81).fill(0);
+    solve(board);
+    solution = [...board];
+    const clues = DIFF[difficulty];
+    const positions = [...Array(81).keys()].sort(()=>Math.random()-0.5);
+    let removed = 0;
+    for (const pos of positions) {
+      if (81 - removed <= clues) break;
+      const backup = board[pos];
+      board[pos] = 0;
+      // Quick uniqueness check: count solutions (max 2 to save time)
+      const test = [...board]; let cnt = 0;
+      function countSolutions(b, limit) {
+        if (cnt >= limit) return;
+        const e = b.indexOf(0); if (e===-1){cnt++;return;}
+        for (let n=1;n<=9;n++) if(isValid(b,e,n)){b[e]=n;countSolutions([...b],limit);b[e]=0;}
+      }
+      countSolutions([...board], 2);
+      if (cnt !== 1) board[pos] = backup;
+      else removed++;
+    }
+    return board;
+  }
+
+  // ── New game ──
+  function newGame() {
+    clearInterval(timerInterval);
+    const puzzle = generatePuzzle();
+    grid = puzzle.map(v => ({ given: v!==0, value: v, notes: new Set() }));
+    hints = 3; errors = 0; elapsed = 0; selected = -1; timerActive = false;
+    document.getElementById('hints').textContent = hints;
+    document.getElementById('errors-val').textContent = errors;
+    document.getElementById('timer-val').textContent = '0:00';
+    document.getElementById('best-val').textContent = best[difficulty] ? fmtTime(best[difficulty]) : '—';
+    renderGrid();
+  }
+
+  // ── Render ──
+  function renderGrid() {
+    const g = document.getElementById('grid');
+    g.innerHTML = '';
+    grid.forEach((cell, i) => {
+      const el = document.createElement('div');
+      el.className = 'cell' +
+        (cell.given ? ' given' : cell.value && !isValid(solution, i, cell.value) && cell.value !== solution[i] ? ' error' : cell.value ? ' user' : '') +
+        (i === selected ? ' selected' : '') +
+        (!cell.given && selected >= 0 && grid[selected].value && grid[selected].value === cell.value ? ' same-num' : '') +
+        (selected >= 0 && isRelated(i, selected) && i !== selected ? ' related' : '');
+
+      // Box borders every 3 rows
+      const row = Math.floor(i/9);
+      if (row===2||row===5) el.style.borderBottom='2px solid rgba(34,211,238,0.4)';
+
+      if (cell.notes.size > 0 && !cell.value) {
+        el.classList.add('notes-cell');
+        const ng = document.createElement('div');
+        ng.className = 'notes-grid';
+        for (let n=1;n<=9;n++) {
+          const nn = document.createElement('div');
+          nn.className = 'note-n';
+          nn.textContent = cell.notes.has(n) ? n : '';
+          ng.appendChild(nn);
+        }
+        el.appendChild(ng);
+      } else {
+        el.textContent = cell.value || '';
+      }
+
+      el.addEventListener('click', () => selectCell(i));
+      g.appendChild(el);
+    });
+  }
+
+  function isRelated(a, b) {
+    const ar=Math.floor(a/9),ac=a%9,br=Math.floor(b/9),bc=b%9;
+    return ar===br || ac===bc || (Math.floor(ar/3)===Math.floor(br/3)&&Math.floor(ac/3)===Math.floor(bc/3));
+  }
+
+  function selectCell(i) {
+    if (grid[i].given) { selected = i; renderGrid(); return; }
+    if (!timerActive) startTimer();
+    selected = i;
+    renderGrid();
+  }
+
+  // ── Input ──
+  function enterNum(n) {
+    if (selected < 0 || grid[selected].given) return;
+    if (!timerActive) startTimer();
+
+    if (notesMode && n !== 0) {
+      if (grid[selected].notes.has(n)) grid[selected].notes.delete(n);
+      else grid[selected].notes.add(n);
+      renderGrid(); return;
+    }
+
+    grid[selected].notes.clear();
+    if (n === 0) { grid[selected].value = 0; renderGrid(); checkWin(); return; }
+
+    if (n !== solution[selected]) {
+      errors++;
+      document.getElementById('errors-val').textContent = errors;
+      showToast('✕ Incorrect!');
+    }
+    grid[selected].value = n;
+    renderGrid();
+    checkWin();
+  }
+
+  document.addEventListener('keydown', e => {
+    if (selected < 0) return;
+    const n = parseInt(e.key);
+    if (n >= 1 && n <= 9) { enterNum(n); return; }
+    if (e.key==='Backspace'||e.key==='Delete'||e.key==='0') { enterNum(0); return; }
+    // Arrow navigation
+    const r=Math.floor(selected/9), c=selected%9;
+    if (e.key==='ArrowUp'    && r>0) selectCell((r-1)*9+c);
+    if (e.key==='ArrowDown'  && r<8) selectCell((r+1)*9+c);
+    if (e.key==='ArrowLeft'  && c>0) selectCell(r*9+c-1);
+    if (e.key==='ArrowRight' && c<8) selectCell(r*9+c+1);
+  });
+
+  // ── Hint ──
+  function useHint() {
+    if (hints <= 0) { showToast('No hints left!'); return; }
+    const empties = grid.map((c,i)=>i).filter(i=>!grid[i].given&&grid[i].value!==solution[i]);
+    if (!empties.length) return;
+    const pos = empties[Math.floor(Math.random()*empties.length)];
+    grid[pos].value = solution[pos]; grid[pos].notes.clear();
+    hints--;
+    document.getElementById('hints').textContent = hints;
+    selected = pos;
+    renderGrid(); checkWin();
+    showToast(`💡 Hint used — ${hints} left`);
+  }
+
+  // ── Notes toggle ──
+  function toggleNotes() {
+    notesMode = !notesMode;
+    document.getElementById('notes-btn').classList.toggle('notes-on', notesMode);
+    document.getElementById('notes-btn').textContent = notesMode ? '✏️ Notes ON' : '✏️ Notes';
+  }
+
+  // ── Timer ──
+  function startTimer() {
+    timerActive = true;
+    timerInterval = setInterval(() => {
+      elapsed++;
+      document.getElementById('timer-val').textContent = fmtTime(elapsed);
+    }, 1000);
+  }
+
+  function fmtTime(s) {
+    return `${Math.floor(s/60)}:${(s%60).toString().padStart(2,'0')}`;
+  }
+
+  // ── Win check ──
+  function checkWin() {
+    if (grid.every((c,i) => c.value === solution[i])) {
+      clearInterval(timerInterval); timerActive = false;
+      if (!best[difficulty] || elapsed < best[difficulty]) {
+        best[difficulty] = elapsed;
+        localStorage.setItem('sudoku-best', JSON.stringify(best));
+      }
+      document.getElementById('v-time').textContent = fmtTime(elapsed);
+      setTimeout(() => document.getElementById('victory').classList.add('show'), 400);
+    }
+  }
+
+  // ── Difficulty ──
+  function setDiff(d, btn) {
+    difficulty = d;
+    document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    newGame();
+  }
+
+  // ── Toast ──
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(t._to); t._to = setTimeout(() => t.classList.remove('show'), 2000);
+  }
+
+  // ── Init ──
+  newGame();
+
+  // Back link
+  const stored = localStorage.getItem('theme');
+  document.getElementById('back-btn').href = `../../games.html?theme=${stored==='dark'?'dark':'light'}`;
+  </script>
+</body>
+</html>

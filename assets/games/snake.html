@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Neon Snake – Arpit Agarwala</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{background:#050812;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:'Inter',sans-serif;overflow:hidden;user-select:none;}
+
+    #back-btn{position:fixed;top:16px;left:16px;z-index:50;width:38px;height:38px;border-radius:50%;background:rgba(10,18,40,0.85);backdrop-filter:blur(10px);border:1px solid rgba(34,211,238,0.25);color:rgba(147,210,255,0.8);display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:18px;transition:all .2s;}
+    #back-btn:hover{background:rgba(34,211,238,0.15);border-color:rgba(34,211,238,0.6);color:#22d3ee;}
+
+    #hud{position:fixed;top:16px;left:50%;transform:translateX(-50%);display:flex;gap:16px;z-index:20;}
+    .hud-box{background:rgba(10,18,40,0.85);backdrop-filter:blur(10px);border:1px solid rgba(34,211,238,0.2);border-radius:12px;padding:8px 18px;text-align:center;}
+    .hud-label{font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(34,211,238,0.5);margin-bottom:2px;}
+    .hud-val{font-size:20px;font-weight:800;color:#22d3ee;font-variant-numeric:tabular-nums;}
+
+    canvas{border-radius:16px;border:1px solid rgba(34,211,238,0.15);box-shadow:0 0 40px rgba(34,211,238,0.08),0 0 80px rgba(34,211,238,0.04);}
+
+    /* Overlay screens */
+    #screen{position:fixed;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;background:rgba(5,8,18,0.88);backdrop-filter:blur(8px);}
+    #screen.hidden{display:none;}
+    .screen-box{background:rgba(10,18,40,0.95);border:1px solid rgba(34,211,238,0.25);border-radius:24px;padding:40px 48px;text-align:center;max-width:360px;width:90%;}
+    .screen-title{font-size:2rem;font-weight:800;color:#22d3ee;margin-bottom:8px;text-shadow:0 0 20px rgba(34,211,238,0.5);}
+    .screen-sub{color:rgba(148,163,184,0.7);font-size:.9rem;margin-bottom:24px;line-height:1.6;}
+    .screen-score{font-size:3rem;font-weight:800;color:#fff;margin:12px 0;}
+    .score-label{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(34,211,238,0.5);}
+    .btn-start{display:inline-block;padding:14px 40px;background:linear-gradient(135deg,#22d3ee,#0891b2);border-radius:14px;color:#fff;font-weight:700;font-size:1rem;cursor:pointer;border:none;transition:all .2s;box-shadow:0 4px 20px rgba(34,211,238,0.3);}
+    .btn-start:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(34,211,238,0.4);}
+    .ctrls-hint{color:rgba(100,120,160,0.6);font-size:.75rem;margin-top:16px;}
+
+    /* Touch dpad */
+    #dpad{position:fixed;bottom:24px;right:24px;z-index:20;display:none;gap:4px;grid-template-columns:repeat(3,44px);grid-template-rows:repeat(3,44px);}
+    .dp{width:44px;height:44px;background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.25);border-radius:10px;display:flex;align-items:center;justify-content:center;color:rgba(34,211,238,0.7);font-size:18px;cursor:pointer;active:background:rgba(34,211,238,0.25);}
+    @media(pointer:coarse){#dpad{display:grid;}}
+  </style>
+</head>
+<body>
+
+  <a id="back-btn" href="../../games.html">&#8592;</a>
+
+  <div id="hud">
+    <div class="hud-box">
+      <div class="hud-label">Score</div>
+      <div class="hud-val" id="score-val">0</div>
+    </div>
+    <div class="hud-box">
+      <div class="hud-label">Best</div>
+      <div class="hud-val" id="best-val">0</div>
+    </div>
+    <div class="hud-box">
+      <div class="hud-label">Level</div>
+      <div class="hud-val" id="level-val">1</div>
+    </div>
+  </div>
+
+  <canvas id="cvs"></canvas>
+
+  <!-- D-Pad for touch -->
+  <div id="dpad">
+    <div></div>
+    <div class="dp" id="dp-up">↑</div>
+    <div></div>
+    <div class="dp" id="dp-left">←</div>
+    <div></div>
+    <div class="dp" id="dp-right">→</div>
+    <div></div>
+    <div class="dp" id="dp-down">↓</div>
+    <div></div>
+  </div>
+
+  <!-- Screens -->
+  <div id="screen">
+    <div class="screen-box" id="start-screen">
+      <div class="screen-title">🐍 Neon Snake</div>
+      <div class="screen-sub">Eat the glowing pellets. Don't hit yourself.<br>Speed increases as you score.</div>
+      <button class="btn-start" onclick="startGame()">Start Game</button>
+      <div class="ctrls-hint">Arrow keys / WASD / Swipe to move</div>
+    </div>
+  </div>
+
+  <script>
+    const cvs = document.getElementById('cvs');
+    const ctx = cvs.getContext('2d');
+
+    // Sizing
+    const CELL = 22;
+    let COLS, ROWS;
+    function sizeCvs() {
+      const avail = Math.min(window.innerWidth - 32, window.innerHeight - 120, 660);
+      const sz = Math.floor(avail / CELL) * CELL;
+      cvs.width = cvs.height = sz;
+      COLS = ROWS = sz / CELL;
+    }
+    window.addEventListener('resize', () => { sizeCvs(); if (!running) drawIdle(); });
+    sizeCvs();
+
+    // State
+    let snake, dir, nextDir, food, score, best, level, tick, running, dead, frameId;
+    best = parseInt(localStorage.getItem('snake-best') || '0');
+    document.getElementById('best-val').textContent = best;
+
+    function startGame() {
+      document.getElementById('screen').classList.add('hidden');
+      const mid = Math.floor(COLS / 2);
+      snake   = [{x: mid, y: mid}, {x: mid-1, y: mid}, {x: mid-2, y: mid}];
+      dir     = {x: 1, y: 0};
+      nextDir = {x: 1, y: 0};
+      food    = spawnFood();
+      score   = 0; level = 1; tick = 0;
+      running = true; dead = false;
+      updateHUD();
+      if (frameId) cancelAnimationFrame(frameId);
+      loop();
+    }
+
+    function spawnFood() {
+      let pos;
+      do { pos = {x: Math.floor(Math.random()*COLS), y: Math.floor(Math.random()*ROWS)}; }
+      while (snake.some(s => s.x===pos.x && s.y===pos.y));
+      return pos;
+    }
+
+    // Speed table
+    function getInterval() {
+      if (level <= 1)  return 160;
+      if (level <= 3)  return 130;
+      if (level <= 6)  return 105;
+      if (level <= 10) return 85;
+      return 70;
+    }
+
+    let lastTick = 0;
+    function loop(ts = 0) {
+      frameId = requestAnimationFrame(loop);
+      if (!running) return;
+      if (ts - lastTick < getInterval()) return;
+      lastTick = ts;
+      update();
+      draw();
+    }
+
+    function update() {
+      dir = {...nextDir};
+      const head = {x: snake[0].x + dir.x, y: snake[0].y + dir.y};
+
+      // Wall wrap
+      head.x = (head.x + COLS) % COLS;
+      head.y = (head.y + ROWS) % ROWS;
+
+      // Self collision
+      if (snake.slice(1).some(s => s.x===head.x && s.y===head.y)) {
+        gameOver(); return;
+      }
+
+      snake.unshift(head);
+      if (head.x === food.x && head.y === food.y) {
+        score += level * 10;
+        level = Math.floor(score / 80) + 1;
+        food = spawnFood();
+        updateHUD();
+      } else {
+        snake.pop();
+      }
+    }
+
+    function gameOver() {
+      running = false; dead = true;
+      if (score > best) { best = score; localStorage.setItem('snake-best', best); }
+      // Show game over
+      const screen = document.getElementById('screen');
+      screen.classList.remove('hidden');
+      screen.innerHTML = `
+        <div class="screen-box">
+          <div class="screen-title">💀 Game Over</div>
+          <div class="score-label">Score</div>
+          <div class="screen-score">${score}</div>
+          <div class="score-label" style="margin-bottom:4px">Best</div>
+          <div class="hud-val" style="font-size:1.5rem;color:#22d3ee;margin-bottom:20px">${best}</div>
+          <button class="btn-start" onclick="startGame()">Play Again</button>
+        </div>`;
+    }
+
+    // ── Drawing ──
+    function draw() {
+      const sz = cvs.width;
+      ctx.fillStyle = '#050812';
+      ctx.fillRect(0, 0, sz, sz);
+
+      // Grid (faint)
+      ctx.strokeStyle = 'rgba(34,211,238,0.04)';
+      ctx.lineWidth = 0.5;
+      for (let i = 0; i <= COLS; i++) {
+        ctx.beginPath(); ctx.moveTo(i*CELL, 0); ctx.lineTo(i*CELL, sz); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(0, i*CELL); ctx.lineTo(sz, i*CELL); ctx.stroke();
+      }
+
+      // Food — glowing orb
+      const fx = food.x * CELL + CELL/2, fy = food.y * CELL + CELL/2;
+      const foodGrad = ctx.createRadialGradient(fx, fy, 1, fx, fy, CELL*0.45);
+      foodGrad.addColorStop(0, '#fff');
+      foodGrad.addColorStop(0.3, '#f0abfc');
+      foodGrad.addColorStop(1, 'rgba(192,38,211,0)');
+      ctx.shadowBlur = 18; ctx.shadowColor = '#d946ef';
+      ctx.fillStyle = foodGrad;
+      ctx.beginPath(); ctx.arc(fx, fy, CELL * 0.42, 0, Math.PI*2); ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Snake
+      snake.forEach((seg, i) => {
+        const t = i / snake.length;
+        const hue = (160 + t * 60) % 360;
+        const cx = seg.x * CELL + CELL/2, cy = seg.y * CELL + CELL/2;
+        const r = CELL * 0.4 - t * 0.04 * CELL;
+        ctx.shadowBlur = i === 0 ? 20 : 10;
+        ctx.shadowColor = `hsl(${hue}, 100%, 65%)`;
+        ctx.fillStyle   = `hsl(${hue}, 100%, ${i===0? 70 : 60}%)`;
+        ctx.beginPath();
+        ctx.roundRect(seg.x * CELL + 2, seg.y * CELL + 2, CELL - 4, CELL - 4, 5);
+        ctx.fill();
+
+        // Eye on head
+        if (i === 0) {
+          ctx.shadowBlur = 0;
+          ctx.fillStyle = '#fff';
+          const eyeOff = {x: dir.y * 4, y: dir.x * -4};
+          [[cx + dir.x*4 + eyeOff.x - 2, cy + dir.y*4 + eyeOff.y - 2],
+           [cx + dir.x*4 - eyeOff.x - 2, cy + dir.y*4 - eyeOff.y - 2]].forEach(([ex, ey]) => {
+            ctx.beginPath(); ctx.arc(ex, ey, 2.5, 0, Math.PI*2); ctx.fill();
+            ctx.fillStyle = '#050812';
+            ctx.beginPath(); ctx.arc(ex + dir.x, ey + dir.y, 1.2, 0, Math.PI*2); ctx.fill();
+            ctx.fillStyle = '#fff';
+          });
+        }
+      });
+      ctx.shadowBlur = 0;
+    }
+
+    function drawIdle() {
+      ctx.fillStyle = '#050812';
+      ctx.fillRect(0, 0, cvs.width, cvs.height);
+    }
+
+    function updateHUD() {
+      document.getElementById('score-val').textContent = score;
+      document.getElementById('best-val').textContent  = best;
+      document.getElementById('level-val').textContent = level;
+    }
+
+    // ── Input ──
+    const DIRS = {
+      ArrowUp:    {x:0,y:-1}, w:{x:0,y:-1},
+      ArrowDown:  {x:0,y:1},  s:{x:0,y:1},
+      ArrowLeft:  {x:-1,y:0}, a:{x:-1,y:0},
+      ArrowRight: {x:1,y:0},  d:{x:1,y:0}
+    };
+    document.addEventListener('keydown', e => {
+      const d = DIRS[e.key] || DIRS[e.key.toLowerCase()];
+      if (d && (d.x !== -dir.x || d.y !== -dir.y)) nextDir = d;
+      if ([' ','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)) e.preventDefault();
+    });
+
+    // D-Pad
+    document.getElementById('dp-up').addEventListener('click',    () => { if (dir.y !== 1)  nextDir = {x:0,y:-1}; });
+    document.getElementById('dp-down').addEventListener('click',  () => { if (dir.y !== -1) nextDir = {x:0,y:1}; });
+    document.getElementById('dp-left').addEventListener('click',  () => { if (dir.x !== 1)  nextDir = {x:-1,y:0}; });
+    document.getElementById('dp-right').addEventListener('click', () => { if (dir.x !== -1) nextDir = {x:1,y:0}; });
+
+    // Swipe
+    let tx0, ty0;
+    document.addEventListener('touchstart', e => { tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY; }, {passive:true});
+    document.addEventListener('touchend', e => {
+      if (!running) return;
+      const dx = e.changedTouches[0].clientX - tx0, dy = e.changedTouches[0].clientY - ty0;
+      if (Math.abs(dx) < 15 && Math.abs(dy) < 15) return;
+      if (Math.abs(dx) > Math.abs(dy)) nextDir = dx > 0 ? {x:1,y:0} : {x:-1,y:0};
+      else nextDir = dy > 0 ? {x:0,y:1} : {x:0,y:-1};
+    }, {passive:true});
+
+    // Theme / back propagation
+    const stored = localStorage.getItem('theme');
+    const back = document.getElementById('back-btn');
+    back.href = `../../games.html?theme=${stored === 'dark' ? 'dark' : 'light'}`;
+
+    drawIdle();
+  </script>
+</body>
+</html>

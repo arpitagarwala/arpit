@@ -1037,13 +1037,13 @@ input[type=range]::-webkit-slider-thumb:hover {
 .mono { font-family: 'JetBrains Mono', monospace; }
 
 .glass {
-  background: rgba(15,23,42,.72);
+  background: rgba(255,255,255,.72);
   backdrop-filter: blur(24px);
-  border: 1px solid rgba(255,255,255,.08);
+  border: 1px solid rgba(0,0,0,.08);
 }
 .dark .glass {
-  background: rgba(255,255,255,.72);
-  border: 1px solid rgba(0,0,0,.08);
+  background: rgba(15,23,42,.72);
+  border-color: rgba(255,255,255,.08);
 }
 
 @keyframes ripple {
@@ -1066,62 +1066,63 @@ input[type=range]::-webkit-slider-thumb:hover {
 
 .mode-tab { transition: all .2s; }
 .mode-tab.active {
-  background: rgba(6,182,212,.18);
-  color: #06b6d4;
-  border-color: rgba(6,182,212,.35);
-}
-.dark .mode-tab.active {
   background: rgba(6,182,212,.15);
   color: #0891b2;
   border-color: rgba(6,182,212,.3);
 }
-.mode-tab:not(.active) { color: rgba(255,255,255,.45); border-color: transparent; }
-.dark .mode-tab:not(.active) { color: rgba(0,0,0,.4); border-color: transparent; }
+.dark .mode-tab.active {
+  background: rgba(6,182,212,.18);
+  color: #06b6d4;
+  border-color: rgba(6,182,212,.35);
+}
+.mode-tab:not(.active) { color: rgba(0,0,0,.4); border-color: transparent; }
+.dark .mode-tab:not(.active) { color: rgba(255,255,255,.45); border-color: transparent; }
 
-.btn-op  { background: rgba(251,191,36,.1); color: #fbbf24; }
-.btn-op:hover { background: rgba(251,191,36,.2); }
-.dark .btn-op  { background: rgba(217,119,6,.12); color: #d97706; }
-.dark .btn-op:hover { background: rgba(217,119,6,.22); }
+.btn-op  { background: rgba(217,119,6,.12); color: #d97706; }
+.btn-op:hover { background: rgba(217,119,6,.22); }
+.dark .btn-op  { background: rgba(251,191,36,.1); color: #fbbf24; }
+.dark .btn-op:hover { background: rgba(251,191,36,.2); }
 .btn-eq {
   background: linear-gradient(135deg,#06b6d4,#3b82f6);
   box-shadow: 0 6px 24px rgba(6,182,212,.35);
 }
 .btn-eq:hover  { opacity: .92; }
 .btn-eq:active { transform: scale(.96); }
-.btn-num { background: rgba(255,255,255,.05); }
-.btn-num:hover { background: rgba(255,255,255,.1); }
-.dark .btn-num { background: rgba(0,0,0,.04); }
-.dark .btn-num:hover { background: rgba(0,0,0,.1); }
-.btn-fn  { background: rgba(255,255,255,.03); color: rgba(255,255,255,.7); }
-.btn-fn:hover { background: rgba(255,255,255,.09); }
-.dark .btn-fn  { background: rgba(0,0,0,.04); color: rgba(0,0,0,.6); }
-.dark .btn-fn:hover { background: rgba(0,0,0,.1); }
-.btn-ac  { background: rgba(239,68,68,.12); color: #f87171; }
-.btn-ac:hover { background: rgba(239,68,68,.22); }
-.dark .btn-ac  { background: rgba(239,68,68,.1); color: #ef4444; }
+.btn-num { background: rgba(0,0,0,.04); }
+.btn-num:hover { background: rgba(0,0,0,.1); }
+.dark .btn-num { background: rgba(255,255,255,.05); }
+.dark .btn-num:hover { background: rgba(255,255,255,.1); }
+.btn-fn  { background: rgba(0,0,0,.04); color: rgba(0,0,0,.6); }
+.btn-fn:hover { background: rgba(0,0,0,.1); }
+.dark .btn-fn  { background: rgba(255,255,255,.03); color: rgba(255,255,255,.7); }
+.dark .btn-fn:hover { background: rgba(255,255,255,.09); }
+.btn-ac  { background: rgba(239,68,68,.1); color: #ef4444; }
+.btn-ac:hover { background: rgba(239,68,68,.15); }
+.dark .btn-ac  { background: rgba(239,68,68,.12); color: #f87171; }
+.dark .btn-ac:hover { background: rgba(239,68,68,.22); }
 
 .hist-item { transition: background .15s; }
-.hist-item:hover { background: rgba(255,255,255,.06); }
-.dark .hist-item:hover { background: rgba(0,0,0,.06); }
+.hist-item:hover { background: rgba(0,0,0,.06); }
+.dark .hist-item:hover { background: rgba(255,255,255,.06); }
 
 .sci-btn {
   font-size: .7rem;
   font-weight: 600;
-  background: rgba(139,92,246,.1);
-  color: #a78bfa;
-  border: 1px solid rgba(139,92,246,.18);
+  background: rgba(109,40,217,.08);
+  color: #7c3aed;
+  border: 1px solid rgba(109,40,217,.2);
   border-radius: .75rem;
   padding: .5rem;
   transition: all .15s;
   cursor: pointer;
 }
-.sci-btn:hover { background: rgba(139,92,246,.2); }
+.sci-btn:hover { background: rgba(109,40,217,.18); }
 .dark .sci-btn {
-  background: rgba(109,40,217,.08);
-  color: #7c3aed;
-  border-color: rgba(109,40,217,.2);
+  background: rgba(139,92,246,.1);
+  color: #a78bfa;
+  border-color: rgba(139,92,246,.18);
 }
-.dark .sci-btn:hover { background: rgba(109,40,217,.18); }
+.dark .sci-btn:hover { background: rgba(139,92,246,.2); }
 
 #angle-badge { cursor: pointer; user-select: none; }
 
