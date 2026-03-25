@@ -2,16 +2,16 @@
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
-  <title>CA Expert Tutor — Arpit Agarwala</title>
+  <title>CA Bhaiya — Arpit Agarwala</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <meta name="description" content="AI-powered CA Tutor trained on ICAI syllabus and the latest May 2026 amendments. Built for Foundation, Inter, and Final students." />
+  <meta name="description" content="AI-powered CA Mentor. Fast, concise, and accurate." />
   <meta name="author" content="Arpit Agarwala" />
   
   <link rel="canonical" href="https://ca.arpitagarwala.online/" />
   
   <!-- SEO & Open Graph -->
-  <meta property="og:title" content="CA Expert Tutor — Arpit Agarwala" />
-  <meta property="og:description" content="AI-powered CA Tutor trained on ICAI syllabus and the latest May 2026 amendments." />
+  <meta property="og:title" content="CA Bhaiya — Arpit Agarwala" />
+  <meta property="og:description" content="AI-powered CA Mentor. Fast, concise, and accurate." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://ca.arpitagarwala.online" />
   
@@ -21,27 +21,30 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   
+  <!-- Marked.js for perfect markdown parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
     * { box-sizing: border-box; }
     
     body { 
       font-family: 'Inter', sans-serif; 
-      background: #f8fafc; /* Very light slate for a clean study vibe */
-      color: #0f172a; 
+      background: #0a0e1a; /* Dark theme */
+      color: #f1f5f9; 
       margin: 0; 
     }
 
     /* Scrollbar */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 99px; }
-    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
 
     /* Custom subtle grid background */
     .bg-grid {
-      background-image: linear-gradient(to right, #e2e8f0 1px, transparent 1px),
-                        linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
+      background-image: linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
       background-size: 40px 40px;
       mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
       -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
@@ -53,10 +56,10 @@
 
     /* Chat Window Styles */
     .chat-container {
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(15, 23, 42, 0.85);
       backdrop-filter: blur(12px);
-      border: 1px solid rgba(226, 232, 240, 0.8);
-      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(99, 102, 241, 0.15);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
     }
 
     /* Message animations */
@@ -78,24 +81,39 @@
     /* Markdown styling inside bot message */
     .bot-msg p { margin-bottom: 0.75rem; line-height: 1.6; }
     .bot-msg p:last-child { margin-bottom: 0; }
-    .bot-msg strong { color: #1e293b; font-weight: 700; }
+    .bot-msg strong { color: #c7d2fe; font-weight: 700; }
     .bot-msg ul { padding-left: 1.5rem; margin: 0.5rem 0; list-style-type: disc; }
     .bot-msg ol { padding-left: 1.5rem; margin: 0.5rem 0; list-style-type: decimal; }
     .bot-msg li { margin-bottom: 0.3rem; }
-    .bot-msg li::marker { color: #6366f1; }
-    .bot-msg h1, .bot-msg h2, .bot-msg h3 { font-weight: 700; color: #0f172a; margin-top: 1rem; margin-bottom: 0.5rem; }
+    .bot-msg li::marker { color: #818cf8; }
+    .bot-msg h1, .bot-msg h2, .bot-msg h3, .bot-msg h4 { font-weight: 700; color: #f8fafc; margin-top: 1rem; margin-bottom: 0.5rem; }
     .bot-msg code { 
-      background: #f1f5f9; 
-      color: #b91c1c; 
+      background: rgba(99,102,241,0.15); 
+      color: #a5b4fc; 
       padding: 0.15rem 0.4rem; 
       border-radius: 4px; 
       font-size: 0.85em; 
       font-family: monospace; 
     }
+    .bot-msg pre {
+      background: #0f172a;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      border: 1px solid rgba(255,255,255,0.1);
+      margin: 0.5rem 0;
+    }
+    .bot-msg pre code { background: transparent; padding: 0; color: #e2e8f0; }
+    
+    /* Markdown Tables */
+    .bot-msg table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9em; }
+    .bot-msg th { background: rgba(99,102,241,0.1); color: #c7d2fe; font-weight: 600; text-align: left; padding: 0.75rem; border: 1px solid rgba(255,255,255,0.1); }
+    .bot-msg td { padding: 0.75rem; border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; }
+    .bot-msg tr:nth-child(even) { background: rgba(255,255,255,0.02); }
   </style>
 </head>
 
-<body class="h-screen w-full flex items-center justify-center p-2 sm:p-4 md:p-6 relative overflow-hidden text-slate-800">
+<body class="h-screen w-full flex items-center justify-center p-2 sm:p-4 md:p-6 relative overflow-hidden">
 
   <!-- Background Grid -->
   <div class="bg-grid"></div>
@@ -104,48 +122,47 @@
   <div id="app" class="z-10 w-full max-w-4xl h-[95vh] sm:h-[90vh] chat-container rounded-[2rem] flex flex-col overflow-hidden relative">
     
     <!-- Top Header -->
-    <header class="px-5 sm:px-8 py-4 sm:py-5 border-b border-slate-200 flex items-center justify-between bg-white/60 shrink-0">
+    <header class="px-5 sm:px-8 py-4 sm:py-5 border-b border-white/10 flex items-center justify-between bg-slate-900/60 shrink-0">
       <div class="flex items-center gap-4">
-        <div class="relative w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-200">
+        <div class="relative w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center shadow-[0_0_20px_rgba(79,70,229,0.4)] border border-indigo-400/30">
           <i class="ri-book-read-fill text-2xl text-white"></i>
-          <span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-white rounded-full"></span>
+          <span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-emerald-400 border-2 border-slate-900 rounded-full"></span>
         </div>
         <div>
-          <h1 class="text-lg sm:text-xl font-extrabold tracking-tight text-slate-900 leading-tight">CA Expert Tutor</h1>
-          <p class="text-xs sm:text-sm text-slate-500 font-medium tracking-wide">Trained on ICAI Syllabus & May 2026 Amendments</p>
+          <h1 class="text-lg sm:text-xl font-extrabold tracking-tight text-white leading-tight">CA Bhaiya</h1>
+          <p class="text-xs sm:text-sm text-indigo-300 font-medium tracking-wide">Elite CA Query Solver</p>
         </div>
       </div>
       
       <div class="flex items-center gap-2">
-        <a href="https://arpitagarwala.online" target="_blank" class="hidden sm:flex text-xs font-semibold text-slate-500 hover:text-indigo-600 transition items-center gap-1 bg-slate-100 hover:bg-indigo-50 px-3 py-1.5 rounded-full">
+        <a href="https://arpitagarwala.online" target="_blank" class="hidden sm:flex text-xs font-semibold text-slate-400 hover:text-indigo-400 transition items-center gap-1 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-full border border-white/5">
           <i class="ri-link"></i> By Arpit Agarwala
         </a>
-        <button onclick="clearChat()" title="Start New Session" class="w-10 h-10 flex items-center justify-center rounded-full text-slate-400 hover:text-red-500 hover:bg-red-50 transition">
+        <button onclick="clearChat()" title="Start New Session" class="w-10 h-10 flex items-center justify-center rounded-full text-slate-400 hover:text-red-400 hover:bg-red-400/10 transition">
           <i class="ri-refresh-line text-lg"></i>
         </button>
       </div>
     </header>
 
     <!-- Chat Area -->
-    <main id="chat-box" class="flex-1 px-4 sm:px-8 py-6 overflow-y-auto flex flex-col gap-6 scroll-smooth bg-slate-50/30">
+    <main id="chat-box" class="flex-1 px-4 sm:px-8 py-6 overflow-y-auto flex flex-col gap-6 scroll-smooth bg-slate-900/40">
       
       <!-- Welcome Message -->
       <div class="flex items-start gap-3 sm:gap-4 msg-in max-w-[90%] sm:max-w-[85%]">
-        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-indigo-100 text-indigo-600 shrink-0 flex items-center justify-center mt-1 border border-indigo-200 shadow-sm">
+        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-indigo-500/20 text-indigo-400 shrink-0 flex items-center justify-center mt-1 border border-indigo-500/30 shadow-sm">
           <i class="ri-robot-2-line text-lg sm:text-xl"></i>
         </div>
-        <div class="bg-white text-slate-700 px-5 py-4 sm:px-6 sm:py-5 rounded-2xl rounded-tl-sm shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-slate-100 text-sm sm:text-[15px] bot-msg">
-          <p>Namaste! 🙏 I am your dedicated AI CA Faculty.</p>
-          <p>I have vast knowledge of the **ICAI syllabus** (Foundation, Intermediate, and Final) including Accounting Standards, Ind AS, Law, Costing, Taxation, and Audit.</p>
-          <p>I am also exclusively synced with the **Latest Statutory Updates and Amendments** applicable for upcoming attempts (e.g. May 2026).</p>
-          <p class="font-semibold text-indigo-600 mt-4 mb-2">What are you studying today?</p>
+        <div class="bg-slate-800/80 text-slate-200 px-5 py-4 sm:px-6 sm:py-5 rounded-2xl rounded-tl-sm shadow-md border border-white/5 text-sm sm:text-[15px] bot-msg">
+          <p>Namaste! 🙏 I am **CA Bhaiya**.</p>
+          <p>I provide highly concise, direct, and technically accurate answers for CA Foundation, Intermediate, and Final queries. No fluff, just the facts.</p>
+          <p class="font-semibold text-indigo-300 mt-4 mb-2">What is your query?</p>
           
           <!-- Suggestion Chips -->
           <div class="flex flex-wrap gap-2 mt-3 pointer-events-auto" id="suggestions">
-            <button onclick="useSuggestion('Explain AS-2 Valuation of Inventories')" class="text-xs sm:text-sm px-3.5 py-1.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition font-medium">Explain AS-2</button>
-            <button onclick="useSuggestion('What are the latest GST amendments for May 2026?')" class="text-xs sm:text-sm px-3.5 py-1.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition font-medium">Latest GST Amendments</button>
-            <button onclick="useSuggestion('Difference between Ind AS 115 and AS 9')" class="text-xs sm:text-sm px-3.5 py-1.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition font-medium">Ind AS 115 vs AS 9</button>
-            <button onclick="useSuggestion('Explain Section 185 of Companies Act, 2013')" class="text-xs sm:text-sm px-3.5 py-1.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition font-medium">Companies Act Sec 185</button>
+            <button onclick="useSuggestion('Explain AS-2 Valuation of Inventories')" class="text-xs sm:text-sm px-3.5 py-1.5 rounded-full border border-white/10 bg-white/5 text-slate-300 hover:bg-indigo-500/20 hover:text-indigo-300 hover:border-indigo-400/50 transition font-medium">Explain AS-2</button>
+            <button onclick="useSuggestion('What are the latest GST amendments?')" class="text-xs sm:text-sm px-3.5 py-1.5 rounded-full border border-white/10 bg-white/5 text-slate-300 hover:bg-indigo-500/20 hover:text-indigo-300 hover:border-indigo-400/50 transition font-medium">Latest GST Amendments</button>
+            <button onclick="useSuggestion('Difference between Ind AS 115 and AS 9 in a table')" class="text-xs sm:text-sm px-3.5 py-1.5 rounded-full border border-white/10 bg-white/5 text-slate-300 hover:bg-indigo-500/20 hover:text-indigo-300 hover:border-indigo-400/50 transition font-medium">Ind AS 115 vs AS 9</button>
+            <button onclick="useSuggestion('Explain Section 185 of Companies Act, 2013')" class="text-xs sm:text-sm px-3.5 py-1.5 rounded-full border border-white/10 bg-white/5 text-slate-300 hover:bg-indigo-500/20 hover:text-indigo-300 hover:border-indigo-400/50 transition font-medium">Companies Act Sec 185</button>
           </div>
         </div>
       </div>
@@ -155,10 +172,10 @@
     <!-- Typing Indicator -->
     <div id="typing-indicator" class="hidden px-4 sm:px-8 pb-4">
       <div class="flex items-end gap-3 sm:gap-4">
-        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-indigo-100 text-indigo-600 shrink-0 flex items-center justify-center border border-indigo-200">
+        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-indigo-500/20 text-indigo-400 shrink-0 flex items-center justify-center border border-indigo-500/30">
           <i class="ri-robot-2-line text-lg sm:text-xl"></i>
         </div>
-        <div class="bg-white px-5 py-4 rounded-2xl rounded-bl-sm shadow-sm border border-slate-200 flex gap-1.5 items-center">
+        <div class="bg-slate-800/80 px-5 py-4 rounded-2xl rounded-bl-sm shadow-md border border-white/5 flex gap-1.5 items-center">
           <div class="w-2 h-2 bg-indigo-400 rounded-full dot-bounce"></div>
           <div class="w-2 h-2 bg-indigo-400 rounded-full dot-bounce"></div>
           <div class="w-2 h-2 bg-indigo-400 rounded-full dot-bounce"></div>
@@ -167,24 +184,24 @@
     </div>
 
     <!-- Input Footer -->
-    <footer class="px-4 sm:px-8 py-4 sm:py-5 bg-white border-t border-slate-200 shrink-0 shadow-[0_-10px_30px_-15px_rgba(0,0,0,0.05)]">
-      <form id="chat-form" class="relative flex items-end gap-2 sm:gap-3 bg-slate-50 border border-slate-300 focus-within:border-indigo-500 focus-within:ring-4 focus-within:ring-indigo-500/10 rounded-2xl transition-all p-1.5 sm:p-2">
+    <footer class="px-4 sm:px-8 py-4 sm:py-5 bg-slate-900 border-t border-white/10 shrink-0 shadow-2xl z-10">
+      <form id="chat-form" class="relative flex items-end gap-2 sm:gap-3 bg-slate-800 border border-slate-700/60 focus-within:border-indigo-500/50 focus-within:ring-2 focus-within:ring-indigo-500/20 rounded-2xl transition-all p-1.5 sm:p-2">
         
         <textarea id="chat-input" rows="1" placeholder="Ask your CA doubt here..."
-          class="flex-1 bg-transparent border-none outline-none resize-none px-3 py-2 sm:py-3 text-slate-700 placeholder-slate-400 text-[15px] leading-relaxed max-h-32"
+          class="flex-1 bg-transparent border-none outline-none resize-none px-3 py-2 sm:py-3 text-slate-200 placeholder-slate-500 text-[15px] leading-relaxed max-h-32"
           autocomplete="off"></textarea>
           
         <button type="submit" id="send-btn" title="Send message"
-          class="w-10 h-10 sm:w-12 sm:h-12 shrink-0 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white flex items-center justify-center transition shadow-md shadow-indigo-600/20 self-end mb-0.5 sm:mb-1">
+          class="w-10 h-10 sm:w-12 sm:h-12 shrink-0 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white flex items-center justify-center transition shadow-[0_0_15px_rgba(79,70,229,0.3)] self-end mb-0.5 sm:mb-1">
           <i class="ri-send-plane-2-fill text-lg sm:text-xl transform flex translate-x-px translate-y-px"></i>
         </button>
       </form>
       
       <div class="flex items-center justify-center mt-3 sm:mt-4 gap-1 sm:gap-1.5 opacity-80">
-        <span class="text-[10px] sm:text-xs text-slate-400 font-medium">Powered by</span>
-        <span class="text-[10px] sm:text-xs text-indigo-500 font-bold tracking-wide">AI + ICAI RAG</span>
-        <span class="mx-1.5 text-slate-300">•</span>
-        <a href="https://arpitagarwala.online" target="_blank" class="text-[10px] sm:text-xs text-slate-400 hover:text-slate-600 transition underline decoration-slate-300 underline-offset-2">arpitagarwala.online</a>
+        <span class="text-[10px] sm:text-xs text-slate-500 font-medium">Powered by</span>
+        <span class="text-[10px] sm:text-xs text-indigo-400 font-bold tracking-wide">AI + RAG</span>
+        <span class="mx-1.5 text-slate-700">•</span>
+        <a href="https://arpitagarwala.online" target="_blank" class="text-[10px] sm:text-xs text-slate-500 hover:text-slate-300 transition underline decoration-slate-700 underline-offset-2">arpitagarwala.online</a>
       </div>
     </footer>
     
@@ -192,7 +209,6 @@
 
   <script>
     // ─── CONFIG ─────────────────────────────────────────────────────────────
-    // Endpoint for the dedicated ca-chatbot Worker
     const WORKER_URL = 'https://ca-chatbot.arpitagarwala.workers.dev';
 
     // ─── STATE ──────────────────────────────────────────────────────────────
@@ -221,32 +237,12 @@
       }
     });
 
-    // ─── SIMPLE MARKDOWN PARSER ─────────────────────────────────────────────
-    function mdToHtml(text) {
-      return text
-        // Headings (# Heading)
-        .replace(/^### (.*$)/gim, '<h3>$1</h3>')
-        .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-        .replace(/^# (.*$)/gim, '<h1>$1</h1>')
-        // Bold (**text**)
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        // Inline code (`code`)
-        .replace(/`([^`]+)`/g, '<code>$1</code>')
-        // Unordered format lists starting with - or *
-        .replace(/^\s*[\-\*] (.*)/gim, '<li>$1</li>')
-        // Wrap contiguous li in ul
-        .replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>')
-        // Numbered lists (1. 2. 3.)
-        .replace(/^\s*\d+\. (.*)/gim, '<li>$1</li>')
-        // Paragraphs (double newline)
-        .replace(/\n\n/g, '</p><p>')
-        // Single newline to <br> specifically in non-list blocks
-        .replace(/([^\n])\n(?!\n|<li|<\/ul>)/g, '$1<br>')
-        // Clean up empty wrapping
-        .replace(/^/, '<p>').replace(/$/, '</p>')
-        .replace(/<p><\/p>/g, '')
-        .replace(/<p><ul/g, '<ul').replace(/<\/ul><\/p>/g, '</ul>');
-    }
+    // ─── MARKDOWN PARSER ────────────────────────────────────────────────────
+    // Configure marked to sanitize and format beautifully
+    marked.setOptions({
+      breaks: true,
+      gfm: true
+    });
 
     function escapeHtml(str) {
       const div = document.createElement('div');
@@ -272,19 +268,24 @@
     function addMessage(role, text) {
       const wrapper = document.createElement('div');
       wrapper.className = 'msg-in w-full flex ' + (role === 'user' ? 'justify-end' : '');
+      
+      const contentHtml = role === 'user' 
+        ? escapeHtml(text).replace(/\n/g, '<br>')
+        : marked.parse(text); // Native robust markdown parsing for bot
+
       wrapper.innerHTML = role === 'user' 
         ? `
           <div class="bg-indigo-600 text-white px-5 py-3.5 sm:px-6 sm:py-4 rounded-2xl rounded-tr-sm shadow-md max-w-[90%] sm:max-w-[80%] text-[15px] leading-relaxed">
-            ${escapeHtml(text).replace(/\n/g, '<br>')}
+            ${contentHtml}
           </div>
         ` 
         : `
           <div class="flex items-start gap-3 sm:gap-4 max-w-[95%] sm:max-w-[85%]">
-            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-indigo-100 text-indigo-600 shrink-0 flex items-center justify-center mt-1 border border-indigo-200 shadow-sm">
+            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-indigo-500/20 text-indigo-400 shrink-0 flex items-center justify-center mt-1 border border-indigo-500/30 shadow-sm">
               <i class="ri-robot-2-line text-lg sm:text-xl"></i>
             </div>
-            <div class="bg-white text-slate-700 px-5 py-4 sm:px-6 sm:py-5 rounded-2xl rounded-tl-sm shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-slate-100 text-[15px] bot-msg w-full overflow-x-auto">
-              ${mdToHtml(text)}
+            <div class="bg-slate-800/80 text-slate-200 px-5 py-4 sm:px-6 sm:py-5 rounded-2xl rounded-tl-sm shadow-md border border-white/5 text-[15px] bot-msg w-full overflow-x-auto">
+              ${contentHtml}
             </div>
           </div>
         `;

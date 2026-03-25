@@ -68,10 +68,19 @@
     .bot-msg ul, .bot-msg ol { padding-left: 1.2rem; margin: 0.4rem 0; }
     .bot-msg li { margin-bottom: 0.2rem; }
     .bot-msg code { background: rgba(99,102,241,0.15); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.8rem; }
+    .bot-msg pre { background: rgba(15,23,42,0.6); padding: 0.8rem; border-radius: 6px; overflow-x: auto; border: 1px solid rgba(255,255,255,0.05); margin: 0.5rem 0; }
+    .bot-msg pre code { background: transparent; padding: 0; color: #e2e8f0; }
+    
+    /* Markdown Tables */
+    .bot-msg table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.85em; }
+    .bot-msg th { background: rgba(99,102,241,0.15); color: #c7d2fe; font-weight: 600; text-align: left; padding: 0.5rem; border: 1px solid rgba(255,255,255,0.1); }
+    .bot-msg td { padding: 0.5rem; border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; }
+    .bot-msg tr:nth-child(even) { background: rgba(255,255,255,0.03); }
 
     /* Input focus ring */
     .chat-input:focus { outline: none; box-shadow: 0 0 0 2px rgba(99,102,241,0.5); }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 
 <body class="h-screen flex items-center justify-center p-3 relative overflow-hidden">
@@ -167,39 +176,25 @@
     const typingDiv  = document.getElementById('typing-indicator');
     const statusText = document.getElementById('status-text');
 
-    // ─── Simple markdown to HTML ────────────────────────────────────────────
-    function mdToHtml(text) {
-      return text
-        // Bold
-        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-        // Inline code
-        .replace(/`([^`]+)`/g, '<code>$1</code>')
-        // Unordered lists
-        .replace(/^[\-\*] (.+)$/gm, '<li>$1</li>')
-        .replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>')
-        // Ordered lists
-        .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
-        // Paragraphs (double newline)
-        .replace(/\n\n/g, '</p><p>')
-        // Single newline → <br>
-        .replace(/\n/g, '<br>')
-        // Wrap in <p>
-        .replace(/^(.+)$/, '<p>$1</p>')
-        // Clean up empty paragraphs
-        .replace(/<p><\/p>/g, '')
-        .replace(/<p><ul>/g, '<ul>')
-        .replace(/<\/ul><\/p>/g, '</ul>');
-    }
+    // ─── MARKDOWN PARSER ────────────────────────────────────────────────────
+    marked.setOptions({
+      breaks: true,
+      gfm: true
+    });
 
     // ─── Add message to chat ────────────────────────────────────────────────
     function addMessage(role, text) {
       const wrapper = document.createElement('div');
       wrapper.className = 'msg-in';
 
+      const contentHtml = role === 'user' 
+        ? escapeHtml(text).replace(/\n/g, '<br>')
+        : marked.parse(text);
+
       if (role === 'user') {
         wrapper.className += ' flex flex-row-reverse items-end gap-2.5';
         wrapper.innerHTML = `
-          <div class="bg-indigo-600 text-white px-4 py-3 rounded-2xl rounded-br-none max-w-[85%] shadow-md text-[13px] leading-relaxed">${escapeHtml(text)}</div>
+          <div class="bg-indigo-600 text-white px-4 py-3 rounded-2xl rounded-br-none max-w-[85%] shadow-md text-[13px] leading-relaxed">${contentHtml}</div>
         `;
       } else {
         wrapper.className += ' flex items-end gap-2.5';
@@ -207,7 +202,7 @@
           <div class="w-7 h-7 rounded-full bg-indigo-500/80 shrink-0 flex items-center justify-center">
             <i class="ri-robot-2-fill text-white text-xs"></i>
           </div>
-          <div class="bg-slate-800/80 text-slate-200 px-4 py-3 rounded-2xl rounded-bl-none max-w-[85%] shadow-md border border-white/5 text-[13px] leading-relaxed bot-msg">${mdToHtml(text)}</div>
+          <div class="bg-slate-800/80 text-slate-200 px-4 py-3 rounded-2xl rounded-bl-none max-w-[85%] shadow-md border border-white/5 text-[13px] leading-relaxed bot-msg w-full overflow-x-auto">${contentHtml}</div>
         `;
       }
 
