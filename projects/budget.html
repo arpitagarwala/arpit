@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>FinTech Hub & Budget Tracker - Arpit Agarwala</title>
+    <meta name="description" content="Manage your digital wallet, track income, expenses, and savings with this premium FinTech dashboard by Arpit Agarwala." />
+    <meta name="keywords" content="fintech hub, budget tracker, virtual cards, expense tracker, personal finance, Arpit Agarwala, Kolkata" />
+    <meta name="author" content="Arpit Agarwala" />
+    <link rel="canonical" href="https://arpitagarwala.online/projects/budget.html" />
+  <link rel="stylesheet" href="../css/global.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        .glass-card { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .glass-card-dark { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .mesh-bg { background-image: radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);}
+        .cc-tilt { transition: transform 0.1s ease; transform-style: preserve-3d; }
+    </style>
+</head>
+
+<body class="min-h-screen transition-colors duration-300 relative overflow-x-hidden bg-[#050812] text-slate-100">
+  <!-- Uniform Back Button -->
+  <div class="fixed top-4 left-4 z-50 pointer-events-auto">
+    <a id="back-link" href="../projects.html" class="w-10 h-10 flex items-center justify-center rounded-full backdrop-blur border transition-all shadow-lg hover:scale-105 active:scale-95 bg-slate-800/50 border-slate-700/50 hover:bg-slate-700/80 text-white">
+      <i class="ri-arrow-left-line text-lg"></i>
+    </a>
+  </div>
+
+  <!-- Uniform Theme Toggle -->
+
+    <!-- Ambient background glows -->
+    <div class="fixed top-0 left-0 w-full h-full pointer-events-none z-0 overflow-hidden">
+        <div class="absolute -top-32 -left-32 w-96 h-96 bg-indigo-500/20 rounded-full blur-[100px]"></div>
+        <div class="absolute top-[40%] -right-32 w-96 h-96 bg-emerald-500/10 rounded-full blur-[100px]"></div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="name-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 backdrop-blur-sm bg-[#050812]/80">
+        <div class="w-full max-w-sm rounded-[2rem] p-8 shadow-2xl border fade-up relative overflow-hidden bg-slate-800 border-slate-700/50">
+            <div class="absolute -top-16 -right-16 w-32 h-32 bg-indigo-500/20 rounded-full blur-2xl"></div>
+            <div class="w-16 h-16 bg-indigo-500/10 rounded-2xl flex items-center justify-center mb-6 mx-auto relative z-10">
+                <i class="ri-bank-card-line text-3xl text-indigo-500"></i>
+            </div>
+            <h2 class="text-2xl font-black text-center mb-2 tracking-tight relative z-10 text-white">FinHub Auth</h2>
+            <p class="text-center mb-8 text-sm font-medium relative z-10 text-slate-400">Enter your name to securely access your digital wallet</p>
+            
+            <input id="name-input" type="text" placeholder="Account Name…" 
+                class="w-full px-4 py-3.5 rounded-xl mb-4 border focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all font-medium relative z-10 bg-slate-900 text-white border-slate-700">
+            
+            <button id="submit-name-btn" onclick="submitName()" class="w-full py-3.5 bg-gradient-to-r from-indigo-500 to-violet-600 hover:from-indigo-400 hover:to-violet-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-indigo-500/30 active:scale-[0.98] relative z-10">
+                Access Dashboard
+            </button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 backdrop-blur-xl border-b px-4 sm:px-8 py-4 w-full bg-[#050812]/70 border-slate-800/50">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3 sm:gap-4">
+                
+                <div>
+                    <h1 class="text-lg sm:text-xl font-extrabold leading-none tracking-tight flex items-center gap-2 text-white">
+                        <i class="ri-wallet-3-fill text-indigo-500"></i> FinTech Hub
+                    </h1>
+                    <p class="text-[10px] mt-1 uppercase tracking-widest font-semibold text-slate-400">User: <span id="user-label" class="font-bold text-indigo-400">—</span></p>
+                </div>
+            </div>
+            
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-8 py-8 relative z-10">
+        <div class="grid lg:grid-cols-12 gap-8">
+            
+            <!-- Left Column: Master Metrics & Cards -->
+            <div class="lg:col-span-7 space-y-6">
+                
+                <!-- Digital Wallet 3D Card Area -->
+                <div class="relative overflow-hidden rounded-[2rem] p-6 sm:p-8 bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl fade-up d1 group perspective-1000">
+                    <div class="absolute top-0 right-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-30 mix-blend-overlay pointer-events-none"></div>
+                    <div class="absolute -right-20 -top-20 w-64 h-64 bg-indigo-500/40 rounded-full blur-3xl pointer-events-none"></div>
+
+                    <div class="flex flex-col sm:flex-row justify-between items-center gap-8 relative z-10">
+                        <!-- Balance Info -->
+                        <div class="text-left w-full sm:w-auto">
+                            <p class="text-indigo-200/70 text-sm font-medium mb-1 uppercase tracking-widest flex items-center gap-2"><i class="ri-donut-chart-fill"></i> Total Liquidity</p>
+                            <h2 id="balance" class="text-4xl sm:text-5xl font-black tracking-tighter mb-4 text-white drop-shadow-md">₹0</h2>
+                            
+                            <div class="flex gap-2 mb-2">
+                                <div class="bg-emerald-500/20 border border-emerald-500/30 px-3 py-1.5 rounded-lg">
+                                    <p class="text-[10px] text-emerald-400 uppercase tracking-wider font-bold mb-0.5">Income</p>
+                                    <p id="income" class="text-sm font-bold text-white">₹0</p>
+                                </div>
+                                <div class="bg-rose-500/20 border border-rose-500/30 px-3 py-1.5 rounded-lg">
+                                    <p class="text-[10px] text-rose-400 uppercase tracking-wider font-bold mb-0.5">Expense</p>
+                                    <p id="expenses" class="text-sm font-bold text-white">₹0</p>
+                                </div>
+                            </div>
+                            <p id="savings-rate" class="text-xs font-bold text-indigo-300 mt-2">Savings Rate: —</p>
+                        </div>
+
+                        <!-- 3D Virtual Card -->
+                        <div id="virtual-card" class="cc-tilt w-72 h-44 rounded-2xl p-5 text-white shadow-2xl relative overflow-hidden backdrop-blur-md cursor-pointer group-hover:shadow-[0_20px_50px_rgba(99,102,241,0.4)]" style="background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%); border: 1px solid rgba(255,255,255,0.15);">
+                            <div class="absolute -top-10 -right-10 w-32 h-32 bg-rose-500/40 rounded-full blur-2xl"></div>
+                            <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-cyan-500/40 rounded-full blur-2xl"></div>
+                            <div class="relative z-10 flex justify-between items-start mb-6">
+                                <i class="ri-mastercard-fill text-4xl opacity-80"></i>
+                                <i class="ri-wifi-line text-2xl opacity-60 transform rotate-90"></i>
+                            </div>
+                            <div class="relative z-10">
+                                <p class="text-[10px] opacity-70 font-mono tracking-[0.2em] mb-1">VIRTUAL DEBIT</p>
+                                <p class="text-xl font-mono tracking-widest font-semibold text-white/90 drop-shadow-sm">4823 1102 9942 3012</p>
+                            </div>
+                            <div class="relative z-10 flex justify-between items-end mt-4">
+                                <div>
+                                    <p class="text-[8px] opacity-60 uppercase tracking-widest mb-0.5">Cardholder</p>
+                                    <p id="card-name" class="text-xs font-bold uppercase tracking-widest truncate max-w-[120px]">User</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-[8px] opacity-60 uppercase tracking-widest mb-0.5">Valid Thru</p>
+                                    <p class="text-xs font-bold tracking-widest">12/29</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Monthly Flow & Distribution -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="app-card rounded-3xl p-6 fade-up d3 border shadow-sm backdrop-blur-md border-slate-800/50 bg-slate-900/50">
+                        <h3 class="font-bold flex items-center gap-2 mb-6 text-white">
+                            <i class="ri-bar-chart-box-line text-indigo-500"></i>
+                            Cash Flow
+                        </h3>
+                        <div class="space-y-5">
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Inflow</span>
+                                    <span id="income-pct">0%</span>
+                                </div>
+                                <div class="h-2.5 w-full rounded-full overflow-hidden bg-slate-800">
+                                    <div id="income-bar" class="prog-bar h-full bg-emerald-500 rounded-full" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-rose-500"></span> Outflow</span>
+                                    <span id="expense-pct">0%</span>
+                                </div>
+                                <div class="h-2.5 w-full rounded-full overflow-hidden bg-slate-800">
+                                    <div id="expense-bar" class="prog-bar h-full bg-rose-500 rounded-full" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category Chart -->
+                    <div class="app-card rounded-3xl p-6 fade-up d4 border shadow-sm backdrop-blur-md flex flex-col justify-between border-slate-800/50 bg-slate-900/50">
+                        <h3 class="font-bold flex items-center gap-2 mb-4 text-white">
+                            <i class="ri-pie-chart-2-fill text-indigo-500"></i>
+                            Spend Analytics
+                        </h3>
+                        <div class="relative flex-1 flex items-center justify-center min-h-[140px]">
+                            <canvas id="categoryChart"></canvas>
+                            <div id="chart-empty" class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                                <i class="ri-ghost-line text-3xl mb-1 text-slate-700"></i>
+                                <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">No Data</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Transactions & Actions -->
+            <div class="lg:col-span-5 space-y-6">
+                <!-- Action Form -->
+                <div class="app-card rounded-[2rem] p-6 sm:p-8 fade-up d2 backdrop-blur-lg border border-indigo-500/10 shadow-xl relative overflow-hidden bg-slate-900/80">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-full blur-2xl pointer-events-none"></div>
+                    <h3 class="text-lg font-black mb-5 flex items-center gap-2 text-white">
+                        <i class="ri-flashlight-fill text-amber-500"></i> Quick Action
+                    </h3>
+                    
+                    <form id="entry-form" class="space-y-4">
+                        <div class="flex gap-2 p-1 rounded-xl mb-4 bg-slate-800/80">
+                            <label class="flex-1 text-center cursor-pointer">
+                                <input type="radio" name="tx_type" value="expense" checked class="peer hidden" onchange="updateFormColor()">
+                                <div class="py-2 rounded-lg text-xs font-bold uppercase tracking-wider text-slate-500 peer-checked:bg-white peer-checked::bg-slate-700 peer-checked:text-rose-500 peer-checked:shadow-sm transition-all">Send</div>
+                            </label>
+                            <label class="flex-1 text-center cursor-pointer">
+                                <input type="radio" name="tx_type" value="income" class="peer hidden" onchange="updateFormColor()">
+                                <div class="py-2 rounded-lg text-xs font-bold uppercase tracking-wider text-slate-500 peer-checked:bg-white peer-checked::bg-slate-700 peer-checked:text-emerald-500 peer-checked:shadow-sm transition-all">Add Funds</div>
+                            </label>
+                        </div>
+
+                        <div class="relative">
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">₹</span>
+                            <input type="number" id="amount" placeholder="0.00" required min="1" step="0.01"
+                                class="w-full pl-8 pr-4 py-4 rounded-xl text-2xl font-black border focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all bg-slate-800/50 border-slate-700 placeholder:text-slate-600">
+                        </div>
+
+                        <input type="text" id="description" placeholder="Recipient / Note" required
+                            class="w-full px-4 py-3 rounded-xl text-sm font-medium border focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all bg-slate-800/50 border-slate-700">
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <select id="mode" class="px-4 py-3 rounded-xl text-sm font-medium border focus:border-indigo-500 outline-none transition-all cursor-pointer bg-slate-800/50 border-slate-700">
+                                <option value="card">💳 Virtual Card</option>
+                                <option value="upi">📱 UPI</option>
+                                <option value="bank">🏦 Bank Tx</option>
+                                <option value="cash">💵 Cash</option>
+                            </select>
+
+                            <select id="category" class="px-4 py-3 rounded-xl text-sm font-medium border focus:border-indigo-500 outline-none transition-all cursor-pointer bg-slate-800/50 border-slate-700">
+                                <option value="general">📦 General</option>
+                                <option value="food">🍔 Food</option>
+                                <option value="travel">✈️ Travel</option>
+                                <option value="leisure">🎮 Leisure</option>
+                                <option value="education">📚 Edu</option>
+                                <option value="investment">📈 Invest</option>
+                                <option value="health">🏥 Health</option>
+                                <option value="rent">🏠 Rent</option>
+                                <option value="shopping">🛍️ Shop</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" id="submit-action-btn" class="w-full py-3.5 bg-rose-500 hover:bg-rose-400 text-white rounded-xl font-bold uppercase tracking-widest text-xs transition-all shadow-lg shadow-rose-500/20 active:scale-[0.98]">
+                            Process Transfer
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Mini History & Controls -->
+                <div class="app-card rounded-[2rem] p-6 fade-up d4 border backdrop-blur-md border-slate-800/50 bg-slate-900/50">
+                    <div class="flex items-center justify-between mb-5">
+                        <h3 class="font-bold flex items-center gap-2 text-sm text-white">
+                            <i class="ri-history-line text-indigo-500"></i> Data Ledger
+                        </h3>
+                        <div class="flex gap-2">
+                            <button onclick="exportCSV()" title="Export CSV" class="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-500 flex items-center justify-center hover:bg-indigo-500 hover:text-white transition">
+                                <i class="ri-download-cloud-2-line"></i>
+                            </button>
+                            <button onclick="clearAll()" title="Reset DB" class="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-500 flex items-center justify-center hover:bg-rose-500 hover:text-white transition">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <ul id="entries" class="space-y-3 max-h-[260px] overflow-y-auto pr-2 custom-scroll">
+                        <!-- Entries injected here -->
+                    </ul>
+
+                    <div id="entries-empty" class="hidden text-center py-10 rounded-2xl border border-dashed mt-2 bg-slate-800/30 border-slate-700">
+                        <i class="ri-database-2-line text-2xl mb-2 text-slate-600"></i>
+                        <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Ledger Empty</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="max-w-6xl mx-auto px-4 sm:px-8 pb-8 pt-4 text-center z-10 relative">
+        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">
+            &copy; 2026 Arpit Agarwala &bull; FinTech Hub <i class="ri-flashlight-line text-amber-500 mx-1"></i>
+        </p>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 opacity-0 translate-y-4 z-[200] px-5 py-3 rounded-full shadow-2xl flex items-center gap-2 pointer-events-none transition-all duration-300 bg-white text-slate-900">
+        <i class="ri-checkbox-circle-fill text-emerald-400 text-lg"></i>
+        <span id="toast-msg" class="text-[11px] font-bold uppercase tracking-widest">Success</span>
+    </div>
+
+    <style>
+        .custom-scroll::-webkit-scrollbar { width: 4px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.3); border-radius: 4px; }
+    </style>
+
+    <script>
+        const $ = id => document.getElementById(id);
+
+        // ── Category config ──
+        const CAT_ICONS = {
+            general: '📦', food: '🍔', travel: '✈️', leisure: '🎮', 
+            education: '📚', investment: '📈', health: '🏥', 
+            rent: '🏠', utilities: '⚡', shopping: '🛍️', others: '🔖'
+        };
+        const CAT_COLORS = [
+            '#6366f1', '#8b5cf6', '#10b981', '#f59e0b', '#f43f5e',
+            '#0ea5e9', '#d946ef', '#f97316', '#14b8a6', '#64748b', '#06b6d4'
+        ];
+
+        // ── User Auth Simulation ──
+        let userKey = new URLSearchParams(window.location.search).get('user') || '';
+        let storageKey = userKey ? `finhub-${userKey}` : '';
+        let entries = storageKey ? (JSON.parse(localStorage.getItem(storageKey)) || []) : [];
+        let categoryChart;
+
+        if (userKey) {
+            $('name-modal').style.display = 'none';
+            setUserLabel(userKey);
+        }
+
+        function submitName() {
+            const val = $('name-input').value.trim();
+            if (!val) return;
+            const safe = val.toLowerCase().replace(/\s+/g, '-');
+            const url = new URL(window.location.href);
+            url.searchParams.set('user', safe);
+            window.location.href = url.toString();
+        }
+
+        $('name-input').addEventListener('keydown', e => { if (e.key === 'Enter') submitName(); });
+
+        function setUserLabel(key) {
+            const name = key.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+            $('user-label').textContent = name;
+            const shortName = name.substring(0, 16);
+            if($('card-name')) $('card-name').textContent = shortName;
+        }
+
+        // ── 3D Card Tilt Effect ──
+        const card = $('virtual-card');
+        if (card) {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -12;
+                const rotateY = ((x - centerX) / centerX) * 12;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+        }
+
+        // ── Number Formatting ──
+        function fmt(v) { return `₹${Math.abs(v).toLocaleString('en-IN', { maximumFractionDigits: 2 })}`; }
+        function fmtSigned(v) { return `${v >= 0 ? '' : '-'}₹${Math.abs(v).toLocaleString('en-IN', { maximumFractionDigits: 2 })}`; }
+
+        function showToast(msg) {
+            const t = $('toast'), m = $('toast-msg');
+            m.textContent = msg;
+            t.style.opacity = '1'; t.style.transform = 'translateY(0) translateX(-50%)';
+            setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateY(16px) translateX(-50%)'; }, 2000);
+        }
+
+        function updateFormColor() {
+            const type = document.querySelector('input[name="tx_type"]:checked').value;
+            const btn = $('submit-action-btn');
+            if(type === 'income') {
+                btn.className = "w-full py-3.5 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl font-bold uppercase tracking-widest text-xs transition-all shadow-lg shadow-emerald-500/20 active:scale-[0.98]";
+                btn.textContent = "Process Deposit";
+            } else {
+                btn.className = "w-full py-3.5 bg-rose-500 hover:bg-rose-400 text-white rounded-xl font-bold uppercase tracking-widest text-xs transition-all shadow-lg shadow-rose-500/20 active:scale-[0.98]";
+                btn.textContent = "Process Transfer";
+            }
+        }
+
+        function updateChart() {
+            const canvas = $('categoryChart');
+            if (!canvas) return;
+            const expData = {};
+            entries.forEach(e => {
+                if (e.type === 'expense') expData[e.category] = (expData[e.category] || 0) + e.amount;
+            });
+            const labels = Object.keys(expData);
+            const data = Object.values(expData);
+            if (categoryChart) categoryChart.destroy();
+            if (!labels.length) {
+                canvas.style.display = 'none'; $('chart-empty').classList.remove('hidden'); return;
+            }
+            canvas.style.display = 'block'; $('chart-empty').classList.add('hidden');
+            const isDarkLocal = true;
+            categoryChart = new Chart(canvas.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: labels.map(l => `${l.charAt(0).toUpperCase() + l.slice(1)}`),
+                    datasets: [{ data, backgroundColor: CAT_COLORS, borderWidth: 0, hoverOffset: 4 }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false, cutout: '70%',
+                    plugins: {
+                        legend: { position: 'right', labels: { color: isDarkLocal ? '#94a3b8' : '#475569', font: { size: 10, family: 'Inter' }, boxWidth: 10, usePointStyle: true } },
+                        tooltip: { callbacks: { label: c => ` ${fmt(c.parsed)}` } }
+                    }
+                }
+            });
+        }
+
+        function updateUI() {
+            if (!storageKey) return;
+            let totalIncome = 0, totalExpenses = 0;
+            entries.forEach(e => {
+                if (e.type === 'income') totalIncome += e.amount;
+                if (e.type === 'expense') totalExpenses += e.amount;
+            });
+            const balance = totalIncome - totalExpenses;
+            const savingsRate = totalIncome > 0 ? Math.round((balance / totalIncome) * 100) : 0;
+            const total = totalIncome + totalExpenses;
+            const incPct = total > 0 ? Math.round((totalIncome / total) * 100) : 0;
+            const expPct = total > 0 ? 100 - incPct : 0;
+
+            $('balance').textContent = fmtSigned(balance);
+            $('income').textContent = fmt(totalIncome);
+            $('expenses').textContent = fmt(totalExpenses);
+            $('savings-rate').textContent = `Savings Rate: ${savingsRate}%`;
+
+            $('income-bar').style.width = incPct + '%'; $('expense-bar').style.width = expPct + '%';
+            $('income-pct').textContent = incPct + '%'; $('expense-pct').textContent = expPct + '%';
+
+            const list = $('entries'); list.innerHTML = '';
+            if (!entries.length) { $('entries-empty').classList.remove('hidden'); } 
+            else {
+                $('entries-empty').classList.add('hidden');
+                entries.slice().reverse().forEach((entry, idx) => {
+                    const realIdx = entries.length - 1 - idx;
+                    const isIn = entry.type === 'income';
+                    const li = document.createElement('li');
+                    li.className = 'group flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-800/50 border border-transparent hover:border-slate-700 transition cursor-default';
+                    li.innerHTML = `
+                        <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm shrink-0 ${isIn ? 'bg-emerald-500/10 text-emerald-500' : 'bg-rose-500/10 text-rose-500'}">
+                            ${isIn ? '<i class="ri-arrow-left-down-line"></i>' : '<i class="ri-arrow-right-up-line"></i>'}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs font-bold truncate text-slate-100">${entry.description}</p>
+                            <p class="text-[10px] text-slate-400 font-medium mt-0.5 uppercase tracking-wide">${CAT_ICONS[entry.category] || ''} ${entry.category} &bull; ${entry.date}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs font-black ${isIn ? 'text-emerald-500' : 'text-slate-800 text-slate-200'}">${isIn ? '+' : '-'}${fmt(entry.amount)}</p>
+                        </div>
+                        <button onclick="deleteEntry(${realIdx})" class="opacity-0 group-hover:opacity-100 p-1.5 text-rose-400 hover:text-rose-500 transition shrink-0"><i class="ri-close-circle-fill"></i></button>
+                    `;
+                    list.appendChild(li);
+                });
+            }
+            updateChart();
+        }
+
+        function deleteEntry(idx) { entries.splice(idx, 1); save(); updateUI(); showToast('Tx Deleted'); }
+
+        function clearAll() {
+            if (!entries.length) return;
+            if (!confirm("Wipe digital ledger completely?")) return;
+            entries = []; save(); updateUI(); showToast('Ledger wiped');
+        }
+
+        function save() { if (storageKey) localStorage.setItem(storageKey, JSON.stringify(entries)); }
+
+        $('entry-form').addEventListener('submit', e => {
+            e.preventDefault();
+            const desc = $('description').value.trim();
+            const amount = parseFloat($('amount').value);
+            const type = document.querySelector('input[name="tx_type"]:checked').value;
+            const mode = $('mode').value;
+            const cat = $('category').value;
+
+            if (!desc || isNaN(amount) || amount <= 0) return;
+            const now = new Date();
+            const date = `${now.getDate()} ${now.toLocaleString('en-US', { month: 'short' })}`;
+            
+            entries.push({ description: desc, amount, type, mode, category: cat, date });
+            save(); $('entry-form').reset();
+            $('amount').value = ''; $('description').value = '';
+            updateUI(); showToast(`Processed ${fmt(amount)}`);
+        });
+
+        function exportCSV() {
+            if (!entries.length) { showToast('No data to export'); return; }
+            const rows = entries.map(e => `"${e.description}",${e.amount},${e.type},${e.mode},${e.category},"${e.date}"`);
+            const csv = ['Description,Amount,Type,Mode,Category,Date', ...rows].join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = `finhub-${userKey}.csv`;
+            a.click(); URL.revokeObjectURL(url); showToast('Export Complete');
+        }
+
+         updateUI(); updateFormColor();
+    </script>
+</body>
+</html>

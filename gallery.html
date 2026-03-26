@@ -18,62 +18,24 @@
   <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_180,h_180,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
   <link rel="shortcut icon" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_32,h_32,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
 
-  <!--
-    THEME INIT (runs before render to avoid flash)
-    Convention: .dark on <html> = dark theme visually.
-    localStorage 'theme' = 'dark' | 'light'.
-    ?theme= URL param overrides on first load (cross-page sync).
-  -->
-  <script>
-    (function () {
-      var param = new URLSearchParams(window.location.search).get('theme');
-      var stored = localStorage.getItem('theme');
-      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-      var theme;
-      if (param === 'dark' || param === 'light') {
-        theme = param;
-        localStorage.setItem('theme', theme);
-      } else if (stored === 'dark' || stored === 'light') {
-        theme = stored;
-      } else {
-        theme = prefersDark ? 'dark' : 'light';
-      }
-
-      if (theme === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    })();
-  </script>
-
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-  <script>tailwind.config = { darkMode: 'class' }</script>
   <link rel="stylesheet" href="css/global.css">
 </head>
 
-<!--
-  TAILWIND DARK: CLASSES ARE NOW CORRECT:
-  No dark: prefix = light theme styles
-  dark:           = dark theme styles
--->
-<body class="min-h-screen bg-gray-50 dark:bg-[#080c14] text-gray-900 dark:text-slate-100 transition-colors duration-300">
+<body class="transition-colors duration-300 overflow-x-hidden bg-slate-950 text-slate-200">
+  <!-- Shared Background Blobs -->
+  <div class="bg-blob bg-rose-500/10 top-[-200px] left-[-200px]"></div>
+  <div class="bg-blob bg-orange-500/10 bottom-[-200px] right-[-200px]"></div>
 
-  <!-- Back Button -->
-  <div class="fixed top-3 left-3 z-50">
-    <a id="back-link" href="index.html" class="w-9 h-9 flex items-center justify-center rounded-full bg-white dark:bg-slate-800/80 backdrop-blur border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 hover:border-cyan-500 dark:hover:border-cyan-400 hover:text-cyan-500 dark:hover:text-cyan-400 transition-all duration-150 shadow-lg">
-      <i class="ri-arrow-left-line text-base"></i>
+  <div class="max-w-5xl mx-auto px-4 mt-8 flex justify-between items-center">
+  <div class="fixed top-4 left-4 z-50 pointer-events-auto">
+    <a id="back-link" href="index.html" class="w-10 h-10 flex items-center justify-center rounded-full backdrop-blur border transition-all shadow-lg hover:scale-105 active:scale-95 bg-slate-800/50 border-slate-700/50 hover:bg-slate-700/80 text-white">
+      <i class="ri-arrow-left-line text-lg"></i>
     </a>
   </div>
 
-  <!-- Theme Toggle -->
-  <div class="fixed top-3 right-3 z-50">
-    <button onclick="toggleTheme()" class="w-9 h-9 flex items-center justify-center rounded-full bg-white dark:bg-slate-800/80 backdrop-blur border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 hover:border-cyan-500 dark:hover:border-cyan-400 hover:text-cyan-500 dark:hover:text-cyan-400 transition-all duration-150 shadow-lg">
-      <i id="theme-icon" class="ri-moon-line text-base"></i>
-    </button>
-  </div>
+  <!-- Uniform Theme Toggle -->
 
   <!-- Lightbox Modal -->
   <div id="lightbox" onclick="closeLightbox(event)">
@@ -90,21 +52,20 @@
     </div>
   </div>
 
-  <div class="max-w-5xl mx-auto px-4 pt-16 pb-12">
-
-    <!-- Header -->
-    <div class="mb-7 fade-up">
-      <div class="flex items-center gap-3 mb-1">
-        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">📸 Gallery</h1>
+  <div class="max-w-5xl mx-auto px-4 pt-10 pb-12">
+    <!-- Integrated Premium Header -->
+    <div class="mb-8 fade-up">
+      <div class="flex flex-col sm:flex-row sm:items-end gap-4 mb-6">
+        <div>
+          <h1 class="text-4xl sm:text-5xl font-black tracking-tight leading-none" style="background:linear-gradient(135deg,#10b981,#22d3ee,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Gallery</h1>
+          <div class="shimmer-underline" style="height:3px;width:72px;background:linear-gradient(90deg,#10b981,#22d3ee);border-radius:99px;margin-top:6px;"></div>
+        </div>
+        <p class="text-sm max-w-lg pb-1 leading-relaxed text-slate-400">Moments, milestones & memories — a visual story of who I am beyond the code.</p>
       </div>
-      <p class="text-gray-500 dark:text-slate-400 text-sm max-w-lg">Moments, milestones &amp; memories — a visual story of who I am beyond the code.</p>
-    </div>
 
-    <!-- Stats Bar -->
-    <div class="flex gap-4 mb-6 fade-up" style="animation-delay:60ms">
-      <div class="flex items-center gap-2 bg-white dark:bg-slate-800/60 border border-gray-200 dark:border-slate-700/50 rounded-xl px-4 py-2.5">
-        <i class="ri-image-line text-cyan-600 dark:text-cyan-400 text-base"></i>
-        <span class="text-xs font-semibold text-gray-600 dark:text-slate-300"><span id="photo-count">0</span> Photos</span>
+      <div class="flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-xl border w-fit text-slate-400 bg-slate-800/40 border-slate-700/30">
+        <i class="ri-camera-lens-fill text-orange-500"></i>
+        <span id="photo-count-badge">0</span> Captures Total
       </div>
     </div>
 
@@ -113,13 +74,13 @@
 
     <!-- Empty State -->
     <div id="empty-state" class="hidden flex-col items-center justify-center py-24 text-center">
-      <i class="ri-image-2-line text-5xl text-gray-300 dark:text-slate-700 mb-4"></i>
-      <p class="text-gray-500 dark:text-slate-400 text-sm font-medium">No photos in this category yet.</p>
-      <button onclick="setFilter('all')" class="mt-3 text-xs text-cyan-600 dark:text-cyan-400 hover:underline font-semibold">Show all</button>
+      <i class="ri-image-2-line text-5xl mb-4 text-slate-700"></i>
+      <p class="text-sm font-medium text-slate-400">No photos in this category yet.</p>
+      <button onclick="setFilter('all')" class="mt-3 text-xs hover:underline font-semibold text-cyan-400">Show all</button>
     </div>
 
     <!-- Footer -->
-    <div class="mt-10 text-center py-3.5 px-6 rounded-2xl bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700/30 text-sm text-gray-400 dark:text-slate-500">
+    <div class="mt-10 text-center py-3.5 px-6 rounded-2xl border text-sm bg-slate-800/50 border-slate-700/30 text-slate-500">
       &copy; 2026 Arpit Agarwala. Engineered with <span class="text-red-400">&#10084;&#65039;</span>
     </div>
 
@@ -184,7 +145,7 @@
     let activeFilter = 'all';
     let currentIdx   = 0;
 
-    document.getElementById('photo-count').textContent = PHOTOS.length;
+    document.getElementById('photo-count-badge').textContent = PHOTOS.length;
 
     function renderGallery() {
       const grid  = document.getElementById('gallery-grid');
@@ -200,8 +161,8 @@
       empty.classList.add('hidden');
 
       grid.innerHTML = filtered.map((p, i) => `
-        <div class="masonry-item">
-          <div class="photo-card" onclick="openLightbox(${i})">
+        <div class="stagger-item masonry-item" style="--delay: ${i*100}ms">
+          <div class="photo-card backdrop-blur-md bg-slate-800/40" onclick="openLightbox(${PHOTOS.indexOf(p)})">
             <img src="${p.thumb}" alt="${p.title}" loading="lazy">
           </div>
         </div>
@@ -234,31 +195,8 @@
       document.getElementById('lightbox-caption').textContent = `${currentIdx + 1} / ${PHOTOS.length}`;
     }
 
-    /* ── Theme helpers ── */
-    function isDark() {
-      return document.documentElement.classList.contains('dark');
-    }
+    // Removed broken theme sync
 
-    function syncIcon() {
-      document.getElementById('theme-icon').className = isDark() ? 'ri-sun-line text-base' : 'ri-moon-line text-base';
-    }
-
-    function updateBackLink() {
-      var backLink = document.getElementById('back-link');
-      if (backLink) {
-        backLink.href = 'index.html?theme=' + (isDark() ? 'dark' : 'light');
-      }
-    }
-
-    function toggleTheme() {
-      document.documentElement.classList.toggle('dark');
-      localStorage.setItem('theme', isDark() ? 'dark' : 'light');
-      syncIcon();
-      updateBackLink();
-    }
-
-    syncIcon();
-    updateBackLink();
     renderGallery();
 
     document.addEventListener('keydown', e => {

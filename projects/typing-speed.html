@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html class="" lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typing Speed Test</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #2D3748;
+      color: #E2E8F0;
+    }
+
+    /* Slate 800 */
+    .word {
+      opacity: 0.5;
+      transition: all 0.1s;
+      margin: 0 4px;
+      display: inline-block;
+      font-size: 1.5rem;
+      line-height: 2.5rem;
+    }
+
+    .word.active {
+      opacity: 1;
+      border-bottom: 2px solid cyan;
+      text-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+    }
+
+    .letter {
+      display: inline-block;
+    }
+
+    .correct {
+      color: #4ADE80;
+      opacity: 1;
+    }
+
+    .incorrect {
+      color: #F87171;
+      text-decoration: underline;
+      background: rgba(248, 113, 113, 0.2);
+    }
+
+    #text-display {
+      user-select: none;
+    }
+
+    .glass {
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    @keyframes pulse-cyan {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.4);
+      }
+
+      50% {
+        box-shadow: 0 0 20px 0 rgba(6, 182, 212, 0.2);
+      }
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center p-6">
+
+  <div class="max-w-4xl w-full flex flex-col items-center">
+
+    <!-- Top Stats -->
+    <div
+      class="w-full flex justify-between items-center mb-8 glass rounded-2xl px-6 py-4 shadow-xl border border-slate-700">
+      <div class="flex items-center gap-3">
+        <i class="ri-keyboard-line text-3xl text-cyan-400"></i>
+        <h1 class="text-2xl font-black tracking-widest uppercase">TypeRush</h1>
+      </div>
+      <div class="flex gap-8 text-center">
+        <div>
+          <div class="text-[10px] font-bold tracking-widest text-slate-400 uppercase">Time Left</div>
+          <div id="time" class="text-3xl font-mono text-cyan-400 font-extrabold">30s</div>
+        </div>
+        <div>
+          <div class="text-[10px] font-bold tracking-widest text-slate-400 uppercase">WPM</div>
+          <div id="wpm" class="text-3xl font-mono text-white font-extrabold">0</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Text Display -->
+    <div id="text-display" class="w-full text-center mb-10 h-[120px] overflow-hidden relative"
+      style="mask-image: linear-gradient(to bottom, black 50%, transparent 100%);">
+      <div id="wordsContainer" class="font-mono tracking-wide absolute left-0 w-full transition-transform duration-200">
+      </div>
+    </div>
+
+    <!-- Input Box (Hidden, captures typing) -->
+    <input type="text" id="type-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+      class="opacity-0 absolute w-px h-px pointer-events-none">
+
+    <!-- Play Button / Overlay -->
+    <button id="start-btn"
+      class="bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-black px-12 py-4 rounded-full text-xl uppercase tracking-widest shadow-[0_0_30px_rgba(6,182,212,0.4)] transition-all active:scale-95"
+      style="animation: pulse-cyan 2s infinite;">
+      Start Typing
+    </button>
+
+    <!-- Results Modal -->
+    <div id="results"
+      class="hidden absolute inset-0 z-50 bg-slate-900/90 backdrop-blur-md flex items-center justify-center">
+      <div class="glass p-10 rounded-3xl max-w-sm w-full text-center border-t-4 border-cyan-400 shadow-2xl">
+        <h2 class="text-3xl font-black mb-6 uppercase tracking-widest text-cyan-400">Time's Up!</h2>
+        <div class="grid grid-cols-2 gap-4 mb-8">
+          <div class="bg-slate-800 p-4 rounded-2xl">
+            <div class="text-xs font-bold tracking-widest text-slate-400 uppercase mb-1">Final WPM</div>
+            <div id="res-wpm" class="text-4xl font-mono font-extrabold text-white">0</div>
+          </div>
+          <div class="bg-slate-800 p-4 rounded-2xl">
+            <div class="text-xs font-bold tracking-widest text-slate-400 uppercase mb-1">Accuracy</div>
+            <div id="res-acc" class="text-4xl font-mono font-extrabold text-white">0%</div>
+          </div>
+        </div>
+        <button id="restart-btn"
+          class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-xl border border-slate-600 transition-colors uppercase tracking-widest text-sm flex items-center justify-center gap-2">
+          <i class="ri-refresh-line"></i> Play Again
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const WORDS_LIST = ["the", "be", "to", "of", "and", "a", "in", "that", "have", "I", "it", "for", "not", "on", "with", "he", "as", "you", "do", "at", "this", "but", "his", "by", "from", "they", "we", "say", "her", "she", "or", "an", "will", "my", "one", "all", "would", "there", "their", "what", "so", "up", "out", "if", "about", "who", "get", "which", "go", "me", "when", "make", "can", "like", "time", "no", "just", "him", "know", "take", "people", "into", "year", "your", "good", "some", "could", "them", "see", "other", "than", "then", "now", "look", "only", "come", "its", "over", "think", "also", "back", "after", "use", "two", "how", "our", "work", "first", "well", "way", "even", "new", "want", "because", "any", "these", "give", "day", "most", "us"];
+
+    let words = [];
+    let wordEls = [];
+    let currentWordIndex = 0;
+    let typedLetters = [];
+
+    let time = 30;
+    let timer = null;
+    let isPlaying = false;
+    let totalKeystrokes = 0;
+    let correctKeystrokes = 0;
+
+    const wordsContainer = document.getElementById('wordsContainer');
+    const typeInput = document.getElementById('type-input');
+    const startBtn = document.getElementById('start-btn');
+    const timeEl = document.getElementById('time');
+    const wpmEl = document.getElementById('wpm');
+    const resultsModal = document.getElementById('results');
+
+    function generateWords() {
+      wordsContainer.innerHTML = '';
+      words = [];
+      wordEls = [];
+      for (let i = 0; i < 100; i++) {
+        const w = WORDS_LIST[Math.floor(Math.random() * WORDS_LIST.length)];
+        words.push(w);
+        const wEl = document.createElement('div');
+        wEl.className = 'word';
+        // Wrap each letter
+        const letters = w.split('').map(l => `<span class="letter">${l}</span>`).join('');
+        wEl.innerHTML = letters;
+        wordsContainer.appendChild(wEl);
+        wordEls.push(wEl);
+      }
+    }
+
+    function init() {
+      generateWords();
+      currentWordIndex = 0;
+      wordEls[0].classList.add('active');
+      typeInput.value = '';
+
+      startBtn.addEventListener('click', startGame);
+      document.getElementById('restart-btn').addEventListener('click', () => {
+        resultsModal.classList.add('hidden');
+        resetGame();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (!isPlaying && e.key === ' ' && !resultsModal.classList.contains('hidden')) {
+          resultsModal.classList.add('hidden');
+          resetGame();
+        } else if (!isPlaying && e.key.length === 1 && /[a-zA-Z]/.test(e.key) && resultsModal.classList.contains('hidden')) {
+          startGame();
+        }
+      });
+    }
+
+    function resetGame() {
+      generateWords();
+      currentWordIndex = 0;
+      time = 30;
+      timeEl.textContent = '30s';
+      wpmEl.textContent = '0';
+      totalKeystrokes = 0;
+      correctKeystrokes = 0;
+      typeInput.value = '';
+      wordEls[0].classList.add('active');
+      wordsContainer.style.transform = `translateY(0px)`;
+      startBtn.style.display = 'block';
+      typeInput.blur();
+    }
+
+    function startGame() {
+      if (isPlaying) return;
+      isPlaying = true;
+      startBtn.style.display = 'none';
+      typeInput.focus();
+
+      timer = setInterval(() => {
+        time--;
+        timeEl.textContent = time + 's';
+
+        // Calculate WPM live: (correct chars / 5) / ( time elapsed in min )
+        const elapsed = (30 - time) / 60;
+        const liveWpm = elapsed > 0 ? Math.round((correctKeystrokes / 5) / elapsed) : 0;
+        wpmEl.textContent = liveWpm;
+
+        if (time <= 0) {
+          endGame();
+        }
+      }, 1000);
+    }
+
+    typeInput.addEventListener('input', (e) => {
+      if (!isPlaying) {
+        typeInput.value = '';
+        return;
+      }
+      totalKeystrokes++;
+
+      const currentWordObj = wordEls[currentWordIndex];
+      const typedValue = typeInput.value.trim();
+      const actualWord = words[currentWordIndex];
+
+      const letterEls = currentWordObj.querySelectorAll('.letter');
+
+      // Space logic: go to next word
+      if (e.data === ' ' || typeInput.value.endsWith(' ')) {
+        // Evaluate word
+        if (typedValue === actualWord) {
+          // Space hit correctly
+          correctKeystrokes += 1; // count space as correct keystroke
+        } else {
+          // word error - mark unfinished red
+          letterEls.forEach(l => {
+            if (!l.classList.contains('correct')) l.classList.add('incorrect');
+          });
+        }
+
+        currentWordObj.classList.remove('active');
+        currentWordIndex++;
+        if (currentWordIndex >= wordEls.length) generateWords(); // reload chunks
+
+        wordEls[currentWordIndex].classList.add('active');
+        typeInput.value = '';
+
+        // Scroll logic (naive vertical movement)
+        if (currentWordIndex > 0 && currentWordIndex % 5 === 0) { // simple line jump heuristic
+          // let's just scroll down container
+          const currentLineTop = wordEls[currentWordIndex].offsetTop;
+          wordsContainer.style.transform = `translateY(-${currentLineTop}px)`;
+        }
+
+        return;
+      }
+
+      // Check current word formatting
+      let isCorrect = true;
+      for (let i = 0; i < letterEls.length; i++) {
+        const expected = actualWord[i];
+        const typed = typedValue[i];
+        if (typed == null) {
+          letterEls[i].className = 'letter';
+          isCorrect = false;
+        } else if (typed === expected) {
+          letterEls[i].className = 'letter correct';
+        } else {
+          letterEls[i].className = 'letter incorrect';
+          isCorrect = false;
+        }
+      }
+
+      // Update correct keystrokes naive
+      if (typedValue === actualWord.substring(0, typedValue.length)) {
+        correctKeystrokes++; // very naive exact letter correct logic
+      }
+    });
+
+    // Prevent focus loss
+    document.addEventListener('click', () => { if (isPlaying) typeInput.focus(); });
+
+    function endGame() {
+      clearInterval(timer);
+      isPlaying = false;
+      const finalWpm = Math.round((correctKeystrokes / 5) / 0.5); // 30s is 0.5 min
+      const finalAcc = totalKeystrokes > 0 ? Math.round((correctKeystrokes / totalKeystrokes) * 100) : 0;
+
+      document.getElementById('res-wpm').textContent = finalWpm;
+      document.getElementById('res-acc').textContent = finalAcc + '%';
+
+      resultsModal.classList.remove('hidden');
+      typeInput.blur();
+    }
+
+    init();
+  </script>
+</body>
+
+</html>

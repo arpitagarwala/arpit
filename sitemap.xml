@@ -35,7 +35,7 @@
 
   <!-- ══ Artificial Intelligence ══ -->
   <url>
-    <loc>https://arpitagarwala.online/ai-assistant.html</loc>
+    <loc>https://arpitagarwala.online/projects/ai-assistant.html</loc>
     <lastmod>2026-03-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -49,37 +49,37 @@
 
   <!-- ══ Tools & Apps ══ -->
   <url>
-    <loc>https://arpitagarwala.online/calculator.html</loc>
+    <loc>https://arpitagarwala.online/projects/calculator.html</loc>
     <lastmod>2026-03-07</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://arpitagarwala.online/sip.html</loc>
+    <loc>https://arpitagarwala.online/projects/sip.html</loc>
     <lastmod>2026-03-07</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://arpitagarwala.online/budget.html</loc>
+    <loc>https://arpitagarwala.online/projects/budget.html</loc>
     <lastmod>2026-03-07</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://arpitagarwala.online/expense-splitter.html</loc>
+    <loc>https://arpitagarwala.online/projects/expense-splitter.html</loc>
     <lastmod>2026-03-07</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://arpitagarwala.online/notepad.html</loc>
+    <loc>https://arpitagarwala.online/projects/notepad.html</loc>
     <lastmod>2026-03-07</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://arpitagarwala.online/clock.html</loc>
+    <loc>https://arpitagarwala.online/projects/clock.html</loc>
     <lastmod>2026-03-07</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
@@ -93,13 +93,13 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://arpitagarwala.online/memory.html</loc>
+    <loc>https://arpitagarwala.online/games/memory.html</loc>
     <lastmod>2026-03-07</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://arpitagarwala.online/tictactoe.html</loc>
+    <loc>https://arpitagarwala.online/games/tictactoe.html</loc>
     <lastmod>2026-03-07</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>

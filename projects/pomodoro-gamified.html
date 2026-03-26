@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html class="" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pomodoro XP Tracker</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/global.css">
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .glass { backdrop-filter: blur(12px); }
+    .xp-bar { background: linear-gradient(90deg, #3b82f6 0%, #a855f7 100%); transition: width 0.5s ease-in-out; }
+    .neon-glow { text-shadow: 0 0 20px rgba(168, 85, 247, 0.4); }
+  </style>
+</head>
+<body class="min-h-screen transition-colors duration-300 flex items-center justify-center p-4 relative pt-16 bg-slate-900 text-slate-100">
+  <!-- Uniform Back Button -->
+  <div class="fixed top-4 left-4 z-50 pointer-events-auto">
+    <a id="back-link" href="../projects.html" class="w-10 h-10 flex items-center justify-center rounded-full backdrop-blur border transition-all shadow-lg hover:scale-105 active:scale-95 bg-slate-800/50 border-slate-700/50 hover:bg-slate-700/80 text-white">
+      <i class="ri-arrow-left-line text-lg"></i>
+    </a>
+  </div>
+
+  <!-- Uniform Theme Toggle -->
+
+  <!-- BACK + THEME -->
+  <div class="fixed top-4 left-4 z-[100]">
+    
+  </div>
+
+  <div x-data="pomoGame()" x-init="init()" class="max-w-xl w-full">
+    
+    <!-- User Stats -->
+    <div class="border glass p-6 rounded-3xl mb-6 flex items-center gap-6 shadow-xl relative overflow-hidden bg-slate-800/80 border-slate-700/50">
+      <div class="absolute -right-10 -top-10 w-32 h-32 bg-purple-500 rounded-full blur-[80px] opacity-20"></div>
+      
+      <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg relative shrink-0">
+        <i class="ri-fire-fill text-4xl text-white"></i>
+        <div class="absolute -bottom-2 -right-2 border w-8 h-8 rounded-full flex items-center justify-center font-black text-sm bg-slate-900 border-slate-700" x-text="level"></div>
+      </div>
+      
+      <div class="flex-1 w-full">
+        <div class="flex justify-between items-end mb-2">
+          <div>
+            <h2 class="text-xl font-extrabold tracking-tight">Focus Mastery</h2>
+            <div class="text-xs font-bold tracking-wider uppercase text-slate-400">Rank: <span x-text="rankName" class="text-purple-400"></span></div>
+          </div>
+          <div class="text-right">
+            <span class="text-sm font-bold"><span x-text="xp"></span> / <span x-text="nextLevelXp"></span> XP</span>
+          </div>
+        </div>
+        
+        <div class="w-full h-3 rounded-full overflow-hidden relative bg-slate-800">
+          <div class="h-full xp-bar" :style="`width: ${(xp / nextLevelXp) * 100}%`"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Timer Central -->
+    <div class="border glass p-8 sm:p-10 rounded-3xl text-center shadow-xl relative overflow-hidden bg-slate-800/80 border-slate-700/50">
+      
+      <!-- Settings Panel -->
+      <div class="absolute top-4 right-4 z-20">
+        <button @click="showSettings = !showSettings" class="text-slate-400 transition hover:text-slate-200"><i class="ri-settings-4-fill text-xl"></i></button>
+      </div>
+      
+      <!-- Settings Modal inline -->
+      <div x-show="showSettings" x-transition class="absolute top-12 right-4 border p-4 rounded-xl shadow-2xl z-20 text-left w-48 bg-slate-700 border-slate-600">
+        <div class="mb-3">
+          <label class="block text-[10px] font-bold tracking-widest uppercase mb-1 text-slate-400">Focus Mins</label>
+          <input type="number" x-model.number="confFocus" @change="applySettings" class="w-full border rounded px-2 py-1 text-sm font-bold outline-none bg-slate-800 border-slate-600">
+        </div>
+        <div>
+          <label class="block text-[10px] font-bold tracking-widest uppercase mb-1 text-slate-400">Break Mins</label>
+          <input type="number" x-model.number="confBreak" @change="applySettings" class="w-full border rounded px-2 py-1 text-sm font-bold outline-none bg-slate-800 border-slate-600">
+        </div>
+      </div>
+
+      <div class="inline-flex gap-2 p-1.5 border rounded-2xl mb-8 relative z-10 bg-slate-800/80 border-slate-700/50">
+        <button @click="setMode('focus')" :class="mode === 'focus' ? 'bg-indigo-500 shadow-md' : 'text-slate-500 text-slate-400 hover:text-white'" class="px-5 py-2 rounded-xl text-sm font-bold transition">Focus (<span x-text="confFocus"></span>m)</button>
+        <button @click="setMode('break')" :class="mode === 'break' ? 'bg-emerald-500 shadow-md' : 'text-slate-500 text-slate-400 hover:text-white'" class="px-5 py-2 rounded-xl text-sm font-bold transition">Break (<span x-text="confBreak"></span>m)</button>
+      </div>
+
+      <h1 class="text-7xl sm:text-9xl font-black font-mono tracking-tighter mb-8 text-white neon-glow" x-text="formattedTime"></h1>
+
+      <div class="flex justify-center gap-4 relative z-10 w-full max-w-[200px] mx-auto">
+        <button @click="toggleTimer" class="flex-1 py-4 border backdrop-blur rounded-2xl shadow-md transition-all flex items-center justify-center text-3xl font-bold bg-white/10 hover:bg-white/20 active:bg-white/5 border-white/10 text-white">
+          <i :class="isRunning ? 'ri-pause-circle-fill' : 'ri-play-circle-fill'"></i>
+        </button>
+        <button @click="resetTimer" class="w-16 h-[68px] active:bg-rose-200 border text-rose-500 rounded-2xl shadow-md transition-all flex items-center justify-center text-2xl bg-rose-500/10 hover:bg-rose-500/20 border-rose-500/30">
+          <i class="ri-refresh-line"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Streak Box -->
+    <div class="grid grid-cols-2 gap-4 mt-6">
+      <div class="border rounded-2xl p-5 flex items-center justify-between shadow-xl glass bg-slate-800/50 border-slate-700/50">
+        <div>
+          <div class="text-[10px] font-bold tracking-widest uppercase mb-1 text-slate-400">Total Focus</div>
+          <div class="text-2xl font-black font-mono"><span x-text="totalMins"></span>m</div>
+        </div>
+        <i class="ri-timer-line text-3xl text-indigo-400/50"></i>
+      </div>
+      <div class="border rounded-2xl p-5 flex items-center justify-between shadow-xl glass bg-slate-800/50 border-slate-700/50">
+        <div>
+          <div class="text-[10px] font-bold tracking-widest uppercase mb-1 text-slate-400">Sessions</div>
+          <div class="text-2xl font-black font-mono" x-text="sessions"></div>
+        </div>
+        <i class="ri-check-double-line text-3xl text-emerald-400/50"></i>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    
+    );
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      
+      const thm = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+      document.querySelectorAll('a.internal-link').forEach(a => {
+        const url = new URL(a.href, location.href);
+        url.searchParams.set('theme', thm);
+        a.href = url.toString();
+      });
+    });
+
+    function pomoGame() {
+      return {
+        level: parseInt(localStorage.getItem('pomo_level')) || 1,
+        xp: parseInt(localStorage.getItem('pomo_xp')) || 0,
+        totalMins: parseInt(localStorage.getItem('pomo_mins')) || 0,
+        sessions: parseInt(localStorage.getItem('pomo_sessions')) || 0,
+        
+        confFocus: parseInt(localStorage.getItem('pomo_c_f')) || 25,
+        confBreak: parseInt(localStorage.getItem('pomo_c_b')) || 5,
+        
+        mode: 'focus',
+        timeLeft: 25 * 60,
+        isRunning: false,
+        timerInt: null,
+        showSettings: false,
+        
+        init() {
+          this.checkLevel();
+          this.timeLeft = this.confFocus * 60;
+        },
+
+        applySettings() {
+          if(this.confFocus < 1) this.confFocus = 1;
+          if(this.confBreak < 1) this.confBreak = 1;
+          localStorage.setItem('pomo_c_f', this.confFocus);
+          localStorage.setItem('pomo_c_b', this.confBreak);
+          
+          if(!this.isRunning) {
+             this.timeLeft = this.mode === 'focus' ? this.confFocus * 60 : this.confBreak * 60;
+          }
+        },
+
+        get formattedTime() {
+          const m = Math.floor(this.timeLeft / 60).toString().padStart(2, '0');
+          const s = (this.timeLeft % 60).toString().padStart(2, '0');
+          return `${m}:${s}`;
+        },
+
+        get nextLevelXp() {
+          return this.level * 100 + 50; 
+        },
+
+        get rankName() {
+          if(this.level < 5) return 'Novice';
+          if(this.level < 10) return 'Apprentice';
+          if(this.level < 20) return 'Adept';
+          if(this.level < 35) return 'Expert';
+          return 'Grandmaster';
+        },
+
+        setMode(mod) {
+          if(this.isRunning) this.toggleTimer();
+          this.mode = mod;
+          this.timeLeft = mod === 'focus' ? this.confFocus * 60 : this.confBreak * 60;
+        },
+
+        toggleTimer() {
+          if(this.isRunning) {
+            clearInterval(this.timerInt);
+            this.isRunning = false;
+          } else {
+            this.isRunning = true;
+            this.timerInt = setInterval(() => {
+              this.timeLeft--;
+              if(this.timeLeft <= 0) {
+                this.completeSession();
+              }
+            }, 1000);
+          }
+        },
+
+        resetTimer() {
+          if(this.isRunning) this.toggleTimer();
+          this.timeLeft = this.mode === 'focus' ? this.confFocus * 60 : this.confBreak * 60;
+        },
+
+        completeSession() {
+          clearInterval(this.timerInt);
+          this.isRunning = false;
+          
+          if(this.mode === 'focus') {
+            // XP scale based on minutes actually tracked
+            const earnedXp = (this.confFocus * 4) + Math.floor(Math.random() * 10);
+            this.xp += earnedXp;
+            this.totalMins += this.confFocus;
+            this.sessions++;
+            
+            alert(`Focus complete! +${earnedXp} XP`);
+            
+            this.checkLevel();
+            this.saveData();
+            this.setMode('break');
+          } else {
+            alert('Break complete! Back to focus.');
+            this.setMode('focus');
+          }
+        },
+
+        checkLevel() {
+          while(this.xp >= this.nextLevelXp) {
+            this.xp -= this.nextLevelXp;
+            this.level++;
+          }
+          this.saveData();
+        },
+
+        saveData() {
+          localStorage.setItem('pomo_level', this.level);
+          localStorage.setItem('pomo_xp', this.xp);
+          localStorage.setItem('pomo_mins', this.totalMins);
+          localStorage.setItem('pomo_sessions', this.sessions);
+        }
+      }
+    }
+  </script>
+</body>
+</html>

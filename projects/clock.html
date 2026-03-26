@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html class="" lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ═══ Primary SEO ═══ -->
+  <title>Live Clock – Arpit Agarwala | Digital & Analog World Clock</title>
+  <meta name="description" content="A free live clock web app by Arpit Agarwala featuring digital and analog modes, 12/24-hour format, world clocks for New York, London & Tokyo, and a night indicator." />
+  <meta name="keywords" content="live clock, online clock, world clock, analog clock, digital clock, web clock, Arpit Agarwala, free clock tool" />
+  <meta name="author" content="Arpit Agarwala" />
+  <link rel="canonical" href="https://arpitagarwala.online/clock.html" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- ═══ Open Graph ═══ -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://arpitagarwala.online/clock.html" />
+  <meta property="og:title" content="Live Clock – Arpit Agarwala | Digital & Analog World Clock" />
+  <meta property="og:description" content="Free live clock with digital and analog modes, 12/24-hour format, and world clocks for New York, London and Tokyo." />
+  <meta property="og:image" content="https://arpitagarwala.online/assets/images/my-miniature.png" />
+  <meta property="og:site_name" content="Arpit Agarwala" />
+
+  <!-- ═══ Twitter Card ═══ -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Live Clock – Arpit Agarwala" />
+  <meta name="twitter:description" content="Free live clock with digital & analog modes, world clocks, and night indicator." />
+  <meta name="twitter:image" content="https://arpitagarwala.online/assets/images/my-miniature.png" />
+
+  <!-- ═══ JSON-LD ═══ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Live Clock by Arpit Agarwala",
+    "url": "https://arpitagarwala.online/clock.html",
+    "description": "A live clock web app with dual digital and analog modes, 12/24-hour format toggle, world clocks for New York, London and Tokyo, and a night indicator.",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Person", "name": "Arpit Agarwala", "url": "https://arpitagarwala.online/" }
+  }
+  </script>
+
+  <link rel="icon" type="image/png" sizes="32x32" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_32,h_32,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_16,h_16,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_180,h_180,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
+  <link rel="shortcut icon" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_32,h_32,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    * { transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+
+    :root {
+      --cf-bg:     #1e293b;
+      --cf-ring:   #334155;
+      --cf-tick-h: #94a3b8;
+      --cf-tick-m: #334155;
+      --cf-num:    #94a3b8;
+      --cf-hand-h: #e2e8f0;
+      --cf-hand-m: #94a3b8;
+      --cf-hand-s: #22d3ee;
+      --cf-cap:    #22d3ee;
+      --cf-cap-in: #0f172a;
+    }
+    .dark {
+      --cf-bg:     #f1f5f9;
+      --cf-ring:   #cbd5e1;
+      --cf-tick-h: #475569;
+      --cf-tick-m: #cbd5e1;
+      --cf-num:    #374151;
+      --cf-hand-h: #1e293b;
+      --cf-hand-m: #475569;
+      --cf-hand-s: #0891b2;
+      --cf-cap:    #0891b2;
+      --cf-cap-in: #f9fafb;
+    }
+
+    #clock-face-bg  { fill:   var(--cf-bg);     transition: fill 0.3s; }
+    #clock-face-ring{ stroke: var(--cf-ring);   transition: stroke 0.3s; }
+    .tick-hour      { stroke: var(--cf-tick-h); }
+    .tick-min       { stroke: var(--cf-tick-m); }
+    .num-label      { fill:   var(--cf-num);    }
+    #svg-hour       { stroke: var(--cf-hand-h); transition: stroke 0.3s; }
+    #svg-min        { stroke: var(--cf-hand-m); transition: stroke 0.3s; }
+    #svg-sec        { stroke: var(--cf-hand-s); transition: stroke 0.3s; }
+    #svg-cap-outer  { fill:   var(--cf-cap);    transition: fill 0.3s; }
+    #svg-cap-inner  { fill:   var(--cf-cap-in); transition: fill 0.3s; }
+
+    #digital-time { font-family: 'JetBrains Mono', monospace; }
+
+    @keyframes colonPulse { 0%,100%{opacity:1} 50%{opacity:0.15} }
+    .colon-pulse { animation: colonPulse 1s step-start infinite; }
+
+    #settings-panel {
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    #settings-panel.panel-closed {
+      opacity: 0; transform: translateY(-8px) scale(0.97); pointer-events: none;
+    }
+
+    .wc-time { font-family: 'JetBrains Mono', monospace; }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
+    .fade-up { animation: fadeUp 0.4s ease both; }
+    .fade-up-delay { animation: fadeUp 0.4s 0.1s ease both; }
+    .fade-up-delay-2 { animation: fadeUp 0.4s 0.2s ease both; }
+  </style>
+</head>
+
+<body class="min-h-screen transition-colors duration-300 flex flex-col bg-slate-900 text-slate-100">
+  <!-- Uniform Back Button -->
+  <div class="fixed top-4 left-4 z-50 pointer-events-auto">
+    <a id="back-link" href="../projects.html" class="w-10 h-10 flex items-center justify-center rounded-full backdrop-blur border transition-all shadow-lg hover:scale-105 active:scale-95 bg-slate-800/50 border-slate-700/50 hover:bg-slate-700/80 text-white">
+      <i class="ri-arrow-left-line text-lg"></i>
+    </a>
+  </div>
+
+  <div class="fixed top-4 right-4 z-50">
+    <button onclick="toggleSettings()"
+            class="p-2 rounded-full shadow-md border hover:shadow-lg transition-all duration-100 bg-slate-700 text-slate-200 border-slate-600 hover:border-cyan-400">
+      <i class="ri-settings-3-line text-xl"></i>
+    </button>
+  </div>
+
+  <div class="flex-1 flex flex-col items-center justify-center px-4 py-20 gap-5">
+
+    <div id="date-display" class="fade-up text-xs font-semibold uppercase tracking-[0.2em] text-slate-400"></div>
+
+    <div id="digital-wrap" class="fade-up text-center">
+      <div id="digital-time" class="flex items-baseline justify-center gap-0 select-none">
+        <span id="time-hm"  class="text-[13vw] sm:text-[10vw] md:text-[8rem] font-bold tabular-nums leading-none text-slate-100">--:--</span>
+        <span id="time-col" class="colon-pulse text-[13vw] sm:text-[10vw] md:text-[8rem] font-bold leading-none hidden text-cyan-400">:</span>
+        <span id="time-sec" class="hidden text-[7vw] sm:text-[5vw] md:text-[4.5rem] font-bold tabular-nums leading-none self-end mb-2 text-slate-400">00</span>
+      </div>
+      <div class="flex items-center justify-center gap-3 mt-3">
+        <span id="period-badge" class="hidden text-xs font-bold px-3 py-1 rounded-full bg-cyan-500/15 border border-cyan-500/25 tracking-wider text-cyan-300"></span>
+        <span id="night-label"  class="hidden text-xs font-medium text-indigo-300">🌙 Night time</span>
+      </div>
+      <div id="timezone-label" class="mt-2 text-xs tracking-wide text-slate-500"></div>
+    </div>
+
+    <div id="analog-wrap" class="hidden fade-up">
+      <svg id="analog-svg" width="280" height="280" viewBox="0 0 280 280"
+           class="drop-shadow-[0_10px_40px_rgba(0,0,0,0.4)]">
+        <circle id="clock-face-ring" cx="140" cy="140" r="137" fill="none" stroke-width="2"/>
+        <circle id="clock-face-bg" cx="140" cy="140" r="136"/>
+        <g id="tick-group"></g>
+        <g id="num-group"></g>
+        <line id="svg-sec" x1="140" y1="160" x2="140" y2="40" stroke-width="1.5" stroke-linecap="round"/>
+        <line id="svg-min" x1="140" y1="140" x2="140" y2="52" stroke-width="3.5" stroke-linecap="round"/>
+        <line id="svg-hour" x1="140" y1="140" x2="140" y2="78" stroke-width="5.5" stroke-linecap="round"/>
+        <circle id="svg-cap-outer" cx="140" cy="140" r="7"/>
+        <circle id="svg-cap-inner" cx="140" cy="140" r="3.5"/>
+      </svg>
+      <div id="timezone-label-analog" class="text-center mt-3 text-xs tracking-wide text-slate-500"></div>
+    </div>
+
+    <div id="world-clocks" class="hidden fade-up-delay-2 grid grid-cols-3 gap-3 w-full max-w-xs">
+      <div class="rounded-xl p-3 text-center border shadow-sm bg-slate-800 border-slate-700/50">
+        <p class="text-xs mb-1 text-slate-400">🗽 New York</p>
+        <p id="wc-ny"  class="wc-time text-sm font-bold tabular-nums text-cyan-400">--:--</p>
+      </div>
+      <div class="rounded-xl p-3 text-center border shadow-sm bg-slate-800 border-slate-700/50">
+        <p class="text-xs mb-1 text-slate-400">🇬🇧 London</p>
+        <p id="wc-lon" class="wc-time text-sm font-bold tabular-nums text-cyan-400">--:--</p>
+      </div>
+      <div class="rounded-xl p-3 text-center border shadow-sm bg-slate-800 border-slate-700/50">
+        <p class="text-xs mb-1 text-slate-400">🇯🇵 Tokyo</p>
+        <p id="wc-tok" class="wc-time text-sm font-bold tabular-nums text-cyan-400">--:--</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="settings-panel"
+       class="panel-closed fixed top-16 right-4 border rounded-2xl p-5 w-72 shadow-2xl z-50 bg-slate-800 border-slate-700/50">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-sm font-bold flex items-center gap-2 text-slate-100">
+        <i class="ri-settings-3-line text-cyan-400"></i> Clock Settings
+      </h2>
+      <button onclick="toggleSettings()" class="transition-colors text-slate-400 hover:text-slate-200">
+        <i class="ri-close-line text-xl"></i>
+      </button>
+    </div>
+    <div class="rounded-xl p-3 mb-4 bg-slate-700/60">
+      <p class="text-xs font-semibold uppercase tracking-wider mb-1 text-slate-400">📍 Your Timezone</p>
+      <p id="location" class="text-sm font-medium text-slate-200">Detecting…</p>
+    </div>
+    <div class="space-y-3">
+      <label class="flex items-center justify-between cursor-pointer">
+        <span class="text-sm text-slate-300">Analog Clock</span>
+        <input type="checkbox" id="toggleAnalog" class="w-4 h-4 accent-cyan-400 cursor-pointer" onchange="update()"/>
+      </label>
+      <label class="flex items-center justify-between cursor-pointer">
+        <span class="text-sm text-slate-300">12-hour Format</span>
+        <input type="checkbox" id="toggle12h" checked class="w-4 h-4 accent-cyan-400 cursor-pointer" onchange="update()"/>
+      </label>
+      <label class="flex items-center justify-between cursor-pointer">
+        <span class="text-sm text-slate-300">Show Seconds</span>
+        <input type="checkbox" id="toggleSeconds" checked class="w-4 h-4 accent-cyan-400 cursor-pointer" onchange="update()"/>
+      </label>
+      <label class="flex items-center justify-between cursor-pointer">
+        <span class="text-sm text-slate-300">Night Indicator</span>
+        <input type="checkbox" id="toggleNight" checked class="w-4 h-4 accent-cyan-400 cursor-pointer" onchange="update()"/>
+      </label>
+      <label class="flex items-center justify-between cursor-pointer">
+        <span class="text-sm text-slate-300">World Clocks</span>
+        <input type="checkbox" id="toggleWorld" class="w-4 h-4 accent-cyan-400 cursor-pointer" onchange="update()"/>
+      </label>
+    </div>
+  </div>
+
+  <script>
+    const $ = id => document.getElementById(id);
+    const dateDisplay   = $('date-display');
+    const timeHM        = $('time-hm');
+    const timeCol       = $('time-col');
+    const timeSec       = $('time-sec');
+    const periodBadge   = $('period-badge');
+    const nightLabel    = $('night-label');
+    const tzLabel       = $('timezone-label');
+    const tzLabelA      = $('timezone-label-analog');
+    const digitalWrap   = $('digital-wrap');
+    const analogWrap    = $('analog-wrap');
+    const worldClocks   = $('world-clocks');
+    const svgHour       = $('svg-hour');
+    const svgMin        = $('svg-min');
+    const svgSec        = $('svg-sec');
+    const toggleAnalog  = $('toggleAnalog');
+    const toggle12h     = $('toggle12h');
+    const toggleSeconds = $('toggleSeconds');
+    const toggleNight   = $('toggleNight');
+    const toggleWorld   = $('toggleWorld');
+
+    function buildClockFace() {
+      const tickGroup = $('tick-group');
+      const numGroup  = $('num-group');
+      const cx = 140, cy = 140, r = 136;
+      for (let i = 0; i < 60; i++) {
+        const isHour = i % 5 === 0;
+        const angleRad = (i * 6 - 90) * Math.PI / 180;
+        const outerR = r - 6;
+        const innerR = isHour ? outerR - 14 : outerR - 7;
+        const x1 = cx + Math.cos(angleRad) * outerR;
+        const y1 = cy + Math.sin(angleRad) * outerR;
+        const x2 = cx + Math.cos(angleRad) * innerR;
+        const y2 = cy + Math.sin(angleRad) * innerR;
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+        line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+        line.setAttribute('stroke-width', isHour ? '2.5' : '1');
+        line.setAttribute('stroke-linecap', 'round');
+        line.classList.add(isHour ? 'tick-hour' : 'tick-min');
+        tickGroup.appendChild(line);
+      }
+      const nums = [12,1,2,3,4,5,6,7,8,9,10,11];
+      nums.forEach((num, i) => {
+        const angleRad = (i * 30 - 90) * Math.PI / 180;
+        const numR = r - 32;
+        const x = cx + Math.cos(angleRad) * numR;
+        const y = cy + Math.sin(angleRad) * numR;
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('x', x); text.setAttribute('y', y);
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('dominant-baseline', 'central');
+        text.setAttribute('font-size', '11');
+        text.setAttribute('font-weight', '600');
+        text.setAttribute('font-family', 'Inter, sans-serif');
+        text.classList.add('num-label');
+        text.textContent = num;
+        numGroup.appendChild(text);
+      });
+    }
+
+    function rotateHand(el, deg) {
+      el.setAttribute('transform', `rotate(${deg}, 140, 140)`);
+    }
+
+    function worldTime(tz, is12h) {
+      return new Date().toLocaleTimeString('en-US', {
+        timeZone: tz, hour: '2-digit', minute: '2-digit', hour12: is12h
+      });
+    }
+
+    function update() {
+      const now   = new Date();
+      const is12h = toggle12h.checked;
+      const showSec = toggleSeconds.checked;
+      const isAnalog = toggleAnalog.checked;
+      dateDisplay.textContent = now.toLocaleDateString('en-US', {
+        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+      });
+      digitalWrap.classList.toggle('hidden',  isAnalog);
+      analogWrap.classList.toggle('hidden',  !isAnalog);
+      const h  = now.getHours();
+      const m  = now.getMinutes();
+      const s  = now.getSeconds();
+      const h12 = h % 12 || 12;
+      const hDisp = is12h ? String(h12).padStart(2,'0') : String(h).padStart(2,'0');
+      const mDisp = String(m).padStart(2,'0');
+      const sDisp = String(s).padStart(2,'0');
+      timeHM.textContent  = `${hDisp}:${mDisp}`;
+      timeSec.textContent = sDisp;
+      timeSec.classList.toggle('hidden', !showSec);
+      timeCol.classList.toggle('hidden', !showSec);
+      if (is12h) {
+        periodBadge.textContent = h < 12 ? 'AM' : 'PM';
+        periodBadge.classList.remove('hidden');
+      } else {
+        periodBadge.classList.add('hidden');
+      }
+      const isNight = h < 6 || h >= 19;
+      nightLabel.classList.toggle('hidden', !(toggleNight.checked && isNight));
+      const secDeg  = s * 6;
+      const minDeg  = m * 6 + s * 0.1;
+      const hourDeg = (h % 12) * 30 + m * 0.5;
+      rotateHand(svgSec,  secDeg);
+      rotateHand(svgMin,  minDeg);
+      rotateHand(svgHour, hourDeg);
+      worldClocks.classList.toggle('hidden', !toggleWorld.checked);
+      if (toggleWorld.checked) {
+        $('wc-ny').textContent  = worldTime('America/New_York', is12h);
+        $('wc-lon').textContent = worldTime('Europe/London',    is12h);
+        $('wc-tok').textContent = worldTime('Asia/Tokyo',       is12h);
+      }
+    }
+
+    function detectTimezone() {
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const pretty = tz.replace(/_/g, ' ');
+      $('location').textContent     = pretty;
+      tzLabel.textContent           = `Timezone: ${pretty}`;
+      tzLabelA.textContent          = `Timezone: ${pretty}`;
+    }
+
+    function toggleSettings() {
+      $('settings-panel').classList.toggle('panel-closed');
+    }
+
+    document.addEventListener('click', e => {
+      const panel = $('settings-panel');
+      const btn   = e.target.closest('[onclick="toggleSettings()"]');
+      if (!panel.contains(e.target) && !btn && !panel.classList.contains('panel-closed')) {
+        panel.classList.add('panel-closed');
+      }
+    });
+
+     else {
+        html.classList.add('dark'); localStorage.setItem('theme', 'dark');
+        icon.className = 'ri-sun-line text-xl';
+      }
+    }
+
+    buildClockFace();
+    detectTimezone();
+    update();
+    setInterval(update, 1000);
+  </script>
+</body>
+</html>

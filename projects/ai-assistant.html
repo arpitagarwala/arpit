@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html class="" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Arpit's AI Avatar – Arpit Agarwala</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Chat with Arpit's AI Avatar — ask about his projects, skills, experience, and more." />
+  <meta name="author" content="Arpit Agarwala" />
+  <link rel="canonical" href="https://arpitagarwala.online/ai-assistant.html" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_32,h_32,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    * { box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0a0e1a; color: #f1f5f9; margin: 0; }
+
+    .chat-bg {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(99, 102, 241, 0.12);
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 99px; }
+
+    /* Gradient background */
+    .bg-mesh {
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 10%, rgba(99,102,241,0.15), transparent),
+        radial-gradient(ellipse 50% 40% at 80% 90%, rgba(6,182,212,0.10), transparent),
+        #0a0e1a;
+    }
+
+    /* Bot avatar pulse */
+    .avatar-glow {
+      box-shadow: 0 0 20px rgba(99,102,241,0.4), 0 0 60px rgba(99,102,241,0.1);
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(99,102,241,0.4), 0 0 60px rgba(99,102,241,0.1); }
+      50% { box-shadow: 0 0 30px rgba(99,102,241,0.6), 0 0 80px rgba(99,102,241,0.15); }
+    }
+
+    /* Message animations */
+    .msg-in { animation: msgSlide 0.3s ease-out; }
+    @keyframes msgSlide {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Typing indicator */
+    .dot-bounce { animation: bounce 1.2s infinite ease-in-out; }
+    .dot-bounce:nth-child(2) { animation-delay: 0.15s; }
+    .dot-bounce:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes bounce {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-6px); }
+    }
+
+    /* Markdown in bot messages */
+    .bot-msg p { margin-bottom: 0.5rem; }
+    .bot-msg p:last-child { margin-bottom: 0; }
+    .bot-msg strong { color: #c7d2fe; font-weight: 700; }
+    .bot-msg ul, .bot-msg ol { padding-left: 1.2rem; margin: 0.4rem 0; }
+    .bot-msg li { margin-bottom: 0.2rem; }
+    .bot-msg code { background: rgba(99,102,241,0.15); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.8rem; }
+    .bot-msg pre { background: rgba(15,23,42,0.6); padding: 0.8rem; border-radius: 6px; overflow-x: auto; border: 1px solid rgba(255,255,255,0.05); margin: 0.5rem 0; }
+    .bot-msg pre code { background: transparent; padding: 0; color: #e2e8f0; }
+    
+    /* Markdown Tables */
+    .bot-msg table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.85em; }
+    .bot-msg th { background: rgba(99,102,241,0.15); color: #c7d2fe; font-weight: 600; text-align: left; padding: 0.5rem; border: 1px solid rgba(255,255,255,0.1); }
+    .bot-msg td { padding: 0.5rem; border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; }
+    .bot-msg tr:nth-child(even) { background: rgba(255,255,255,0.03); }
+
+    /* Input focus ring */
+    .chat-input:focus { outline: none; box-shadow: 0 0 0 2px rgba(99,102,241,0.5); }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body class="h-screen w-full flex flex-col sm:flex-row items-center justify-center sm:p-4 md:p-6 overflow-hidden relative">
+  
+  <!-- Dynamic Background Matrix Effect -->
+  <div class="fixed inset-0 z-0 pointer-events-none opacity-50 bg-[#0a0e1a] flex flex-wrap gap-1 content-start overflow-hidden">
+    <div class="w-full h-full absolute inset-0 bg-gradient-to-t from-[#0a0e1a] via-transparent to-[#0a0e1a] z-10"></div>
+    <div id="binary-rain" class="w-full h-full text-[10px] sm:text-xs text-indigo-500/20 font-mono tracking-widest absolute inset-0 z-0 animate-pulse"></div>
+  </div>
+
+  <!-- Chat Widget Container -->
+  <div id="app" class="z-10 w-full h-full sm:h-[90vh] sm:max-w-4xl bg-slate-900/80 backdrop-blur-xl border-0 sm:border border-indigo-400/20 sm:rounded-[2rem] shadow-2xl flex flex-col overflow-hidden relative">
+    
+    <!-- Header -->
+    <header class="px-4 sm:px-6 py-4 sm:py-5 border-b border-indigo-500/10 flex items-center justify-between bg-slate-900/90 shadow-sm z-20 shrink-0">
+      <div class="flex items-center gap-3 sm:gap-4">
+        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-slate-800 flex items-center justify-center shadow-[0_0_20px_rgba(79,70,229,0.4)] border border-indigo-400/30 overflow-hidden">
+          <img src="../assets/images/my-miniature.png" alt="Arpit" class="w-full h-full object-cover" />
+        </div>
+        <div>
+          <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white leading-tight">Arpit's AI Avatar</h1>
+          <p class="text-[10px] sm:text-[12px] text-indigo-300/80 font-mono tracking-wide">Ask about Arpit's profile, projects & skills</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-1 sm:gap-2">
+        <a href="../index.html" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition">
+          <i class="ri-home-line text-lg"></i>
+        </a>
+        <button onclick="clearChat()" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-xl text-slate-400 hover:text-red-400 hover:bg-red-400/10 transition">
+          <i class="ri-delete-bin-line text-lg"></i>
+        </button>
+      </div>
+    </header>
+
+    <main id="chat-box" class="flex-1 px-4 py-5 overflow-y-auto flex flex-col gap-4">
+      <!-- Welcome message -->
+      <div class="flex items-end gap-2.5 msg-in">
+        <div class="w-7 h-7 rounded-full bg-slate-800 shrink-0 flex items-center justify-center overflow-hidden border border-indigo-500/30">
+          <img src="../assets/images/my-miniature.png" alt="Arpit" class="w-full h-full object-cover" />
+        </div>
+        <div class="bg-slate-800/80 text-slate-200 px-4 py-3 rounded-2xl rounded-bl-none max-w-[85%] shadow-md border border-white/5 text-[13px] leading-relaxed bot-msg">
+          <p>Hey! 👋 I'm <strong>Arpit's AI Avatar</strong>. I can answer questions about Arpit's projects, skills, experience, education, and anything on his portfolio. Feel free to ask!</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- Typing Indicator (hidden by default) -->
+    <div id="typing-indicator" class="hidden px-4 pb-2">
+      <div class="flex items-end gap-2.5">
+        <div class="w-7 h-7 rounded-full bg-slate-800 shrink-0 flex items-center justify-center overflow-hidden border border-indigo-500/30">
+          <img src="../assets/images/my-miniature.png" alt="Arpit" class="w-full h-full object-cover" />
+        </div>
+        <div class="bg-slate-800/80 px-4 py-3 rounded-2xl rounded-bl-none shadow-md border border-white/5 flex gap-1.5 items-center">
+          <div class="w-1.5 h-1.5 bg-indigo-400 rounded-full dot-bounce"></div>
+          <div class="w-1.5 h-1.5 bg-indigo-400 rounded-full dot-bounce"></div>
+          <div class="w-1.5 h-1.5 bg-indigo-400 rounded-full dot-bounce"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input -->
+    <footer class="px-4 py-3.5 bg-slate-900/40 backdrop-blur shrink-0 border-t border-white/8">
+      <form id="chat-form" class="relative flex items-center gap-2">
+        <input id="chat-input" type="text" placeholder="Ask about Arpit's projects, skills…"
+          class="chat-input flex-1 bg-slate-800/70 border border-slate-700/60 rounded-xl pl-4 pr-4 py-3 text-slate-100 placeholder-slate-500 text-sm transition shadow-inner"
+          autocomplete="off" />
+        <button type="submit" id="send-btn"
+          class="w-10 h-10 rounded-xl bg-indigo-500 hover:bg-indigo-400 disabled:opacity-40 disabled:cursor-not-allowed text-white flex items-center justify-center transition shadow-lg shrink-0">
+          <i class="ri-send-plane-fill text-base"></i>
+        </button>
+      </form>
+      <div class="flex items-center justify-center gap-1.5 mt-2.5">
+        <span class="text-[9px] text-slate-600 font-medium tracking-wide">Powered by</span>
+        <span class="text-[9px] text-indigo-400 font-bold tracking-wide">AI + RAG</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // ─── CONFIG ─────────────────────────────────────────────────────────────
+    // IMPORTANT: Replace this URL after deploying your Cloudflare Worker
+    const WORKER_URL = 'https://arpit-chatbot.arpitagarwala.workers.dev';
+
+    // ─── STATE ──────────────────────────────────────────────────────────────
+    let conversationHistory = [];
+    let isProcessing = false;
+
+    // ─── DOM ────────────────────────────────────────────────────────────────
+    const chatBox    = document.getElementById('chat-box');
+    const chatForm   = document.getElementById('chat-form');
+    const chatInput  = document.getElementById('chat-input');
+    const sendBtn    = document.getElementById('send-btn');
+    const typingDiv  = document.getElementById('typing-indicator');
+
+    // ─── MARKDOWN PARSER ────────────────────────────────────────────────────
+    marked.setOptions({
+      breaks: true,
+      gfm: true
+    });
+
+    // ─── Add message to chat ────────────────────────────────────────────────
+    function addMessage(role, text) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'msg-in';
+
+      const contentHtml = role === 'user' 
+        ? escapeHtml(text).replace(/\n/g, '<br>')
+        : marked.parse(text);
+
+      if (role === 'user') {
+        wrapper.className += ' flex flex-row-reverse items-end gap-2.5';
+        wrapper.innerHTML = `
+          <div class="bg-indigo-600 text-white px-4 py-3 rounded-2xl rounded-br-none max-w-[85%] shadow-md text-[13px] leading-relaxed">${contentHtml}</div>
+        `;
+      } else {
+        wrapper.className += ' flex items-end gap-2.5';
+        wrapper.innerHTML = `
+          <div class="w-7 h-7 rounded-full bg-slate-800 shrink-0 flex items-center justify-center overflow-hidden border border-indigo-500/30">
+            <img src="../assets/images/my-miniature.png" alt="Arpit" class="w-full h-full object-cover" />
+          </div>
+          <div class="bg-slate-800/80 text-slate-200 px-4 py-3 rounded-2xl rounded-bl-none max-w-[85%] shadow-md border border-white/5 text-[13px] leading-relaxed bot-msg w-full overflow-x-auto">${contentHtml}</div>
+        `;
+      }
+
+      chatBox.appendChild(wrapper);
+      scrollToBottom();
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function scrollToBottom() {
+      requestAnimationFrame(() => {
+        chatBox.scrollTop = chatBox.scrollHeight;
+      });
+    }
+
+    function setTyping(show) {
+      typingDiv.classList.toggle('hidden', !show);
+      if (show) scrollToBottom();
+    }
+
+    // ─── Send message ───────────────────────────────────────────────────────
+    async function sendMessage(query) {
+      if (isProcessing || !query.trim()) return;
+      isProcessing = true;
+      sendBtn.disabled = true;
+
+      // Add user message
+      addMessage('user', query);
+      conversationHistory.push({ role: 'user', text: query });
+
+      // Show typing
+      setTyping(true);
+
+      try {
+        const res = await fetch(WORKER_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            query: query,
+            history: conversationHistory.slice(-8),
+            system_instruction: 'You are Arpit Agarwala\'s AI Avatar. You MUST ONLY answer questions related to Arpit Agarwala — his profile, projects, skills, education, experience, achievements, and portfolio. If a user asks a question that is not specifically about Arpit Agarwala or his work, politely decline by saying something like: "I\'m Arpit\'s AI Avatar and I can only help with questions about Arpit — his projects, skills, experience, and portfolio. Feel free to ask me anything about him!" Never answer general knowledge, coding help, or any topic unrelated to Arpit.'
+          })
+        });
+
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.error || `Server error (${res.status})`);
+        }
+
+        const data = await res.json();
+        const answer = data.answer || 'Sorry, I could not generate a response.';
+
+        setTyping(false);
+        addMessage('bot', answer);
+        conversationHistory.push({ role: 'model', text: answer });
+
+      } catch (err) {
+        setTyping(false);
+        console.error('Chat error:', err);
+
+        let errorMsg = 'Sorry, I\'m having trouble connecting right now. Please try again in a moment.';
+
+        // Check if it's a network error (worker not deployed yet)
+        if (err.message.includes('Failed to fetch') || err.message.includes('NetworkError')) {
+          errorMsg = 'The AI backend is not connected yet. Please check the setup guide to deploy the Cloudflare Worker.';
+        }
+
+        addMessage('bot', errorMsg);
+      }
+
+      isProcessing = false;
+      sendBtn.disabled = false;
+      chatInput.focus();
+    }
+
+    // ─── Clear chat ─────────────────────────────────────────────────────────
+    function clearChat() {
+      conversationHistory = [];
+      chatBox.innerHTML = '';
+      addMessage('bot', 'Chat cleared! 🧹 What would you like to know about Arpit?');
+    }
+
+    // ─── Event listeners ────────────────────────────────────────────────────
+    chatForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const val = chatInput.value.trim();
+      if (val) {
+        chatInput.value = '';
+        sendMessage(val);
+      }
+    });
+
+    // Suggested questions (quick prompts)
+    const suggestions = [
+      'What projects has Arpit built?',
+      'Tell me about his experience',
+      'What are his skills?',
+      'How can I contact him?'
+    ];
+
+    // Add suggestion chips after welcome message
+    (function addSuggestions() {
+      const chipWrapper = document.createElement('div');
+      chipWrapper.className = 'flex flex-wrap gap-1.5 pl-9 msg-in';
+      chipWrapper.id = 'suggestions';
+      chipWrapper.innerHTML = suggestions.map(s =>
+        `<button onclick="useSuggestion(this, '${s}')" class="text-[11px] px-3 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/5 text-indigo-300 hover:bg-indigo-500/15 hover:border-indigo-400/50 transition font-medium">${s}</button>`
+      ).join('');
+      chatBox.appendChild(chipWrapper);
+    })();
+
+    function useSuggestion(btn, text) {
+      const el = document.getElementById('suggestions');
+      if (el) el.remove();
+      sendMessage(text);
+    }
+
+    // Focus input on load
+    chatInput.focus();
+  </script>
+</body>
+</html>

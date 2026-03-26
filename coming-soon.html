@@ -26,16 +26,8 @@
   <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_180,h_180,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
   <link rel="shortcut icon" href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_32,h_32,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
 
-  <script>
-    (function () {
-      const t = localStorage.getItem('theme');
-      if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches))
-        document.documentElement.classList.add('dark');
-    })();
-  </script>
-
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>tailwind.config = { darkMode: 'class' }</script>
+  
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
@@ -43,13 +35,9 @@
     body { font-family: 'Inter', sans-serif; }
 
     .glass {
-      background: rgba(255,255,255,.78);
-      backdrop-filter: blur(22px);
-      border: 1px solid rgba(0,0,0,.08);
-    }
-    .dark .glass {
       background: rgba(15, 23, 42, .72);
       border: 1px solid rgba(255,255,255,.08);
+      backdrop-filter: blur(22px);
     }
 
     @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
@@ -80,26 +68,18 @@
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 99px; }
-    .dark ::-webkit-scrollbar-thumb { background: rgba(0,0,0,.12); }
   </style>
 </head>
 
-<body class="min-h-screen bg-slate-950 dark:bg-slate-100 text-slate-50 dark:text-slate-900 transition-colors duration-300 flex items-center justify-center p-4">
+<body class="min-h-screen bg-slate-950 text-slate-50 transition-colors duration-300 flex items-center justify-center p-4">
+  <!-- Uniform Theme Toggle -->
 
   <!-- Back to Home -->
   <div class="fixed top-4 left-4 z-50">
     <a href="index.html"
-       class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-700 dark:border-slate-200 text-slate-300 dark:text-slate-700 hover:border-cyan-400 hover:text-cyan-400 shadow-lg transition-all">
+       class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-800/90 backdrop-blur border border-slate-700 text-slate-300 hover:border-cyan-400 hover:text-cyan-400 shadow-lg transition-all">
       <i class="ri-home-line text-lg"></i>
     </a>
-  </div>
-
-  <!-- Theme toggle -->
-  <div class="fixed top-4 right-4 z-50">
-    <button onclick="toggleTheme()"
-            class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-800/90 dark:bg-white/90 backdrop-blur border border-slate-700 dark:border-slate-200 text-slate-300 dark:text-slate-700 hover:border-cyan-400 hover:text-cyan-400 shadow-lg transition-all">
-      <i id="theme-icon" class="text-lg"></i>
-    </button>
   </div>
 
   <div class="max-w-lg w-full mx-auto">
@@ -122,27 +102,27 @@
       </h1>
 
       <!-- Dynamic page label -->
-      <p id="page-label" class="text-cyan-600 dark:text-cyan-400 font-bold text-xs uppercase tracking-widest mb-5 fade-up" style="animation-delay:.12s">
+      <p id="page-label" class="font-bold text-xs uppercase tracking-widest mb-5 fade-up text-cyan-400" style="animation-delay:.12s">
         — Page Under Construction —
       </p>
 
-      <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed max-w-xs mx-auto fade-up" style="animation-delay:.16s">
+      <p class="text-sm leading-relaxed max-w-xs mx-auto fade-up text-slate-400" style="animation-delay:.16s">
         This section is being carefully crafted. Check back soon — it'll be worth the wait!
       </p>
 
       <!-- Progress bar -->
       <div class="mt-8 mb-1 fade-up" style="animation-delay:.22s">
-        <div class="flex justify-between text-xs text-slate-500 dark:text-slate-400 mb-2">
+        <div class="flex justify-between text-xs mb-2 text-slate-400">
           <span>Progress</span>
           <span>Almost there…</span>
         </div>
-        <div class="h-2 bg-white/8 dark:bg-black/8 rounded-full overflow-hidden">
+        <div class="h-2 rounded-full overflow-hidden bg-black/8">
           <div class="h-full progress-bar rounded-full" style="width:65%"></div>
         </div>
       </div>
 
       <!-- Divider -->
-      <div class="my-7 h-px bg-white/8 dark:bg-black/8 fade-up" style="animation-delay:.27s"></div>
+      <div class="my-7 h-px fade-up bg-black/8" style="animation-delay:.27s"></div>
 
       <!-- Actions -->
       <div class="flex flex-col sm:flex-row gap-3 justify-center fade-up" style="animation-delay:.32s">
@@ -151,30 +131,19 @@
           <i class="ri-home-4-line"></i> Back to Home
         </a>
         <button onclick="history.back()"
-                class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white/5 dark:bg-black/5 border border-white/10 dark:border-black/10 hover:border-cyan-400 dark:hover:border-cyan-500 font-semibold text-sm transition-all">
+                class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border font-semibold text-sm transition-all bg-black/5 border-black/10 hover:border-cyan-500">
           <i class="ri-arrow-left-line"></i> Go Back
         </button>
       </div>
     </div>
 
     <!-- Footer -->
-    <p class="text-center text-xs text-slate-500 dark:text-slate-400 mt-6 fade-up" style="animation-delay:.38s">
+    <p class="text-center text-xs mt-6 fade-up text-slate-400" style="animation-delay:.38s">
       &copy; 2026 Arpit Agarwala. Engineered with <span class="text-red-400">&#10084;&#65039;</span>
     </p>
   </div>
 
   <script>
-    // Sync theme icon
-    (function syncIcon(){
-      document.getElementById('theme-icon').className =
-        document.documentElement.classList.contains('dark') ? 'ri-sun-line text-lg' : 'ri-moon-line text-lg';
-    })();
-
-    function toggleTheme(){
-      const dark = document.documentElement.classList.toggle('dark');
-      localStorage.setItem('theme', dark ? 'dark' : 'light');
-      document.getElementById('theme-icon').className = dark ? 'ri-sun-line text-lg' : 'ri-moon-line text-lg';
-    }
 
     // Read ?page= param and update label + title
     const params   = new URLSearchParams(window.location.search);
