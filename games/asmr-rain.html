@@ -122,6 +122,10 @@
       <input type="range" id="ambience" min="0" max="100" value="50">
     </div>
     <div class="ctrl-group">
+      <div class="ctrl-label">Sound</div>
+      <input type="range" id="sound" min="0" max="100" value="30">
+    </div>
+    <div class="ctrl-group">
       <div class="ctrl-label">Timer</div>
       <div id="timer-display">00:00</div>
     </div>
@@ -156,12 +160,14 @@
     const intensitySlider = document.getElementById('intensity');
     const speedSlider     = document.getElementById('speed');
     const ambienceSlider  = document.getElementById('ambience');
+    const soundSlider     = document.getElementById('sound');
     const timerDisplay    = document.getElementById('timer-display');
     const playBtn         = document.getElementById('play-btn');
 
     function getIntensity() { return parseInt(intensitySlider.value); }
     function getSpeed()     { return parseFloat(speedSlider.value); }
     function getAmbience()  { return parseInt(ambienceSlider.value) / 100; }
+    function getSound()     { return parseInt(soundSlider.value) / 100; }
 
     // ── Drop factory ──
     function makeDrop() {
@@ -286,12 +292,10 @@
     const rainAudio       = document.getElementById('rain-audio');
 
     function updateAudioVolume() {
-      const vol = 0.1 + (getIntensity() - 50) / 750 * 0.9;
-      rainAudio.volume = Math.min(1.0, Math.max(0, vol * (getAmbience() + 0.5))); 
+      rainAudio.volume = getSound(); 
     }
 
-    intensitySlider.addEventListener('input', updateAudioVolume);
-    ambienceSlider.addEventListener('input', updateAudioVolume);
+    soundSlider.addEventListener('input', updateAudioVolume);
 
     playBtn.addEventListener('click', () => {
       running = !running;
