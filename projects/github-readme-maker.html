@@ -18,8 +18,13 @@
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-900 min-h-screen">
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col" x-data="readmeBuilder()">
   
+    <header class="bg-white border-b border-slate-200 px-6 py-3 flex items-center justify-between shadow-sm shrink-0">
+      <div class="flex items-center gap-3">
+        <i class="ri-github-fill text-2xl"></i>
+        <span class="text-sm font-bold tracking-tight">GitHub Profile README Maker</span>
+      </div>
       <div class="flex gap-3">
         <button @click="copyCode" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-lg font-bold transition flex items-center gap-2 shadow-lg">
           <i class="ri-file-copy-line"></i> Copy Markdown Code

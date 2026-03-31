@@ -217,13 +217,7 @@ html.dark .filter-pill.active {
 /* ─────────────────────────────────────────
    EMPTY STATE
 ───────────────────────────────────────── */
-#no-results {
-  display: none !important;
-}
-
-#no-results.visible {
-  display: flex !important;
-}
+/* Removed conflicting !important rule — display toggled by JS class manipulation */
 
 .ach-card {
   background: rgb(17, 24, 39);

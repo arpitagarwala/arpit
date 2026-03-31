@@ -119,18 +119,6 @@
   </div>
 
   <script>
-    
-    );
-    }
-    document.addEventListener('DOMContentLoaded', () => {
-      
-      const thm = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-      document.querySelectorAll('a.internal-link').forEach(a => {
-        const url = new URL(a.href, location.href);
-        url.searchParams.set('theme', thm);
-        a.href = url.toString();
-      });
-    });
 
     function pomoGame() {
       return {
