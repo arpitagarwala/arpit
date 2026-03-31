@@ -70,7 +70,7 @@
   function flap() {
     if (state === 'dead') { init(); return; }
     if (state === 'idle') { state = 'play'; rafId = requestAnimationFrame(loop); }
-    bird.vy = -H * 0.022;
+    bird.vy = -H * 0.0187; // 85% of 0.022
   }
 
   // ── Events ── BUG FIX: only fire flap on canvas clicks, not back/hud buttons

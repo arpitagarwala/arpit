@@ -15,32 +15,20 @@
     .grid-board {
       display: grid;
       gap: 1px;
-      /* Light mode grid gaps */
-      background-color: rgba(0, 0, 0, 0.1);
-      border: 1px solid rgba(0,0,0,0.1);
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255,255,255,0.1);
       touch-action: none;
       width: fit-content;
       margin: 0 auto;
     }
-    .dark .grid-board {
-      /* Dark mode grid gaps */
-      background-color: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-    }
     .node {
       width: 25px;
       height: 25px;
-      background-color: white;
-    }
-    .dark .node {
       background-color: #1e293b;
     }
     .node-wall {
-      background-color: #0f172a !important;
-      animation: wallAnim 0.2s ease-out forwards;
-    }
-    .dark .node-wall {
       background-color: #cbd5e1 !important;
+      animation: wallAnim 0.2s ease-out forwards;
     }
     .node-visited {
       animation: visitedAnim 1.5s ease-out forwards;

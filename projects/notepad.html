@@ -173,12 +173,12 @@
   </div>
 
   <!-- CONFIRM MODAL -->
-  <div id="confirm-modal" class="fixed inset-0 z-[100] flex items-center justify-center px-4 bg-black/20">
-    <div class="rounded-3xl shadow-2xl p-6 w-full max-w-xs border bg-slate-800 border-slate-700">
-      <p id="confirm-msg" class="font-semibold text-center mb-5 text-sm text-slate-200"></p>
+  <div id="confirm-modal" class="fixed inset-0 z-[100] flex items-center justify-center px-4 bg-black/40 backdrop-blur-sm hidden">
+    <div class="rounded-3xl shadow-2xl p-6 w-full max-w-xs border bg-slate-900 border-slate-700">
+      <p id="confirm-msg" class="font-bold text-center mb-5 text-sm md:text-base text-white"></p>
       <div class="flex gap-2.5">
-        <button onclick="confirmResolve(false)" class="flex-1 py-2.5 rounded-xl border font-semibold text-sm transition-colors active:scale-95 border-slate-600 text-slate-300 hover:bg-slate-700">Cancel</button>
-        <button onclick="confirmResolve(true)"  class="flex-1 py-2.5 rounded-xl bg-red-500 text-white font-bold text-sm hover:bg-red-600 transition-colors active:scale-95">Delete</button>
+        <button onclick="confirmResolve(false)" class="flex-1 py-2.5 rounded-xl border font-bold text-sm transition-colors active:scale-95 border-slate-600 text-slate-200 hover:bg-slate-800">Cancel</button>
+        <button onclick="confirmResolve(true)"  class="flex-1 py-2.5 rounded-xl bg-red-600 text-white font-extrabold text-sm hover:bg-red-500 transition-colors active:scale-95">Delete</button>
       </div>
     </div>
   </div>

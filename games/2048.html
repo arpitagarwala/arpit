@@ -12,7 +12,7 @@
     #back-link{position:fixed;top:16px;left:16px;z-index:50;width:38px;height:38px;border-radius:50%;background:rgba(5,15,30,0.85);backdrop-filter:blur(10px);border:1px solid rgba(251,191,36,0.25);color:rgba(251,191,36,0.8);display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:18px;transition:all .2s;}
     #back-link:hover{border-color:rgba(251,191,36,0.6);color:#fbbf24;}
 
-    .header{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:420px;margin-bottom:16px;}
+    .header{display:flex;align-items:center;justify-content:space-between;width:clamp(280px,min(90vw,90vh - 220px),440px);margin-bottom:16px;}
     h1{font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,#fbbf24,#f59e0b,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
     .score-row{display:flex;gap:8px;}
     .score-box{background:rgba(30,25,10,0.8);border:1px solid rgba(251,191,36,0.15);border-radius:10px;padding:6px 16px;text-align:center;min-width:70px;}

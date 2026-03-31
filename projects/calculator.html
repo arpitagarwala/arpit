@@ -50,6 +50,37 @@
   
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="../css/global.css">
+  <style>
+    .glass {
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .btn-ripple { position: relative; overflow: hidden; }
+    .btn-num { background: rgba(255, 255, 255, 0.04); color: #f8fafc; border: 1px solid rgba(255,255,255,0.06); }
+    .btn-num:hover { background: rgba(255, 255, 255, 0.1); }
+    .btn-op { background: rgba(34, 211, 238, 0.1); color: #22d3ee; border: 1px solid rgba(34, 211, 238, 0.2); }
+    .btn-op:hover { background: rgba(34, 211, 238, 0.2); }
+    .btn-fn { background: rgba(255, 255, 255, 0.02); color: #94a3b8; border: 1px solid rgba(255,255,255,0.04); }
+    .btn-fn:hover { background: rgba(255, 255, 255, 0.08); color: #cbd5e1; }
+    .btn-ac { background: rgba(244, 63, 94, 0.1); color: #f43f5e; border: 1px solid rgba(244, 63, 94, 0.2); }
+    .btn-ac:hover { background: rgba(244, 63, 94, 0.2); }
+    .btn-eq { background: linear-gradient(135deg, #06b6d4, #3b82f6); color: white; border: none; box-shadow: 0 4px 14px rgba(6, 182, 212, 0.4); }
+    .btn-eq:hover { filter: brightness(1.1); }
+    
+    .mode-tab { color: #64748b; background: transparent; border-color: transparent; transition: all 0.2s; }
+    .mode-tab:hover { color: #cbd5e1; }
+    .mode-tab.active { background: rgba(255, 255, 255, 0.08); color: #22d3ee; border-color: rgba(34, 211, 238, 0.3); }
+
+    .sci-btn { 
+      background: rgba(255, 255, 255, 0.03); color: #94a3b8; border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.15s;
+    }
+    .sci-btn:active { transform: scale(0.95); }
+    .sci-btn:hover { background: rgba(255, 255, 255, 0.08); color: #cbd5e1; }
+
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+  </style>
 </head>
 <body class="min-h-screen flex items-center justify-center transition-colors duration-300 p-4 bg-slate-950 text-slate-50">
   <!-- Uniform Back Button -->
@@ -67,7 +98,7 @@
 
   <div class="fixed top-4 right-4 z-50 flex gap-2">
     <button onclick="toggleHistory()"
-            class="w-10 h-10 flex items-center justify-center rounded-full backdrop-blur border hover:border-cyan-400 hover:text-cyan-400 shadow-lg transition-all bg-white/90 border-slate-700 text-slate-300">
+            class="w-10 h-10 flex items-center justify-center rounded-full backdrop-blur border hover:border-cyan-400 hover:text-cyan-400 shadow-lg transition-all bg-slate-800 border-slate-700 text-slate-300">
       <i class="ri-history-line text-lg"></i>
     </button>
     
@@ -88,7 +119,7 @@
         </div>
       </div>
 
-      <div class="flex gap-1 p-1 rounded-xl border bg-black/5 border-black/8">
+      <div class="flex gap-1 p-1 rounded-xl border bg-slate-800 border-slate-700">
         <button onclick="setMode('standard')"   id="tab-standard"   class="mode-tab active flex-1 py-1.5 text-xs font-bold rounded-lg border">Standard</button>
         <button onclick="setMode('scientific')" id="tab-scientific" class="mode-tab flex-1 py-1.5 text-xs font-bold rounded-lg border">Scientific</button>
         <button onclick="setMode('unit')"       id="tab-unit"       class="mode-tab flex-1 py-1.5 text-xs font-bold rounded-lg border">Unit</button>
@@ -115,7 +146,7 @@
       </div>
 
       <div id="unit-panel" class="hidden flex flex-col gap-3">
-        <select id="unit-cat" onchange="renderUnitSelects()" class="w-full px-3 py-2 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-cyan-500 bg-black/5 border-black/10 text-slate-200">
+        <select id="unit-cat" onchange="renderUnitSelects()" class="w-full px-3 py-2 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-cyan-500 bg-slate-800 border-slate-700 text-slate-200">
           <option value="length">Length</option>
           <option value="weight">Weight</option>
           <option value="temp">Temperature</option>
@@ -125,14 +156,14 @@
         </select>
         <div class="flex gap-2 items-center">
           <div class="flex-1 flex flex-col gap-1">
-            <select id="unit-from" class="w-full px-3 py-2 rounded-xl border text-xs outline-none focus:ring-2 focus:ring-cyan-500 bg-black/5 border-black/10 text-slate-200"></select>
-            <input id="unit-input" type="number" value="1" oninput="convertUnit()" class="w-full px-3 py-2 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-cyan-500 mono bg-black/5 border-black/10 text-slate-200">
+            <select id="unit-from" class="w-full px-3 py-2 rounded-xl border text-xs outline-none focus:ring-2 focus:ring-cyan-500 bg-slate-800 border-slate-700 text-slate-200"></select>
+            <input id="unit-input" type="number" value="1" oninput="convertUnit()" class="w-full px-3 py-2 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-cyan-500 mono bg-slate-800 border-slate-700 text-slate-200">
           </div>
           <button onclick="swapUnits()" class="w-8 h-8 flex items-center justify-center rounded-xl bg-cyan-500/15 border border-cyan-500/20 hover:bg-cyan-500/25 flex-shrink-0 transition-colors text-cyan-400">
             <i class="ri-arrow-left-right-line text-sm"></i>
           </button>
           <div class="flex-1 flex flex-col gap-1">
-            <select id="unit-to" onchange="convertUnit()" class="w-full px-3 py-2 rounded-xl border text-xs outline-none focus:ring-2 focus:ring-cyan-500 bg-black/5 border-black/10 text-slate-200"></select>
+            <select id="unit-to" onchange="convertUnit()" class="w-full px-3 py-2 rounded-xl border text-xs outline-none focus:ring-2 focus:ring-cyan-500 bg-slate-800 border-slate-700 text-slate-200"></select>
             <div id="unit-result" class="w-full px-3 py-2 rounded-xl bg-cyan-500/8 border border-cyan-500/15 text-sm font-bold mono text-cyan-300">1</div>
           </div>
         </div>
