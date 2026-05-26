@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="dark scroll-smooth">
 
 <head>
   <meta charset="UTF-8" />
@@ -31,13 +31,13 @@
       "name": "Arpit Agarwala",
       "url": "https://arpitagarwala.online/",
       "image": "https://arpitagarwala.online/assets/images/my-miniature.png",
-      "jobTitle": "BCom Student &amp; CA Aspirant",
+      "jobTitle": "BCom Student & CA Aspirant",
       "description": "BCom (Hons) student and aspiring Chartered Accountant from Kolkata.",
       "email": "arpitagarwalms@gmail.com",
       "address": { "@type": "PostalAddress", "addressLocality": "Kolkata", "addressRegion": "West Bengal", "addressCountry": "IN" },
       "sameAs": ["https://www.linkedin.com/in/arpitagarwala/", "https://www.instagram.com/arpit.agarwala_/", "https://github.com/arpitagarwala"]
     }
-    </script>
+  </script>
   <link rel="icon" type="image/png" sizes="32x32"
     href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_32,h_32,c_fill,q_auto,f_png/v1772863840/tab-icon.png">
   <link rel="icon" type="image/png" sizes="16x16"
@@ -49,35 +49,55 @@
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-  
-
-  <!-- External stylesheet (css/global.css) -->
   <link rel="stylesheet" href="css/global.css">
+
+  <style>
+    /* Prevent FOUC — body hidden until JS runs */
+    body { opacity: 0; }
+    body.ready { opacity: 1; transition: opacity 0.15s ease; }
+
+    /* Stagger entrance animations for the bento cards */
+    .bento-card {
+      opacity: 0;
+      transform: translateY(14px);
+      animation: bentoIn 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+    @keyframes bentoIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .bento-card:nth-child(1) { animation-delay: 0.05s; }
+    .bento-card:nth-child(2) { animation-delay: 0.12s; }
+    .bento-card:nth-child(3) { animation-delay: 0.19s; }
+    .bento-card:nth-child(4) { animation-delay: 0.26s; }
+    .bento-card:nth-child(5) { animation-delay: 0.33s; }
+    .bento-card:nth-child(6) { animation-delay: 0.40s; }
+  </style>
 </head>
 
 <body
   class="min-h-screen transition-colors duration-300 flex items-center justify-center py-12 px-4 bg-[#080c14] text-slate-100">
-  <!-- Uniform Theme Toggle -->
 
   <main class="grid grid-cols-1 lg:grid-cols-3 gap-4 max-w-5xl w-full">
 
     <!-- HERO -->
-    <div class="card p-7 lg:col-span-2 relative overflow-hidden">
+    <div class="card bento-card p-7 lg:col-span-2 relative overflow-hidden">
       <div class="absolute -top-16 -right-16 w-72 h-72 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
       <div class="flex flex-col sm:flex-row-reverse items-start sm:items-center gap-6">
         <img src="assets/images/my-miniature.png" alt="Arpit Agarwala"
-          class="w-28 sm:w-40 shrink-0 drop-shadow-[0_10px_24px_rgba(0,0,0,0.55)] relative z-10" />
+          class="w-28 sm:w-40 shrink-0 drop-shadow-[0_10px_24px_rgba(0,0,0,0.55)] relative z-10"
+          width="160" height="160" loading="eager" decoding="async" />
         <div class="flex-1 min-w-0">
           <div class="flex flex-wrap gap-2 mb-3.5">
             <span
-              class="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-full bg-cyan-500/10 text-cyan-400"><i
-                class="ri-map-pin-line"></i> Kolkata, India</span>
+              class="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-full bg-cyan-500/10 text-cyan-400">
+              <i class="ri-map-pin-line"></i> Kolkata, India
+            </span>
             <span
-              class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400"><span
-                class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>Available</span>
+              class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>Available
+            </span>
           </div>
-          <h1 class="text-2xl lg:text-3xl font-extrabold mb-2.5 leading-tight text-white">Hello
-            there! 👋</h1>
+          <h1 class="text-2xl lg:text-3xl font-extrabold mb-2.5 leading-tight text-white">Hello there! 👋</h1>
           <p class="text-sm lg:text-[0.95rem] leading-relaxed text-slate-400">
             I'm <strong class="text-slate-200">Arpit Agarwala</strong> — BCom (Hons) student, CA
             Intermediate aspirant, and builder of finance-first web tools. Cleared CA Foundation in Dec 2023, currently
@@ -85,7 +105,7 @@
           </p>
           <div class="mt-5 flex flex-wrap gap-3">
             <a href="about.html"
-              class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 active:bg-cyan-600 text-white text-sm font-semibold transition-colors shadow-md shadow-cyan-500/20 internal-link">
+              class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 active:bg-cyan-600 text-white text-sm font-semibold transition-colors shadow-md shadow-cyan-500/20">
               <i class="ri-user-smile-line"></i> Who am I?
             </a>
             <a href="https://ca.arpitagarwala.online" target="_blank" rel="noopener"
@@ -98,27 +118,20 @@
     </div>
 
     <!-- CLOCK -->
-    <div class="card p-6 flex flex-col items-center justify-center text-center relative overflow-hidden">
-      <div
-        class="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-transparent pointer-events-none">
-      </div>
-      <p class="text-[10px] font-bold tracking-[0.22em] uppercase mb-3 text-slate-500">TIME IS MONEY
-        💸</p>
-      <div id="live-clock"
-        class="text-4xl font-black tracking-widest tabular-nums font-mono leading-none text-cyan-400">
-      </div>
+    <div class="card bento-card p-6 flex flex-col items-center justify-center text-center relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-transparent pointer-events-none"></div>
+      <p class="text-[10px] font-bold tracking-[0.22em] uppercase mb-3 text-slate-500">TIME IS MONEY 💸</p>
+      <div id="live-clock" class="text-4xl font-black tracking-widest tabular-nums font-mono leading-none text-cyan-400"></div>
       <p id="live-date" class="text-xs mt-3 tracking-wide text-slate-500"></p>
     </div>
 
     <!-- PAGES NAV -->
-    <div class="card p-5 lg:col-span-2">
-      <p class="text-[10px] font-bold tracking-[0.2em] uppercase mb-3 px-1 text-slate-500">Explore
-      </p>
+    <div class="card bento-card p-5 lg:col-span-2">
+      <p class="text-[10px] font-bold tracking-[0.2em] uppercase mb-3 px-1 text-slate-500">Explore</p>
       <div class="grid grid-cols-2 gap-1.5">
 
-        <a href="projects.html" class="nav-link internal-link">
-          <span class="nav-icon bg-blue-500/10"><i
-              class="ri-code-box-line text-blue-400"></i></span>
+        <a href="projects.html" class="nav-link">
+          <span class="nav-icon bg-blue-500/10"><i class="ri-code-box-line text-blue-400"></i></span>
           <div>
             <p class="text-sm font-semibold text-slate-200">Projects</p>
             <p class="text-xs text-slate-500">Tools &amp; experiments</p>
@@ -126,9 +139,8 @@
           <i class="ri-arrow-right-line text-sm nav-arrow text-slate-600"></i>
         </a>
 
-        <a href="gallery.html" class="nav-link internal-link">
-          <span class="nav-icon bg-pink-500/10"><i
-              class="ri-image-line text-pink-400"></i></span>
+        <a href="gallery.html" class="nav-link">
+          <span class="nav-icon bg-pink-500/10"><i class="ri-image-line text-pink-400"></i></span>
           <div>
             <p class="text-sm font-semibold text-slate-200">Gallery</p>
             <p class="text-xs text-slate-500">Moments &amp; memories</p>
@@ -136,9 +148,8 @@
           <i class="ri-arrow-right-line text-sm nav-arrow text-slate-600"></i>
         </a>
 
-        <a href="achievements.html" class="nav-link internal-link">
-          <span class="nav-icon bg-amber-500/10"><i
-              class="ri-trophy-line text-amber-400"></i></span>
+        <a href="achievements.html" class="nav-link">
+          <span class="nav-icon bg-amber-500/10"><i class="ri-trophy-line text-amber-400"></i></span>
           <div>
             <p class="text-sm font-semibold text-slate-200">Achievements</p>
             <p class="text-xs text-slate-500">Awards &amp; milestones</p>
@@ -146,9 +157,8 @@
           <i class="ri-arrow-right-line text-sm nav-arrow text-slate-600"></i>
         </a>
 
-        <a href="games.html" class="nav-link internal-link">
-          <span class="nav-icon bg-violet-500/10"><i
-              class="ri-gamepad-line text-violet-400"></i></span>
+        <a href="games.html" class="nav-link">
+          <span class="nav-icon bg-violet-500/10"><i class="ri-gamepad-line text-violet-400"></i></span>
           <div>
             <p class="text-sm font-semibold text-slate-200">Games</p>
             <p class="text-xs text-slate-500">Learn money, have fun</p>
@@ -156,19 +166,17 @@
           <i class="ri-arrow-right-line text-sm nav-arrow text-slate-600"></i>
         </a>
 
-        <a href="about.html" class="nav-link internal-link">
-          <span class="nav-icon bg-teal-500/10"><i
-              class="ri-user-line text-teal-400"></i></span>
+        <a href="articles.html" class="nav-link">
+          <span class="nav-icon bg-emerald-500/10"><i class="ri-article-line text-emerald-400"></i></span>
           <div>
-            <p class="text-sm font-semibold text-slate-200">About</p>
-            <p class="text-xs text-slate-500">Who am I?</p>
+            <p class="text-sm font-semibold text-slate-200">Articles</p>
+            <p class="text-xs text-slate-500">Finance &amp; life takes</p>
           </div>
           <i class="ri-arrow-right-line text-sm nav-arrow text-slate-600"></i>
         </a>
 
-        <a href="https://design.arpitagarwala.online" target="_blank" rel="noopener" class="nav-link external-link">
-          <span class="nav-icon bg-fuchsia-500/10"><i
-              class="ri-palette-line text-fuchsia-400"></i></span>
+        <a href="https://design.arpitagarwala.online" target="_blank" rel="noopener" class="nav-link">
+          <span class="nav-icon bg-fuchsia-500/10"><i class="ri-palette-line text-fuchsia-400"></i></span>
           <div>
             <p class="text-sm font-semibold text-slate-200">Designs</p>
             <p class="text-xs text-slate-500">UI/UX &amp; Figma work</p>
@@ -180,7 +188,7 @@
     </div>
 
     <!-- SOCIALS + CONTACT -->
-    <div class="card p-6 flex flex-col justify-between gap-4">
+    <div class="card bento-card p-6 flex flex-col justify-between gap-4">
       <a href="mailto:arpitagarwalms@gmail.com?subject=Hello%20Arpit!&body=Hi%20Arpit%2C%0A%0AI%20came%20across%20your%20portfolio%20(arpitagarwala.online)%20and%20wanted%20to%20reach%20out."
         class="flex items-center gap-3.5 group">
         <div class="w-11 h-11 flex items-center justify-center rounded-full shrink-0 bg-cyan-500/10">
@@ -190,13 +198,13 @@
           <p class="text-sm font-bold text-white">Get in Touch</p>
           <p class="text-xs truncate text-slate-500">arpitagarwalms@gmail.com</p>
         </div>
-        <i
-          class="ri-arrow-right-up-line text-sm transition-colors text-slate-600 group-hover:text-cyan-400"></i>
+        <i class="ri-arrow-right-up-line text-sm transition-colors text-slate-600 group-hover:text-cyan-400"></i>
       </a>
+
       <div class="h-px bg-slate-700/50"></div>
+
       <div>
-        <p class="text-[10px] font-bold tracking-[0.2em] uppercase mb-2.5 text-slate-500">Find me on
-        </p>
+        <p class="text-[10px] font-bold tracking-[0.2em] uppercase mb-2.5 text-slate-500">Find me on</p>
         <div class="flex flex-col gap-2">
           <a href="https://wa.me/919957414146?text=Hi%20Arpit!%20I%20came%20across%20your%20portfolio%20at%20arpitagarwala.online%20and%20wanted%20to%20connect."
             target="_blank" rel="noopener" class="nav-link">
@@ -225,14 +233,17 @@
 
     <!-- FOOTER -->
     <div
-      class="lg:col-span-3 text-center py-3.5 px-6 rounded-2xl border text-sm bg-slate-800/50 border-slate-700/30 text-slate-500">
+      class="bento-card lg:col-span-3 text-center py-3.5 px-6 rounded-2xl border text-sm bg-slate-800/50 border-slate-700/30 text-slate-500">
       &copy; 2026 Arpit Agarwala. Engineered with <span class="text-red-400">&#10084;&#65039;</span>
     </div>
 
   </main>
 
   <script>
-    /* ── Clock ── */
+    /* ── Prevent FOUC: reveal body after paint ── */
+    document.body.classList.add('ready');
+
+    /* ── Live clock ── */
     function updateClock() {
       var now = new Date();
       var c = document.getElementById('live-clock');
@@ -243,6 +254,6 @@
     updateClock();
     setInterval(updateClock, 1000);
   </script>
-</body>
 
+</body>
 </html>
