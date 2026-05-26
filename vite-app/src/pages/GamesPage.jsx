@@ -1,19 +1,22 @@
-import SEOHead from '../components/SEOHead'
-import { Link } from 'react-router-dom'
+import BackButton from '../components/BackButton';
+import SEOHead from '../components/SEOHead';
+import Footer from '../components/Footer';
 
 export default function GamesPage() {
   return (
     <>
-      <SEOHead title="Games" description="Financial literacy games by Arpit Agarwala." canonical="/games" />
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" />
-      <div className="section-page">
-        <div className="container">
-          <Link to="/" className="btn btn-ghost" style={{ marginBottom: '2rem', display: 'inline-flex' }}>
-            <i className="ri-arrow-left-line" /> Back
-          </Link>
-          <p style={{ color: 'var(--text-muted)' }}>Games page — migration in progress.</p>
+      <SEOHead title="Games – Arpit Agarwala" />
+      <BackButton to="/" />
+      <div className="page-wrap">
+        <div className="page-content">
+          <div className="card" style={{ padding: '2rem', marginBottom: '1rem' }}>
+            <p className="label-caps" style={{ marginBottom: '0.5rem' }}>Portfolio</p>
+            <h1 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#fff' }}>Games</h1>
+            <p style={{ marginTop: '1.5rem', color: '#94a3b8' }}>Migration in progress.</p>
+          </div>
+          <Footer />
         </div>
       </div>
     </>
-  )
+  );
 }

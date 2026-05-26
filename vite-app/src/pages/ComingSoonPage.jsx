@@ -1,19 +1,22 @@
-import SEOHead from '../components/SEOHead'
-import { Link } from 'react-router-dom'
+import BackButton from '../components/BackButton';
+import SEOHead from '../components/SEOHead';
+import Footer from '../components/Footer';
 
 export default function ComingSoonPage() {
   return (
     <>
-      <SEOHead title="Coming Soon" description="Something new is being built." canonical="/coming-soon" />
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" />
-      <div className="section-page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ textAlign: 'center' }}>
-          <p style={{ fontSize: 'var(--text-xl)', marginBottom: '1rem' }}>🚧</p>
-          <h1 style={{ fontSize: 'var(--text-xl)', fontWeight: 700, color: 'var(--text)', marginBottom: '0.5rem' }}>Coming Soon</h1>
-          <p style={{ color: 'var(--text-muted)', marginBottom: '2rem' }}>Something exciting is being built here.</p>
-          <Link to="/" className="btn btn-primary"><i className="ri-home-line" /> Go Home</Link>
+      <SEOHead title="Coming Soon – Arpit Agarwala" />
+      <BackButton to="/" />
+      <div className="page-wrap">
+        <div className="page-content">
+          <div className="card" style={{ padding: '2rem', marginBottom: '1rem', textAlign: 'center' }}>
+            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🚧</div>
+            <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#fff', marginBottom: '0.5rem' }}>Coming Soon</h1>
+            <p style={{ color: '#94a3b8' }}>Something exciting is being built here.</p>
+          </div>
+          <Footer />
         </div>
       </div>
     </>
-  )
+  );
 }

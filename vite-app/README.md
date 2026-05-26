@@ -1,34 +1,14 @@
-# Arpit Agarwala — Portfolio (Vite + React)
+# Arpit Agarwala – Portfolio (Vite + React)
 
-This is the migrated version of [arpitagarwala.online](https://arpitagarwala.online) built with **Vite 5 + React 18 + React Router v6**.
+This is the modern rebuild of [arpitagarwala.online](https://arpitagarwala.online) using **Vite 5 + React 18**.
 
-## Project Structure
-
-```
-vite-app/
-├── index.html
-├── vite.config.js
-├── package.json
-└── src/
-    ├── main.jsx          # Entry point
-    ├── App.jsx           # Router config
-    ├── styles/
-    │   └── global.css    # Design tokens + base styles
-    ├── components/
-    │   ├── SEOHead.jsx   # Dynamic meta tags
-    │   ├── ScrollToTop.jsx
-    │   └── Navbar.jsx    # Shared nav (all inner pages)
-    └── pages/
-        ├── HomePage.jsx        ✅ Done
-        ├── AboutPage.jsx       ✅ Done
-        ├── ProjectsPage.jsx    ✅ Done
-        ├── AchievementsPage.jsx 🔄 In progress
-        ├── ArticlesPage.jsx    🔄 In progress
-        ├── GalleryPage.jsx     🔄 In progress
-        ├── GamesPage.jsx       🔄 In progress
-        ├── ComingSoonPage.jsx  🔄 In progress
-        └── NotFoundPage.jsx    ✅ Done
-```
+## Stack
+- **Build tool:** Vite 5
+- **Framework:** React 18
+- **Routing:** React Router v6
+- **Styling:** Plain CSS (design tokens in `src/index.css`)
+- **Icons:** RemixIcon via CDN
+- **Fonts:** Satoshi (Fontshare) + Instrument Serif (Google Fonts)
 
 ## Getting Started
 
@@ -38,28 +18,38 @@ npm install
 npm run dev
 ```
 
+Open [http://localhost:5173](http://localhost:5173)
+
 ## Build for Production
 
 ```bash
 npm run build
-# Outputs to ../dist/
+npm run preview
 ```
 
-## Deploy to GitHub Pages
+Output goes to `vite-app/dist/`. Deploy that folder to GitHub Pages or your hosting.
 
-Push to `vite-migration` branch — GitHub Actions will auto-build and deploy to `gh-pages-vite` branch (preview, won't affect live site).
-
-## Migration Status
+## Migration Progress
 
 | Page | Status |
 |------|--------|
-| Home | ✅ Complete |
-| About | ✅ Complete |
-| Projects | ✅ Complete |
-| Navbar (shared) | ✅ Complete |
-| Achievements | 🔄 Next |
-| Articles | 🔄 Pending |
-| Gallery | 🔄 Pending |
-| Games | 🔄 Pending |
-| Coming Soon | ✅ Complete |
-| 404 | ✅ Complete |
+| `/` Home | ✅ Complete |
+| `/articles` Articles | ✅ Complete (full filter + modal) |
+| `/about` About | 🔄 Scaffold ready |
+| `/projects` Projects | 🔄 Scaffold ready |
+| `/achievements` Achievements | 🔄 Scaffold ready |
+| `/gallery` Gallery | 🔄 Scaffold ready |
+| `/games` Games | 🔄 Scaffold ready |
+| `/coming-soon` Coming Soon | ✅ Complete |
+| `404` Not Found | ✅ Complete |
+
+## Deployment (GitHub Pages)
+
+```bash
+npm run build
+npx gh-pages -d dist
+```
+
+Make sure `vite.config.js` `base` is set correctly:
+- Custom domain (`arpitagarwala.online`): `base: '/'`
+- GitHub Pages subdirectory: `base: '/arpit/'`

@@ -1,19 +1,23 @@
-import SEOHead from '../components/SEOHead'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import SEOHead from '../components/SEOHead';
 
 export default function NotFoundPage() {
   return (
     <>
-      <SEOHead title="404 – Not Found" description="Page not found." />
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" />
-      <div className="section-page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <SEOHead title="404 – Page Not Found" />
+      <div className="page-wrap" style={{ alignItems: 'center', minHeight: '100dvh' }}>
         <div style={{ textAlign: 'center' }}>
-          <p style={{ fontSize: 'var(--text-2xl)', fontWeight: 900, color: 'var(--accent)', marginBottom: '0.5rem' }}>404</p>
-          <h1 style={{ fontSize: 'var(--text-xl)', fontWeight: 700, color: 'var(--text)', marginBottom: '0.5rem' }}>Page not found</h1>
-          <p style={{ color: 'var(--text-muted)', marginBottom: '2rem' }}>This page doesn't exist or was moved.</p>
-          <Link to="/" className="btn btn-primary"><i className="ri-home-line" /> Back Home</Link>
+          <p style={{ fontSize: '5rem', fontWeight: 900, color: 'rgba(6,182,212,0.2)', lineHeight: 1, fontFamily: 'monospace' }}>404</p>
+          <h1 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#fff', marginBottom: '0.5rem' }}>Page not found</h1>
+          <p style={{ color: '#94a3b8', marginBottom: '1.5rem' }}>This page doesn't exist or was moved.</p>
+          <Link
+            to="/"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem', padding: '0.625rem 1.25rem', borderRadius: '0.5rem', background: '#06b6d4', color: '#fff', fontSize: '0.875rem', fontWeight: 600, textDecoration: 'none' }}
+          >
+            <i className="ri-home-line" /> Back home
+          </Link>
         </div>
       </div>
     </>
-  )
+  );
 }

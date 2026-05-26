@@ -1,13 +1,19 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
-// Set base to '/arpit/' for GitHub Pages (github.com/arpitagarwala/arpit)
-// Change to '/' if using a custom domain like arpitagarwala.online
 export default defineConfig({
   plugins: [react()],
-  base: '/',  // Use '/' for custom domain deploy; '/arpit/' for github.io subpath
+  // Set base to '/' for custom domain deployment (arpitagarwala.online)
+  // Change to '/arpit/' if deploying to github.io/arpit subdirectory
+  base: '/',
   build: {
-    outDir: '../dist',
-    emptyOutDir: true,
+    outDir: 'dist',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+        },
+      },
+    },
   },
-})
+});
