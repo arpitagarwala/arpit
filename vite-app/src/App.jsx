@@ -1,5 +1,4 @@
 import { Routes, Route } from 'react-router-dom'
-import { useEffect } from 'react'
 import HomePage from './pages/HomePage'
 import AboutPage from './pages/AboutPage'
 import ProjectsPage from './pages/ProjectsPage'
@@ -10,11 +9,13 @@ import GamesPage from './pages/GamesPage'
 import ComingSoonPage from './pages/ComingSoonPage'
 import NotFoundPage from './pages/NotFoundPage'
 import ScrollToTop from './components/ScrollToTop'
+import Navbar from './components/Navbar'
 
 export default function App() {
   return (
     <>
       <ScrollToTop />
+      <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
