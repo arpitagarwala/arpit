@@ -13,30 +13,29 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node 24
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: vite-app/package-lock.json
+          node-version: '24'
 
       - name: Install dependencies
         working-directory: vite-app
-        run: npm ci
+        run: npm install
 
       - name: Build
         working-directory: vite-app
         run: npm run build
 
-      # Copies the built /dist output into the root of the gh-pages branch
-      - name: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages (preview branch)
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
-          publish_branch: gh-pages-vite   # separate branch — won't overwrite your live site
-          # Once validated, change to: publish_branch: gh-pages
+          publish_branch: gh-pages-vite
+          force_orphan: true
