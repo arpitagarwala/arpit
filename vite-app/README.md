@@ -16,11 +16,12 @@ vite-app/
     │   └── global.css    # Design tokens + base styles
     ├── components/
     │   ├── SEOHead.jsx   # Dynamic meta tags
-    │   └── ScrollToTop.jsx
+    │   ├── ScrollToTop.jsx
+    │   └── Navbar.jsx    # Shared nav (all inner pages)
     └── pages/
         ├── HomePage.jsx        ✅ Done
-        ├── AboutPage.jsx       🔄 In progress
-        ├── ProjectsPage.jsx    🔄 In progress
+        ├── AboutPage.jsx       ✅ Done
+        ├── ProjectsPage.jsx    ✅ Done
         ├── AchievementsPage.jsx 🔄 In progress
         ├── ArticlesPage.jsx    🔄 In progress
         ├── GalleryPage.jsx     🔄 In progress
@@ -46,18 +47,17 @@ npm run build
 
 ## Deploy to GitHub Pages
 
-1. Set `base` in `vite.config.js` if deploying to a subpath.
-2. Run `npm run build`.
-3. Push `dist/` or use the `gh-pages` npm package.
+Push to `vite-migration` branch — GitHub Actions will auto-build and deploy to `gh-pages-vite` branch (preview, won't affect live site).
 
 ## Migration Status
 
 | Page | Status |
 |------|--------|
 | Home | ✅ Complete |
-| About | 🔄 Next |
-| Projects | 🔄 Pending |
-| Achievements | 🔄 Pending |
+| About | ✅ Complete |
+| Projects | ✅ Complete |
+| Navbar (shared) | ✅ Complete |
+| Achievements | 🔄 Next |
 | Articles | 🔄 Pending |
 | Gallery | 🔄 Pending |
 | Games | 🔄 Pending |
