@@ -52,11 +52,11 @@
   <link rel="stylesheet" href="css/global.css">
 
   <style>
-    /* Prevent FOUC — body hidden until JS runs */
+    /* Prevent FOUC */
     body { opacity: 0; }
     body.ready { opacity: 1; transition: opacity 0.15s ease; }
 
-    /* Stagger entrance animations for the bento cards */
+    /* Bento card entrance stagger */
     .bento-card {
       opacity: 0;
       transform: translateY(14px);
@@ -71,6 +71,36 @@
     .bento-card:nth-child(4) { animation-delay: 0.26s; }
     .bento-card:nth-child(5) { animation-delay: 0.33s; }
     .bento-card:nth-child(6) { animation-delay: 0.40s; }
+
+    /* Hero card: always row-reverse so image stays right, text left */
+    .hero-inner {
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    /* On very small screens (<480px) stack vertically */
+    @media (max-width: 479px) {
+      .hero-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .hero-img {
+        width: 7rem;
+      }
+    }
+    .hero-img {
+      width: 10rem;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 10;
+      filter: drop-shadow(0 10px 24px rgba(0,0,0,0.55));
+    }
+
+    /* Clock card: enforce a consistent height matching hero */
+    .clock-card {
+      min-height: 220px;
+    }
   </style>
 </head>
 
@@ -82,18 +112,20 @@
     <!-- HERO -->
     <div class="card bento-card p-7 lg:col-span-2 relative overflow-hidden">
       <div class="absolute -top-16 -right-16 w-72 h-72 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="flex flex-col sm:flex-row-reverse items-start sm:items-center gap-6">
-        <img src="assets/images/my-miniature.png" alt="Arpit Agarwala"
-          class="w-28 sm:w-40 shrink-0 drop-shadow-[0_10px_24px_rgba(0,0,0,0.55)] relative z-10"
-          width="160" height="160" loading="eager" decoding="async" />
+      <div class="hero-inner">
+        <img
+          src="assets/images/my-miniature.png"
+          alt="Arpit Agarwala"
+          class="hero-img"
+          width="160" height="160"
+          loading="eager" decoding="async"
+        />
         <div class="flex-1 min-w-0">
           <div class="flex flex-wrap gap-2 mb-3.5">
-            <span
-              class="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-full bg-cyan-500/10 text-cyan-400">
+            <span class="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-full bg-cyan-500/10 text-cyan-400">
               <i class="ri-map-pin-line"></i> Kolkata, India
             </span>
-            <span
-              class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400">
+            <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>Available
             </span>
           </div>
@@ -118,7 +150,7 @@
     </div>
 
     <!-- CLOCK -->
-    <div class="card bento-card p-6 flex flex-col items-center justify-center text-center relative overflow-hidden">
+    <div class="card bento-card clock-card p-6 flex flex-col items-center justify-center text-center relative overflow-hidden">
       <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-transparent pointer-events-none"></div>
       <p class="text-[10px] font-bold tracking-[0.22em] uppercase mb-3 text-slate-500">TIME IS MONEY 💸</p>
       <div id="live-clock" class="text-4xl font-black tracking-widest tabular-nums font-mono leading-none text-cyan-400"></div>
@@ -240,10 +272,8 @@
   </main>
 
   <script>
-    /* ── Prevent FOUC: reveal body after paint ── */
     document.body.classList.add('ready');
 
-    /* ── Live clock ── */
     function updateClock() {
       var now = new Date();
       var c = document.getElementById('live-clock');
