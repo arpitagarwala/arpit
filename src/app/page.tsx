@@ -67,6 +67,14 @@ export default function HomePage() {
                 >
                   <i className="ri-robot-2-line" /> Try CA Bhaiya
                 </a>
+                <a
+                  href="https://vertex.arpitagarwala.online"
+                  target="_blank"
+                  rel="noopener"
+                  className={styles.ctaSecondary}
+                >
+                  <i className="ri-bar-chart-box-line" /> Vertex App
+                </a>
               </div>
             </div>
           </div>
