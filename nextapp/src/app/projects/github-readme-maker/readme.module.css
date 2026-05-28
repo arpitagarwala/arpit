@@ -1,0 +1,38 @@
+.markdownBody {
+  font-family: 'Inter', sans-serif;
+  color: #f1f5f9;
+}
+.markdownBody h1 { 
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1); 
+  padding-bottom: 0.5rem; 
+  margin-bottom: 1rem; 
+  font-size: 2rem; 
+  font-weight: bold; 
+}
+.markdownBody h2 { 
+  font-size: 1.5rem; 
+  font-weight: bold; 
+  margin-top: 1.5rem; 
+  margin-bottom: 1rem; 
+}
+.markdownBody p { 
+  margin-bottom: 1rem; 
+  line-height: 1.6; 
+}
+.markdownBody img { 
+  max-width: 100%; 
+  display: inline-block; 
+  margin-right: 5px; 
+}
+
+/* Scrollbar specific to sidebar/main in this app if needed, though Tailwind handles overflow */
+.customScroll::-webkit-scrollbar { 
+  width: 6px; 
+}
+.customScroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.customScroll::-webkit-scrollbar-thumb { 
+  background: #334155; 
+  border-radius: 4px; 
+}

@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+
+.clockWrapper {
+  --cf-bg: #1e293b;
+  --cf-ring: #334155;
+  --cf-tick-h: #94a3b8;
+  --cf-tick-m: #334155;
+  --cf-num: #94a3b8;
+  --cf-hand-h: #e2e8f0;
+  --cf-hand-m: #94a3b8;
+  --cf-hand-s: #22d3ee;
+  --cf-cap: #22d3ee;
+  --cf-cap-in: #0f172a;
+}
+
+:global(.dark) .clockWrapper {
+  --cf-bg: #f1f5f9;
+  --cf-ring: #cbd5e1;
+  --cf-tick-h: #475569;
+  --cf-tick-m: #cbd5e1;
+  --cf-num: #374151;
+  --cf-hand-h: #1e293b;
+  --cf-hand-m: #475569;
+  --cf-hand-s: #0891b2;
+  --cf-cap: #0891b2;
+  --cf-cap-in: #f9fafb;
+}
+
+.clockFaceBg { fill: var(--cf-bg); transition: fill 0.3s; }
+.clockFaceRing { stroke: var(--cf-ring); transition: stroke 0.3s; }
+.tickHour { stroke: var(--cf-tick-h); }
+.tickMin { stroke: var(--cf-tick-m); }
+.numLabel { fill: var(--cf-num); }
+.svgHour { stroke: var(--cf-hand-h); transition: stroke 0.3s; }
+.svgMin { stroke: var(--cf-hand-m); transition: stroke 0.3s; }
+.svgSec { stroke: var(--cf-hand-s); transition: stroke 0.3s; }
+.svgCapOuter { fill: var(--cf-cap); transition: fill 0.3s; }
+.svgCapInner { fill: var(--cf-cap-in); transition: fill 0.3s; }
+
+.digitalTime {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+@keyframes colonPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.15; }
+}
+
+.colonPulse {
+  animation: colonPulse 1s step-start infinite;
+}
+
+.settingsPanel {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.panelClosed {
+  opacity: 0;
+  transform: translateY(-8px) scale(0.97);
+  pointer-events: none;
+}
+
+.wcTime {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+.fadeUp { animation: fadeUp 0.4s ease both; }
+.fadeUpDelay { animation: fadeUp 0.4s 0.1s ease both; }
+.fadeUpDelay2 { animation: fadeUp 0.4s 0.2s ease both; }

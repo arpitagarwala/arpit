@@ -1,0 +1,173 @@
+/* Asteroids Module CSS */
+
+.container {
+  background: #010208;
+  overflow: hidden;
+  user-select: none;
+  min-height: 100vh;
+  position: relative;
+}
+
+.canvas {
+  display: block;
+  position: fixed;
+  inset: 0;
+}
+
+.hud {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 14px;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.hudBox {
+  background: rgba(5, 10, 25, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 8px 16px;
+  text-align: center;
+}
+
+.hudLabel {
+  font-size: 9px;
+  color: rgba(200, 220, 255, 0.4);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.hudVal {
+  font-size: 18px;
+  font-weight: 900;
+  color: #e2e8f0;
+  font-variant-numeric: tabular-nums;
+}
+
+.livesBox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+}
+
+.lifeIcon {
+  font-size: 16px;
+  filter: drop-shadow(0 0 6px #60a5fa);
+}
+
+.waveBadge {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 20;
+  background: rgba(5, 10, 25, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 8px 16px;
+  color: rgba(200, 220, 255, 0.6);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+/* Screens */
+.screen {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(1, 2, 8, 0.88);
+  backdrop-filter: blur(6px);
+}
+
+.screenBox {
+  background: rgba(5, 10, 25, 0.95);
+  border: 1px solid rgba(96, 165, 250, 0.25);
+  border-radius: 24px;
+  padding: 40px 48px;
+  text-align: center;
+  max-width: 380px;
+  width: 90%;
+  pointer-events: auto;
+}
+
+.screenTitle {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #60a5fa;
+  margin-bottom: 8px;
+  text-shadow: 0 0 20px rgba(96, 165, 250, 0.5);
+}
+
+.screenSub {
+  color: rgba(148, 163, 184, 0.7);
+  font-size: 0.88rem;
+  margin-bottom: 20px;
+  line-height: 1.7;
+}
+
+.screenScore {
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: #fff;
+  margin: 8px 0;
+}
+
+.scoreLabel {
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(96, 165, 250, 0.5);
+}
+
+.btnStart {
+  display: inline-block;
+  padding: 14px 40px;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  border-radius: 14px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.35);
+}
+
+.btnStart:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(59, 130, 246, 0.45);
+}
+
+.ctrlTable {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  text-align: left;
+}
+
+.ctrlRow {
+  color: rgba(148, 163, 184, 0.55);
+  font-size: 0.75rem;
+}
+
+.ctrlKey {
+  color: rgba(148, 163, 184, 0.85);
+  font-weight: 600;
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-right: 4px;
+}

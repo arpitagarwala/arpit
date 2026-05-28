@@ -1,0 +1,32 @@
+.wrap {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 50;
+  pointer-events: auto;
+}
+
+.btn {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(30,41,59,0.5);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(148,163,184,0.2);
+  color: #fff;
+  font-size: 1.125rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  transition: background 0.15s, transform 0.15s;
+}
+
+.btn:hover {
+  background: rgba(30,41,59,0.8);
+  transform: scale(1.05);
+}
+
+.btn:active {
+  transform: scale(0.95);
+}

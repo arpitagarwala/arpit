@@ -1,0 +1,188 @@
+/* ASMR Rain Module CSS */
+
+.container {
+  background: #030a14;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  user-select: none;
+  min-height: 100vh;
+  position: relative;
+}
+
+.canvas {
+  display: block;
+  position: fixed;
+  inset: 0;
+}
+
+/* Ambient overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+  background: radial-gradient(ellipse at 50% 0%, rgba(30, 60, 100, 0.25) 0%, transparent 70%);
+}
+
+/* Breathe text */
+.breathe {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  font-weight: 300;
+  letter-spacing: 0.5em;
+  color: rgba(147, 210, 255, 0.18);
+  pointer-events: none;
+  z-index: 11;
+  animation: breatheAnim 8s ease-in-out infinite;
+  text-transform: uppercase;
+}
+
+@keyframes breatheAnim {
+  0%, 100% {
+    opacity: 0.08;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.22;
+    transform: translate(-50%, -50%) scale(1.04);
+  }
+}
+
+/* Controls panel */
+.controls {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: rgba(10, 20, 35, 0.75);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(100, 180, 255, 0.15);
+  border-radius: 60px;
+  padding: 12px 24px;
+  transition: opacity 0.5s;
+}
+
+.controls.hiddenUi {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Ensure controls wrap on smaller screens if necessary, though original didn't */
+@media (max-width: 600px) {
+  .controls {
+    flex-wrap: wrap;
+    justify-content: center;
+    border-radius: 20px;
+    padding: 16px;
+    gap: 12px;
+    width: 90%;
+  }
+}
+
+.ctrlLabel {
+  font-size: 11px;
+  color: rgba(147, 210, 255, 0.5);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.ctrlGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.rangeInput {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 80px;
+  height: 3px;
+  background: rgba(100, 180, 255, 0.25);
+  border-radius: 99px;
+  outline: none;
+  cursor: pointer;
+}
+
+.rangeInput::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #60c8f0;
+  box-shadow: 0 0 8px rgba(96, 200, 240, 0.6);
+}
+
+.timerDisplay {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(147, 210, 255, 0.7);
+  min-width: 44px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.ctrlBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(100, 180, 255, 0.25);
+  background: rgba(100, 180, 255, 0.08);
+  color: rgba(147, 210, 255, 0.8);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all 0.2s;
+}
+
+.ctrlBtn:hover {
+  background: rgba(100, 180, 255, 0.18);
+  border-color: rgba(100, 180, 255, 0.5);
+}
+
+/* Mode badge */
+.modeBadge {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 20;
+  background: rgba(10, 20, 35, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(100, 180, 255, 0.15);
+  border-radius: 20px;
+  padding: 6px 14px;
+  color: rgba(147, 210, 255, 0.6);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Hint to hide */
+.tapHint {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  color: rgba(100, 180, 255, 0.25);
+  letter-spacing: 0.08em;
+  z-index: 15;
+  pointer-events: none;
+  animation: fadeHint 4s ease 3s forwards;
+}
+
+@keyframes fadeHint {
+  to {
+    opacity: 0;
+  }
+}

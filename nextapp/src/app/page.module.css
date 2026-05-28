@@ -1,0 +1,357 @@
+/* ── Layout ── */
+.main {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  max-width: 64rem;
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ── Hero ── */
+.hero {
+  padding: 1.75rem;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+  .hero { grid-column: span 2; }
+}
+
+.heroBlobAccent {
+  position: absolute;
+  top: -4rem;
+  right: -4rem;
+  width: 18rem;
+  height: 18rem;
+  background: rgba(34,211,238,0.05);
+  border-radius: 50%;
+  filter: blur(3rem);
+  pointer-events: none;
+}
+
+.heroInner {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .heroInner {
+    flex-direction: row-reverse;
+    align-items: center;
+  }
+}
+
+.heroImage {
+  width: 7rem;
+  flex-shrink: 0;
+  filter: drop-shadow(0 10px 24px rgba(0,0,0,0.55));
+  position: relative;
+  z-index: 10;
+}
+
+@media (min-width: 640px) {
+  .heroImage { width: 10rem; }
+}
+
+.heroContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.875rem;
+}
+
+.badgeLocation {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  background: rgba(34,211,238,0.1);
+  color: #22d3ee;
+}
+
+.badgeAvailable {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  background: rgba(16,185,129,0.1);
+  color: #34d399;
+}
+
+.pulseDot {
+  display: block;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 50%;
+  background: #34d399;
+}
+
+.heroTitle {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 0.625rem;
+  line-height: 1.25;
+}
+
+@media (min-width: 1024px) {
+  .heroTitle { font-size: 1.875rem; }
+}
+
+.heroDesc {
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: #94a3b8;
+}
+
+@media (min-width: 1024px) {
+  .heroDesc { font-size: 0.9375rem; }
+}
+
+.heroDesc strong {
+  color: #e2e8f0;
+}
+
+.heroCTAs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.ctaPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  background: #0891b2;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: background 0.15s;
+  box-shadow: 0 4px 12px rgba(8,145,178,0.2);
+}
+
+.ctaPrimary:hover { background: #22d3ee; color: #0f172a; }
+
+.ctaSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(167,139,250,0.3);
+  background: rgba(139,92,246,0.1);
+  color: #a78bfa;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: background 0.15s;
+}
+
+.ctaSecondary:hover { background: rgba(139,92,246,0.2); }
+
+/* ── Clock ── */
+.clockCard {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.clockBg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(34,211,238,0.05), transparent);
+  pointer-events: none;
+}
+
+.clockLabel {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  color: #64748b;
+}
+
+.clockTime {
+  font-size: 2.25rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  font-variant-numeric: tabular-nums;
+  font-family: 'Courier New', monospace;
+  line-height: 1;
+  color: #22d3ee;
+}
+
+.clockDate {
+  font-size: 0.75rem;
+  margin-top: 0.75rem;
+  letter-spacing: 0.05em;
+  color: #64748b;
+}
+
+/* ── Nav Grid ── */
+.navCard {
+  padding: 1.25rem;
+}
+
+@media (min-width: 1024px) {
+  .navCard { grid-column: span 2; }
+}
+
+.navGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.375rem;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.875rem;
+  border-radius: 0.75rem;
+  border: 1px solid transparent;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.navLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.navSub {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+/* Icon backgrounds */
+.iconBlue  { background: rgba(59,130,246,0.1); color: #60a5fa; }
+.iconPink  { background: rgba(236,72,153,0.1); color: #f472b6; }
+.iconAmber { background: rgba(245,158,11,0.1); color: #fbbf24; }
+.iconViolet { background: rgba(139,92,246,0.1); color: #a78bfa; }
+.iconTeal  { background: rgba(20,184,166,0.1); color: #2dd4bf; }
+.iconFuchsia { background: rgba(217,70,239,0.1); color: #e879f9; }
+
+/* ── Socials ── */
+.socialsCard {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.emailRow {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.emailIcon {
+  width: 2.75rem;
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: rgba(34,211,238,0.1);
+}
+
+.emailContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.emailTitle {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.emailAddr {
+  font-size: 0.75rem;
+  color: #64748b;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.divider {
+  height: 1px;
+  background: rgba(51,65,85,0.5);
+}
+
+.socialsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.socialRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.socialLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #cbd5e1;
+}
+
+/* ── Footer ── */
+.footerWrap {
+  padding: 0;
+}
+
+@media (min-width: 1024px) {
+  .footerWrap { grid-column: span 3; }
+}
+
+.sectionLabel {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 0.625rem;
+  padding-left: 0.25rem;
+}

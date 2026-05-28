@@ -1,0 +1,32 @@
+.glass {
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.btnRipple { position: relative; overflow: hidden; cursor: pointer; }
+.btnNum { background: rgba(255, 255, 255, 0.04); color: #f8fafc; border: 1px solid rgba(255,255,255,0.06); }
+.btnNum:hover { background: rgba(255, 255, 255, 0.1); }
+.btnOp { background: rgba(34, 211, 238, 0.1); color: #22d3ee; border: 1px solid rgba(34, 211, 238, 0.2); }
+.btnOp:hover { background: rgba(34, 211, 238, 0.2); }
+.btnFn { background: rgba(255, 255, 255, 0.02); color: #94a3b8; border: 1px solid rgba(255,255,255,0.04); }
+.btnFn:hover { background: rgba(255, 255, 255, 0.08); color: #cbd5e1; }
+.btnAc { background: rgba(244, 63, 94, 0.1); color: #f43f5e; border: 1px solid rgba(244, 63, 94, 0.2); }
+.btnAc:hover { background: rgba(244, 63, 94, 0.2); }
+.btnEq { background: linear-gradient(135deg, #06b6d4, #3b82f6); color: white; border: none; box-shadow: 0 4px 14px rgba(6, 182, 212, 0.4); }
+.btnEq:hover { filter: brightness(1.1); }
+
+.modeTab { color: #64748b; background: transparent; border-color: transparent; transition: all 0.2s; cursor: pointer; }
+.modeTab:hover { color: #cbd5e1; }
+.modeTabActive { background: rgba(255, 255, 255, 0.08); color: #22d3ee; border-color: rgba(34, 211, 238, 0.3); cursor: pointer; }
+
+.sciBtn { 
+  background: rgba(255, 255, 255, 0.03); color: #94a3b8; border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.15s;
+}
+.sciBtn:active { transform: scale(0.95); }
+.sciBtn:hover { background: rgba(255, 255, 255, 0.08); color: #cbd5e1; }
+
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+
+.customScroll::-webkit-scrollbar { width: 4px; }
+.customScroll::-webkit-scrollbar-thumb { background: rgba(34, 211, 238, 0.3); border-radius: 4px; }

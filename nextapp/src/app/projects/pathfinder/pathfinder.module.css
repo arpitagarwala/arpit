@@ -1,0 +1,85 @@
+.gridBoard {
+  display: grid;
+  gap: 1px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  touch-action: none;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.node {
+  width: 25px;
+  height: 25px;
+  background-color: #1e293b;
+}
+
+@media (max-width: 768px) {
+  .node {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+/* Base styles for standard states */
+.nodeWall {
+  background-color: #cbd5e1 !important;
+  animation: wallAnim 0.2s ease-out forwards;
+}
+
+.nodeVisited {
+  animation: visitedAnim 1.5s ease-out forwards;
+}
+
+.nodePath {
+  animation: pathAnim 0.5s ease-out forwards;
+}
+
+.nodeStart {
+  background-color: #10b981 !important;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path fill="%23fff" d="M12 2L22 20H2L12 2Z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center;
+  transform: scale(1.1);
+  border-radius: 4px;
+  z-index: 10;
+  position: relative;
+}
+
+.nodeTarget {
+  background-color: #ef4444 !important;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><circle cx="12" cy="12" r="8" fill="%23fff"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center;
+  transform: scale(1.1);
+  border-radius: 4px;
+  z-index: 10;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .nodeStart, .nodeTarget { background-size: 8px; }
+}
+
+@keyframes wallAnim {
+  0% { transform: scale(0.3); border-radius: 10px; }
+  100% { transform: scale(1); border-radius: 0; }
+}
+@keyframes visitedAnim {
+  0% { transform: scale(0.3); background-color: rgba(6, 182, 212, 0.75); border-radius: 100%; }
+  50% { background-color: rgba(99, 102, 241, 0.75); }
+  100% { transform: scale(1); background-color: rgba(6, 182, 212, 0.25); }
+}
+@keyframes pathAnim {
+  0% { transform: scale(0.6); background-color: rgba(234, 179, 8, 0.8); border-radius: 10px; }
+  100% { transform: scale(1); background-color: rgba(234, 179, 8, 1); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+.fadeUp {
+  animation: fadeUp 0.4s ease both;
+}

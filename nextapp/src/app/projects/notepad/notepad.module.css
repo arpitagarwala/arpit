@@ -1,0 +1,126 @@
+.notepadWrapper {
+  transition: background-color 0.3s;
+  min-height: 100vh;
+}
+
+.fadeUp {
+  animation: fadeUp 0.35s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.d1 { animation-delay: 0.03s; }
+.d2 { animation-delay: 0.06s; }
+.d3 { animation-delay: 0.09s; }
+.d4 { animation-delay: 0.12s; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.notePop {
+  animation: popIn 0.22s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.97) translateY(6px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.noteCard {
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  cursor: pointer;
+}
+.noteCard:hover { transform: translateY(-3px); }
+@media (max-width: 640px) { .noteCard:hover { transform: none; } }
+
+.swatch {
+  width: 2.25rem; height: 2.25rem; border-radius: 50%;
+  cursor: pointer; transition: transform 0.12s, box-shadow 0.12s;
+  border: 2px solid transparent; flex-shrink: 0;
+}
+.swatch:active { transform: scale(0.92); }
+.swatchActive {
+  transform: scale(1.15);
+  box-shadow: 0 0 0 2.5px #0f172a, 0 0 0 5px rgba(255,255,255,0.6);
+}
+:global(.dark) .swatchActive {
+  box-shadow: 0 0 0 2.5px white, 0 0 0 5px rgba(0,0,0,0.3);
+}
+
+.pinBadge {
+  position: absolute; top: -6px; right: -6px; width: 22px; height: 22px;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 11px; box-shadow: 0 2px 8px rgba(217, 119, 6, 0.5); z-index: 10;
+}
+
+/* COMPOSE PANEL THEMES */
+.themeCyan    .composePanel { background: linear-gradient(135deg, #164e63, #0e7490); color: #ecfeff; }
+.themeCyan    .composePanel input, .themeCyan .composePanel textarea { background: rgba(255,255,255,0.15); color: #ecfeff; border: 1px solid rgba(255,255,255,0.25); }
+.themeEmerald .composePanel { background: linear-gradient(135deg, #064e3b, #065f46); color: #ecfdf5; }
+.themeEmerald .composePanel input, .themeEmerald .composePanel textarea { background: rgba(255,255,255,0.15); color: #ecfdf5; border: 1px solid rgba(255,255,255,0.25); }
+.themeViolet  .composePanel { background: linear-gradient(135deg, #3b0764, #4c1d95); color: #f5f3ff; }
+.themeViolet  .composePanel input, .themeViolet .composePanel textarea { background: rgba(255,255,255,0.15); color: #f5f3ff; border: 1px solid rgba(255,255,255,0.25); }
+.themeRose    .composePanel { background: linear-gradient(135deg, #4c0519, #881337); color: #fff1f2; }
+.themeRose    .composePanel input, .themeRose .composePanel textarea { background: rgba(255,255,255,0.15); color: #fff1f2; border: 1px solid rgba(255,255,255,0.25); }
+.themeAmber   .composePanel { background: linear-gradient(135deg, #78350f, #92400e); color: #fffbeb; }
+.themeAmber   .composePanel input, .themeAmber .composePanel textarea { background: rgba(255,255,255,0.15); color: #fffbeb; border: 1px solid rgba(255,255,255,0.25); }
+.themeBlue    .composePanel { background: linear-gradient(135deg, #1e3a5f, #1e40af); color: #eff6ff; }
+.themeBlue    .composePanel input, .themeBlue .composePanel textarea { background: rgba(255,255,255,0.15); color: #eff6ff; border: 1px solid rgba(255,255,255,0.25); }
+.themePink    .composePanel { background: linear-gradient(135deg, #701a75, #86198f); color: #fdf4ff; }
+.themePink    .composePanel input, .themePink .composePanel textarea { background: rgba(255,255,255,0.15); color: #fdf4ff; border: 1px solid rgba(255,255,255,0.25); }
+.themeSlate   .composePanel { background: linear-gradient(135deg, #1e293b, #334155); color: #f8fafc; }
+.themeSlate   .composePanel input, .themeSlate .composePanel textarea { background: rgba(255,255,255,0.12); color: #f8fafc; border: 1px solid rgba(255,255,255,0.2); }
+
+/* Dark mode: pastel compose panels */
+:global(.dark) .themeCyan    .composePanel { background: linear-gradient(135deg, #ecfeff, #cffafe); color: #164e63; }
+:global(.dark) .themeCyan    .composePanel input, :global(.dark) .themeCyan .composePanel textarea { background: rgba(255,255,255,0.6); color: #0e7490; border: 1px solid #67e8f9; }
+:global(.dark) .themeEmerald .composePanel { background: linear-gradient(135deg, #ecfdf5, #d1fae5); color: #064e3b; }
+:global(.dark) .themeEmerald .composePanel input, :global(.dark) .themeEmerald .composePanel textarea { background: rgba(255,255,255,0.6); color: #065f46; border: 1px solid #6ee7b7; }
+:global(.dark) .themeViolet  .composePanel { background: linear-gradient(135deg, #f5f3ff, #ede9fe); color: #3b0764; }
+:global(.dark) .themeViolet  .composePanel input, :global(.dark) .themeViolet .composePanel textarea { background: rgba(255,255,255,0.6); color: #4c1d95; border: 1px solid #c4b5fd; }
+:global(.dark) .themeRose    .composePanel { background: linear-gradient(135deg, #fff1f2, #ffe4e6); color: #4c0519; }
+:global(.dark) .themeRose    .composePanel input, :global(.dark) .themeRose .composePanel textarea { background: rgba(255,255,255,0.6); color: #881337; border: 1px solid #fda4af; }
+:global(.dark) .themeAmber   .composePanel { background: linear-gradient(135deg, #fffbeb, #fef3c7); color: #78350f; }
+:global(.dark) .themeAmber   .composePanel input, :global(.dark) .themeAmber .composePanel textarea { background: rgba(255,255,255,0.6); color: #92400e; border: 1px solid #fcd34d; }
+:global(.dark) .themeBlue    .composePanel { background: linear-gradient(135deg, #eff6ff, #dbeafe); color: #1e3a5f; }
+:global(.dark) .themeBlue    .composePanel input, :global(.dark) .themeBlue .composePanel textarea { background: rgba(255,255,255,0.6); color: #1e40af; border: 1px solid #93c5fd; }
+:global(.dark) .themePink    .composePanel { background: linear-gradient(135deg, #fdf4ff, #fae8ff); color: #701a75; }
+:global(.dark) .themePink    .composePanel input, :global(.dark) .themePink .composePanel textarea { background: rgba(255,255,255,0.6); color: #86198f; border: 1px solid #e879f9; }
+:global(.dark) .themeSlate   .composePanel { background: linear-gradient(135deg, #f8fafc, #f1f5f9); color: #1e293b; }
+:global(.dark) .themeSlate   .composePanel input, :global(.dark) .themeSlate .composePanel textarea { background: rgba(255,255,255,0.6); color: #334155; border: 1px solid #cbd5e1; }
+
+/* NOTE CARD COLORS */
+.ncCyan    { background: linear-gradient(135deg, #0891b2, #0e7490); color: #fff; box-shadow: 0 4px 20px rgba(8,145,178,0.35); }
+.ncEmerald { background: linear-gradient(135deg, #059669, #047857); color: #fff; box-shadow: 0 4px 20px rgba(5,150,105,0.35); }
+.ncViolet  { background: linear-gradient(135deg, #7c3aed, #6d28d9); color: #fff; box-shadow: 0 4px 20px rgba(124,58,237,0.35); }
+.ncRose    { background: linear-gradient(135deg, #e11d48, #be123c); color: #fff; box-shadow: 0 4px 20px rgba(225,29,72,0.35); }
+.ncAmber   { background: linear-gradient(135deg, #d97706, #b45309); color: #fff; box-shadow: 0 4px 20px rgba(217,119,6,0.35); }
+.ncBlue    { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #fff; box-shadow: 0 4px 20px rgba(37,99,235,0.35); }
+.ncPink    { background: linear-gradient(135deg, #c026d3, #a21caf); color: #fff; box-shadow: 0 4px 20px rgba(192,38,211,0.35); }
+.ncSlate   { background: linear-gradient(135deg, #475569, #334155); color: #fff; box-shadow: 0 4px 20px rgba(71,85,105,0.30); }
+
+/* Dark mode note cards */
+:global(.dark) .ncCyan    { background: #cffafe; color: #164e63; box-shadow: 0 3px 16px rgba(8,145,178,0.12); }
+:global(.dark) .ncEmerald { background: #d1fae5; color: #064e3b; box-shadow: 0 3px 16px rgba(5,150,105,0.12); }
+:global(.dark) .ncViolet  { background: #ede9fe; color: #3b0764; box-shadow: 0 3px 16px rgba(124,58,237,0.12); }
+:global(.dark) .ncRose    { background: #ffe4e6; color: #4c0519; box-shadow: 0 3px 16px rgba(225,29,72,0.12); }
+:global(.dark) .ncAmber   { background: #fef3c7; color: #78350f; box-shadow: 0 3px 16px rgba(217,119,6,0.12); }
+:global(.dark) .ncBlue    { background: #dbeafe; color: #1e3a5f; box-shadow: 0 3px 16px rgba(37,99,235,0.12); }
+:global(.dark) .ncPink    { background: #fae8ff; color: #701a75; box-shadow: 0 3px 16px rgba(192,38,211,0.12); }
+:global(.dark) .ncSlate   { background: #f1f5f9; color: #1e293b; box-shadow: 0 3px 16px rgba(71,85,105,0.10); }
+
+.composeInput {
+  width: 100%; outline: none; border-radius: 0.875rem; padding: 0.875rem 1rem;
+  font-family: inherit; font-size: 0.875rem; transition: all 0.15s;
+}
+.composeInput::placeholder { opacity: 0.5; }
+.composeInput:focus { box-shadow: 0 0 0 3px rgba(255,255,255,0.25); transform: scale(1.005); }
+@media (max-width: 640px) { .composeInput:focus { transform: none; } }
+.composeTextarea {
+  resize: vertical; min-height: 110px;
+}
+
+.sortBtn { transition: all 0.18s; color: #94a3b8; }
+:global(.dark) .sortBtn { color: #64748b; }
+.sortBtnActive { background: #06b6d4; color: #fff !important; }

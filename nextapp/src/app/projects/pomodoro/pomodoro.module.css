@@ -1,0 +1,12 @@
+.glass {
+  backdrop-filter: blur(12px);
+}
+
+.xpBar {
+  background: linear-gradient(90deg, #3b82f6 0%, #a855f7 100%);
+  transition: width 0.5s ease-in-out;
+}
+
+.neonGlow {
+  text-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+}

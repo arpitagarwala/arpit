@@ -1,0 +1,110 @@
+/* Tic Tac Toe Module CSS */
+
+.xLine {
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
+  animation: drawLine 0.22s ease forwards;
+}
+.xLine:nth-child(2) {
+  animation-delay: 0.12s;
+}
+
+.oCircle {
+  stroke-dasharray: 108;
+  stroke-dashoffset: 108;
+  animation: drawLine 0.35s ease forwards;
+}
+
+@keyframes drawLine {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.cell {
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.1s ease, border-color 0.15s ease;
+  border-radius: 0.875rem;
+  border: 1.5px solid rgba(255, 255, 255, 0.07);
+  background: rgba(17, 24, 39, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+}
+
+.cell:hover:not(.taken) {
+  background: rgba(34, 211, 238, 0.08);
+  border-color: rgba(34, 211, 238, 0.3);
+}
+
+.cell:active:not(.taken) {
+  transform: scale(0.93);
+}
+
+.winCell {
+  background: rgba(34, 211, 238, 0.12) !important;
+  border-color: rgba(34, 211, 238, 0.5) !important;
+  box-shadow: 0 0 18px rgba(34, 211, 238, 0.15);
+}
+
+.modePill {
+  transition: all 0.15s ease;
+}
+.modePillActive {
+  background: #22d3ee;
+  color: #0f172a;
+  border-color: #22d3ee;
+}
+
+@keyframes scorePop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+.pop {
+  animation: scorePop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes overlayIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+.overlayCard {
+  animation: overlayIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(-30px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(540deg);
+    opacity: 0;
+  }
+}
+
+.confetti {
+  position: fixed;
+  pointer-events: none;
+  z-index: 300;
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  animation: confettiFall linear forwards;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.pulse {
+  animation: pulse 1.2s ease infinite;
+}

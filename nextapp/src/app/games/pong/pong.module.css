@@ -1,0 +1,144 @@
+/* Pong Module CSS */
+
+.container {
+  background: #010208;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow: hidden;
+  user-select: none;
+  color: #e2e8f0;
+}
+
+.canvas {
+  display: block;
+}
+
+/* Overlay screens */
+.screen {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(1, 2, 8, 0.88);
+  backdrop-filter: blur(6px);
+}
+
+.sbox {
+  background: rgba(5, 10, 25, 0.97);
+  border: 1px solid rgba(96, 165, 250, 0.2);
+  border-radius: 22px;
+  padding: 36px 44px;
+  text-align: center;
+  max-width: 360px;
+  width: 90%;
+}
+
+.sTitle {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #60a5fa;
+  margin-bottom: 8px;
+  text-shadow: 0 0 20px rgba(96, 165, 250, 0.4);
+}
+
+.sSub {
+  color: rgba(148, 163, 184, 0.65);
+  font-size: 0.85rem;
+  margin-bottom: 20px;
+  line-height: 1.7;
+}
+
+.sBtn {
+  display: inline-block;
+  padding: 12px 32px;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  border-radius: 12px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.18s;
+  margin: 4px;
+}
+
+.sBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+.secondary {
+  background: rgba(30, 50, 80, 0.6);
+  border: 1px solid rgba(96, 165, 250, 0.2);
+}
+
+.secondary:hover {
+  box-shadow: none;
+  background: rgba(30, 50, 80, 0.9);
+}
+
+.diffRow {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin: 12px 0;
+}
+
+.dBtn {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(96, 165, 250, 0.2);
+  background: transparent;
+  color: rgba(148, 163, 184, 0.7);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.dBtnActive, .dBtn:hover {
+  background: rgba(96, 165, 250, 0.12);
+  border-color: rgba(96, 165, 250, 0.5);
+  color: #60a5fa;
+}
+
+.scoreLarge {
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  margin: 10px 0;
+}
+
+/* Settings panel */
+.settings {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 20;
+  display: flex;
+  gap: 6px;
+}
+
+.hudPill {
+  background: rgba(5, 10, 25, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 6px 14px;
+  color: rgba(200, 220, 255, 0.65);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.hudPill:hover {
+  border-color: rgba(96, 165, 250, 0.4);
+  color: #60a5fa;
+}
