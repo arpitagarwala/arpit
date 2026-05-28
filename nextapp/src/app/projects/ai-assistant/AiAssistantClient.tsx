@@ -113,6 +113,8 @@ export default function AiAssistantClient() {
   return (
     <div className={`h-screen w-full flex flex-col sm:flex-row items-center justify-center sm:p-4 md:p-6 overflow-hidden relative bg-[#0a0e1a] text-slate-100 font-sans`}>
       
+      <BackButton />
+
       {/* Background Effect */}
       <div className={`fixed inset-0 z-0 pointer-events-none opacity-50 flex flex-wrap gap-1 content-start overflow-hidden ${styles.bgMesh}`}>
         <div className="w-full h-full absolute inset-0 bg-gradient-to-t from-[#0a0e1a] via-transparent to-[#0a0e1a] z-10"></div>
@@ -136,7 +138,6 @@ export default function AiAssistantClient() {
           </div>
           
           <div className="flex items-center gap-1 sm:gap-2">
-            <BackButton />
             <button onClick={clearChat} className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-xl text-slate-400 hover:text-red-400 hover:bg-red-400/10 transition">
               <i className="ri-delete-bin-line text-lg"></i>
             </button>
