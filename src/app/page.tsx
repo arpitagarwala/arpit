@@ -17,6 +17,7 @@ const NAV_LINKS = [
   { href: '/achievements', icon: 'ri-trophy-line', iconBg: styles.iconAmber, label: 'Achievements', sub: 'Awards & milestones', external: false },
   { href: '/games', icon: 'ri-gamepad-line', iconBg: styles.iconViolet, label: 'Games', sub: 'Learn money, have fun', external: false },
   { href: '/about', icon: 'ri-user-line', iconBg: styles.iconTeal, label: 'About', sub: 'Who am I?', external: false },
+  { href: '/newsletter', icon: 'ri-newspaper-line', iconBg: styles.iconViolet, label: 'Newsletter', sub: 'Fintech Horizon', external: false },
   { href: 'https://design.arpitagarwala.online', icon: 'ri-palette-line', iconBg: styles.iconFuchsia, label: 'Designs', sub: 'UI/UX & Figma work', external: true },
 ];
 
