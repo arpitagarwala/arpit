@@ -1,0 +1,221 @@
+.wrap {
+  min-height: 100vh;
+  background: #080c14;
+  color: #f1f5f9;
+  overflow-x: hidden;
+}
+
+.inner {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 5rem 1.25rem 3rem;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.82rem;
+  color: #64748b;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.breadcrumb a {
+  color: #94a3b8;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.breadcrumb a:hover { color: #f59e0b; }
+
+.breadcrumb span {
+  color: #e2e8f0;
+  font-weight: 500;
+}
+
+/* ── Chapter Header ── */
+.chHeader {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  padding: 2.25rem 2rem;
+  background: rgba(245,158,11,0.05);
+  border: 1px solid rgba(245,158,11,0.18);
+  border-radius: 1.15rem;
+}
+
+.chNum {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #f59e0b;
+  margin-bottom: 0.6rem;
+}
+
+.chSanskrit {
+  font-size: 1.2rem;
+  color: #c4b5fd;
+  margin-bottom: 0.3rem;
+  font-family: 'Noto Serif Devanagari', serif;
+}
+
+.chTitle {
+  font-size: clamp(1.75rem, 4vw, 2.6rem);
+  font-weight: 800;
+  color: #f8fafc;
+  margin-bottom: 0.3rem;
+  letter-spacing: -0.01em;
+}
+
+.chSubtitle {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 1.25rem;
+}
+
+.chSummary {
+  font-size: 1rem;
+  color: #cbd5e1;
+  line-height: 1.8;
+  max-width: 44rem;
+  margin: 0 auto 1.25rem;
+}
+
+.chMeta {
+  font-size: 0.85rem;
+  color: #f59e0b;
+  font-weight: 700;
+}
+
+/* ── Verse List ── */
+.listTitle {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #64748b;
+  margin-bottom: 0.875rem;
+}
+
+.versesGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.verseCard {
+  display: flex;
+  align-items: center;
+  gap: 1.125rem;
+  padding: 1rem 1.125rem;
+  background: rgba(17,24,39,0.85);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 0.875rem;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+}
+
+.verseCard:hover {
+  background: rgba(245,158,11,0.06);
+  border-color: rgba(245,158,11,0.25);
+  transform: translateX(3px);
+}
+
+.vNum {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #f59e0b;
+  min-width: 3rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.vPreview {
+  flex: 1;
+  min-width: 0;
+}
+
+.vSanskrit {
+  font-size: 0.92rem;
+  color: #e2e8f0;          /* bright — was #94a3b8 */
+  font-family: 'Noto Serif Devanagari', serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 0.2rem;
+}
+
+.vMeaning {
+  font-size: 0.84rem;
+  color: #94a3b8;          /* improved — was #475569 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Chapter Navigation ── */
+.chapterNav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+
+/* When only one button exists, keep it right-aligned (for Next only) */
+.chapterNavEnd {
+  justify-content: flex-end;
+}
+
+.navLabel {
+  font-size: 0.72rem;
+  color: #f59e0b;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  margin-bottom: 0.1rem;
+}
+
+.navBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: rgba(17,24,39,0.95);
+  border: 1px solid rgba(245,158,11,0.2);
+  border-radius: 0.875rem;
+  text-decoration: none;
+  color: inherit;
+  flex: 1;
+  max-width: 48%;
+  transition: border-color 0.15s, transform 0.15s, background 0.15s, box-shadow 0.15s;
+}
+
+.navBtn:hover {
+  border-color: rgba(245,158,11,0.5);
+  background: rgba(245,158,11,0.06);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+
+.navBtn span {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.navBtn strong {
+  font-size: 0.875rem;
+  color: #f8fafc;
+  font-weight: 700;
+}
+
+.navBtnRight {
+  text-align: right;
+  justify-content: flex-end;
+}

@@ -1,0 +1,87 @@
+.wrap {
+  padding: 1.25rem 1.25rem 1rem;
+  background: linear-gradient(155deg, rgba(14, 10, 2, 0.9) 0%, rgba(8, 10, 18, 0.95) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.15);
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #f59e0b;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dayLen {
+  font-size: 0.72rem;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.svgWrap {
+  width: 100%;
+  overflow: hidden;
+}
+
+.svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ── Day progress bar ── */
+.progRow {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.progTrack {
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 9999px;
+  position: relative;
+}
+
+.progFill {
+  height: 100%;
+  background: linear-gradient(90deg, #f97316 0%, #fbbf24 100%);
+  border-radius: 9999px;
+  transition: width 1s ease;
+}
+
+.progThumb {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  line-height: 1;
+  transition: left 1s ease;
+  filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.7));
+  pointer-events: none;
+}
+
+.pct {
+  font-size: 0.72rem;
+  color: #f59e0b;
+  font-weight: 700;
+  white-space: nowrap;
+  min-width: 2.5rem;
+  text-align: right;
+}

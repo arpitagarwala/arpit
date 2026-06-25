@@ -1,0 +1,460 @@
+.wrap {
+  min-height: 100vh;
+  background: #080c14;
+  color: #f1f5f9;
+  overflow-x: hidden;
+}
+
+/* ── Layout: sidebar + main ── */
+.layout {
+  display: flex;
+  min-height: 100vh;
+  max-width: 90rem;
+  margin: 0 auto;
+  padding-top: 3rem;
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  display: none;
+  width: 15rem;
+  flex-shrink: 0;
+  position: sticky;
+  top: 3.5rem;
+  height: calc(100vh - 3.5rem);
+  overflow-y: auto;
+  padding: 1.5rem 0.75rem 1.5rem 1.25rem;
+}
+
+@media (min-width: 1024px) {
+  .sidebar { display: block; }
+}
+
+.sidebar::-webkit-scrollbar { width: 3px; }
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(245,158,11,0.2);
+  border-radius: 99px;
+}
+
+.sidebarInner {
+  position: sticky;
+  top: 0;
+}
+
+.sidebarTitle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #f59e0b;
+  margin-bottom: 0.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.sidebarChName {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  margin-bottom: 0.875rem;
+}
+
+.progressWrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.875rem;
+}
+
+.progressBar {
+  flex: 1;
+  height: 3px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #f59e0b, #fb923c);
+  border-radius: 99px;
+  transition: width 0.3s ease;
+}
+
+.progressTxt {
+  font-size: 0.68rem;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+.sidebarVerses {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sideVerse {
+  display: block;
+  padding: 0.3rem 0.5rem;
+  border-radius: 0.4rem;
+  font-size: 0.74rem;
+  color: #64748b;
+  text-decoration: none;
+  transition: background 0.12s, color 0.12s;
+}
+
+.sideVerse:hover {
+  background: rgba(245,158,11,0.08);
+  color: #fbbf24;
+}
+
+.sideVerseActive {
+  background: rgba(245,158,11,0.14) !important;
+  color: #f59e0b !important;
+  font-weight: 700;
+}
+
+/* ── Main Content ── */
+.main {
+  flex: 1;
+  padding: 4.5rem 1.5rem 3rem;
+  max-width: 52rem;
+}
+
+@media (min-width: 1024px) {
+  .main { padding-left: 3rem; }
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+}
+
+.breadcrumb a {
+  color: #94a3b8;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.breadcrumb a:hover { color: #f59e0b; }
+.breadcrumb span { color: #e2e8f0; font-weight: 500; }
+
+/* ── Verse Header Row (with font controls) ── */
+.verseHeaderRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+}
+
+.verseHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.verseRef {
+  font-size: 1.65rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #f59e0b, #fb923c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.chapterTag {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #c4b5fd;
+  background: rgba(124,58,237,0.12);
+  border: 1px solid rgba(124,58,237,0.28);
+  padding: 0.25rem 0.7rem;
+  border-radius: 9999px;
+}
+
+/* ── Font Size Controls ── */
+.fontControls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(17,24,39,0.9);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.65rem;
+  padding: 0.45rem 0.75rem;
+  flex-shrink: 0;
+}
+
+.fontLabel {
+  font-size: 0.7rem;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  white-space: nowrap;
+}
+
+.fontBtns {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.fontBtn {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #94a3b8;
+  padding: 0.2rem 0.45rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+  line-height: 1;
+}
+
+.fontBtn:hover:not(:disabled) {
+  color: #f59e0b;
+  background: rgba(245,158,11,0.08);
+  border-color: rgba(245,158,11,0.2);
+}
+
+.fontBtn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.fontDots {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 0.25rem;
+}
+
+.fontDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  cursor: pointer;
+  border: none;
+  transition: background 0.15s, transform 0.15s;
+  padding: 0;
+}
+
+.fontDot:hover { background: rgba(245,158,11,0.5); }
+
+.fontDotActive {
+  background: #f59e0b !important;
+  transform: scale(1.3);
+}
+
+/* ── Content Cards ── */
+.shlokaCard,
+.translitCard,
+.synonymsCard,
+.meaningCard,
+.hindiCard,
+.purportCard {
+  margin-bottom: 1.25rem;
+  padding: 1.75rem;
+  border-radius: 1rem;
+  border: 1px solid;
+}
+
+.shlokaCard {
+  background: rgba(245,158,11,0.05);
+  border-color: rgba(245,158,11,0.2);
+}
+
+.translitCard {
+  background: rgba(124,58,237,0.05);
+  border-color: rgba(124,58,237,0.2);
+}
+
+.meaningCard {
+  background: rgba(30,41,59,0.8);
+  border-color: rgba(255,255,255,0.1);
+}
+
+.hindiCard {
+  background: rgba(167,139,250,0.05);
+  border-color: rgba(167,139,250,0.15);
+}
+
+.shlokaLabel {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #64748b;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* ── Text Content — high visibility ── */
+.shloka {
+  font-family: 'Noto Serif Devanagari', 'Noto Sans Devanagari', serif;
+  /* font-size controlled by JS */
+  font-size: 1.2rem;
+  line-height: 2.1;
+  color: #fde68a;      /* bright amber-yellow — high contrast */
+  white-space: pre-line;
+  font-weight: 500;
+}
+
+.translit {
+  /* font-size controlled by JS */
+  font-size: 1.05rem;
+  line-height: 2;
+  color: #ddd6fe;      /* bright violet — high contrast */
+  white-space: pre-line;
+  font-style: italic;
+  letter-spacing: 0.02em;
+}
+
+.meaning {
+  /* font-size controlled by JS */
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: #f1f5f9;      /* near-white — high contrast */
+}
+
+.meaningHindi {
+  /* font-size controlled by JS */
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: #e2e8f0;      /* near-white */
+  font-family: 'Noto Serif Devanagari', serif;
+}
+
+/* ── Verse Navigation ── */
+.verseNav {
+  display: flex;
+  align-items: stretch;
+  gap: 0.75rem;
+  margin: 2rem 0 3rem;
+  flex-wrap: wrap;
+}
+
+/* When only Next exists, push it to the right */
+.verseNavNoPrev {
+  justify-content: flex-end;
+}
+/* When only Prev exists, keep it left */
+.verseNavNoNext {
+  justify-content: flex-start;
+}
+
+.navLabel {
+  font-size: 0.72rem;
+  color: #f59e0b;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+}
+
+.navBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.875rem 1.25rem;
+  background: rgba(17,24,39,0.95);
+  border: 1px solid rgba(245,158,11,0.2);
+  border-radius: 0.875rem;
+  text-decoration: none;
+  color: inherit;
+  flex: 1;
+  min-width: 9rem;
+  transition: border-color 0.15s, transform 0.15s, background 0.15s, box-shadow 0.15s;
+}
+
+.navBtn:hover {
+  border-color: rgba(245,158,11,0.5);
+  background: rgba(245,158,11,0.06);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+
+.navBtn span {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.navBtn strong {
+  font-size: 1rem;
+  color: #f8fafc;
+  font-weight: 800;
+}
+
+.navBtnRight {
+  text-align: right;
+  justify-content: flex-end;
+}
+
+.navBtnCenter {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.875rem 1.25rem;
+  background: rgba(245,158,11,0.08);
+  border: 1px solid rgba(245,158,11,0.3);
+  border-radius: 0.875rem;
+  text-decoration: none;
+  color: #f59e0b;
+  font-size: 0.9rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+
+.navBtnCenter:hover {
+  background: rgba(245,158,11,0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+
+.endMsg {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #94a3b8;
+  padding: 0.875rem 1.25rem;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.synonymsCard {
+  background: rgba(14, 165, 233, 0.04);
+  border-color: rgba(14, 165, 233, 0.2);
+}
+
+.synonyms {
+  line-height: 1.95;
+  color: #bae6fd;
+}
+
+.purportCard {
+  background: rgba(15, 23, 42, 0.6);
+  border-color: rgba(245, 158, 11, 0.2);
+}
+
+.purport {
+  line-height: 1.95;
+  color: #e2e8f0;
+  white-space: pre-line;
+}

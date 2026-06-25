@@ -18,6 +18,7 @@ const NAV_LINKS = [
   { href: '/games', icon: 'ri-gamepad-line', iconBg: styles.iconViolet, label: 'Games', sub: 'Learn money, have fun', external: false },
   { href: '/about', icon: 'ri-user-line', iconBg: styles.iconTeal, label: 'About', sub: 'Who am I?', external: false },
   { href: '/newsletter', icon: 'ri-newspaper-line', iconBg: styles.iconViolet, label: 'Newsletter', sub: 'Fintech Horizon', external: false },
+  { href: '/dharma', icon: 'ri-quill-pen-line', iconBg: styles.iconAmber, label: 'Dharma', sub: 'Gita & Panchang', external: false },
   { href: 'https://design.arpitagarwala.online', icon: 'ri-palette-line', iconBg: styles.iconFuchsia, label: 'Designs', sub: 'UI/UX & Figma work', external: true },
 ];
 

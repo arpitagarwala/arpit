@@ -1,0 +1,685 @@
+.wrap {
+  min-height: 100vh;
+  background: #080c14;
+  color: #f1f5f9;
+  overflow-x: hidden;
+}
+
+.inner {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 5rem 1.25rem 3rem;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.78rem;
+  color: #475569;
+  margin-bottom: 2rem;
+}
+
+.breadcrumb a {
+  color: #64748b;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.breadcrumb a:hover { color: #f59e0b; }
+.breadcrumb span { color: #94a3b8; }
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.omSymbol {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, #f59e0b 0%, #fb923c 50%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.25rem;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #a78bfa;
+  margin-bottom: 0.875rem;
+  font-family: 'Noto Serif Devanagari', serif;
+}
+
+.desc {
+  max-width: 38rem;
+  margin: 0 auto;
+  font-size: 0.9rem;
+  color: #94a3b8;
+  line-height: 1.7;
+}
+
+/* ─── PanchangClient styles ─────────────────────────────── */
+
+/* Loading */
+.loadingWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 4rem 0;
+  color: #64748b;
+}
+
+.spinner {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 3px solid rgba(245,158,11,0.15);
+  border-top-color: #f59e0b;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Panchang Wrap */
+.panchangWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ── Clock Card ── */
+.clockCard {
+  background: linear-gradient(135deg, rgba(245,158,11,0.08) 0%, rgba(124,58,237,0.08) 100%);
+  border: 1px solid rgba(245,158,11,0.2);
+  border-radius: 1.15rem;
+  padding: 1.75rem;
+}
+
+.clockInner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.liveClock {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #f59e0b;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.dateGreg {
+  font-size: 0.95rem;
+  color: #e2e8f0;
+  margin-top: 0.25rem;
+}
+
+.dateHindu {
+  font-size: 0.82rem;
+  color: #a78bfa;
+  margin-top: 0.15rem;
+}
+
+.locTag {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  color: #64748b;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
+/* ── Section ── */
+.section {
+  background: rgba(17,24,39,0.7);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 1.1rem;
+  padding: 1.5rem;
+}
+
+.sectionTitle {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.sectionSub {
+  font-size: 0.72rem;
+  color: #475569;
+  font-weight: 400;
+}
+
+/* ── Pancha Anga Cards ── */
+.angasGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .angasGrid { grid-template-columns: repeat(5, 1fr); }
+}
+
+.angaCard {
+  padding: 1rem 0.875rem;
+  border-radius: 0.875rem;
+  border: 1px solid;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  transition: transform 0.15s;
+}
+
+.angaCard:hover { transform: translateY(-2px); }
+
+.angaLabel {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #475569;
+}
+
+.angaValue {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.angaSub {
+  font-size: 0.68rem;
+  color: #475569;
+}
+
+/* ── Sun Row ── */
+.sunRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.875rem;
+}
+
+.sunCard {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: rgba(245,158,11,0.04);
+  border: 1px solid rgba(245,158,11,0.12);
+  border-radius: 0.875rem;
+}
+
+.sunLabel {
+  font-size: 0.72rem;
+  color: #64748b;
+  margin-bottom: 0.15rem;
+}
+
+.sunTime {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fbbf24;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Time Slots ── */
+.timeList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.timeSlot {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.875rem 1rem;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 0.75rem;
+  transition: border-color 0.15s;
+}
+
+.slotActiveDanger {
+  background: rgba(239,68,68,0.05);
+  border-color: rgba(239,68,68,0.2) !important;
+}
+
+.slotActiveGood {
+  background: rgba(34,197,94,0.05);
+  border-color: rgba(34,197,94,0.2) !important;
+}
+
+.slotIcon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.slotBody {
+  flex: 1;
+}
+
+.slotLabel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.slotTime {
+  font-size: 0.78rem;
+  color: #64748b;
+  font-variant-numeric: tabular-nums;
+  margin-top: 0.1rem;
+}
+
+.nowBadge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: #f59e0b;
+  color: #000;
+  padding: 0.1rem 0.45rem;
+  border-radius: 9999px;
+}
+
+/* Disclaimer */
+.disclaimer {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #64748b;
+  line-height: 1.65;
+  padding: 0.875rem 1rem;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 0.75rem;
+}
+
+.disclaimer i {
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  color: #475569;
+  font-size: 0.9rem;
+}
+
+.disclaimer span {
+  flex: 1;
+}
+
+.disclaimer strong {
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+/* ─── Tabs ─── */
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  background: rgba(17, 24, 39, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0.25rem;
+  border-radius: 0.75rem;
+}
+
+.tabBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  padding: 0.75rem 1rem;
+  border-radius: 0.6rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tabBtn:hover {
+  color: #f1f5f9;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.tabActive {
+  color: #ffffff;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+}
+
+/* ─── Location Bar ─── */
+.locationContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(17, 24, 39, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.locLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.locMain {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+.locCoords {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-variant-numeric: tabular-nums;
+}
+
+.changeLocBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  color: #f59e0b;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.changeLocBtn:hover {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: #f59e0b;
+}
+
+/* ─── Location Search Panel ─── */
+.searchPanel {
+  background: rgba(17, 24, 39, 0.85);
+  border: 1px solid rgba(245, 158, 11, 0.15);
+  border-radius: 0.875rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.searchInputRow {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.searchFieldWrap {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.searchInput {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #f1f5f9;
+  padding: 0.625rem 1rem 0.625rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.15);
+}
+
+.gpsBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: rgba(124, 58, 237, 0.15);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  color: #a78bfa;
+  padding: 0.625rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.gpsBtn:hover {
+  background: rgba(124, 58, 237, 0.25);
+  border-color: #a78bfa;
+}
+
+.searchLoading {
+  font-size: 0.85rem;
+  color: #64748b;
+  padding: 0.25rem 0.5rem;
+}
+
+.searchResults {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  max-height: 12.5rem;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.searchResultItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  padding: 0.6rem 0.875rem;
+  text-align: left;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+.searchResultItem:last-child {
+  border-bottom: none;
+}
+
+.searchResultItem:hover {
+  color: #f1f5f9;
+  background: rgba(245, 158, 11, 0.05);
+}
+
+/* ─── Custom Date Selector ─── */
+.dateSelector {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: rgba(17, 24, 39, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 9999px;
+  padding: 0.35rem 0.5rem;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.dateNavBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dateNavBtn:hover {
+  color: #f59e0b;
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(245, 158, 11, 0.2);
+}
+
+.dateDisplay {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 1rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.dateText {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  font-family: 'Noto Serif Devanagari', serif;
+}
+
+.dateDisplay:hover .dateText {
+  color: #f59e0b;
+}
+
+.todayShortcut {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  color: #f59e0b;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-right: 0.25rem;
+}
+
+.todayShortcut:hover {
+  background: rgba(245, 158, 11, 0.2);
+  border-color: #f59e0b;
+}
+
+/* ─── Date Picker Dropdown Popover ─── */
+.dateDropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, 0.5rem);
+  z-index: 100;
+  background: rgba(10, 12, 22, 0.95);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  width: 20rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.datePickerGrids {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1.2fr;
+  gap: 0.75rem;
+}
+
+.dateSelectField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.dateSelectField label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dateSelect {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #f1f5f9;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+}
+
+.dateSelect:focus {
+  outline: none;
+  border-color: #f59e0b;
+}
+
+.dateSelect option {
+  background: #0a0c16;
+  color: #f1f5f9;
+  font-size: 0.9rem;
+}
+
+.dateApplyBtn {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  border: none;
+  color: #ffffff;
+  padding: 0.6rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dateApplyBtn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+

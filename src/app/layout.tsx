@@ -44,6 +44,11 @@ export default function RootLayout({
           href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
           rel="stylesheet"
         />
+        {/* Noto Serif Devanagari — for Sanskrit shloka display */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;500;700&display=swap"
+          rel="stylesheet"
+        />
         {/* Favicons */}
         <link
           rel="icon"

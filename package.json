@@ -10,13 +10,16 @@
   },
   "dependencies": {
     "@types/marked": "^5.0.2",
+    "@types/suncalc": "^1.9.2",
     "@types/three": "^0.184.1",
+    "astronomy-engine": "^2.1.19",
     "chart.js": "^4.5.1",
     "marked": "^18.0.4",
     "next": "16.2.6",
     "react": "19.2.4",
     "react-chartjs-2": "^5.3.1",
     "react-dom": "19.2.4",
+    "suncalc": "^2.0.0",
     "three": "^0.184.0"
   },
   "devDependencies": {
