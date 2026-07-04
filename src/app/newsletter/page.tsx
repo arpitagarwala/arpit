@@ -5,10 +5,24 @@ import Footer from '@/components/Footer/Footer';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
-  title: 'Newsletter – Arpit Agarwala | Fintech Horizon on Substack',
+  title: 'Newsletter – Fintech Horizon | Arpit Agarwala',
   description:
-    'Read my newsletter Fintech Horizon — honest documentation of my ongoing readings and the frameworks I use to solve complex problems in finance and technology.',
+    'Read Fintech Horizon by Arpit Agarwala on Substack — analytical essays and frameworks exploring finance, chartered accountancy, Indian taxation, AI, and technology.',
+  keywords: [
+    'Fintech Horizon newsletter',
+    'Arpit Agarwala newsletter',
+    'Arpit Agarwala Substack',
+    'finance technology newsletter India',
+    'CA student blog Kolkata',
+    'AI in finance essays',
+  ],
   alternates: { canonical: 'https://arpitagarwala.online/newsletter' },
+  openGraph: {
+    title: 'Newsletter – Fintech Horizon by Arpit Agarwala',
+    description: 'Analytical essays and frameworks exploring finance, CA studies, AI, and technology.',
+    url: 'https://arpitagarwala.online/newsletter',
+    type: 'website',
+  },
 };
 
 // Revalidate every hour so new posts appear quickly without a full redeploy

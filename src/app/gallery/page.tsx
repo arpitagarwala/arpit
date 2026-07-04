@@ -5,9 +5,22 @@ import Footer from '@/components/Footer/Footer';
 import GalleryClient from './GalleryClient';
 
 export const metadata: Metadata = {
-  title: 'Gallery – Arpit Agarwala | Moments & Memories',
-  description: 'Photo gallery of Arpit Agarwala – moments, milestones, and memories.',
+  title: 'Gallery – Moments & Memories | Arpit Agarwala',
+  description: 'Photo gallery of Arpit Agarwala – documenting academic milestones, CA journey, events, moments, and memories from Kolkata.',
+  keywords: [
+    'Arpit Agarwala gallery',
+    'Arpit Agarwala photos',
+    'Arpit Agarwala Kolkata events',
+    'CA aspirant journey',
+    'BCom student life Kolkata',
+  ],
   alternates: { canonical: 'https://arpitagarwala.online/gallery' },
+  openGraph: {
+    title: 'Gallery – Moments & Memories | Arpit Agarwala',
+    description: 'Photo gallery and milestones of Arpit Agarwala from Kolkata.',
+    url: 'https://arpitagarwala.online/gallery',
+    type: 'website',
+  },
 };
 
 export default function GalleryPage() {

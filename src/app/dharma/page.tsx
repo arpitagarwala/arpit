@@ -6,10 +6,27 @@ import Footer from '@/components/Footer/Footer';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
-  title: 'Dharma – Arpit Agarwala | Bhagavad Gītā & Hindu Panchang',
+  title: 'Dharma – Bhagavad Gītā & Hindu Panchang | Arpit Agarwala',
   description:
-    'Explore the spiritual wing of Arpit Agarwala\'s website — read the Bhagavad Gītā with Sanskrit shloka and English meaning, and check the live Hindu Panchang.',
+    'Explore the spiritual portal of Arpit Agarwala — read all 18 chapters and 700 verses of the Bhagavad Gītā with Sanskrit shlokas, Devanagari script, and English translation, plus real-time Hindu Panchang.',
+  keywords: [
+    'Bhagavad Gita online',
+    'Bhagavad Gita Sanskrit English',
+    'Bhagavad Gita all 700 verses',
+    'Hindu Panchang live',
+    'Tithi Nakshatra calculator',
+    'Arpit Agarwala Dharma',
+    'Sanskrit shlokas English meaning',
+    'Gita transliteration IAST',
+  ],
   alternates: { canonical: 'https://arpitagarwala.online/dharma' },
+  openGraph: {
+    title: 'Dharma Portal – Bhagavad Gītā & Live Panchang | Arpit Agarwala',
+    description:
+      'Complete 18 Chapters of Shrimad Bhagavad Gita with Sanskrit shlokas and English meaning, alongside real-time Hindu Panchang.',
+    url: 'https://arpitagarwala.online/dharma',
+    type: 'website',
+  },
 };
 
 const FEATURES = [

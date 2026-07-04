@@ -1,0 +1,39 @@
+# Arpit Agarwala — Portfolio & Digital Ecosystem
+
+> Arpit Agarwala is a BCom (Hons) student, aspiring Chartered Accountant (CA aspirant), financial tool developer, web creator, and researcher based in Kolkata, West Bengal, India.
+
+## About Arpit Agarwala
+- **Name**: Arpit Agarwala
+- **Location**: Kolkata, West Bengal, India
+- **Education**: Bachelor of Commerce (BCom Hons), CA Aspirant (Institute of Chartered Accountants of India - ICAI)
+- **Role**: Full-stack Web Creator, Financial Tool Designer, Student Developer
+- **Email**: arpitagarwalms@gmail.com
+- **Website**: https://arpitagarwala.online/
+- **LinkedIn**: https://www.linkedin.com/in/arpitagarwala/
+- **Instagram**: https://www.instagram.com/arpit.agarwala_/
+- **GitHub**: https://github.com/arpitagarwala
+
+## Core Offerings & Pages
+- [Home](https://arpitagarwala.online/): Main portfolio showcasing projects, interactive widgets, and background.
+- [About](https://arpitagarwala.online/about): Detailed biography, educational journey in finance and taxation, philosophy, and technical skills.
+- [Projects](https://arpitagarwala.online/projects): Suite of custom financial tools, web applications, and developer utilities.
+- [Dharma](https://arpitagarwala.online/dharma): Spiritual portal featuring the complete Bhagavad Gita (700 verses in Sanskrit with English translations and shlokas) and a live Hindu Panchang calendar.
+- [Parcel Tracker](https://arpitagarwala.online/tracker): Universal package tracking tool supporting 15+ couriers (DHL, FedEx, UPS, DTDC, Blue Dart, Delhivery, Aramex, etc.).
+- [Weather & Astronomy](https://arpitagarwala.online/weather): Live interactive weather forecasting, Air Quality Index (AQI), and real-time sun/moon astronomical arc calculations.
+- [Gallery](https://arpitagarwala.online/gallery): Curated visual collection of moments, achievements, and photography.
+- [Achievements](https://arpitagarwala.online/achievements): Academic honors, certifications, and milestones.
+- [Newsletter](https://arpitagarwala.online/newsletter): Fintech Horizon — insights at the intersection of finance, chartered accountancy, AI, and technology.
+- [Games](https://arpitagarwala.online/games): Interactive financial literacy games and classic arcade adaptations (Market Sim, 2048, Asteroids, Snake, Sudoku, City Builder, etc.).
+
+## Key Financial Tools Built by Arpit Agarwala
+- [SIP Calculator](https://arpitagarwala.online/projects/sip): Systematic Investment Plan wealth predictor with inflation adjustment and step-up returns calculation.
+- [Budget Tracker](https://arpitagarwala.online/projects/budget): Personal financial management and expense categorization application.
+- [Expense Splitter](https://arpitagarwala.online/projects/expense-splitter): Group expense division tool for trips and shared living.
+- [Universal Calculator](https://arpitagarwala.online/projects/calculator): Advanced scientific and financial arithmetic calculator.
+- [AI Assistant](https://arpitagarwala.online/projects/ai-assistant): Custom conversational AI assistant interface.
+
+## Bhagavad Gita Portal
+Arpit Agarwala has digitized and structured all 18 Chapters (700 Verses) of the Bhagavad Gita with Sanskrit Devanagari script, IAST transliteration, word-by-word meanings, and English commentary. Accessible at https://arpitagarwala.online/dharma/gita.
+
+## Contact & Professional Inquiries
+For collaboration, accounting/finance consultations, or web development projects, reach out via email at arpitagarwalms@gmail.com or connect on LinkedIn.
