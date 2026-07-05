@@ -17,9 +17,7 @@
 - [Home](https://arpitagarwala.online/): Main portfolio showcasing projects, interactive widgets, and background.
 - [About](https://arpitagarwala.online/about): Detailed biography, educational journey in finance and taxation, philosophy, and technical skills.
 - [Projects](https://arpitagarwala.online/projects): Suite of custom financial tools, web applications, and developer utilities.
-- [Dharma](https://arpitagarwala.online/dharma): Spiritual portal featuring the complete Bhagavad Gita (700 verses in Sanskrit with English translations and shlokas) and a live Hindu Panchang calendar.
 - [Parcel Tracker](https://arpitagarwala.online/tracker): Universal package tracking tool supporting 15+ couriers (DHL, FedEx, UPS, DTDC, Blue Dart, Delhivery, Aramex, etc.).
-- [Weather & Astronomy](https://arpitagarwala.online/weather): Live interactive weather forecasting, Air Quality Index (AQI), and real-time sun/moon astronomical arc calculations.
 - [Gallery](https://arpitagarwala.online/gallery): Curated visual collection of moments, achievements, and photography.
 - [Achievements](https://arpitagarwala.online/achievements): Academic honors, certifications, and milestones.
 - [Newsletter](https://arpitagarwala.online/newsletter): Fintech Horizon — insights at the intersection of finance, chartered accountancy, AI, and technology.

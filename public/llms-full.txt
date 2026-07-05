@@ -23,11 +23,7 @@
 - `/projects`: **Projects Dashboard** — Categorized repository of web applications and tools.
 - `/achievements`: **Achievements** — Certificates, academic distinctions, and competitions.
 - `/gallery`: **Gallery** — Visual repository of events, moments, and photography.
-- `/dharma`: **Dharma Portal** — Gateway to Hindu spiritual scriptures and astronomical calendars.
-- `/dharma/gita`: **Bhagavad Gita** — Complete 18 chapters and 700 verses in Devanagari Sanskrit with English translations.
-- `/dharma/panchang`: **Hindu Panchang** — Real-time astronomical calendar calculations (Tithi, Nakshatra, Yoga, Karana, Sunrise/Sunset).
 - `/tracker`: **Universal Parcel Tracker** — Shipment tracking across 15+ couriers (DHL, FedEx, UPS, DTDC, Blue Dart, Delhivery, Aramex, etc.).
-- `/weather`: **Live Weather & Astronomy** — Real-time forecast, Air Quality Index (AQI), sun/moon positions, wind compass, and animated sky themes.
 - `/newsletter`: **Fintech Horizon** — Articles and commentary on finance, CA studies, AI, and economics.
 - `/games`: **Interactive Games Arcade** — Gamified financial education and arcade classics.
 

@@ -11,23 +11,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/projects`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${baseUrl}/achievements`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${baseUrl}/gallery`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${baseUrl}/dharma`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${baseUrl}/dharma/gita`, lastModified: now, changeFrequency: 'monthly', priority: 0.9 },
-    { url: `${baseUrl}/dharma/panchang`, lastModified: now, changeFrequency: 'daily', priority: 0.9 },
     { url: `${baseUrl}/tracker`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${baseUrl}/weather`, lastModified: now, changeFrequency: 'daily', priority: 0.8 },
     { url: `${baseUrl}/newsletter`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${baseUrl}/games`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${baseUrl}/coming-soon`, lastModified: now, changeFrequency: 'yearly', priority: 0.2 },
   ];
 
-  // 18 Chapters of Bhagavad Gita
-  const gitaChapters: MetadataRoute.Sitemap = Array.from({ length: 18 }, (_, i) => ({
-    url: `${baseUrl}/dharma/gita/${i + 1}`,
-    lastModified: now,
-    changeFrequency: 'monthly',
-    priority: 0.8,
-  }));
+
 
   // Projects
   const projectSlugs = [
@@ -72,5 +62,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  return [...corePages, ...gitaChapters, ...projectPages, ...gamePages];
+  return [...corePages, ...projectPages, ...gamePages];
 }
