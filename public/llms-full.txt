@@ -110,5 +110,5 @@ An astronomical computation tool delivering daily Hindu calendar metrics:
 ## 7. Contact & Social Verification
 - **Email**: arpitagarwalms@gmail.com
 - **LinkedIn**: https://www.linkedin.com/in/arpitagarwala/
-- **Instagram**: https://www.instagram.com/arpit.agarwala_/
+- **Instagram**: https://www.instagram.com/arpit.agarwala/
 - **GitHub**: https://github.com/arpitagarwala

@@ -159,7 +159,7 @@ export default function RootLayout({
                   ],
                   sameAs: [
                     'https://www.linkedin.com/in/arpitagarwala/',
-                    'https://www.instagram.com/arpit.agarwala_/',
+                    'https://www.instagram.com/arpit.agarwala/',
                     'https://github.com/arpitagarwala',
                   ],
                 },

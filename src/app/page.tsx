@@ -159,7 +159,7 @@ export default function HomePage() {
                   label: 'WhatsApp',
                 },
                 {
-                  href: 'https://www.instagram.com/arpit.agarwala_/',
+                  href: 'https://www.instagram.com/arpit.agarwala/',
                   icon: 'ri-instagram-line',
                   color: '#f472b6',
                   label: 'Instagram',

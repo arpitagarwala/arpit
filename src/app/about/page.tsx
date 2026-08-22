@@ -86,7 +86,7 @@ export default function AboutPage() {
                   {href:'https://wa.me/919957414146',icon:'ri-whatsapp-line',color:'#34d399',label:'WhatsApp',ext:true},
                   {href:'https://www.linkedin.com/in/arpitagarwala/',icon:'ri-linkedin-line',color:'#60a5fa',label:'linkedin.com/in/arpitagarwala',ext:true},
                   {href:'https://github.com/arpitagarwala',icon:'ri-github-line',color:'#cbd5e1',label:'github.com/arpitagarwala',ext:true},
-                  {href:'https://www.instagram.com/arpit.agarwala_/',icon:'ri-instagram-line',color:'#f472b6',label:'arpit.agarwala_',ext:true},
+                  {href:'https://www.instagram.com/arpit.agarwala/',icon:'ri-instagram-line',color:'#f472b6',label:'arpit.agarwala',ext:true},
                 ].map((c) => (
                   <a key={c.href} href={c.href} target={c.ext?'_blank':undefined} rel={c.ext?'noopener':undefined} className="connect-row">
                     <i className={`${c.icon}`} style={{color:c.color,fontSize:'1rem'}} />
