@@ -345,7 +345,7 @@ export default function CalculatorClient() {
       <BackButton />
       
       <div className="fixed top-4 right-4 z-50 flex gap-2">
-        <button onClick={() => setHistoryOpen(!historyOpen)} className="w-10 h-10 flex items-center justify-center rounded-full backdrop-blur border hover:border-cyan-400 hover:text-cyan-400 shadow-lg transition-all bg-slate-800 border-slate-700 text-slate-300">
+        <button onClick={() => setHistoryOpen(!historyOpen)} className="w-10 h-10 flex items-center justify-center rounded-full backdrop-blur border hover:border-amber-400 hover:text-[#e5c293] shadow-lg transition-all bg-stone-800 border-stone-700 text-stone-300">
           <i className="ri-history-line text-lg"></i>
         </button>
       </div>
@@ -357,28 +357,28 @@ export default function CalculatorClient() {
           
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="text-[10px] uppercase tracking-[.18em] font-bold text-slate-400">Calculator</span>
-              <span className="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">v3.0</span>
+              <span className="text-[14px] uppercase tracking-[.18em] font-bold text-stone-300">Calculator</span>
+              <span className="text-[14px] px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300">v3.0</span>
             </div>
             <div className="flex items-center gap-2">
-              {memory !== 0 && <div className="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400">M</div>}
+              {memory !== 0 && <div className="text-[14px] px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-[#e5c293]">M</div>}
               {mode === 'scientific' && (
-                <button onClick={() => setAngleMode(angleMode === 'deg' ? 'rad' : 'deg')} className="text-[9px] px-2 py-0.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-400 transition hover:bg-violet-500/20">
+                <button onClick={() => setAngleMode(angleMode === 'deg' ? 'rad' : 'deg')} className="text-[14px] px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-[#e5c293] transition hover:bg-amber-500/20">
                   {angleMode.toUpperCase()}
                 </button>
               )}
             </div>
           </div>
 
-          <div className="flex gap-1 p-1 rounded-xl border bg-slate-800 border-slate-700">
-            <button onClick={() => setMode('standard')} className={`flex-1 py-1.5 text-xs font-bold rounded-lg ${mode === 'standard' ? styles.modeTabActive : styles.modeTab}`}>Standard</button>
-            <button onClick={() => setMode('scientific')} className={`flex-1 py-1.5 text-xs font-bold rounded-lg ${mode === 'scientific' ? styles.modeTabActive : styles.modeTab}`}>Scientific</button>
-            <button onClick={() => setMode('unit')} className={`flex-1 py-1.5 text-xs font-bold rounded-lg ${mode === 'unit' ? styles.modeTabActive : styles.modeTab}`}>Unit</button>
+          <div className="flex gap-1 p-1 rounded-xl border bg-stone-800 border-stone-700">
+            <button onClick={() => setMode('standard')} className={`flex-1 py-1.5 text-sm font-bold rounded-lg ${mode === 'standard' ? styles.modeTabActive : styles.modeTab}`}>Standard</button>
+            <button onClick={() => setMode('scientific')} className={`flex-1 py-1.5 text-sm font-bold rounded-lg ${mode === 'scientific' ? styles.modeTabActive : styles.modeTab}`}>Scientific</button>
+            <button onClick={() => setMode('unit')} className={`flex-1 py-1.5 text-sm font-bold rounded-lg ${mode === 'unit' ? styles.modeTabActive : styles.modeTab}`}>Unit</button>
           </div>
 
           <div className="flex flex-col items-end gap-1 px-1">
-            <div className={`h-5 text-xs ${styles.mono} truncate w-full text-right text-slate-400`}>{histLine}</div>
-            <div className={`w-full text-right font-bold tracking-tight truncate ${styles.mono} leading-tight text-slate-50`} style={{ fontSize: fontSize || '3.75rem' }}>
+            <div className={`h-5 text-sm ${styles.mono} truncate w-full text-right text-stone-300`}>{histLine}</div>
+            <div className={`w-full text-right font-bold tracking-tight truncate ${styles.mono} leading-tight text-stone-50`} style={{ fontSize: fontSize || '3.75rem' }}>
               {currentInput}
             </div>
           </div>
@@ -395,24 +395,24 @@ export default function CalculatorClient() {
 
           {mode === 'unit' && (
             <div className="flex flex-col gap-3">
-              <select value={unitCat} onChange={e => setUnitCat(e.target.value)} className="w-full px-3 py-2 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-cyan-500 bg-slate-800 border-slate-700 text-slate-200">
+              <select value={unitCat} onChange={e => setUnitCat(e.target.value)} className="w-full px-3 py-2 rounded-xl border text-base outline-none focus:ring-2 focus:ring-amber-500 bg-stone-800 border-stone-700 text-stone-200">
                 {Object.keys(UNITS).map(k => <option key={k} value={k}>{k.charAt(0).toUpperCase() + k.slice(1)}</option>)}
               </select>
               <div className="flex gap-2 items-center">
                 <div className="flex-1 flex flex-col gap-1">
-                  <select value={unitFrom} onChange={e => setUnitFrom(e.target.value)} className="w-full px-3 py-2 rounded-xl border text-xs outline-none focus:ring-2 focus:ring-cyan-500 bg-slate-800 border-slate-700 text-slate-200">
+                  <select value={unitFrom} onChange={e => setUnitFrom(e.target.value)} className="w-full px-3 py-2 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-amber-500 bg-stone-800 border-stone-700 text-stone-200">
                     {UNITS[unitCat]?.units.map((u: string) => <option key={u} value={u}>{u}</option>)}
                   </select>
-                  <input type="number" value={unitInput} onChange={e => setUnitInput(e.target.value)} className={`w-full px-3 py-2 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-cyan-500 ${styles.mono} bg-slate-800 border-slate-700 text-slate-200`} />
+                  <input type="number" value={unitInput} onChange={e => setUnitInput(e.target.value)} className={`w-full px-3 py-2 rounded-xl border text-base outline-none focus:ring-2 focus:ring-amber-500 ${styles.mono} bg-stone-800 border-stone-700 text-stone-200`} />
                 </div>
-                <button onClick={() => { setUnitFrom(unitTo); setUnitTo(unitFrom); }} className="w-8 h-8 flex items-center justify-center rounded-xl bg-cyan-500/15 border border-cyan-500/20 hover:bg-cyan-500/25 transition-colors text-cyan-400 shrink-0">
-                  <i className="ri-arrow-left-right-line text-sm"></i>
+                <button onClick={() => { setUnitFrom(unitTo); setUnitTo(unitFrom); }} className="w-8 h-8 flex items-center justify-center rounded-xl bg-amber-500/15 border border-amber-500/20 hover:bg-amber-500/25 transition-colors text-[#e5c293] shrink-0">
+                  <i className="ri-arrow-left-right-line text-base"></i>
                 </button>
                 <div className="flex-1 flex flex-col gap-1">
-                  <select value={unitTo} onChange={e => setUnitTo(e.target.value)} className="w-full px-3 py-2 rounded-xl border text-xs outline-none focus:ring-2 focus:ring-cyan-500 bg-slate-800 border-slate-700 text-slate-200">
+                  <select value={unitTo} onChange={e => setUnitTo(e.target.value)} className="w-full px-3 py-2 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-amber-500 bg-stone-800 border-stone-700 text-stone-200">
                     {UNITS[unitCat]?.units.map((u: string) => <option key={u} value={u}>{u}</option>)}
                   </select>
-                  <div className={`w-full px-3 py-2 rounded-xl bg-cyan-500/8 border border-cyan-500/15 text-sm font-bold ${styles.mono} text-cyan-300`}>
+                  <div className={`w-full px-3 py-2 rounded-xl bg-amber-500/8 border border-amber-500/15 text-base font-bold ${styles.mono} text-amber-300`}>
                     {getUnitResult()}
                   </div>
                 </div>
@@ -422,15 +422,15 @@ export default function CalculatorClient() {
 
           {mode !== 'unit' && (
             <div className="grid grid-cols-4 gap-2.5">
-              <button onClick={memoryRecall} className={`${styles.btnRipple} ${styles.btnFn} h-12 rounded-2xl text-xs font-bold transition-all active:scale-95`}>MRC</button>
-              <button onClick={() => handleMemory(1)} className={`${styles.btnRipple} ${styles.btnFn} h-12 rounded-2xl text-xs font-bold transition-all active:scale-95`}>M+</button>
-              <button onClick={() => handleMemory(-1)} className={`${styles.btnRipple} ${styles.btnFn} h-12 rounded-2xl text-xs font-bold transition-all active:scale-95`}>M−</button>
+              <button onClick={memoryRecall} className={`${styles.btnRipple} ${styles.btnFn} h-12 rounded-2xl text-sm font-bold transition-all active:scale-95`}>MRC</button>
+              <button onClick={() => handleMemory(1)} className={`${styles.btnRipple} ${styles.btnFn} h-12 rounded-2xl text-sm font-bold transition-all active:scale-95`}>M+</button>
+              <button onClick={() => handleMemory(-1)} className={`${styles.btnRipple} ${styles.btnFn} h-12 rounded-2xl text-sm font-bold transition-all active:scale-95`}>M−</button>
               <button onClick={clearAll} className={`${styles.btnRipple} ${styles.btnAc} h-12 rounded-2xl font-bold transition-all active:scale-95`}>AC</button>
               
               <button onClick={deleteLast} className={`${styles.btnRipple} ${styles.btnFn} h-12 rounded-2xl font-bold transition-all active:scale-95`}><i className="ri-delete-back-2-line text-xl"></i></button>
-              <button onClick={grandTotalRecall} className={`${styles.btnRipple} ${styles.btnFn} h-12 rounded-2xl font-bold text-sm transition-all active:scale-95`}>GT</button>
+              <button onClick={grandTotalRecall} className={`${styles.btnRipple} ${styles.btnFn} h-12 rounded-2xl font-bold text-base transition-all active:scale-95`}>GT</button>
               <button onClick={calculateRoot} className={`${styles.btnRipple} ${styles.btnFn} h-12 rounded-2xl font-bold text-lg transition-all active:scale-95`}>√</button>
-              <button onClick={calculatePercentage} className={`${styles.btnRipple} ${styles.btnFn} h-12 rounded-2xl font-bold text-sm transition-all active:scale-95`}>%</button>
+              <button onClick={calculatePercentage} className={`${styles.btnRipple} ${styles.btnFn} h-12 rounded-2xl font-bold text-base transition-all active:scale-95`}>%</button>
               
               <button onClick={() => appendNumber('7')} className={`${styles.btnRipple} ${styles.btnNum} h-12 rounded-2xl text-lg font-semibold transition-all active:scale-95`}>7</button>
               <button onClick={() => appendNumber('8')} className={`${styles.btnRipple} ${styles.btnNum} h-12 rounded-2xl text-lg font-semibold transition-all active:scale-95`}>8</button>
@@ -449,7 +449,7 @@ export default function CalculatorClient() {
               
               <button onClick={() => appendNumber('.')} className={`${styles.btnRipple} ${styles.btnNum} h-12 rounded-2xl text-xl font-bold transition-all active:scale-95`}>.</button>
               <button onClick={() => appendNumber('0')} className={`${styles.btnRipple} ${styles.btnNum} h-12 rounded-2xl text-lg font-semibold transition-all active:scale-95`}>0</button>
-              <button onClick={toggleSign} className={`${styles.btnRipple} ${styles.btnFn} h-12 rounded-2xl font-bold text-sm transition-all active:scale-95`}>+/−</button>
+              <button onClick={toggleSign} className={`${styles.btnRipple} ${styles.btnFn} h-12 rounded-2xl font-bold text-base transition-all active:scale-95`}>+/−</button>
               <button onClick={() => appendOperator('+')} className={`${styles.btnRipple} ${styles.btnOp} h-12 rounded-2xl font-bold text-xl transition-all active:scale-95`}>+</button>
               
               <button onClick={() => calculate(false)} className={`${styles.btnRipple} ${styles.btnEq} col-span-4 h-12 rounded-2xl text-white font-bold text-2xl transition-all active:scale-[.98]`}>=</button>
@@ -460,21 +460,21 @@ export default function CalculatorClient() {
         {/* History Sidebar */}
         {historyOpen && (
           <div className={`w-full lg:w-72 ${styles.glass} rounded-[2rem] shadow-xl p-5 flex flex-col gap-4 max-h-[480px]`}>
-            <div className="flex items-center justify-between border-b pb-3 border-black/8 text-slate-300">
-              <span className="font-bold text-sm flex items-center gap-2"><i className="ri-history-line"></i> History</span>
+            <div className="flex items-center justify-between border-b pb-3 border-black/8 text-stone-300">
+              <span className="font-bold text-base flex items-center gap-2"><i className="ri-history-line"></i> History</span>
               <div className="flex gap-3">
-                <button onClick={() => { navigator.clipboard.writeText(historyList.map(h => `${h.calc} = ${h.result}`).join('\n')); showToast('📋 Copied!'); }} className="text-xs font-semibold hover:underline text-cyan-400">Copy All</button>
-                <button onClick={() => { setHistoryList([]); localStorage.removeItem('calcHistory'); showToast('🗑️ Cleared'); }} className="text-xs font-semibold hover:underline text-rose-400">Clear</button>
+                <button onClick={() => { navigator.clipboard.writeText(historyList.map(h => `${h.calc} = ${h.result}`).join('\n')); showToast('📋 Copied!'); }} className="text-sm font-semibold hover:underline text-[#e5c293]">Copy All</button>
+                <button onClick={() => { setHistoryList([]); localStorage.removeItem('calcHistory'); showToast('🗑️ Cleared'); }} className="text-sm font-semibold hover:underline text-rose-400">Clear</button>
               </div>
             </div>
             <div className={`flex-1 overflow-y-auto pr-1 flex flex-col gap-1 ${styles.customScroll}`}>
               {historyList.length === 0 ? (
-                <div className="text-xs text-slate-500 italic text-center py-10">No calculations yet</div>
+                <div className="text-sm text-stone-300 italic text-center py-10">No calculations yet</div>
               ) : (
                 historyList.map((item, idx) => (
-                  <div key={idx} onClick={() => { if (item.result !== 'Error') { setCurrentInput(item.result); setShouldReset(true); } }} className="flex flex-col items-end gap-0.5 px-2 py-2 rounded-xl cursor-pointer hover:bg-slate-800/50 transition">
-                    <span className={`text-[10px] ${styles.mono} truncate w-full text-right text-slate-400`}>{item.calc} =</span>
-                    <span className={`text-sm font-bold ${styles.mono} text-slate-200`}>{item.result}</span>
+                  <div key={idx} onClick={() => { if (item.result !== 'Error') { setCurrentInput(item.result); setShouldReset(true); } }} className="flex flex-col items-end gap-0.5 px-2 py-2 rounded-xl cursor-pointer hover:bg-stone-800/50 transition">
+                    <span className={`text-[14px] ${styles.mono} truncate w-full text-right text-stone-300`}>{item.calc} =</span>
+                    <span className={`text-base font-bold ${styles.mono} text-stone-200`}>{item.result}</span>
                   </div>
                 ))
               )}
@@ -483,10 +483,11 @@ export default function CalculatorClient() {
         )}
       </div>
 
-      <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 z-[200] px-5 py-3 rounded-full shadow-2xl flex items-center gap-2 transition-all duration-300 bg-white text-slate-900 ${toast.show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}>
+      <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 z-[200] px-5 py-3 rounded-full shadow-2xl flex items-center gap-2 transition-all duration-300 bg-white text-stone-900 ${toast.show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}>
         <i className="ri-checkbox-circle-fill text-emerald-400 text-lg"></i>
-        <span className="text-[11px] font-bold uppercase tracking-widest">{toast.msg}</span>
+        <span className="text-[14px] font-bold uppercase tracking-widest">{toast.msg}</span>
       </div>
     </div>
   );
 }
+

@@ -1,0 +1,66 @@
+/* Shared controls keep the same affordances across tools and the owner portal. */
+:root { color-scheme: dark; }
+input[type='checkbox']:not([role='switch']) {
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  width: 21px !important;
+  height: 21px !important;
+  min-width: 21px;
+  flex: 0 0 21px;
+  padding: 0 !important;
+  border: 1.5px solid #71959f !important;
+  border-radius: 6px !important;
+  background: #0b202b !important;
+  background-position: center !important;
+  background-size: 16px !important;
+  background-repeat: no-repeat !important;
+  vertical-align: middle;
+  cursor: pointer;
+}
+input[type='checkbox']:not([role='switch']):checked {
+  border-color: #a2ddcf !important;
+  background-color: #a2ddcf !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='m4 10 4 4 8-8' stroke='%23082a30' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+}
+input[type='checkbox']:not([role='switch']):indeterminate {
+  border-color: #a2ddcf !important;
+  background-color: #a2ddcf !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10h10' stroke='%23082a30' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E") !important;
+}
+input[type='checkbox']:disabled { opacity: .45; cursor: not-allowed; }
+label:has(> input[type='checkbox']) { min-height: 36px; cursor: pointer; }
+input[type='number']:not([data-stepper='true']) { appearance: textfield; -moz-appearance: textfield; }
+input[type='number']:not([data-stepper='true'])::-webkit-inner-spin-button,
+input[type='number']:not([data-stepper='true'])::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[data-stepper='true']::-webkit-inner-spin-button { opacity: 1; cursor: pointer; }
+:is(input,select,textarea):focus-visible {
+  outline: 2px solid #a2ddcf !important;
+  outline-offset: 3px !important;
+}
+button, input, select, summary { touch-action: manipulation; }
+img, video { max-width: 100%; }
+main, fieldset { min-width: 0; }
+:is(h1,h2,h3,p) { overflow-wrap: break-word; }
+@media (max-width: 640px) {
+  /* Prevent iOS focus zoom and allow long dates/labels inside narrow grids. */
+  input:not([type='checkbox']):not([type='radio']):not([type='range']), select, textarea {
+    font-size: 16px !important;
+    min-width: 0;
+    max-width: 100%;
+  }
+  input[type='checkbox'] { scroll-margin: 80px; }
+  label:has(> input[type='checkbox']) { min-height: 44px; }
+  input:not([type='checkbox']):not([type='radio']):not([type='range']), select { min-height: 44px; }
+  .bg-blob { width: 360px; height: 360px; filter: blur(70px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+@media (forced-colors: active) {
+  input[type='checkbox']:not([role='switch']) { appearance: auto; -webkit-appearance: auto; background: revert !important; border: revert !important; }
+}

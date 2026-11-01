@@ -1,7 +1,9 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useState } from 'react';
 import styles from './page.module.css';
+import type {SiteConfig} from '@/lib/site-config';
+import achievementSeeds from '@/data/site-achievements';
 
 const TRADES = [
   { date:'18 Sep', open:45788.29, netPL:  164.91, close:45788.29, ret:  0.36 },
@@ -27,284 +29,184 @@ const TRADES = [
   { date:'17 Oct', open:57970.57, netPL: 8618.31, close:66588.88, ret: 14.87 },
 ];
 
-export default function AchievementsClient() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const tipRef = useRef<HTMLDivElement>(null);
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
-  const ptsRef = useRef<{x:number,y:number,t:(typeof TRADES)[0]}[]>([]);
-
-  const closes = TRADES.map((t) => t.close);
-  const minV = Math.min(...closes) * 0.998;
-  const maxV = Math.max(...closes) * 1.002;
-  const PAD = { top: 10, right: 10, bottom: 16, left: 10 };
-
-  function toY(v: number, h: number) {
-    return PAD.top + (1 - (v - minV) / (maxV - minV)) * (h - PAD.top - PAD.bottom);
-  }
-  function toX(i: number, w: number) {
-    return PAD.left + i * (w - PAD.left - PAD.right) / (TRADES.length - 1);
-  }
-
-  function drawChart() {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    const dpr = window.devicePixelRatio || 1;
-    const W = canvas.offsetWidth || 400;
-    const H = canvas.offsetHeight || 90;
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const pts = TRADES.map((t, i) => ({ x: toX(i, W), y: toY(t.close, H), t }));
-    ptsRef.current = pts;
-    const grad = ctx.createLinearGradient(0, 0, 0, H);
-    grad.addColorStop(0, 'rgba(16,185,129,0.18)');
-    grad.addColorStop(1, 'rgba(16,185,129,0)');
-    ctx.beginPath();
-    ctx.moveTo(pts[0].x, H - PAD.bottom);
-    pts.forEach((p) => ctx.lineTo(p.x, p.y));
-    ctx.lineTo(pts[pts.length - 1].x, H - PAD.bottom);
-    ctx.closePath();
-    ctx.fillStyle = grad;
-    ctx.fill();
-    ctx.beginPath();
-    pts.forEach((p, i) => (i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y)));
-    ctx.strokeStyle = '#10b981';
-    ctx.lineWidth = 1.8;
-    ctx.lineJoin = 'round';
-    ctx.stroke();
-    ctx.fillStyle = 'rgba(0,0,0,0.35)';
-    ctx.font = '9px Inter,sans-serif';
-    const mi = Math.floor(TRADES.length / 2);
-    ctx.textAlign = 'left';   ctx.fillText(TRADES[0].date, PAD.left, H - 3);
-    ctx.textAlign = 'center'; ctx.fillText(TRADES[mi].date, pts[mi].x, H - 3);
-    ctx.textAlign = 'right';  ctx.fillText(TRADES[TRADES.length - 1].date, W - PAD.right, H - 3);
-  }
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    canvas.style.height = '90px';
-    setTimeout(drawChart, 0);
-    window.addEventListener('resize', drawChart);
-    return () => window.removeEventListener('resize', drawChart);
-  }, []);
-
-  function handleMouseMove(e: React.MouseEvent<HTMLCanvasElement>) {
-    const pts = ptsRef.current;
-    if (!pts.length || !canvasRef.current || !tipRef.current || !cardRef.current) return;
-    const cRect = canvasRef.current.getBoundingClientRect();
-    const kRect = cardRef.current.getBoundingClientRect();
-    const mx = e.clientX - cRect.left;
-    let best = 0, bd = Infinity;
-    pts.forEach((p, i) => { const d = Math.abs(p.x - mx); if (d < bd) { bd = d; best = i; } });
-    const p = pts[best];
-    const t = p.t;
-    const pos = t.netPL >= 0;
-    drawChart();
-    const ctx = canvasRef.current.getContext('2d');
-    if (ctx) {
-      const H = canvasRef.current.offsetHeight;
-      const W = canvasRef.current.offsetWidth;
-      ctx.save();
-      ctx.setLineDash([3, 3]);
-      ctx.strokeStyle = pos ? 'rgba(16,185,129,0.5)' : 'rgba(239,68,68,0.5)';
-      ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(p.x, PAD.top); ctx.lineTo(p.x, H - PAD.bottom); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(PAD.left, p.y); ctx.lineTo(W - PAD.right, p.y); ctx.stroke();
-      ctx.restore();
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
-      ctx.fillStyle = pos ? '#10b981' : '#ef4444';
-      ctx.strokeStyle = '#fff';
-      ctx.lineWidth = 1.5;
-      ctx.fill();
-      ctx.stroke();
-    }
-    const plSign = pos ? '+' : '';
-    const plColor = pos ? '#34d399' : '#f87171';
-    tipRef.current.innerHTML =
-      `<span style="color:#94a3b8;font-size:9px">${t.date}</span><br>` +
-      `<span style="font-weight:700">₹${t.close.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</span><br>` +
-      `<span style="color:${plColor};font-weight:600">${plSign}${t.ret.toFixed(2)}%&nbsp;&nbsp;${plSign}₹${Math.abs(t.netPL).toLocaleString('en-IN', { maximumFractionDigits: 0 })}</span>`;
-    tipRef.current.style.display = 'block';
-    const dotVX = cRect.left + p.x;
-    const dotVY = cRect.top + p.y;
-    const dotLX = dotVX - kRect.left;
-    const dotLY = dotVY - kRect.top;
-    const TW = 130, TH = 58;
-    let tx = dotLX + 12;
-    let ty = dotLY - TH - 8;
-    if (tx + TW > kRect.width) tx = dotLX - TW - 12;
-    if (ty < 4) ty = dotLY + 10;
-    tipRef.current.style.left = tx + 'px';
-    tipRef.current.style.top = ty + 'px';
-  }
-
-  function handleMouseLeave() {
-    if (tipRef.current) tipRef.current.style.display = 'none';
-    drawChart();
-  }
-
+function TradingChart(){
+ const [selected,setSelected]=useState(TRADES.length-1),[view,setView]=useState<'balance'|'returns'>('balance'),trade=TRADES[selected];
+ const values=TRADES.map(t=>view==='balance'?t.close:t.ret),min=Math.min(...values,view==='returns'?0:Infinity),max=Math.max(...values,view==='returns'?0:-Infinity);
+ const y=(value:number)=>16+(max-value)/(max-min||1)*132;
+ const points=values.map((value,i)=>({x:16+i*568/(TRADES.length-1),y:y(value)}));
+ const path=points.map((p,i)=>(i?'L':'M')+p.x+','+p.y).join(' '),point=points[selected];
+ const money=(value:number)=>'₹'+value.toLocaleString('en-IN',{maximumFractionDigits:0});
+ function pick(e:React.PointerEvent<SVGSVGElement>){const rect=e.currentTarget.getBoundingClientRect(),x=(e.clientX-rect.left)/rect.width*600;setSelected(Math.max(0,Math.min(TRADES.length-1,Math.round((x-16)/568*(TRADES.length-1)))));}
+ return <div className={styles.chart}>
+  <div className={styles.chartHeading}><span><i className="ri-line-chart-line" aria-hidden="true"/> The trading journey</span><div className={styles.chartTabs} role="group" aria-label="Chart view"><button type="button" aria-pressed={view==='balance'} onClick={()=>setView('balance')}>Balance</button><button type="button" aria-pressed={view==='returns'} onClick={()=>setView('returns')}>Daily return</button></div></div>
+  <div className={styles.chartReadout}><div><span>{trade.date} 2025 <span className={styles.sessionNumber}>/ Session {selected+1} of {TRADES.length}</span></span><strong>{view==='balance'?money(trade.close):(trade.ret>=0?'+':'')+trade.ret.toFixed(2)+'%'}</strong><small>{view==='balance'?'Closing balance':'Reported session return'}</small></div><div className={styles.chartSecondary}><span>{view==='balance'?'Session return':'Closing balance'}</span><strong className={view==='balance'?(trade.ret>=0?styles.positive:styles.negative):undefined}>{view==='balance'?(trade.ret>=0?'+':'')+trade.ret.toFixed(2)+'%':money(trade.close)}</strong></div></div>
+  <svg className={styles.equityPlot} viewBox="0 0 600 164" preserveAspectRatio="none" role="img" aria-label={view==='balance'?'Closing balance across 21 recorded trading sessions, from 45,788 to 66,589 rupees':'Reported daily returns across 21 recorded trading sessions, from minus 5.03 to plus 14.87 percent'} onPointerDown={pick} onPointerMove={e=>{if(e.pointerType==='mouse'||e.buttons)pick(e);}}>
+   <defs><linearGradient id="achievement-equity" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stopColor="#cbb580" stopOpacity=".2"/><stop offset="100%" stopColor="#cbb580" stopOpacity="0"/></linearGradient></defs>
+   {[16,82,148].map(line=><line key={line} x1="16" x2="584" y1={line} y2={line} stroke="#605543" strokeOpacity=".25" strokeDasharray="3 6"/>)}
+   {view==='balance'?<><path d={path+' L584,156 L16,156 Z'} fill="url(#achievement-equity)"/><path d={path} fill="none" stroke="#d9c48f" strokeWidth="2" vectorEffect="non-scaling-stroke"/><line x1={point.x} x2={point.x} y1="10" y2="156" stroke="#9c917d" strokeDasharray="3 5"/><circle cx={point.x} cy={point.y} r="4" fill="#f2dfb4" stroke="#30291d" strokeWidth="2"/></>:<><line x1="8" x2="592" y1={y(0)} y2={y(0)} stroke="#857867" strokeWidth="1"/>{points.map((p,i)=><rect key={i} x={p.x-7} y={Math.min(y(0),p.y)} width="14" height={Math.max(2,Math.abs(y(0)-p.y))} rx="2" fill={TRADES[i].ret>=0?'#93c9ae':'#df9d99'} opacity={selected===i?1:.5}/>)}</>}
+  </svg>
+  <div className={styles.chartDates}><span>18 Sep</span><span>{view==='balance'?'Closing balance · INR':'Session return · %'}</span><span>17 Oct 2025</span></div>
+  <div className={styles.sessionControl}><button type="button" aria-label="Previous trading session" disabled={selected===0} onClick={()=>setSelected(i=>i-1)}><i className="ri-arrow-left-s-line" aria-hidden="true"/></button><label>Explore sessions<input type="range" min="0" max={TRADES.length-1} value={selected} aria-label="Trading session" aria-valuetext={trade.date+' 2025, closing balance '+trade.close+' rupees, reported return '+trade.ret+' percent'} onChange={e=>setSelected(Number(e.target.value))}/></label><button type="button" aria-label="Next trading session" disabled={selected===TRADES.length-1} onClick={()=>setSelected(i=>i+1)}><i className="ri-arrow-right-s-line" aria-hidden="true"/></button></div>
+ </div>;
+}
+export default function AchievementsClient({content}:{content:SiteConfig['achievements']}) {
+ const enabled=content.items.filter(item=>item.enabled);
   return (
     <>
       {/* Page header */}
       <div className={`${styles.header} fade-up`}>
+        <p className={styles.eyebrow}>THE WORK. THE RECOGNITION.</p>
         <div className={styles.titleRow}>
           <div>
-            <h1 className={styles.title}>Wins</h1>
+            <h1 className={styles.title}>{content.title}</h1>
             <div className={`${styles.underline} shimmer-underline`} />
           </div>
-          <p className={styles.subtitle}>Awards, certifications, trading milestones &amp; leadership wins across the journey.</p>
+          <p className={styles.subtitle}>{content.description}</p>
         </div>
       </div>
 
       {/* Stats row */}
       <div className={`${styles.statsRow} fade-up`} style={{animationDelay:'.05s'}}>
-        {[['8','Total'],['4','Awards'],['+45.5%','Trading Return'],['3','Years Active']].map(([val,lbl],i) => (
+        {[[String(enabled.length),'Milestones'],[String(enabled.filter(item=>item.href).length),'Publication links']].map(([val,lbl]) => (
           <div key={lbl} className="stat">
-            <p style={{fontSize:'1.5rem',fontWeight:900,color:['#22d3ee','#fbbf24','#34d399','#a78bfa'][i]}}>{val}</p>
-            <p style={{fontSize:'0.625rem',letterSpacing:'0.08em',textTransform:'uppercase',color:'#94a3b8',marginTop:'0.125rem'}}>{lbl}</p>
+            <p style={{fontSize:'1.5rem',fontWeight:900,color:'#e6cf9d'}}>{val}</p>
+            <p style={{fontSize:'0.75rem',letterSpacing:'0.08em',textTransform:'uppercase',color:'#b8b7c4',marginTop:'0.125rem'}}>{lbl}</p>
           </div>
         ))}
       </div>
 
       {/* Grid */}
       <div className={styles.grid}>
-        {/* Trading challenge card */}
-        <div ref={cardRef} className={`ach-card ${styles.tradingCard} fade-up`} style={{animationDelay:'.06s'}}>
-          <div ref={tipRef} id="chart-tip" />
-          <div className={styles.tradingHeader}>
-            <div style={{display:'flex',alignItems:'center',gap:'0.75rem'}}>
-              <div style={{width:'2.5rem',height:'2.5rem',borderRadius:'0.75rem',background:'linear-gradient(135deg,#10b981,#22d3ee)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-                <i className="ri-stock-line" style={{color:'#fff',fontSize:'1.25rem'}} />
-              </div>
-              <div>
-                <span style={{fontSize:'0.625rem',fontWeight:700,letterSpacing:'0.18em',textTransform:'uppercase',display:'block',marginBottom:'0.125rem',color:'#34d399'}}>Trading Challenge · Sep–Oct 2025</span>
-                <h3 style={{fontSize:'1rem',fontWeight:800,color:'#fff',lineHeight:1.3}}>30-Day Live Trading Challenge</h3>
-              </div>
-            </div>
-            <div style={{textAlign:'right',flexShrink:0}}>
-              <p style={{fontSize:'1.5rem',fontWeight:900,lineHeight:1,color:'#34d399'}}>+45.46%</p>
-              <p style={{fontSize:'0.625rem',marginTop:'0.125rem',color:'#94a3b8'}}>21 trading days</p>
-            </div>
-          </div>
-          <div ref={wrapRef} id="chart-wrap" style={{border:'1px solid rgba(51,65,85,0.4)',borderRadius:'0.5rem',marginBottom:'0.75rem',background:'rgba(30,41,59,0.6)'}}>
-            <canvas ref={canvasRef} id="equity-canvas" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} />
-          </div>
-          <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'0.5rem',marginBottom:'0.75rem'}}>
-            {[['Best Day','+14.87%','#34d399'],['Worst Day','−5.03%','#f87171'],['Win Rate','62%','#22d3ee']].map(([lbl,val,col])=>(
-              <div key={lbl} style={{border:'1px solid rgba(255,255,255,0.06)',borderRadius:'0.5rem',padding:'0.5rem 0.75rem',background:'rgba(255,255,255,0.03)'}}>
-                <p style={{fontSize:'0.625rem',color:'#94a3b8'}}>{lbl}</p>
-                <p style={{fontSize:'0.875rem',fontWeight:900,color:col}}>{val}</p>
-              </div>
-            ))}
-          </div>
-          <p style={{fontSize:'0.75rem',lineHeight:1.6,color:'#94a3b8'}}>Live F&amp;O challenge using SMC/ICT methodology. <span style={{fontWeight:600,color:'#fff'}}>₹45,788 → ₹66,589</span> across 21 sessions.</p>
-          <div style={{marginTop:'0.75rem',paddingTop:'0.75rem',borderTop:'1px solid rgba(51,65,85,0.3)',display:'flex',flexWrap:'wrap',gap:'0.375rem'}}>
-            <span style={{display:'inline-flex',alignItems:'center',gap:'0.25rem',fontSize:'0.625rem',fontWeight:600,padding:'0.125rem 0.5rem',borderRadius:'9999px',background:'rgba(16,185,129,0.1)',color:'#34d399'}}><i className="ri-line-chart-line" /> SMC/ICT</span>
-            <span style={{display:'inline-flex',alignItems:'center',gap:'0.25rem',fontSize:'0.625rem',fontWeight:600,padding:'0.125rem 0.5rem',borderRadius:'9999px',background:'rgba(34,211,238,0.1)',color:'#22d3ee'}}><i className="ri-calendar-check-line" /> Sep 18 – Oct 17, 2025</span>
-          </div>
-        </div>
-
-        {/* Chairman Award */}
-        <div className={`ach-card fade-up`} style={{animationDelay:'.08s'}}>
+        {content.items.filter(item=>item.enabled).map(item=>{
+        if(item.id==='achievement-0')return (
+ <div key={item.id} className={`ach-card ${styles.tradingCard} fade-up`}>
+  {/* eslint-disable-next-line @next/next/no-img-element */}
+  {item.bannerUrl&&<img src={item.bannerUrl} alt={item.bannerAlt||item.title} className="card-photo" loading="lazy"/>}
+  <div className={styles.tradingHeader}><div className={styles.tradingIdentity}><span className={styles.tradingIcon}><i className="ri-stock-line" aria-hidden="true"/></span><div><p className={styles.tradingEyebrow}>{item.subtitle}{item.period?' · '+item.period:''}</p><h2>{item.title}</h2></div></div><div className={styles.tradingResult}><span>Challenge return</span><strong>+45.46%</strong><small>21 trading sessions</small></div></div>
+  <TradingChart/>
+  <div className={styles.tradingStats}>{[['ri-arrow-right-up-line','Best session','+14.87%',styles.positive],['ri-arrow-right-down-line','Worst session','−5.03%',styles.negative],['ri-focus-3-line','Winning sessions','62%',styles.warm]].map(([icon,label,value,color])=><div key={label}><i className={icon} aria-hidden="true"/><span>{label}</span><strong className={color}>{value}</strong></div>)}</div>
+  <p className={styles.tradingDescription}>{item.detail===achievementSeeds[0].detail?<>Live F&amp;O challenge using SMC/ICT methodology. <strong>₹45,788 → ₹66,589</strong> across 21 sessions.</>:item.detail}</p>
+  <div className={styles.cardFooter}><span style={{background:'rgba(147,201,174,.1)',color:'#acd5bc'}}><i className="ri-line-chart-line" aria-hidden="true"/> SMC/ICT</span><span style={{background:'rgba(217,196,143,.1)',color:'#d9c48f'}}><i className="ri-calendar-check-line" aria-hidden="true"/> Sep 18 – Oct 17, 2025</span>{item.href&&<a href={item.href} target="_blank" rel="noopener noreferrer" className="ext-link" style={{background:'rgba(217,196,143,.1)',color:'#d9c48f'}}><i className="ri-external-link-line" aria-hidden="true"/>{item.linkLabel||'View publication'}</a>}</div>
+ </div>
+        );
+        if(item.id==='achievement-1')return (
+<div key={item.id} className={`ach-card fade-up`} style={{animationDelay:'.08s'}}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="https://res.cloudinary.com/dxsja3wy5/image/upload/w_900,q_auto,f_auto/v1772858929/chairman-award_clz2ft.jpg" alt="Arpit receiving Chairman Award from Archana Puran Singh" className="card-photo" />
-          <div style={{padding:'1.25rem'}}>
+          {item.bannerUrl&&<img src={item.bannerUrl} alt={item.bannerAlt||item.title} className="card-photo" loading="lazy"/>}
+          <div className={styles.cardBody} style={{padding:'1.25rem'}}>
             <div style={{width:'2.5rem',height:'2.5rem',borderRadius:'0.75rem',background:'rgba(245,158,11,0.1)',display:'flex',alignItems:'center',justifyContent:'center',marginBottom:'0.75rem'}}><i className="ri-award-line" style={{fontSize:'1.25rem',color:'#fbbf24'}} /></div>
-            <span style={{fontSize:'0.625rem',fontWeight:700,letterSpacing:'0.18em',textTransform:'uppercase',display:'block',marginBottom:'0.375rem',color:'#fbbf24'}}>Award · Sep 2023</span>
-            <h3 style={{fontSize:'1rem',fontWeight:800,marginBottom:'0.375rem',color:'#fff'}}>Chairman Award</h3>
-            <p style={{fontSize:'0.75rem',lineHeight:1.6,color:'#94a3b8'}}>Presented by actress &amp; TV personality <span style={{fontWeight:600,color:'#fff'}}>Archana Puran Singh</span> at LK Singhania Education Centre's Annual Prize Giving Function for outstanding leadership as Head Boy.</p>
-            <div style={{marginTop:'1rem',paddingTop:'0.75rem',borderTop:'1px solid rgba(51,65,85,0.4)',display:'flex',flexWrap:'wrap',gap:'0.375rem'}}>
-              <span style={{display:'inline-flex',alignItems:'center',gap:'0.25rem',fontSize:'0.625rem',fontWeight:600,padding:'0.125rem 0.5rem',borderRadius:'9999px',background:'rgba(245,158,11,0.1)',color:'#fbbf24'}}><i className="ri-school-line" /> LK Singhania</span>
-              <a href="https://www.facebook.com/share/p/1Mi9xyd8sV/" target="_blank" rel="noopener" className="ext-link" style={{background:'rgba(59,130,246,0.1)',color:'#60a5fa'}}><i className="ri-facebook-circle-fill" /> View Post</a>
+            <span style={{fontSize:'0.75rem',fontWeight:700,letterSpacing:'0.18em',textTransform:'uppercase',display:'block',marginBottom:'0.375rem',color:'#fbbf24'}}>{item.subtitle}{item.period?' · '+item.period:''}</span>
+            <h2 style={{fontSize:'1rem',fontWeight:800,marginBottom:'0.375rem',color:'#fff'}}>{item.title}</h2>
+            <p style={{fontSize:'0.9rem',lineHeight:1.8,color:'#b8b7c4',whiteSpace:'pre-line'}}>{item.detail===achievementSeeds[1].detail?<>Presented by actress &amp; TV personality <span style={{fontWeight:600,color:'#fff'}}>Archana Puran Singh</span> at LK Singhania Education Centre&apos;s Annual Prize Giving Function for outstanding leadership as Head Boy.</>:item.detail}</p>
+            <div className={styles.cardFooter} style={{marginTop:'1rem',paddingTop:'0.75rem',borderTop:'1px solid rgba(51,65,85,0.4)',display:'flex',flexWrap:'wrap',gap:'0.375rem'}}>
+              <span style={{display:'inline-flex',alignItems:'center',gap:'0.25rem',fontSize:'0.75rem',fontWeight:600,padding:'0.125rem 0.5rem',borderRadius:'9999px',background:'rgba(245,158,11,0.1)',color:'#fbbf24'}}><i className="ri-school-line" /> LK Singhania</span>
+              {item.href&&<a href={item.href} target="_blank" rel="noopener noreferrer" className="ext-link" style={{background:'rgba(59,130,246,0.1)',color:'#60a5fa'}}><i className="ri-facebook-circle-fill" /> {item.linkLabel||'View publication'}</a>}
             </div>
           </div>
         </div>
-
-        {/* Bhawanipur Scholar */}
-        <div className={`ach-card fade-up`} style={{animationDelay:'.11s'}}>
+        );
+        if(item.id==='achievement-2')return (
+<div key={item.id} className={`ach-card fade-up`} style={{animationDelay:'.11s'}}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="https://res.cloudinary.com/dxsja3wy5/image/upload/w_900,q_auto,f_auto/v1772858929/bhawanipur-scholar_ylcf0y.jpg" alt="Arpit receiving The Bhawanipur Scholar 2023 award" className="card-photo" />
-          <div style={{padding:'1.25rem'}}>
+          {item.bannerUrl&&<img src={item.bannerUrl} alt={item.bannerAlt||item.title} className="card-photo" loading="lazy"/>}
+          <div className={styles.cardBody} style={{padding:'1.25rem'}}>
             <div style={{width:'2.5rem',height:'2.5rem',borderRadius:'0.75rem',background:'rgba(139,92,246,0.1)',display:'flex',alignItems:'center',justifyContent:'center',marginBottom:'0.75rem'}}><i className="ri-star-line" style={{fontSize:'1.25rem',color:'#a78bfa'}} /></div>
-            <span style={{fontSize:'0.625rem',fontWeight:700,letterSpacing:'0.18em',textTransform:'uppercase',display:'block',marginBottom:'0.375rem',color:'#a78bfa'}}>Scholarship · 2023</span>
-            <h3 style={{fontSize:'1rem',fontWeight:800,marginBottom:'0.375rem',color:'#fff'}}>The Bhawanipur Scholar 2023</h3>
-            <p style={{fontSize:'0.75rem',lineHeight:1.6,color:'#94a3b8'}}>Awarded the <span style={{fontWeight:600,color:'#fff'}}>Bhawanipur Scholar</span> title with a gold medal and merit certificate for exceptional academic performance in BCom (Hons).</p>
-            <div style={{marginTop:'1rem',paddingTop:'0.75rem',borderTop:'1px solid rgba(51,65,85,0.4)',display:'flex',flexWrap:'wrap',gap:'0.375rem'}}>
-              <span style={{display:'inline-flex',alignItems:'center',gap:'0.25rem',fontSize:'0.625rem',fontWeight:600,padding:'0.125rem 0.5rem',borderRadius:'9999px',background:'rgba(139,92,246,0.1)',color:'#a78bfa'}}><i className="ri-graduation-cap-line" /> Bhawanipur College</span>
-              <a href="https://www.thebges.edu.in/wp-content/uploads/2025/01/5.1.2-Additional-information.pdf#page=11" target="_blank" rel="noopener" className="ext-link" style={{background:'rgba(139,92,246,0.1)',color:'#a78bfa'}}><i className="ri-external-link-line" /> Merit List</a>
+            <span style={{fontSize:'0.75rem',fontWeight:700,letterSpacing:'0.18em',textTransform:'uppercase',display:'block',marginBottom:'0.375rem',color:'#a78bfa'}}>{item.subtitle}{item.period?' · '+item.period:''}</span>
+            <h2 style={{fontSize:'1rem',fontWeight:800,marginBottom:'0.375rem',color:'#fff'}}>{item.title}</h2>
+            <p style={{fontSize:'0.9rem',lineHeight:1.8,color:'#b8b7c4',whiteSpace:'pre-line'}}>{item.detail===achievementSeeds[2].detail?<>Awarded the <span style={{fontWeight:600,color:'#fff'}}>Bhawanipur Scholar</span> title with a gold medal and merit certificate for exceptional academic performance in BCom (Hons).</>:item.detail}</p>
+            <div className={styles.cardFooter} style={{marginTop:'1rem',paddingTop:'0.75rem',borderTop:'1px solid rgba(51,65,85,0.4)',display:'flex',flexWrap:'wrap',gap:'0.375rem'}}>
+              <span style={{display:'inline-flex',alignItems:'center',gap:'0.25rem',fontSize:'0.75rem',fontWeight:600,padding:'0.125rem 0.5rem',borderRadius:'9999px',background:'rgba(139,92,246,0.1)',color:'#a78bfa'}}><i className="ri-graduation-cap-line" /> Bhawanipur College</span>
+              {item.href&&<a href={item.href} target="_blank" rel="noopener noreferrer" className="ext-link" style={{background:'rgba(139,92,246,0.1)',color:'#a78bfa'}}><i className="ri-external-link-line" /> {item.linkLabel||'View publication'}</a>}
             </div>
           </div>
         </div>
-
-        {/* Head Boy */}
-        <div className={`ach-card fade-up`} style={{animationDelay:'.14s'}}>
+        );
+        if(item.id==='achievement-3')return (
+<div key={item.id} className={`ach-card fade-up`} style={{animationDelay:'.14s'}}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="https://res.cloudinary.com/dxsja3wy5/image/upload/w_900,q_auto,f_auto/v1772858929/head-boy_exv4ka.jpg" alt="Arpit as Head Boy" className="card-photo" />
-          <div style={{padding:'1.25rem'}}>
+          {item.bannerUrl&&<img src={item.bannerUrl} alt={item.bannerAlt||item.title} className="card-photo" loading="lazy"/>}
+          <div className={styles.cardBody} style={{padding:'1.25rem'}}>
             <div style={{width:'2.5rem',height:'2.5rem',borderRadius:'0.75rem',background:'rgba(16,185,129,0.1)',display:'flex',alignItems:'center',justifyContent:'center',marginBottom:'0.75rem'}}><i className="ri-shield-star-line" style={{fontSize:'1.25rem',color:'#34d399'}} /></div>
-            <span style={{fontSize:'0.625rem',fontWeight:700,letterSpacing:'0.18em',textTransform:'uppercase',display:'block',marginBottom:'0.375rem',color:'#34d399'}}>Leadership · 2022–2023</span>
-            <h3 style={{fontSize:'1rem',fontWeight:800,marginBottom:'0.375rem',color:'#fff'}}>Head Boy of School</h3>
-            <p style={{fontSize:'0.75rem',lineHeight:1.6,color:'#94a3b8'}}>Elected Head Boy of LK Singhania Education Centre, Gotan for 2022–23. Led school-wide initiatives and represented the school at events.</p>
-            <div style={{marginTop:'1rem',paddingTop:'0.75rem',borderTop:'1px solid rgba(51,65,85,0.4)',display:'flex',flexWrap:'wrap',gap:'0.375rem'}}>
-              <span style={{display:'inline-flex',alignItems:'center',gap:'0.25rem',fontSize:'0.625rem',fontWeight:600,padding:'0.125rem 0.5rem',borderRadius:'9999px',background:'rgba(16,185,129,0.1)',color:'#34d399'}}><i className="ri-school-line" /> LK Singhania</span>
-              <a href="https://www.lksec.org/student-council-list.php?year=2022-23" target="_blank" rel="noopener" className="ext-link" style={{background:'rgba(16,185,129,0.1)',color:'#34d399'}}><i className="ri-external-link-line" /> Council List</a>
+            <span style={{fontSize:'0.75rem',fontWeight:700,letterSpacing:'0.18em',textTransform:'uppercase',display:'block',marginBottom:'0.375rem',color:'#34d399'}}>{item.subtitle}{item.period?' · '+item.period:''}</span>
+            <h2 style={{fontSize:'1rem',fontWeight:800,marginBottom:'0.375rem',color:'#fff'}}>{item.title}</h2>
+            <p style={{fontSize:'0.9rem',lineHeight:1.8,color:'#b8b7c4',whiteSpace:'pre-line'}}>{item.detail===achievementSeeds[3].detail?<>Elected Head Boy of LK Singhania Education Centre, Gotan for 2022–23. Led school-wide initiatives and represented the school at events.</>:item.detail}</p>
+            <div className={styles.cardFooter} style={{marginTop:'1rem',paddingTop:'0.75rem',borderTop:'1px solid rgba(51,65,85,0.4)',display:'flex',flexWrap:'wrap',gap:'0.375rem'}}>
+              <span style={{display:'inline-flex',alignItems:'center',gap:'0.25rem',fontSize:'0.75rem',fontWeight:600,padding:'0.125rem 0.5rem',borderRadius:'9999px',background:'rgba(16,185,129,0.1)',color:'#34d399'}}><i className="ri-school-line" /> LK Singhania</span>
+              {item.href&&<a href={item.href} target="_blank" rel="noopener noreferrer" className="ext-link" style={{background:'rgba(16,185,129,0.1)',color:'#34d399'}}><i className="ri-external-link-line" /> {item.linkLabel||'View publication'}</a>}
             </div>
           </div>
         </div>
-
-        {/* IPSC */}
-        <div className={`ach-card fade-up`} style={{animationDelay:'.17s'}}>
+        );
+        if(item.id==='achievement-4')return (
+<div key={item.id} className={`ach-card fade-up`} style={{animationDelay:'.17s'}}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="https://res.cloudinary.com/dxsja3wy5/image/upload/w_900,q_auto,f_auto/v1772858928/ipsc-uiux_ssts9j.jpg" alt="IPSC UI/UX 1st Place" className="card-photo" />
-          <div style={{padding:'1.25rem'}}>
+          {item.bannerUrl&&<img src={item.bannerUrl} alt={item.bannerAlt||item.title} className="card-photo" loading="lazy"/>}
+          <div className={styles.cardBody} style={{padding:'1.25rem'}}>
             <div style={{width:'2.5rem',height:'2.5rem',borderRadius:'0.75rem',background:'rgba(244,114,182,0.1)',display:'flex',alignItems:'center',justifyContent:'center',marginBottom:'0.75rem'}}><i className="ri-trophy-line" style={{fontSize:'1.25rem',color:'#f472b6'}} /></div>
-            <span style={{fontSize:'0.625rem',fontWeight:700,letterSpacing:'0.18em',textTransform:'uppercase',display:'block',marginBottom:'0.375rem',color:'#f472b6'}}>Competition · Jul 2021</span>
-            <h3 style={{fontSize:'1rem',fontWeight:800,marginBottom:'0.375rem',color:'#fff'}}>IPSC UI/UX Design — 1st Place</h3>
-            <p style={{fontSize:'0.75rem',lineHeight:1.6,color:'#94a3b8'}}>Secured <span style={{fontWeight:600,color:'#fff'}}>1st position</span> in Ada Lovelace UI/UX Design at IPSC IT E-Conclave 2021 hosted by BK Birla Centre for Education, Pune.</p>
-            <div style={{marginTop:'1rem',paddingTop:'0.75rem',borderTop:'1px solid rgba(51,65,85,0.4)',display:'flex',flexWrap:'wrap',gap:'0.375rem'}}>
-              <span style={{display:'inline-flex',alignItems:'center',gap:'0.25rem',fontSize:'0.625rem',fontWeight:600,padding:'0.125rem 0.5rem',borderRadius:'9999px',background:'rgba(244,114,182,0.1)',color:'#f472b6'}}><i className="ri-building-line" /> BK Birla, Pune</span>
-              <a href="https://www.figma.com/proto/UbZQ9BYBxX8aFp5ShM1jOv/bornfit?node-id=33-134" target="_blank" rel="noopener" className="ext-link" style={{background:'rgba(139,92,246,0.1)',color:'#a78bfa'}}><i className="ri-artboard-line" /> Prototype</a>
+            <span style={{fontSize:'0.75rem',fontWeight:700,letterSpacing:'0.18em',textTransform:'uppercase',display:'block',marginBottom:'0.375rem',color:'#f472b6'}}>{item.subtitle}{item.period?' · '+item.period:''}</span>
+            <h2 style={{fontSize:'1rem',fontWeight:800,marginBottom:'0.375rem',color:'#fff'}}>{item.title}</h2>
+            <p style={{fontSize:'0.9rem',lineHeight:1.8,color:'#b8b7c4',whiteSpace:'pre-line'}}>{item.detail===achievementSeeds[4].detail?<>Secured <span style={{fontWeight:600,color:'#fff'}}>1st position</span> in Ada Lovelace UI/UX Design at IPSC IT E-Conclave 2021 hosted by BK Birla Centre for Education, Pune.</>:item.detail}</p>
+            <div className={styles.cardFooter} style={{marginTop:'1rem',paddingTop:'0.75rem',borderTop:'1px solid rgba(51,65,85,0.4)',display:'flex',flexWrap:'wrap',gap:'0.375rem'}}>
+              <span style={{display:'inline-flex',alignItems:'center',gap:'0.25rem',fontSize:'0.75rem',fontWeight:600,padding:'0.125rem 0.5rem',borderRadius:'9999px',background:'rgba(244,114,182,0.1)',color:'#f472b6'}}><i className="ri-building-line" /> BK Birla, Pune</span>
+              {item.href&&<a href={item.href} target="_blank" rel="noopener noreferrer" className="ext-link" style={{background:'rgba(139,92,246,0.1)',color:'#a78bfa'}}><i className="ri-artboard-line" /> {item.linkLabel||'View publication'}</a>}
             </div>
           </div>
         </div>
-
-        {/* CA Foundation */}
-        <div className={`ach-card fade-up`} style={{padding:'1.25rem',animationDelay:'.20s'}}>
+        );
+        if(item.id==='achievement-5')return (
+<div key={item.id} className={`ach-card ${styles.simpleCard} fade-up`} style={{padding:'1.25rem',animationDelay:'.20s'}}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          {item.bannerUrl&&<img src={item.bannerUrl} alt={item.bannerAlt||item.title} className="card-photo" loading="lazy"/>}
           <div style={{width:'2.5rem',height:'2.5rem',borderRadius:'0.75rem',background:'rgba(34,211,238,0.1)',display:'flex',alignItems:'center',justifyContent:'center',marginBottom:'1rem'}}><i className="ri-medal-2-line" style={{fontSize:'1.25rem',color:'#22d3ee'}} /></div>
-          <span style={{fontSize:'0.625rem',fontWeight:700,letterSpacing:'0.18em',textTransform:'uppercase',display:'block',marginBottom:'0.5rem',color:'#22d3ee'}}>Certification · Dec 2023</span>
-          <h3 style={{fontSize:'1rem',fontWeight:800,marginBottom:'0.375rem',color:'#fff'}}>CA Foundation Cleared</h3>
-          <p style={{fontSize:'0.75rem',lineHeight:1.6,color:'#94a3b8'}}>Cleared the ICAI CA Foundation exam in December 2023, qualifying to proceed to CA Intermediate.</p>
-          <div style={{marginTop:'1rem',paddingTop:'1rem',borderTop:'1px solid rgba(51,65,85,0.4)'}}>
-            <span style={{display:'inline-flex',alignItems:'center',gap:'0.25rem',fontSize:'0.625rem',fontWeight:600,padding:'0.125rem 0.5rem',borderRadius:'9999px',background:'rgba(34,211,238,0.1)',color:'#22d3ee'}}><i className="ri-building-line" /> ICAI</span>
+          <span style={{fontSize:'0.75rem',fontWeight:700,letterSpacing:'0.18em',textTransform:'uppercase',display:'block',marginBottom:'0.5rem',color:'#22d3ee'}}>{item.subtitle}{item.period?' · '+item.period:''}</span>
+          <h2 style={{fontSize:'1rem',fontWeight:800,marginBottom:'0.375rem',color:'#fff'}}>{item.title}</h2>
+          <p style={{fontSize:'0.9rem',lineHeight:1.8,color:'#b8b7c4',whiteSpace:'pre-line'}}>{item.detail===achievementSeeds[5].detail?<>Cleared the ICAI CA Foundation exam, qualifying to proceed to CA Intermediate.</>:item.detail}</p>
+          <div className={styles.cardFooter} style={{marginTop:'1rem',paddingTop:'1rem',borderTop:'1px solid rgba(51,65,85,0.4)'}}>
+            <span style={{display:'inline-flex',alignItems:'center',gap:'0.25rem',fontSize:'0.75rem',fontWeight:600,padding:'0.125rem 0.5rem',borderRadius:'9999px',background:'rgba(34,211,238,0.1)',color:'#22d3ee'}}><i className="ri-building-line" /> ICAI</span>
           </div>
-        </div>
-
-        {/* IT Club */}
-        <div className={`ach-card fade-up`} style={{padding:'1.25rem',animationDelay:'.23s'}}>
+        {item.href&&<a href={item.href} target="_blank" rel="noopener noreferrer" className="ext-link" style={{background:'rgba(34,211,238,0.1)',color:'#22d3ee',marginTop:'0.75rem'}}><i className="ri-external-link-line"/> {item.linkLabel||'View publication'}</a>}
+</div>
+        );
+        if(item.id==='achievement-6')return (
+<div key={item.id} className={`ach-card ${styles.simpleCard} fade-up`} style={{padding:'1.25rem',animationDelay:'.23s'}}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          {item.bannerUrl&&<img src={item.bannerUrl} alt={item.bannerAlt||item.title} className="card-photo" loading="lazy"/>}
           <div style={{width:'2.5rem',height:'2.5rem',borderRadius:'0.75rem',background:'rgba(59,130,246,0.1)',display:'flex',alignItems:'center',justifyContent:'center',marginBottom:'1rem'}}><i className="ri-computer-line" style={{fontSize:'1.25rem',color:'#60a5fa'}} /></div>
-          <span style={{fontSize:'0.625rem',fontWeight:700,letterSpacing:'0.18em',textTransform:'uppercase',display:'block',marginBottom:'0.5rem',color:'#60a5fa'}}>Milestone · 2022</span>
-          <h3 style={{fontSize:'1rem',fontWeight:800,marginBottom:'0.375rem',color:'#fff'}}>Founded School IT Club</h3>
-          <p style={{fontSize:'0.75rem',lineHeight:1.6,color:'#94a3b8'}}>Founded and led the school's first IT Club — workshops to 40+ students in Photoshop, Figma, Arduino, and coding.</p>
-          <div style={{marginTop:'1rem',paddingTop:'1rem',borderTop:'1px solid rgba(51,65,85,0.4)'}}>
-            <span style={{display:'inline-flex',alignItems:'center',gap:'0.25rem',fontSize:'0.625rem',fontWeight:600,padding:'0.125rem 0.5rem',borderRadius:'9999px',background:'rgba(59,130,246,0.1)',color:'#60a5fa'}}><i className="ri-team-line" /> 40+ Students</span>
+          <span style={{fontSize:'0.75rem',fontWeight:700,letterSpacing:'0.18em',textTransform:'uppercase',display:'block',marginBottom:'0.5rem',color:'#60a5fa'}}>{item.subtitle}{item.period?' · '+item.period:''}</span>
+          <h2 style={{fontSize:'1rem',fontWeight:800,marginBottom:'0.375rem',color:'#fff'}}>{item.title}</h2>
+          <p style={{fontSize:'0.9rem',lineHeight:1.8,color:'#b8b7c4',whiteSpace:'pre-line'}}>{item.detail===achievementSeeds[6].detail?<>Founded and led the school&apos;s first IT Club — workshops to 40+ students in Photoshop, Figma, Arduino, and coding.</>:item.detail}</p>
+          <div className={styles.cardFooter} style={{marginTop:'1rem',paddingTop:'1rem',borderTop:'1px solid rgba(51,65,85,0.4)'}}>
+            <span style={{display:'inline-flex',alignItems:'center',gap:'0.25rem',fontSize:'0.75rem',fontWeight:600,padding:'0.125rem 0.5rem',borderRadius:'9999px',background:'rgba(59,130,246,0.1)',color:'#60a5fa'}}><i className="ri-team-line" /> 40+ Students</span>
           </div>
-        </div>
-
-        {/* Younity */}
-        <div className={`ach-card fade-up`} style={{padding:'1.25rem',animationDelay:'.26s'}}>
+        {item.href&&<a href={item.href} target="_blank" rel="noopener noreferrer" className="ext-link" style={{background:'rgba(34,211,238,0.1)',color:'#22d3ee',marginTop:'0.75rem'}}><i className="ri-external-link-line"/> {item.linkLabel||'View publication'}</a>}
+</div>
+        );
+        if(item.id==='achievement-7')return (
+<div key={item.id} className={`ach-card ${styles.simpleCard} fade-up`} style={{padding:'1.25rem',animationDelay:'.26s'}}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          {item.bannerUrl&&<img src={item.bannerUrl} alt={item.bannerAlt||item.title} className="card-photo" loading="lazy"/>}
           <div style={{width:'2.5rem',height:'2.5rem',borderRadius:'0.75rem',background:'rgba(234,88,12,0.1)',display:'flex',alignItems:'center',justifyContent:'center',marginBottom:'1rem'}}><i className="ri-line-chart-line" style={{fontSize:'1.25rem',color:'#fb923c'}} /></div>
-          <span style={{fontSize:'0.625rem',fontWeight:700,letterSpacing:'0.18em',textTransform:'uppercase',display:'block',marginBottom:'0.5rem',color:'#fb923c'}}>Performance · 2023</span>
-          <h3 style={{fontSize:'1rem',fontWeight:800,marginBottom:'0.375rem',color:'#fff'}}>Top Performer — Younity.in</h3>
-          <p style={{fontSize:'0.75rem',lineHeight:1.6,color:'#94a3b8'}}>Generated ₹10,000+ in revenue within the first month, outperforming 80% of teammates. Contract extended 3 months.</p>
-          <div style={{marginTop:'1rem',paddingTop:'1rem',borderTop:'1px solid rgba(51,65,85,0.4)'}}>
-            <span style={{display:'inline-flex',alignItems:'center',gap:'0.25rem',fontSize:'0.625rem',fontWeight:600,padding:'0.125rem 0.5rem',borderRadius:'9999px',background:'rgba(234,88,12,0.1)',color:'#fb923c'}}><i className="ri-building-2-line" /> Younity.in</span>
+          <span style={{fontSize:'0.75rem',fontWeight:700,letterSpacing:'0.18em',textTransform:'uppercase',display:'block',marginBottom:'0.5rem',color:'#fb923c'}}>{item.subtitle}{item.period?' · '+item.period:''}</span>
+          <h2 style={{fontSize:'1rem',fontWeight:800,marginBottom:'0.375rem',color:'#fff'}}>{item.title}</h2>
+          <p style={{fontSize:'0.9rem',lineHeight:1.8,color:'#b8b7c4',whiteSpace:'pre-line'}}>{item.detail===achievementSeeds[7].detail?<>Generated ₹10,000+ in revenue within the first month, outperforming 80% of teammates. Contract extended 3 months.</>:item.detail}</p>
+          <div className={styles.cardFooter} style={{marginTop:'1rem',paddingTop:'1rem',borderTop:'1px solid rgba(51,65,85,0.4)'}}>
+            <span style={{display:'inline-flex',alignItems:'center',gap:'0.25rem',fontSize:'0.75rem',fontWeight:600,padding:'0.125rem 0.5rem',borderRadius:'9999px',background:'rgba(234,88,12,0.1)',color:'#fb923c'}}><i className="ri-building-2-line" /> Younity.in</span>
           </div>
-        </div>
+        {item.href&&<a href={item.href} target="_blank" rel="noopener noreferrer" className="ext-link" style={{background:'rgba(34,211,238,0.1)',color:'#22d3ee',marginTop:'0.75rem'}}><i className="ri-external-link-line"/> {item.linkLabel||'View publication'}</a>}
+</div>
+        );
+        return <div key={item.id} className="ach-card fade-up">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          {item.bannerUrl&&<img src={item.bannerUrl} alt={item.bannerAlt||item.title} className="card-photo" loading="lazy"/>}
+          <div className={styles.cardBody} style={{padding:'1.25rem'}}>
+            <div style={{width:'2.5rem',height:'2.5rem',borderRadius:'0.75rem',background:'rgba(34,211,238,0.1)',display:'flex',alignItems:'center',justifyContent:'center',marginBottom:'0.75rem'}}><i className={item.icon} style={{fontSize:'1.25rem',color:'#22d3ee'}}/></div>
+            <span style={{fontSize:'0.75rem',fontWeight:700,letterSpacing:'0.18em',textTransform:'uppercase',display:'block',marginBottom:'0.375rem',color:'#22d3ee'}}>{item.subtitle}{item.period?' · '+item.period:''}</span>
+            <h2 style={{fontSize:'1rem',fontWeight:800,marginBottom:'0.375rem',color:'#fff'}}>{item.title}</h2>
+            <p style={{fontSize:'0.9rem',lineHeight:1.8,color:'#b8b7c4',whiteSpace:'pre-line'}}>{item.detail}</p>
+            {item.href&&<a href={item.href} target="_blank" rel="noopener noreferrer" className="ext-link" style={{background:'rgba(34,211,238,0.1)',color:'#22d3ee',marginTop:'0.75rem'}}><i className="ri-external-link-line"/> {item.linkLabel||'View publication'}</a>}
+          </div>
+        </div>;
+        })}
       </div>
     </>
   );

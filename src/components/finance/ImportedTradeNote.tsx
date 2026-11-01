@@ -1,0 +1,3 @@
+import type { Trade } from '@/lib/trade-journal';
+import js from './journal.module.css';
+export default function ImportedTradeNote({trade}:{trade:Trade}){const info=trade.importInfo;if(!info)return null;return <p className={js.muted}>Imported from {info.broker==='zerodha'?'Zerodha':info.broker==='groww'?'Groww':'Dhan'} · {info.account} · {info.mode==='fills'?'FIFO-matched execution units':'Paired trade report'}{info.entryRef?` · Trade IDs ${info.entryRef}${info.exitRef?` → ${info.exitRef}`:''}`:''}{info.dateOnly?' · Date-only: midnight is a grouping placeholder':''}{!info.chargesKnown?' · Missing charges: P&L excludes unreported fees':''}</p>;}

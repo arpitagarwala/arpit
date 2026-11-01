@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/coming-soon', '/api/'],
+        disallow: ['/coming-soon', '/api/', '/admin', '/login', '/games/progress', '/productivity/analysis'],
       },
       {
         userAgent: [
@@ -27,9 +27,10 @@ export default function robots(): MetadataRoute.Robots {
           'FacebookBot',
         ],
         allow: '/',
+        disallow: ['/coming-soon', '/api/', '/admin', '/login', '/games/progress', '/productivity/analysis'],
       },
     ],
-    sitemap: 'https://arpitagarwala.online/sitemap.xml',
-    host: 'https://arpitagarwala.online',
+    sitemap: 'https://arpitagarwala.com/sitemap.xml',
+    host: 'https://arpitagarwala.com',
   };
 }

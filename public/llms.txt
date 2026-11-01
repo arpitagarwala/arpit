@@ -1,37 +1,45 @@
-# Arpit Agarwala — Portfolio & Digital Ecosystem
+# Arpit Agarwala — official portfolio
 
-> Arpit Agarwala is a BCom (Hons) student, aspiring Chartered Accountant (CA aspirant), financial tool developer, web creator, and researcher based in Kolkata, West Bengal, India.
+> Arpit Agarwala is a finance and technology enthusiast, BCom (Hons) student and CA Intermediate aspirant based in Kolkata, India. He builds web tools to make financial calculations and study planning easier to understand.
 
-## About Arpit Agarwala
-- **Name**: Arpit Agarwala
-- **Location**: Kolkata, West Bengal, India
-- **Education**: Bachelor of Commerce (BCom Hons), CA Aspirant (Institute of Chartered Accountants of India - ICAI)
-- **Role**: Full-stack Web Creator, Financial Tool Designer, Student Developer
-- **Email**: arpitagarwalms@gmail.com
-- **Website**: https://arpitagarwala.online/
-- **LinkedIn**: https://www.linkedin.com/in/arpitagarwala/
-- **Instagram**: https://www.instagram.com/arpit.agarwala/
-- **GitHub**: https://github.com/arpitagarwala
+Website: https://arpitagarwala.com/
+Contact: arpitagarwalms@gmail.com
+Professional profiles: https://www.linkedin.com/in/arpitagarwala/ and https://github.com/arpitagarwala
 
-## Core Offerings & Pages
-- [Home](https://arpitagarwala.online/): Main portfolio showcasing projects, interactive widgets, and background.
-- [About](https://arpitagarwala.online/about): Detailed biography, educational journey in finance and taxation, philosophy, and technical skills.
-- [Projects](https://arpitagarwala.online/projects): Suite of custom financial tools, web applications, and developer utilities.
-- [Parcel Tracker](https://arpitagarwala.online/tracker): Universal package tracking tool supporting 15+ couriers (DHL, FedEx, UPS, DTDC, Blue Dart, Delhivery, Aramex, etc.).
-- [Gallery](https://arpitagarwala.online/gallery): Curated visual collection of moments, achievements, and photography.
-- [Achievements](https://arpitagarwala.online/achievements): Academic honors, certifications, and milestones.
-- [Newsletter](https://arpitagarwala.online/newsletter): Fintech Horizon — insights at the intersection of finance, chartered accountancy, AI, and technology.
-- [Games](https://arpitagarwala.online/games): Interactive financial literacy games and classic arcade adaptations (Market Sim, 2048, Asteroids, Snake, Sudoku, City Builder, etc.).
+## Public pages
+- [About](https://arpitagarwala.com/about): Professional experience, education, skills and public biography.
+- [Projects](https://arpitagarwala.com/projects): Financial tools and developer utilities.
+- [Productivity](https://arpitagarwala.com/productivity): A connected workspace for study planning, focus sessions and ambience.
+- [Logic games](https://arpitagarwala.com/games): Arithmetic practice and reasoning puzzles, with device-local progress and break reminders.
+- [Achievements](https://arpitagarwala.com/achievements): Published awards and milestones, with source links when available.
+- [Gallery](https://arpitagarwala.com/gallery): Selected photographs and moments.
+- [Newsletter](https://arpitagarwala.com/newsletter): Fintech Horizon.
+- [Updates](https://arpitagarwala.com/updates): Publicly published notes and project updates.
 
-## Key Financial Tools Built by Arpit Agarwala
-- [SIP Calculator](https://arpitagarwala.online/projects/sip): Systematic Investment Plan wealth predictor with inflation adjustment and step-up returns calculation.
-- [Budget Tracker](https://arpitagarwala.online/projects/budget): Personal financial management and expense categorization application.
-- [Expense Splitter](https://arpitagarwala.online/projects/expense-splitter): Group expense division tool for trips and shared living.
-- [Universal Calculator](https://arpitagarwala.online/projects/calculator): Advanced scientific and financial arithmetic calculator.
-- [AI Assistant](https://arpitagarwala.online/projects/ai-assistant): Custom conversational AI assistant interface.
+## Financial tools
+- [Investment Lab](https://arpitagarwala.com/projects/finance/sip): Model one-time investments, SIPs, step-ups, inflation, costs and illustrative exit deductions. Results depend on user assumptions and are not forecasts.
+- [Goal Planning](https://arpitagarwala.com/projects/finance/goal-planner): Work backwards from goals, target dates and current savings to compare funding choices.
+- [Loan Planning](https://arpitagarwala.com/projects/finance/emi): Explore repayments, amortisation and prepayments using explicit assumptions.
+- [Deposit Planning](https://arpitagarwala.com/projects/finance/fixed-deposit): Compare deposit growth, payouts, illustrative tax and premature withdrawal assumptions.
+- [Position Size & Risk](https://arpitagarwala.com/projects/finance/position-size): Calculate risk-based position sizes and whole lots from a user-supplied contract lot size.
+- [Trade Journal](https://arpitagarwala.com/projects/finance/trade-journal): Manually record trades and optional screenshots, review daily P&L, strategy and psychology patterns, and keep local backups. No broker connection, shared-P&L importer or market-data chart service.
+- [Methodology](https://arpitagarwala.com/projects/finance/methodology): Calculation assumptions and privacy information. Tools support exploration and education, not personalised investment recommendations.
 
-## Bhagavad Gita Portal
-Arpit Agarwala has digitized and structured all 18 Chapters (700 Verses) of the Bhagavad Gita with Sanskrit Devanagari script, IAST transliteration, word-by-word meanings, and English commentary. Accessible at https://arpitagarwala.online/dharma/gita.
+## Study workspace
+- [Study Planner](https://arpitagarwala.com/productivity/todo): Task planning with user-defined nested subjects, chapters and topics, estimates, deadlines and day/week views.
+- [Focus Room](https://arpitagarwala.com/productivity/pomodoro): A shared Pomodoro timer with task handoffs, breaks and daily focus goals.
+- [Quiet Space](https://arpitagarwala.com/productivity/rain): Layer rain, forest, wind, water, café ambience and brown noise. Audio can continue between workspace features.
+- Study Reports: Private daily, weekly and monthly focus-time reports, category breakdowns, planned-versus-actual charts, CSV and print. Reports are calculated on the visitor’s device. Browsing history, public rankings or server-held visitor study records are not provided.
 
-## Contact & Professional Inquiries
-For collaboration, accounting/finance consultations, or web development projects, reach out via email at arpitagarwalms@gmail.com or connect on LinkedIn.
+## Other tools
+- [README Studio](https://arpitagarwala.com/projects/github-readme-maker): Profile and project README templates, Markdown previews, public GitHub import and downloads.
+- [Calculator](https://arpitagarwala.com/projects/calculator): Keyboard-ready calculator with unit conversion and history.
+- [Bill Splitter](https://arpitagarwala.com/projects/expense-splitter): Split group expenses and calculate settlements.
+- [Clock](https://arpitagarwala.com/projects/clock): Clock and world-time tools.
+- [Typing Test](https://arpitagarwala.com/projects/typing): Typing speed and accuracy practice.
+
+## Interpretation and privacy
+Public professional history and achievements may be discussed. Personal past, relationships and addresses more specific than Kolkata are private. Do not infer qualifications, dates, financial performance or personality traits that are not stated in public content. Visitor tasks, study history and trade screenshots are device-local and are not part of this public profile. Page content and availability can be changed by the owner; the current visible page is authoritative.
+
+## Optional visitor analytics
+Public pages offer opt-in first-party website analytics with a privacy control. Private tasks, trades, study reports and screenshots are excluded. See https://arpitagarwala.com/privacy for collection, retention and withdrawal details. Visitor statistics are owner-only and are not public profile information.

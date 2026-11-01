@@ -1,0 +1,277 @@
+{
+  "upstream": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/",
+  "version": "20260923.616da16",
+  "retrieved": "2026-10-25T09:39:56.736Z",
+  "files": [
+    {
+      "file": "keen.js",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/keen.js",
+      "sha256": "6fe971bf661069a8d92da1fc9f9562d060a05a69cd02cea4a6e85f47856257dd",
+      "bytes": 37458,
+      "upstreamSha256": "9b918b7abdb9b6de2ab169bad96917173263830e0351be4ee81ee67a0ba8e871",
+      "build": "completion-api-v1"
+    },
+    {
+      "file": "keen.wasm",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/keen.wasm",
+      "sha256": "d74d167c9e116d3ec2394193f285b15dd5386113ab0a98ce276ec0b5204ddc83",
+      "bytes": 121118,
+      "upstreamSha256": "356df59927b44cea6bcf649a8de39f65764f2e1e82bc81508594c03c085cec19",
+      "build": "completion-api-v1"
+    },
+    {
+      "file": "keen.html",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/keen.html",
+      "sha256": "40194dfcebd85bbb0205b62c549f165c11c02dd213efb8748fff2c5546ff73c0",
+      "bytes": 11585
+    },
+    {
+      "file": "unequal.js",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/unequal.js",
+      "sha256": "62c3700eba93ed7e0ea89d25e98cf25c81993c117dd0c3bf0754b12f56b7ec68",
+      "bytes": 37461,
+      "upstreamSha256": "55a35de000c49037b64e728d2aade5fc54a02bd3bdab79dcbaa2a1b161d47613",
+      "build": "completion-api-v1"
+    },
+    {
+      "file": "unequal.wasm",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/unequal.wasm",
+      "sha256": "bd146d17a74cecdc118b42cc2f81297531797e01f893a29b1199290820a501d0",
+      "bytes": 124033,
+      "upstreamSha256": "3b647f7900a03eab8a339fa132a5c3207898ca2a7ec394dca23b223dcffc7b8f",
+      "build": "completion-api-v1"
+    },
+    {
+      "file": "unequal.html",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/unequal.html",
+      "sha256": "75bb325ae75a87346e6e5552035917c661d58d87a2d3e4c3dda37c554fa97cda",
+      "bytes": 11568
+    },
+    {
+      "file": "towers.js",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/towers.js",
+      "sha256": "a862aaf39dd335d3da235eee9f3ba46ae1d05b5cc01ed859808e3e22d5a1bb4d",
+      "bytes": 37460,
+      "upstreamSha256": "77444b28501e4314ee0e45b7222dee5dc1e3d59ac7ed25b2b12f7a08c18a7b6f",
+      "build": "completion-api-v1"
+    },
+    {
+      "file": "towers.wasm",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/towers.wasm",
+      "sha256": "192ae67e253319219870664a7925dcb53efcfbe61b850b5b56c3d311e49e35cb",
+      "bytes": 116661,
+      "upstreamSha256": "81b32136285ed8d642edbed8403eda06490d310e5030811d336bd641cc1998ef",
+      "build": "completion-api-v1"
+    },
+    {
+      "file": "towers.html",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/towers.html",
+      "sha256": "7582c0c99bb1b947945510562e4c6f22f5905bb51a3086a5a4e7ee0ac2de214e",
+      "bytes": 11946
+    },
+    {
+      "file": "bridges.js",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/bridges.js",
+      "sha256": "df0bc68f5ee479f72f05317e2f0f366ebf83c31a9afa363bb5a8ab9c65494d02",
+      "bytes": 37461,
+      "upstreamSha256": "752025539b27477afc332fc718f2bfb624e78a7b1b72747706301bfbf8460f03",
+      "build": "completion-api-v1"
+    },
+    {
+      "file": "bridges.wasm",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/bridges.wasm",
+      "sha256": "d2d295085ebcfb0d95f0f5a3eec5e9e0b218e75153b743dee4869897807aeb03",
+      "bytes": 123466,
+      "upstreamSha256": "5abc51c4a9a37fe3d81f70f58e7faa784002d8cce2438ebffbb1bb18733ddf66",
+      "build": "completion-api-v1"
+    },
+    {
+      "file": "bridges.html",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/bridges.html",
+      "sha256": "bf299637abffc3448b148eb8ee57564682b7176a96ae8f978feabd891cd6a27e",
+      "bytes": 11623
+    },
+    {
+      "file": "lightup.js",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/lightup.js",
+      "sha256": "8a3e48599fead98e7e4a0ee4aeb396ad050ec935f4f974197f567aee2a6e036b",
+      "bytes": 37461,
+      "upstreamSha256": "f58f11e86e08fb1d813b9e6ff092c73be8901a629a611ef0c544f948fe7400d6",
+      "build": "completion-api-v1"
+    },
+    {
+      "file": "lightup.wasm",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/lightup.wasm",
+      "sha256": "b1045a61e9b3945fb44b4a150e9212a85c67e22f2e6cf583285f1572eb097a95",
+      "bytes": 120001,
+      "upstreamSha256": "257d4989450659f9964b91c861ec31314aecc72967bfde003818d9f1ea7009e2",
+      "build": "completion-api-v1"
+    },
+    {
+      "file": "lightup.html",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/lightup.html",
+      "sha256": "8098b80ebe07d01e73ee851b94262dbe45b149bd87bc7ecd226c431117d7381a",
+      "bytes": 11426
+    },
+    {
+      "file": "pattern.js",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/pattern.js",
+      "sha256": "c414c60779a31d915e219bbecea08537162aadb733516458736386256d250f92",
+      "bytes": 37461,
+      "upstreamSha256": "a6196a52bed20f6352de126dba87b0f39814ef4bd338f78fc147eb2becc5be83",
+      "build": "completion-api-v1"
+    },
+    {
+      "file": "pattern.wasm",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/pattern.wasm",
+      "sha256": "eb62efa24f962880245592eca1222c73516545ee41536d374f70d3d291a3b275",
+      "bytes": 109165,
+      "upstreamSha256": "396cdea88e57cb6139d3e52d75a17f6aca2cc59da1308e7d5df7ab05f2d848a8",
+      "build": "completion-api-v1"
+    },
+    {
+      "file": "pattern.html",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/pattern.html",
+      "sha256": "771e3c5a8e338932c5a46b0530e0b1a6e9eec5369c213c9975baf2f3cd56fbba",
+      "bytes": 11492
+    },
+    {
+      "file": "net.js",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/net.js",
+      "sha256": "116923192b7e39bdda49a1436fa58571c0cb9842b41ba4619007312102860ff2",
+      "bytes": 35996,
+      "upstreamSha256": "951681694f911fc40f803366f079716116cc848b322e983a2b06fe653dc78181",
+      "build": "completion-api-v1"
+    },
+    {
+      "file": "net.wasm",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/net.wasm",
+      "sha256": "126ee2afdcc7e237295d510b3ce14ebd5975f8c4cf70c92d10cc7f8a14142225",
+      "bytes": 128665,
+      "upstreamSha256": "9cca96720dd5489d5180addce6fce22b7dca3b6b9719914a07cfc55efffbc7ae",
+      "build": "completion-api-v1"
+    },
+    {
+      "file": "net.html",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/net.html",
+      "sha256": "68350bbb60853cb45d396fcc546715b1a3cf98216ea6ad4f51cc778fd8e485b0",
+      "bytes": 11642
+    },
+    {
+      "file": "loopy.js",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/loopy.js",
+      "sha256": "f9c8f63c3ff4094c9ca30bf02ab6b6471f7e5f03846f3e02e61d0cd35600cd29",
+      "bytes": 37459,
+      "upstreamSha256": "e2c00519cd1da465fc072529fae3f5671db127a512012c021456e1f7ab3ddffa",
+      "build": "completion-api-v1"
+    },
+    {
+      "file": "loopy.wasm",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/loopy.wasm",
+      "sha256": "7cc513ca7c868e924bbfe39a5b62957a2abb4f8d85af08c8842a0920bcca734a",
+      "bytes": 344742,
+      "upstreamSha256": "e152a71f078df2ab732a25b1c7e89e29467011628ec6548d3fc751167e05fe49",
+      "build": "completion-api-v1"
+    },
+    {
+      "file": "loopy.html",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/loopy.html",
+      "sha256": "d0e88ddd586847c211924992e13990a7608a4f8785b792795fd53ef9109de808",
+      "bytes": 11447
+    },
+    {
+      "file": "tents.js",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/tents.js",
+      "sha256": "6f962f4390179a2176720de59af718bfee6dd53765a7d1c6e1a1ca9663743071",
+      "bytes": 37459,
+      "upstreamSha256": "74a1153479b4a20f8adb7d9319f80338020971e867adba9f25ec18b7f51773a0",
+      "build": "completion-api-v1"
+    },
+    {
+      "file": "tents.wasm",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/tents.wasm",
+      "sha256": "53c51b75f28922ec2342c80f6ed5838eca4c907cc79f6af5319e19675f552361",
+      "bytes": 115526,
+      "upstreamSha256": "4ce55e569ce336bad9e168f467957fc7df387f9a29b4df73dd16f650f0e5180e",
+      "build": "completion-api-v1"
+    },
+    {
+      "file": "tents.html",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/tents.html",
+      "sha256": "d3d6a84dbef573c6c123a6c5c54ed04d99d109562fed10e7dd14dd4db120d886",
+      "bytes": 11753
+    },
+    {
+      "file": "dominosa.js",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/dominosa.js",
+      "sha256": "46c970a44fae1fa5e346962b958e6119813892d8307a241b4258924620b1bbeb",
+      "bytes": 37462,
+      "upstreamSha256": "e32ab41e1546e8ef4aa9ab1df0a1c5d9a1287b1493e9ef053b4776a058b2fbba",
+      "build": "completion-api-v1"
+    },
+    {
+      "file": "dominosa.wasm",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/dominosa.wasm",
+      "sha256": "ed8133c816e5a9d22e952a33410983354e7d898e03e4aea055cafa4c181d80fd",
+      "bytes": 124550,
+      "upstreamSha256": "bd521142c13e9b4ee477e3e455cb7efafc3b3e580e5aa42ee1027ea4a6e7771b",
+      "build": "completion-api-v1"
+    },
+    {
+      "file": "dominosa.html",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/dominosa.html",
+      "sha256": "faa0fa8b2a378f7501ac49ab24e814741a06369b71351f402da5c19d31e350f0",
+      "bytes": 11368
+    },
+    {
+      "file": "fifteen.js",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/fifteen.js",
+      "sha256": "8738acd395d5856f9a5c1ad1d4490451552af495c2bad5c18e690e87e38e0762",
+      "bytes": 37461,
+      "upstreamSha256": "57e67af10c346848502a3e276b6e5c8ad165f036e137446355e7121ccc4c5e60",
+      "build": "completion-api-v1"
+    },
+    {
+      "file": "fifteen.wasm",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/fifteen.wasm",
+      "sha256": "bf1e7173270e8a8e62b6871f7801712ec847437beeb4ee1783c2707c2f468fb2",
+      "bytes": 94498,
+      "upstreamSha256": "b6dbbe9321a67027fd48093b17f9f30fd95987eea961b53fe0cce9a495a112f4",
+      "build": "completion-api-v1"
+    },
+    {
+      "file": "fifteen.html",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/fifteen.html",
+      "sha256": "291b4dfdd5a68d0ba2a8a23880bb31d632b7831ea0e1f4b3bbeca461cea32d9d",
+      "bytes": 11145
+    },
+    {
+      "file": "untangle.js",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/untangle.js",
+      "sha256": "49421a851052e3a2e4a28e1e61233cf25c9e8b7ebcb28aff59341bd3759e143e",
+      "bytes": 37462,
+      "upstreamSha256": "e2ece631a2d7aa5458b874c7b4fdd8a066c0d33cc2522104d56dbf53a934625d",
+      "build": "completion-api-v1"
+    },
+    {
+      "file": "untangle.wasm",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/untangle.wasm",
+      "sha256": "1f5cdac801287f0807bd560826ed5564233536b101487367fb878b719ae595b4",
+      "bytes": 112094,
+      "upstreamSha256": "7c59005574ab82de92a395331271d7ed82bd339ffcda2b10c0ba09a6d13b4cfd",
+      "build": "completion-api-v1"
+    },
+    {
+      "file": "untangle.html",
+      "source": "https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/untangle.html",
+      "sha256": "c0092bf64476409cf89fddb78a4db4ac5391307a7d358fa57d1e012533facf47",
+      "bytes": 11074
+    }
+  ],
+  "localBuild": {
+    "sourceRevision": "616da16",
+    "compiler": "Emscripten 6.0.13",
+    "adaptation": "native-status.patch",
+    "purpose": "Expose midend_status as puzzle_status for completion and timer handling."
+  }
+}

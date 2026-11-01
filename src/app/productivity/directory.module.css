@@ -1,0 +1,9 @@
+main.page{background:radial-gradient(ellipse at 75% 0,#123c4245,transparent 52%),#050f16}
+.focusArt{position:relative;display:grid;place-items:center;width:300px;height:300px;justify-self:center}
+.orbit{position:absolute;inset:16px;border:1px solid #365b5d;border-radius:50%;box-shadow:0 0 65px #448b7710}
+.orbit:before{content:'';position:absolute;inset:25px;border:1px dashed #355657;border-radius:50%}
+.focusCore{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;width:176px;height:176px;border-radius:50%;border:1px solid #466d65;background:radial-gradient(ellipse at 30% 0,#224b45,#10282d);box-shadow:0 14px 55px #0004;color:#b9e5d3}
+.focusCore>i{font-size:33px;color:#9ed3bd}.focusCore strong{font-size:23px;font-weight:500;letter-spacing:-.5px}.focusCore>span{font-size:12px;color:#9ebfbf}
+.marker{position:absolute;display:flex;align-items:center;gap:8px;border:1px solid #3b5a5c;background:#11282e;padding:9px 13px;border-radius:12px;color:#a9cfc5;font-size:12px;box-shadow:0 9px 25px #0003}.marker i{font-size:16px;color:#a1d8bf}.plan{top:15px;left:5px}.calm{top:90px;right:-9px}.reflect{bottom:19px;left:34px}
+@media(max-width:900px){.focusArt{width:250px;height:250px}.focusCore{width:155px;height:155px}.focusCore strong{font-size:21px}.orbit{inset:10px}.calm{right:-4px}.reflect{bottom:6px}}
+@media(max-width:580px){.focusArt{display:none}}

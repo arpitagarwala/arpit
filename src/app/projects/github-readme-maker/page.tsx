@@ -1,10 +1,8 @@
+import {pageMetadata} from '@/lib/page-metadata';
 import ReadmeClient from './ReadmeClient';
+export const metadata = pageMetadata("/projects/github-readme-maker", {
+  title: 'README Studio | Arpit Agarwala',
+  description: 'Build GitHub profile and project READMEs with templates, public GitHub import, safe previews, reusable drafts, and Markdown downloads.',
+});
+export default function ReadmePage() { return <ReadmeClient />; }
 
-export const metadata = {
-  title: 'GitHub Profile Automator | Arpit Agarwala',
-  description: 'Generate an awesome GitHub Profile README easily.',
-};
-
-export default function ReadmePage() {
-  return <ReadmeClient />;
-}

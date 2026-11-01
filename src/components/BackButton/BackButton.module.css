@@ -7,8 +7,15 @@
 }
 
 .btn {
-  width: 2.5rem;
   height: 2.5rem;
+  width: 2.5rem;
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  padding: 0;
+  gap: 0.5rem;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -16,13 +23,17 @@
   background: rgba(30,41,59,0.5);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(148,163,184,0.2);
-  color: #fff;
+  color: #cbd5e1;
   font-size: 1.125rem;
+  font-weight: 600;
+  font-family: inherit;
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
   transition: background 0.15s, transform 0.15s;
 }
 
 .btn:hover {
+  color: #22d3ee;
+  border-color: rgba(34,211,238,0.5);
   background: rgba(30,41,59,0.8);
   transform: scale(1.05);
 }
@@ -30,3 +41,10 @@
 .btn:active {
   transform: scale(0.95);
 }
+
+.btn:focus-visible {
+  outline: 2px solid #22d3ee;
+  outline-offset: 4px;
+}
+
+@media print{.wrap{display:none}}

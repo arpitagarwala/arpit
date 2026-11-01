@@ -1,0 +1,21 @@
+Quiet Space sound recordings
+
+Rain — alex36917, edited for Blanket by Porrumentzio.
+Source: https://freesound.org/people/alex36917/sounds/524605/
+License: Creative Commons Attribution 4.0 https://creativecommons.org/licenses/by/4.0/
+
+Forest (Birds) — kvgarlic, edited by Porrumentzio. CC0.
+https://freesound.org/people/kvgarlic/sounds/156826/
+Wind — felix.blume, edited by Porrumentzio. CC0.
+https://freesound.org/people/felix.blume/sounds/217506/
+Flowing water (Stream) — gluckose. CC0.
+https://freesound.org/people/gluckose/sounds/333987/
+CC0: https://creativecommons.org/publicdomain/zero/1.0/
+Café (Restaurant Ambiance) — stephan. Public Domain.
+https://soundbible.com/1664-Restaurant-Ambiance.html
+
+Audio assets obtained from Blanket's sound collection. No Blanket application code is used.
+https://github.com/rafaelmardojai/blanket/blob/master/SOUNDS_LICENSING.md
+Source files are unchanged. Quiet Space applies gain, a limiter and loop-seam crossfades during playback.
+Brown noise and the optional ending chime are generated in the browser by Quiet Space.
+See manifest.json for pinned sources and checksums.

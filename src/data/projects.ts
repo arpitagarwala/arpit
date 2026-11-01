@@ -1,3 +1,5 @@
+import { TOOLS, type Category } from '../lib/finance.ts';
+
 export interface Project {
   href: string;
   title: string;
@@ -7,9 +9,10 @@ export interface Project {
   category: string;
   featured: boolean;
   tags: string[];
+  financeCategory?: Category;
 }
 
-export const PROJECTS: Project[] = [
+const ORIGINAL_PROJECTS: Project[] = [
   {
     href: '/projects/ai-assistant',
     title: "Arpit's AI Avatar",
@@ -43,7 +46,7 @@ export const PROJECTS: Project[] = [
   {
     href: '/projects/clock',
     title: 'Clock',
-    sub: 'Digital + analog world clock',
+    sub: 'Your time, beautifully in sync',
     icon: 'ri-time-line',
     gradient: 'from-slate-500 to-slate-700',
     category: 'Utility',
@@ -51,64 +54,14 @@ export const PROJECTS: Project[] = [
     tags: ['Real-time', 'Analog', 'World Clocks'],
   },
   {
-    href: '/projects/network',
-    title: 'Neural Network',
-    sub: '3D particle system (WebGL)',
-    icon: 'ri-shape-2-fill',
-    gradient: 'from-slate-700 to-slate-900',
-    category: 'Utility',
-    featured: true,
-    tags: ['Three.js', 'WebGL', 'Physics'],
-  },
-  {
-    href: '/projects/notepad',
-    title: 'Notepad',
-    sub: 'Private auto-saving notes',
-    icon: 'ri-sticky-note-line',
-    gradient: 'from-yellow-500 to-amber-500',
-    category: 'Utility',
-    featured: false,
-    tags: ['Privacy', 'Auto-save', 'Local Storage'],
-  },
-  {
-    href: '/projects/pathfinder',
-    title: 'Pathfinder',
-    sub: 'A* & Dijkstra visualizer',
-    icon: 'ri-route-line',
-    gradient: 'from-indigo-500 to-purple-600',
-    category: 'Utility',
-    featured: true,
-    tags: ['Algorithms', 'DSA', 'Visualizer'],
-  },
-  {
-    href: '/projects/pomodoro',
-    title: 'Pomodoro',
-    sub: 'Focus timer with XP & ranks',
-    icon: 'ri-fire-fill',
-    gradient: 'from-purple-500 to-indigo-600',
-    category: 'Utility',
-    featured: false,
-    tags: ['Productivity', 'Gamification', 'RPG'],
-  },
-  {
     href: '/projects/github-readme-maker',
-    title: 'README Maker',
-    sub: 'Auto-generate GitHub READMEs',
+    title: 'README Studio',
+    sub: 'Profiles, project guides & reusable drafts',
     icon: 'ri-github-fill',
     gradient: 'from-gray-700 to-gray-900',
     category: 'Utility',
     featured: false,
-    tags: ['Automation', 'Markdown', 'GitHub'],
-  },
-  {
-    href: '/projects/sip',
-    title: 'SIP Calculator',
-    sub: 'Mutual fund growth simulator',
-    icon: 'ri-line-chart-line',
-    gradient: 'from-cyan-500 to-blue-600',
-    category: 'Finance',
-    featured: true,
-    tags: ['Chart.js', 'Investing', 'Compound Interest'],
+    tags: ['Profile & Project', 'Markdown', 'GitHub Import'],
   },
   {
     href: '/projects/typing',
@@ -120,4 +73,29 @@ export const PROJECTS: Project[] = [
     featured: true,
     tags: ['Educational', 'Skill', 'WPM'],
   },
+];
+
+const FINANCE_ICONS: Record<string, string> = {
+  sip: 'ri-line-chart-line',
+  'compound-growth': 'ri-funds-line',
+  'goal-planner': 'ri-focus-3-line',
+  emi: 'ri-home-4-line',
+  'fixed-deposit': 'ri-bank-line',
+  'trade-journal': 'ri-book-open-line',
+  'position-size': 'ri-shield-check-line',
+};
+
+export const PROJECTS: Project[] = [
+  ...ORIGINAL_PROJECTS,
+  ...TOOLS.filter(tool => tool.slug !== 'compound-growth').map(tool => ({
+    href: `/projects/finance/${tool.slug}`,
+    title: tool.title,
+    sub: tool.description,
+    icon: FINANCE_ICONS[tool.slug] ?? 'ri-calculator-line',
+    gradient: tool.category === 'Capital markets' ? 'from-indigo-500 to-purple-600' : 'from-cyan-500 to-blue-600',
+    category: 'Finance',
+    financeCategory: tool.category,
+    featured: true,
+    tags: tool.slug === 'sip' ? ['Lumpsum', 'SIP', 'Step-up', 'Investment Planning', 'CSV Export'] : tool.slug === 'trade-journal' ? ['Trade Journal', 'Trading Psychology', 'Strategy Review', 'JSON Backup', 'CSV Export'] : tool.slug === 'position-size' ? ['Lot Size', 'Risk Management', 'Position Sizing', 'Trading'] : [tool.category, 'Calculator', 'CSV Export'],
+  })),
 ];

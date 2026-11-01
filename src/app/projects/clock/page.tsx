@@ -1,10 +1,13 @@
+import {pageMetadata} from '@/lib/page-metadata';
 import ClockClient from './ClockClient';
 
-export const metadata = {
+export const metadata = pageMetadata("/projects/clock", {
   title: 'Live Clock | Arpit Agarwala',
-  description: 'Digital and analog world clock with night indicator and customizable settings.',
-};
+  description: 'A calm digital and analog clock with selectable timezones, six world clocks, a quiet view, and saved display preferences.',
+});
 
 export default function ClockPage() {
   return <ClockClient />;
 }
+
+

@@ -2,6 +2,12 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.header { margin-bottom:32px; }
+.header h1 { font-size:clamp(36px,5vw,52px); font-weight:750; letter-spacing:-1.6px; line-height:1.15; margin:12px 0; }
+.header h1 span { color:#e5c293; }
+.header p { color:#c5bcb0; font-size:16px; line-height:1.7; }
+.header .eyebrow { color:#d2ad7e; font-size:12px; letter-spacing:2px; font-weight:650; }
+
 .appCard:hover {
   transform: translateY(-2px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
@@ -49,11 +55,11 @@
 }
 
 .glowCyan {
-  box-shadow: 0 0 24px rgba(6, 182, 212, 0.18);
+  box-shadow: 0 0 24px rgba(202, 159, 101, 0.18);
 }
 
 .personCheck {
-  accent-color: #06b6d4;
+  accent-color: #ca9f65;
   width: 1.1rem;
   height: 1.1rem;
   cursor: pointer;
@@ -61,28 +67,29 @@
 
 .tabBtn {
   transition: all 0.2s;
-  color: #94a3b8;
+  color: #c8995d;
 }
 
 :global(.dark) .tabBtn {
-  color: #64748b;
+  color: #847054;
 }
 
 .tabBtnActive {
-  background: #06b6d4;
+  background: #ca9f65;
   color: #fff !important;
 }
 
 .settleArrow {
-  color: #06b6d4;
+  color: #ca9f65;
 }
 
 /* Person avatar colors */
-.av0 { background: linear-gradient(135deg, #06b6d4, #3b82f6); }
-.av1 { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
-.av2 { background: linear-gradient(135deg, #10b981, #06b6d4); }
-.av3 { background: linear-gradient(135deg, #f59e0b, #f97316); }
+.av0 { background: linear-gradient(135deg, #ca9f65, #ad7b3b); }
+.av1 { background: linear-gradient(135deg, #8e785b, #ec4899); }
+.av2 { background: linear-gradient(135deg, #c89a5f, #ca9f65); }
+.av3 { background: linear-gradient(135deg, #d1aa78, #f97316); }
 .av4 { background: linear-gradient(135deg, #ef4444, #f43f5e); }
-.av5 { background: linear-gradient(135deg, #a78bfa, #6366f1); }
-.av6 { background: linear-gradient(135deg, #34d399, #10b981); }
-.av7 { background: linear-gradient(135deg, #fbbf24, #f59e0b); }
+.av5 { background: linear-gradient(135deg, #c49454, #897458); }
+.av6 { background: linear-gradient(135deg, #d7b68a, #c89a5f); }
+.av7 { background: linear-gradient(135deg, #dfc5a2, #d1aa78); }
+

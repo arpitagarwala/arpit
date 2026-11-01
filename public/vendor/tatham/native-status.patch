@@ -1,0 +1,57 @@
+diff --git a/cmake/platforms/emscripten.cmake b/cmake/platforms/emscripten.cmake
+index f168607..a40a58b 100644
+--- a/cmake/platforms/emscripten.cmake
++++ b/cmake/platforms/emscripten.cmake
+@@ -29,6 +29,7 @@ if(NOT HALIBUT)
+ endif()
+ 
+ set(emcc_export_list
++  _puzzle_status
+   # Event handlers for mouse and keyboard input
+   _mouseup
+   _mousedown
+@@ -61,14 +62,12 @@ set(emcc_export_list
+   # Main program, run at initialisation time
+   _main)
+ 
+-list(TRANSFORM emcc_export_list PREPEND \")
+-list(TRANSFORM emcc_export_list APPEND \")
+ string(JOIN "," emcc_export_string ${emcc_export_list})
+ set(CMAKE_C_LINK_FLAGS "\
+ -s ALLOW_MEMORY_GROWTH=1 \
+ -s ENVIRONMENT=web \
+--s EXPORTED_FUNCTIONS='[${emcc_export_string}]' \
+--s EXPORTED_RUNTIME_METHODS='[cwrap]' \
++-sEXPORTED_FUNCTIONS=${emcc_export_string} \
++-sEXPORTED_RUNTIME_METHODS=cwrap \
+ -s MIN_FIREFOX_VERSION=${MIN_FIREFOX_VERSION} \
+ -s MIN_SAFARI_VERSION=${MIN_SAFARI_VERSION} \
+ -s MIN_CHROME_VERSION=${MIN_CHROME_VERSION} \
+diff --git a/emcc.c b/emcc.c
+index ae90f3c..65e50a5 100644
+--- a/emcc.c
++++ b/emcc.c
+@@ -191,6 +191,9 @@ static int strnullcmp(const char *a, const char *b)
+  */
+ static midend *me;
+ 
++/* Portfolio adapter: authoritative completion, without inspecting pixels or guessing moves. */
++int puzzle_status(void) { return me ? midend_status(me) : 0; }
++
+ /* ----------------------------------------------------------------------
+  * Timing functions.
+  */
+diff --git a/emccpre.js b/emccpre.js
+index dc3b367..f2e0c2d 100644
+--- a/emccpre.js
++++ b/emccpre.js
+@@ -839,7 +839,8 @@ function post_init() {
+     var apology = document.getElementById("apology");
+     if (apology !== null) apology.style.display = "none";
+     document.getElementById("puzzle").style.display = "";
++    rescale_puzzle(); // The preferred canvas size is only valid after visibility.
+ 
+     // Default to giving keyboard focus to the puzzle.
+-    onscreen_canvas.focus();
++    onscreen_canvas.focus({preventScroll: true});
+ }

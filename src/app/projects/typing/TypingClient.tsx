@@ -170,27 +170,27 @@ export default function TypingClient() {
     }
   };
 
-  if (!isClient) return <div className="min-h-screen bg-[#2D3748]"></div>;
+  if (!isClient) return <div className="min-h-screen bg-[#100f0e]"></div>;
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-[#2D3748] text-[#E2E8F0]" onClick={handleDocumentClick}>
+    <div className="min-h-screen flex items-center justify-center p-6 bg-[#100f0e] text-[#f1e6d7]" onClick={handleDocumentClick}>
       <BackButton />
 
       <div className="max-w-4xl w-full flex flex-col items-center">
         
         {/* Top Stats */}
-        <div className={`w-full flex justify-between items-center mb-8 ${styles.glass} rounded-2xl px-6 py-4 shadow-xl border border-slate-700`}>
+        <div className={`w-full flex flex-col sm:flex-row gap-5 justify-between items-center mb-8 ${styles.glass} rounded-2xl px-6 py-4 shadow-xl border border-stone-700`}>
           <div className="flex items-center gap-3">
-            <i className="ri-keyboard-line text-3xl text-cyan-400"></i>
+            <i className="ri-keyboard-line text-3xl text-[#e5c293]"></i>
             <h1 className="text-2xl font-black tracking-widest uppercase text-white">TypeRush</h1>
           </div>
-          <div className="flex gap-8 text-center">
+          <div className="flex w-full sm:w-auto justify-between gap-8 text-center">
             <div>
-              <div className="text-[10px] font-bold tracking-widest text-slate-400 uppercase">Time Left</div>
-              <div className="text-3xl font-mono text-cyan-400 font-extrabold">{time}s</div>
+              <div className="text-[14px] font-bold tracking-widest text-stone-300 uppercase">Time Left</div>
+              <div className="text-3xl font-mono text-[#e5c293] font-extrabold">{time}s</div>
             </div>
             <div>
-              <div className="text-[10px] font-bold tracking-widest text-slate-400 uppercase">WPM</div>
+              <div className="text-[14px] font-bold tracking-widest text-stone-300 uppercase">WPM</div>
               <div className="text-3xl font-mono text-white font-extrabold">{wpm}</div>
             </div>
           </div>
@@ -257,7 +257,7 @@ export default function TypingClient() {
         {!isPlaying && !showResults && (
           <button 
             onClick={startGame}
-            className={`bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-black px-12 py-4 rounded-full text-xl uppercase tracking-widest shadow-[0_0_30px_rgba(6,182,212,0.4)] transition-all active:scale-95 ${styles.pulseCyan}`}
+            className={`bg-[#e5c293] hover:bg-[#efd6b5] text-stone-900 font-black px-12 py-4 rounded-full text-xl uppercase tracking-widest shadow-[0_0_30px_rgba(202,159,101,0.4)] transition-all active:scale-95 ${styles.pulseCyan}`}
           >
             Start Typing
           </button>
@@ -265,22 +265,22 @@ export default function TypingClient() {
 
         {/* Results Modal */}
         {showResults && (
-          <div className="absolute inset-0 z-50 bg-slate-900/90 backdrop-blur-md flex items-center justify-center">
-            <div className={`${styles.glass} p-10 rounded-3xl max-w-sm w-full text-center border-t-4 border-cyan-400 shadow-2xl`}>
-              <h2 className="text-3xl font-black mb-6 uppercase tracking-widest text-cyan-400">Time's Up!</h2>
+          <div className="absolute inset-0 z-50 bg-stone-900/90 backdrop-blur-md flex items-center justify-center">
+            <div className={`${styles.glass} p-10 rounded-3xl max-w-sm w-full text-center border-t-4 border-amber-400 shadow-2xl`}>
+              <h2 className="text-3xl font-black mb-6 uppercase tracking-widest text-[#e5c293]">Time's Up!</h2>
               <div className="grid grid-cols-2 gap-4 mb-8">
-                <div className="bg-slate-800 p-4 rounded-2xl">
-                  <div className="text-xs font-bold tracking-widest text-slate-400 uppercase mb-1">Final WPM</div>
+                <div className="bg-stone-800 p-4 rounded-2xl">
+                  <div className="text-sm font-bold tracking-widest text-stone-300 uppercase mb-1">Final WPM</div>
                   <div className="text-4xl font-mono font-extrabold text-white">{finalWpm}</div>
                 </div>
-                <div className="bg-slate-800 p-4 rounded-2xl">
-                  <div className="text-xs font-bold tracking-widest text-slate-400 uppercase mb-1">Accuracy</div>
+                <div className="bg-stone-800 p-4 rounded-2xl">
+                  <div className="text-sm font-bold tracking-widest text-stone-300 uppercase mb-1">Accuracy</div>
                   <div className="text-4xl font-mono font-extrabold text-white">{finalAcc}%</div>
                 </div>
               </div>
               <button 
                 onClick={resetGame}
-                className="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-xl border border-slate-600 transition-colors uppercase tracking-widest text-sm flex items-center justify-center gap-2"
+                className="w-full bg-stone-800 hover:bg-stone-700 text-white font-bold py-3 rounded-xl border border-stone-600 transition-colors uppercase tracking-widest text-base flex items-center justify-center gap-2"
               >
                 <i className="ri-refresh-line"></i> Play Again
               </button>
@@ -292,3 +292,4 @@ export default function TypingClient() {
     </div>
   );
 }
+

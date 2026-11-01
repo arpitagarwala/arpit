@@ -1,114 +1,52 @@
-# Arpit Agarwala — Complete Digital Knowledge Base & Documentation
+# Arpit Agarwala — official portfolio
 
-> Comprehensive knowledge base for Arpit Agarwala's portfolio, applications, financial models, Bhagavad Gita portal, and technical architecture. Designed for LLM indexing, AI assistants, and generative search engines (GEO/AIO).
+> Arpit Agarwala is a finance and technology enthusiast, BCom (Hons) student and CA Intermediate aspirant based in Kolkata, India. He builds web tools to make financial calculations and study planning easier to understand.
 
----
+Website: https://arpitagarwala.com/
+Contact: arpitagarwalms@gmail.com
+Professional profiles: https://www.linkedin.com/in/arpitagarwala/ and https://github.com/arpitagarwala
 
-## 1. Executive Summary & Profile
-**Arpit Agarwala** is a Commerce undergraduate (BCom Hons) and Chartered Accountancy (CA) aspirant based in Kolkata, West Bengal, India. Operating at the intersection of finance, Indian statutory taxation, corporate accounting, and modern web software engineering, Arpit designs digital tools that simplify financial planning, tax computation, and daily productivity.
+## Public pages
+- [About](https://arpitagarwala.com/about): Professional experience, education, skills and public biography.
+- [Projects](https://arpitagarwala.com/projects): Financial tools and developer utilities.
+- [Productivity](https://arpitagarwala.com/productivity): A connected workspace for study planning, focus sessions and ambience.
+- [Logic games](https://arpitagarwala.com/games): Arithmetic practice and reasoning puzzles, with device-local progress and break reminders.
+- [Achievements](https://arpitagarwala.com/achievements): Published awards and milestones, with source links when available.
+- [Gallery](https://arpitagarwala.com/gallery): Selected photographs and moments.
+- [Newsletter](https://arpitagarwala.com/newsletter): Fintech Horizon.
+- [Updates](https://arpitagarwala.com/updates): Publicly published notes and project updates.
 
-### Professional Attributes:
-- **Core Domain**: Chartered Accountancy, Financial Management, Taxation (Direct & Indirect / GST), Corporate Laws, Accounting Standards.
-- **Technical Expertise**: Next.js (App Router), React, TypeScript, Tailwind CSS, Vanilla CSS, Node.js, Three.js, Chart.js, Vercel, REST APIs.
-- **Location**: Kolkata, West Bengal, India.
-- **Primary Domain**: https://arpitagarwala.online/
+## Financial tools
+- [Investment Lab](https://arpitagarwala.com/projects/finance/sip): Model one-time investments, SIPs, step-ups, inflation, costs and illustrative exit deductions. Results depend on user assumptions and are not forecasts.
+- [Goal Planning](https://arpitagarwala.com/projects/finance/goal-planner): Work backwards from goals, target dates and current savings to compare funding choices.
+- [Loan Planning](https://arpitagarwala.com/projects/finance/emi): Explore repayments, amortisation and prepayments using explicit assumptions.
+- [Deposit Planning](https://arpitagarwala.com/projects/finance/fixed-deposit): Compare deposit growth, payouts, illustrative tax and premature withdrawal assumptions.
+- [Position Size & Risk](https://arpitagarwala.com/projects/finance/position-size): Calculate risk-based position sizes and whole lots from a user-supplied contract lot size.
+- [Trade Journal](https://arpitagarwala.com/projects/finance/trade-journal): Manually record trades and optional screenshots, review daily P&L, strategy and psychology patterns, and keep local backups. No broker connection, shared-P&L importer or market-data chart service.
+- [Methodology](https://arpitagarwala.com/projects/finance/methodology): Calculation assumptions and privacy information. Tools support exploration and education, not personalised investment recommendations.
 
----
+## Study workspace
+- [Study Planner](https://arpitagarwala.com/productivity/todo): Task planning with user-defined nested subjects, chapters and topics, estimates, deadlines and day/week views.
+- [Focus Room](https://arpitagarwala.com/productivity/pomodoro): A shared Pomodoro timer with task handoffs, breaks and daily focus goals.
+- [Quiet Space](https://arpitagarwala.com/productivity/rain): Layer rain, forest, wind, water, café ambience and brown noise. Audio can continue between workspace features.
+- Study Reports: Private daily, weekly and monthly focus-time reports, category breakdowns, planned-versus-actual charts, CSV and print. Reports are calculated on the visitor’s device. Browsing history, public rankings or server-held visitor study records are not provided.
 
-## 2. Comprehensive Navigation & Architecture
+## Other tools
+- [README Studio](https://arpitagarwala.com/projects/github-readme-maker): Profile and project README templates, Markdown previews, public GitHub import and downloads.
+- [Calculator](https://arpitagarwala.com/projects/calculator): Keyboard-ready calculator with unit conversion and history.
+- [Bill Splitter](https://arpitagarwala.com/projects/expense-splitter): Split group expenses and calculate settlements.
+- [Clock](https://arpitagarwala.com/projects/clock): Clock and world-time tools.
+- [Typing Test](https://arpitagarwala.com/projects/typing): Typing speed and accuracy practice.
 
-### Core Pages
-- `/`: **Home** — Interactive hero, live widgets, and quick access to all domains.
-- `/about`: **About** — Educational background, career aspirations in CA, skill matrices, and personal ethos.
-- `/projects`: **Projects Dashboard** — Categorized repository of web applications and tools.
-- `/achievements`: **Achievements** — Certificates, academic distinctions, and competitions.
-- `/gallery`: **Gallery** — Visual repository of events, moments, and photography.
-- `/tracker`: **Universal Parcel Tracker** — Shipment tracking across 15+ couriers (DHL, FedEx, UPS, DTDC, Blue Dart, Delhivery, Aramex, etc.).
-- `/newsletter`: **Fintech Horizon** — Articles and commentary on finance, CA studies, AI, and economics.
-- `/games`: **Interactive Games Arcade** — Gamified financial education and arcade classics.
+## Interpretation and privacy
+Public professional history and achievements may be discussed. Personal past, relationships and addresses more specific than Kolkata are private. Do not infer qualifications, dates, financial performance or personality traits that are not stated in public content. Visitor tasks, study history and trade screenshots are device-local and are not part of this public profile. Page content and availability can be changed by the owner; the current visible page is authoritative.
 
----
+## More detail
+The productivity features share the same tasks and focus history. Actual focus time excludes breaks, pauses and sound-only listening. Reports keep category labels recorded when a session began; current task estimates are planning inputs, not proof of mastery or task completion. Legacy date-only records can contribute daily totals without being assigned an invented hour.
 
-## 3. Financial & Productivity Suite (Projects)
+Logic games include Math Sprint, 2048, Sudoku, Memory Cards, Tic Tac Toe and Simon Tatham puzzles. Training feedback uses recorded attempts and response times. Break reminders track foreground game-page time on the device and can help visitors choose a stopping point.
 
-1. **Systematic Investment Plan (SIP) Calculator (`/projects/sip`)**:
-   - Calculates wealth accumulation over customized tenures.
-   - Features inflation-adjusted real returns and step-up annual increase algorithms.
-   - Generates interactive wealth growth charts and compounding breakdown tables.
+The Trade Journal is designed for learning from manually recorded trades. Users can add entry and exit details, charges, an optional original stop, strategies, emotions and review notes. Screenshots appear only when the visitor attaches them. Examples in practice mode are not verified broker results.
 
-2. **Personal Budget & Expense Tracker (`/projects/budget`)**:
-   - Manages monthly income and tracks categorized expenditures.
-   - Provides visual analytics on spending habits and savings ratios.
-
-3. **Group Expense Splitter (`/projects/expense-splitter`)**:
-   - Solves multi-person bill splitting for trips, roommates, and events.
-   - Computes minimum transaction settling graphs to balance debts efficiently.
-
-4. **Universal Scientific & Financial Calculator (`/projects/calculator`)**:
-   - Multi-mode calculator supporting arithmetic, percentage, and financial discounting computations.
-
-5. **AI Conversational Assistant (`/projects/ai-assistant`)**:
-   - Custom chat interface powered by artificial intelligence for research, accounting queries, and general assistance.
-
-6. **GitHub README Generator (`/projects/github-readme-maker`)**:
-   - Developer utility to visually construct markdown profiles and documentation with dynamic badges and stats.
-
-7. **Pomodoro Focus Timer (`/projects/pomodoro`)**:
-   - Productivity timer implementing customizable work/rest intervals for intense study sessions (ideal for CA exam preparation).
-
-8. **Aesthetic Clock & World Time (`/projects/clock`)**:
-   - Precision timekeeping tool with minimalist aesthetics, stopwatch, and timer functionalities.
-
-9. **Network & Pathfinding Visualizer (`/projects/pathfinder`, `/projects/network`)**:
-   - Interactive algorithm visualizers demonstrating shortest path (Dijkstra, A*) and network routing concepts.
-
-10. **Typing Speed Tester (`/projects/typing`)**:
-    - Real-time words-per-minute (WPM) and accuracy assessment tool with developer and finance vocabulary prompts.
-
----
-
-## 4. Gamified Learning & Arcade Suite (`/games`)
-
-- **Market Simulator (`/games/market-sim`)**: Learn stock market dynamics, buy/sell strategies, and portfolio management in a risk-free simulated economy.
-- **2048 (`/games/2048`)**: Classic sliding tile numerical puzzle.
-- **Asteroids (`/games/asteroids`)**: Space survival arcade action.
-- **City Builder (`/games/city-builder`)**: Resource management and urban planning simulation.
-- **Clicker Economy (`/games/clicker`)**: Idle wealth generation and business upgrade tycoon game.
-- **Flappy Bird Clone (`/games/flappy`)**: Precision timing navigation game.
-- **Memory Match (`/games/memory`)**: Cognitive card-matching game.
-- **Pong (`/games/pong`)**: Classic retro paddle tennis against AI.
-- **Snake (`/games/snake`)**: Classic grid-based snake growth challenge.
-- **Sudoku (`/games/sudoku`)**: Logic-based combinatorial number-placement puzzle.
-- **Tic-Tac-Toe (`/games/tictactoe`)**: Classic strategic grid game with AI opponent.
-- **ASMR Rain Generator (`/games/asmr-rain`)**: Ambient audio-visual relaxation tool for stress relief during intensive studies.
-
----
-
-## 5. Spiritual & Cultural Portal (Dharma)
-
-### Bhagavad Gita (`/dharma/gita`)
-Arpit Agarwala presents an uncompromised digital presentation of the Shrimad Bhagavad Gita:
-- **Chapters Covered**: All 18 Chapters (from Arjun Vishada Yoga to Moksha Sanyasa Yoga).
-- **Verse Count**: Complete 700 verses indexed and searchable.
-- **Linguistic Fidelity**: Each shloka is rendered in high-legibility Noto Serif Devanagari script, accompanied by International Alphabet of Sanskrit Transliteration (IAST), word-by-word grammatical breakdown, and lucid English translation.
-
-### Live Hindu Panchang (`/dharma/panchang`)
-An astronomical computation tool delivering daily Hindu calendar metrics:
-- **Tithi** (Lunar day), **Nakshatra** (Lunar mansion), **Yoga**, and **Karana**.
-- **Sun & Moon Arc**: Real-time visual tracking of celestial positions based on user coordinates.
-
----
-
-## 6. Technical & SEO Specifications
-
-- **Framework**: Next.js 16 App Router with server-side rendering (SSR) and static site generation (SSG).
-- **Schema Markup**: JSON-LD structured data implemented across Root Layout, Person profile, WebSite, SoftwareApplication tools, and Article schemas.
-- **Mobile & Device Optimization**: Fully responsive viewport scaling, touch-friendly UI components, and Applebot/iOS Safari optimized indexing directives.
-
----
-
-## 7. Contact & Social Verification
-- **Email**: arpitagarwalms@gmail.com
-- **LinkedIn**: https://www.linkedin.com/in/arpitagarwala/
-- **Instagram**: https://www.instagram.com/arpit.agarwala/
-- **GitHub**: https://github.com/arpitagarwala
+## Optional visitor analytics
+Public pages offer opt-in first-party website analytics with a privacy control. Private tasks, trades, study reports and screenshots are excluded. See https://arpitagarwala.com/privacy for collection, retention and withdrawal details. Visitor statistics are owner-only and are not public profile information.

@@ -1,0 +1,19 @@
+.scope {
+  color-scheme: dark;
+  accent-color: #c6b4f5;
+}
+
+.scope :is(button, a, input, select, textarea, summary):focus-visible {
+  outline: 2px solid #c6b4f5 !important;
+  outline-offset: 4px;
+}
+
+.scope input[type='checkbox']:not([role='switch']) {
+  background-color: #17162b !important;
+  border-color: #9285ad !important;
+}
+
+.scope input[type='checkbox']:not([role='switch']):checked {
+  background-color: #c6b4f5 !important;
+  border-color: #c6b4f5 !important;
+}

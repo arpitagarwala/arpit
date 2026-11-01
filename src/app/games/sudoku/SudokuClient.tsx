@@ -1,362 +1,47 @@
 'use client';
-
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import {useState,useEffect,useRef,useCallback} from 'react';
 import BackButton from '@/components/BackButton/BackButton';
-import styles from './sudoku.module.css';
-
-type Difficulty = 'easy' | 'medium' | 'hard' | 'expert';
-
-const DIFF_CLUES = {
-  easy: 46,
-  medium: 36,
-  hard: 28,
-  expert: 22
-};
-
-interface CellData {
-  given: boolean;
-  value: number;
-  notes: Set<number>;
-}
-
-export default function SudokuClient() {
-  const [difficulty, setDifficulty] = useState<Difficulty>('easy');
-  const [grid, setGrid] = useState<CellData[]>([]);
-  const [solution, setSolution] = useState<number[]>([]);
-  const [selected, setSelected] = useState<number>(-1);
-  const [notesMode, setNotesMode] = useState(false);
-  const [hints, setHints] = useState(3);
-  const [errors, setErrors] = useState(0);
-  const [elapsed, setElapsed] = useState(0);
-  const [timerActive, setTimerActive] = useState(false);
-  const [bestTimes, setBestTimes] = useState<Record<string, number>>({});
-  const [toastMsg, setToastMsg] = useState('');
-  const [showToast, setShowToast] = useState(false);
-  const [victory, setVictory] = useState(false);
-  
-  const toastTimeout = useRef<NodeJS.Timeout | null>(null);
-
-  useEffect(() => {
-    const b = localStorage.getItem('sudoku-best');
-    if (b) {
-      try {
-        setBestTimes(JSON.parse(b));
-      } catch (e) {}
-    }
-    // Initialize game on mount
-    newGame('easy');
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (timerActive && !victory) {
-      interval = setInterval(() => {
-        setElapsed(prev => prev + 1);
-      }, 1000);
-    }
-    return () => clearInterval(interval);
-  }, [timerActive, victory]);
-
-  // Sudoku Generator
-  const isValid = (board: number[], pos: number, num: number) => {
-    const row = Math.floor(pos / 9);
-    const col = pos % 9;
-    for (let c = 0; c < 9; c++) if (board[row * 9 + c] === num && c !== col) return false;
-    for (let r = 0; r < 9; r++) if (board[r * 9 + col] === num && r !== row) return false;
-    const br = Math.floor(row / 3) * 3;
-    const bc = Math.floor(col / 3) * 3;
-    for (let r = br; r < br + 3; r++) {
-      for (let c = bc; c < bc + 3; c++) {
-        if (board[r * 9 + c] === num && r * 9 + c !== pos) return false;
-      }
-    }
-    return true;
-  };
-
-  const solve = (board: number[]): boolean => {
-    const empty = board.indexOf(0);
-    if (empty === -1) return true;
-    const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9].sort(() => Math.random() - 0.5);
-    for (const n of nums) {
-      if (isValid(board, empty, n)) {
-        board[empty] = n;
-        if (solve(board)) return true;
-        board[empty] = 0;
-      }
-    }
-    return false;
-  };
-
-  const generatePuzzle = (diff: Difficulty) => {
-    const board = Array(81).fill(0);
-    solve(board);
-    const sol = [...board];
-    const clues = DIFF_CLUES[diff];
-    const positions = Array.from({ length: 81 }, (_, i) => i).sort(() => Math.random() - 0.5);
-    
-    let removed = 0;
-    for (const pos of positions) {
-      if (81 - removed <= clues) break;
-      const backup = board[pos];
-      board[pos] = 0;
-      
-      let cnt = 0;
-      const countSolutions = (b: number[], limit: number) => {
-        if (cnt >= limit) return;
-        const e = b.indexOf(0);
-        if (e === -1) { cnt++; return; }
-        for (let n = 1; n <= 9; n++) {
-          if (isValid(b, e, n)) {
-            b[e] = n;
-            countSolutions(b, limit);
-            b[e] = 0; // backtrack
-          }
-        }
-      };
-      
-      countSolutions(board, 2);
-      if (cnt !== 1) {
-        board[pos] = backup;
-      } else {
-        removed++;
-      }
-    }
-    return { puzzle: board, solution: sol };
-  };
-
-  const newGame = (diff = difficulty) => {
-    setDifficulty(diff);
-    setTimerActive(false);
-    setElapsed(0);
-    setErrors(0);
-    setHints(3);
-    setSelected(-1);
-    setVictory(false);
-    setShowToast(false);
-
-    // Give UI a moment to update before freezing thread with generation
-    setTimeout(() => {
-      const { puzzle, solution: sol } = generatePuzzle(diff);
-      setSolution(sol);
-      setGrid(puzzle.map(v => ({ given: v !== 0, value: v, notes: new Set<number>() })));
-    }, 10);
-  };
-
-  const triggerToast = (msg: string) => {
-    setToastMsg(msg);
-    setShowToast(true);
-    if (toastTimeout.current) clearTimeout(toastTimeout.current);
-    toastTimeout.current = setTimeout(() => setShowToast(false), 2000);
-  };
-
-  const checkWin = useCallback((currentGrid: CellData[], currentSol: number[]) => {
-    if (currentGrid.every((c, i) => c.value === currentSol[i])) {
-      setTimerActive(false);
-      
-      setBestTimes(prev => {
-        const newBest = { ...prev };
-        if (!newBest[difficulty] || elapsed < newBest[difficulty]) {
-          newBest[difficulty] = elapsed;
-          localStorage.setItem('sudoku-best', JSON.stringify(newBest));
-        }
-        return newBest;
-      });
-      setTimeout(() => setVictory(true), 400);
-    }
-  }, [difficulty, elapsed]);
-
-  const enterNum = useCallback((n: number) => {
-    if (selected < 0 || grid[selected]?.given) return;
-    if (!timerActive) setTimerActive(true);
-
-    const newGrid = [...grid];
-    const cell = { ...newGrid[selected], notes: new Set(newGrid[selected].notes) };
-
-    if (notesMode && n !== 0) {
-      if (cell.notes.has(n)) cell.notes.delete(n);
-      else cell.notes.add(n);
-      newGrid[selected] = cell;
-      setGrid(newGrid);
-      return;
-    }
-
-    cell.notes.clear();
-    if (n === 0) {
-      cell.value = 0;
-      newGrid[selected] = cell;
-      setGrid(newGrid);
-      return;
-    }
-
-    if (n !== solution[selected]) {
-      setErrors(e => e + 1);
-      triggerToast('✕ Incorrect!');
-    }
-    
-    cell.value = n;
-    newGrid[selected] = cell;
-    setGrid(newGrid);
-    checkWin(newGrid, solution);
-  }, [selected, grid, timerActive, notesMode, solution, checkWin]);
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (selected < 0) return;
-      const n = parseInt(e.key);
-      if (n >= 1 && n <= 9) { enterNum(n); return; }
-      if (e.key === 'Backspace' || e.key === 'Delete' || e.key === '0') { enterNum(0); return; }
-      
-      const r = Math.floor(selected / 9);
-      const c = selected % 9;
-      if (e.key === 'ArrowUp' && r > 0) setSelected((r - 1) * 9 + c);
-      if (e.key === 'ArrowDown' && r < 8) setSelected((r + 1) * 9 + c);
-      if (e.key === 'ArrowLeft' && c > 0) setSelected(r * 9 + c - 1);
-      if (e.key === 'ArrowRight' && c < 8) setSelected(r * 9 + c + 1);
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selected, enterNum]);
-
-  const useHint = () => {
-    if (hints <= 0) { triggerToast('No hints left!'); return; }
-    const empties = grid.map((c, i) => i).filter(i => !grid[i].given && grid[i].value !== solution[i]);
-    if (!empties.length) return;
-    
-    const pos = empties[Math.floor(Math.random() * empties.length)];
-    const newGrid = [...grid];
-    newGrid[pos] = { ...newGrid[pos], value: solution[pos], notes: new Set() };
-    
-    setHints(h => h - 1);
-    setSelected(pos);
-    setGrid(newGrid);
-    checkWin(newGrid, solution);
-    triggerToast(`💡 Hint used — ${hints - 1} left`);
-  };
-
-  const fmtTime = (s: number) => {
-    return `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`;
-  };
-
-  const isRelated = (a: number, b: number) => {
-    if (a < 0 || b < 0) return false;
-    const ar = Math.floor(a / 9), ac = a % 9;
-    const br = Math.floor(b / 9), bc = b % 9;
-    return ar === br || ac === bc || (Math.floor(ar / 3) === Math.floor(br / 3) && Math.floor(ac / 3) === Math.floor(bc / 3));
-  };
-
-  return (
-    <div className="min-h-screen bg-[#050f1f] text-slate-100 flex flex-col items-center py-16 px-4">
-      <div className="fixed top-4 left-4 z-50">
-        <BackButton />
-      </div>
-
-      <h1 className="text-[2rem] font-black bg-gradient-to-br from-cyan-400 to-indigo-400 bg-clip-text text-transparent mb-1">
-        🔢 Sudoku
-      </h1>
-      <div className="text-slate-400/50 text-[0.82rem] mb-6 text-center">
-        Fill the grid — every row, column, and 3×3 box must contain 1–9
-      </div>
-
-      <div className={styles.ctrlRow}>
-        {(['easy', 'medium', 'hard', 'expert'] as Difficulty[]).map(d => (
-          <button
-            key={d}
-            className={`${styles.diffBtn} ${difficulty === d ? styles.diffBtnActive : ''}`}
-            onClick={() => newGame(d)}
-          >
-            {d.charAt(0).toUpperCase() + d.slice(1)}
-          </button>
-        ))}
-        <button className={styles.actionBtn} onClick={() => newGame()}>New Game</button>
-        <button className={styles.actionBtn} onClick={useHint}>Hint ({hints})</button>
-        <button 
-          className={`${styles.actionBtn} ${notesMode ? styles.notesOn : ''}`} 
-          onClick={() => setNotesMode(!notesMode)}
-        >
-          {notesMode ? '✏️ Notes ON' : '✏️ Notes'}
-        </button>
-      </div>
-
-      <div className={styles.statsRow}>
-        <div className={styles.stat}>
-          <div className={styles.statLabel}>Time</div>
-          <div className={styles.statVal}>{fmtTime(elapsed)}</div>
-        </div>
-        <div className={styles.stat}>
-          <div className={styles.statLabel}>Errors</div>
-          <div className={styles.statVal}>{errors}</div>
-        </div>
-        <div className={styles.stat}>
-          <div className={styles.statLabel}>Best</div>
-          <div className={styles.statVal}>{bestTimes[difficulty] !== undefined ? fmtTime(bestTimes[difficulty]) : '—'}</div>
-        </div>
-      </div>
-
-      <div className={styles.gridWrap}>
-        <div className={styles.grid}>
-          {grid.map((cell, i) => {
-            const isSel = i === selected;
-            const sameNum = !cell.given && selected >= 0 && grid[selected]?.value && grid[selected]?.value === cell.value;
-            const related = selected >= 0 && isRelated(i, selected) && i !== selected;
-            const error = cell.value && !isValid(solution, i, cell.value) && cell.value !== solution[i];
-
-            let cellClass = styles.cell;
-            if (cell.given) cellClass += ` ${styles.cellGiven}`;
-            else if (error) cellClass += ` ${styles.cellError}`;
-            else if (cell.value) cellClass += ` ${styles.cellUser}`;
-
-            if (isSel) cellClass += ` ${styles.cellSelected}`;
-            if (sameNum && !isSel) cellClass += ` ${styles.cellSameNum}`;
-            if (related && !isSel) cellClass += ` ${styles.cellRelated}`;
-
-            return (
-              <div 
-                key={i} 
-                className={cellClass}
-                onClick={() => {
-                  if (cell.given) { setSelected(i); return; }
-                  if (!timerActive) setTimerActive(true);
-                  setSelected(i);
-                }}
-              >
-                {cell.notes.size > 0 && !cell.value ? (
-                  <div className={styles.notesGrid}>
-                    {[1,2,3,4,5,6,7,8,9].map(n => (
-                      <div key={n} className={styles.noteN}>{cell.notes.has(n) ? n : ''}</div>
-                    ))}
-                  </div>
-                ) : (
-                  cell.value || ''
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      <div className={styles.numpad}>
-        <button className={`${styles.numBtn} ${styles.numBtnErase}`} onClick={() => enterNum(0)}>✕</button>
-        {[1,2,3,4,5,6,7,8,9].map(n => (
-          <button key={n} className={styles.numBtn} onClick={() => enterNum(n)}>{n}</button>
-        ))}
-      </div>
-
-      <div className={`${styles.toast} ${showToast ? styles.toastShow : ''}`}>
-        {toastMsg}
-      </div>
-
-      {victory && (
-        <div className={`${styles.victory} ${styles.victoryShow}`}>
-          <div className={styles.victoryBox}>
-            <div className={styles.victoryTitle}>🎉 Solved!</div>
-            <div className={styles.victorySub}>Excellent work. Puzzle completed in:</div>
-            <div className={styles.victoryTime}>{fmtTime(elapsed)}</div>
-            <button className={styles.btnNew} onClick={() => newGame()}>New Puzzle</button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
+import {emptyCapture,gameAction,gameResult} from '@/lib/game-capture';
+import {enterSudoku,solvedSudoku,sudokuPeers,validSudokuGame,type SudokuGame,type SudokuLevel} from '@/lib/sudoku-game';
+import s from './sudoku.module.css';
+const levels:SudokuLevel[]=['easy','medium','hard','expert'];
+const format=(ms:number)=>`${Math.floor(ms/60000)}:${String(Math.floor(ms/1000)%60).padStart(2,'0')}`;
+export default function SudokuClient(){
+ const [game,setGame]=useState<SudokuGame|null>(null),ref=useRef<SudokuGame|null>(null),[level,setLevel]=useState<SudokuLevel>('easy'),levelRef=useRef<SudokuLevel>('easy'),[selected,setSelected]=useState(-1),[notes,setNotes]=useState(false),[paused,setPaused]=useState(false),pausedRef=useRef(false),[loading,setLoading]=useState(true),[elapsed,setElapsed]=useState(0),elapsedRef=useRef(0),last=useRef<number|null>(null);
+ const [history,setHistory]=useState<SudokuGame[]>([]),historyRef=useRef<SudokuGame[]>([]),[best,setBest]=useState<Record<string,number>>({}),bestRef=useRef<Record<string,number>>({}),[notice,setNotice]=useState(''),[error,setError]=useState(''),[confirm,setConfirm]=useState(false);
+ const worker=useRef<Worker|null>(null),request=useRef(0),timer=useRef<ReturnType<typeof setInterval>|null>(null),capture=useRef(emptyCapture());
+ const persist=useCallback(()=>{if(!ref.current)return;try{localStorage.setItem('sudoku-session-v1',JSON.stringify({game:ref.current,level:levelRef.current,elapsed:elapsedRef.current}));}catch{setError('Auto-save is unavailable in this browser. You can still finish this puzzle.');}},[]);
+ const flush=useCallback(()=>{if(last.current!==null){const now=performance.now();elapsedRef.current+=Math.max(0,now-last.current);last.current=now;}setElapsed(elapsedRef.current);},[]);
+ const stop=useCallback(()=>{flush();last.current=null;if(timer.current)clearInterval(timer.current);timer.current=null;},[flush]);
+ const begin=useCallback(()=>{if(last.current!==null||!ref.current||solvedSudoku(ref.current)||pausedRef.current)return;last.current=performance.now();if(!capture.current.id){capture.current.id=crypto.randomUUID();capture.current.started=last.current;}let tick=0;timer.current=setInterval(()=>{flush();if(++tick%5===0)persist();},200);},[flush,persist]);
+ const cancelGeneration=useCallback(()=>{request.current++;worker.current?.terminate();},[]);
+ const startNew=useCallback((difficulty:SudokuLevel)=>{
+  cancelGeneration();const id=request.current;stop();ref.current=null;setGame(null);levelRef.current=difficulty;setLevel(difficulty);setLoading(true);setSelected(-1);setNotes(false);setPaused(false);pausedRef.current=false;setConfirm(false);elapsedRef.current=0;setElapsed(0);historyRef.current=[];setHistory([]);capture.current=emptyCapture();setNotice('Creating a puzzle with one solution…');setError('');
+  try{const w=new Worker(new URL('./sudoku.worker.ts',import.meta.url),{type:'module'});worker.current=w;w.onmessage=(event:MessageEvent<{game?:SudokuGame;error?:string}>)=>{if(request.current!==id)return;if(!validSudokuGame(event.data.game)){setError(event.data.error??'The puzzle could not be created. Please retry.');setLoading(false);w.terminate();return;}ref.current=event.data.game;setGame(event.data.game);setLoading(false);setNotice('Select a cell to begin. Your timer is waiting.');persist();w.terminate();};w.onerror=()=>{if(request.current!==id)return;setLoading(false);setError('The puzzle could not load. Please retry.');w.terminate();};w.postMessage({level:difficulty});}catch{setLoading(false);setError('This browser could not start the puzzle generator. Please retry in a browser with web workers enabled.');}
+ },[stop,persist,cancelGeneration]);
+ useEffect(()=>{const frame=requestAnimationFrame(()=>{try{const stored=JSON.parse(localStorage.getItem('sudoku-best')??'{}');const clean=Object.fromEntries(levels.filter(k=>Number.isSafeInteger(stored?.[k])&&stored[k]>=0).map(k=>[k,stored[k]]));bestRef.current=clean;setBest(clean);const raw=localStorage.getItem('sudoku-session-v1');if(raw){const saved=JSON.parse(raw);if(validSudokuGame(saved.game)&&levels.includes(saved.level)&&Number.isFinite(saved.elapsed)&&saved.elapsed>=0&&saved.elapsed<=7*86400000){ref.current=saved.game;setGame(saved.game);levelRef.current=saved.level;setLevel(saved.level);elapsedRef.current=saved.elapsed;setElapsed(saved.elapsed);setLoading(false);setNotice(solvedSudoku(saved.game)?'This puzzle is complete. Ready for another?':'Your puzzle is ready to continue. Select a cell to resume timing.');return;}}}catch{setError('Saved progress could not be read. A fresh puzzle will be created.');}startNew('easy');});return()=>{cancelAnimationFrame(frame);cancelGeneration();if(timer.current)clearInterval(timer.current);};},[startNew,cancelGeneration]);
+ useEffect(()=>{const hide=()=>{if(document.hidden&&last.current!==null){stop();pausedRef.current=true;setPaused(true);persist();}};const leave=()=>{flush();persist();};document.addEventListener('visibilitychange',hide);window.addEventListener('pagehide',leave);return()=>{document.removeEventListener('visibilitychange',hide);window.removeEventListener('pagehide',leave);};},[stop,flush,persist]);
+ const commit=(next:SudokuGame,previous:SudokuGame)=>{if(next===previous)return;historyRef.current=[...historyRef.current,previous].slice(-100);setHistory(historyRef.current);ref.current=next;setGame(next);gameAction(capture.current);flush();
+  if(solvedSudoku(next)){stop();capture.current.assisted=next.hints>0;gameResult(capture.current,'sudoku-'+levelRef.current,'solved',elapsedRef.current);setNotice(next.hints?'Puzzle complete. Your hints are noted in the result.':'Puzzle solved. Nicely reasoned.');if(!next.hints){const seconds=Math.floor(elapsedRef.current/1000),old=bestRef.current[levelRef.current];if(old===undefined||seconds<old){bestRef.current={...bestRef.current,[levelRef.current]:seconds};setBest(bestRef.current);try{localStorage.setItem('sudoku-best',JSON.stringify(bestRef.current));}catch{setError('Puzzle complete. Your best time could not be saved.');}}}}
+  persist();
+ };
+ const enter=(n:number)=>{const previous=ref.current;if(!previous||pausedRef.current||solvedSudoku(previous))return;if(selected<0||previous.givens[selected]){setNotice('Select an editable cell first.');return;}begin();const next=enterSudoku(previous,selected,n,notes);if(next.errors>previous.errors)setNotice('That value is incorrect. Erase it or undo the move.');else setNotice(notes&&n?'Pencil mark updated.':n?'Value entered.':'Cell cleared.');commit(next,previous);};
+ const undo=()=>{const current=ref.current,previous=historyRef.current.at(-1);if(!current||!previous||pausedRef.current||solvedSudoku(current))return;begin();historyRef.current=historyRef.current.slice(0,-1);setHistory(historyRef.current);const next={...previous,errors:current.errors,hints:current.hints};ref.current=next;setGame(next);capture.current.undos++;persist();setNotice('Last change undone. Mistakes and hints remain counted.');};
+ const hint=()=>{const previous=ref.current;if(!previous||previous.hints>=3||pausedRef.current||solvedSudoku(previous))return;const index=selected>=0&&!previous.givens[selected]&&previous.values[selected]!==previous.solution[selected]?selected:previous.values.findIndex((n,i)=>!previous.givens[i]&&n!==previous.solution[i]);if(index<0)return;begin();const next={...enterSudoku(previous,index,previous.solution[index]),hints:previous.hints+1};setSelected(index);commit(next,previous);setNotice(`Hint: row ${Math.floor(index/9)+1}, column ${index%9+1} is ${previous.solution[index]}. ${3-next.hints} hints left.`);};
+ const togglePause=()=>{if(pausedRef.current){pausedRef.current=false;setPaused(false);begin();setNotice('Puzzle resumed.');}else{stop();pausedRef.current=true;setPaused(true);persist();setNotice('Paused. Your board is hidden until you return.');}};
+ const complete=Boolean(game&&solvedSudoku(game)),filled=game?.values.filter(Boolean).length??0,selectedValue=game&&selected>=0?game.values[selected]:0;
+ return <main className={s.page}><BackButton/><div className={s.shell}><header className={s.header}><p className={s.eyebrow}>ONE CLEAR MOVE AT A TIME</p><h1>Sudoku<span>.</span></h1><p className={s.lead}>Nine numbers. A little patience. Your next good deduction.</p></header>
+ <div className={s.levels} aria-label="Puzzle level">{levels.map(d=><button key={d} aria-pressed={level===d} onClick={()=>startNew(d)}>{d[0].toUpperCase()+d.slice(1)}</button>)}</div>
+ <div className={s.stats}><div><span>Time</span><strong>{format(elapsed)}</strong></div><div><span>Mistakes</span><strong>{game?.errors??0}</strong></div><div><span>Best · no hints</span><strong>{best[level]===undefined?'—':format(best[level]*1000)}</strong></div></div>
+ <div className={s.toolbar}><button onClick={()=>{if(history.length&&!complete)setConfirm(true);else startNew(level);}}>New puzzle</button><button onClick={togglePause} disabled={!game||complete}>{paused?'Resume':'Pause'}</button><span>{filled}/81 filled</span></div>
+ {confirm&&<section className={s.confirm} aria-label="Replace this puzzle?"><p>Start a new puzzle? This replaces your saved board.</p><button className={s.primary} onClick={()=>startNew(level)}>Start fresh</button><button onClick={()=>setConfirm(false)}>Keep this puzzle</button></section>}
+ <div className={s.boardWrap} aria-busy={loading}><div className={s.grid} role="group" aria-hidden={paused||loading} aria-label="Sudoku board" onKeyDown={e=>{if(e.altKey||e.ctrlKey||e.metaKey)return;if(e.key>='1'&&e.key<='9'){e.preventDefault();enter(Number(e.key));return;}if(['Backspace','Delete','0'].includes(e.key)){e.preventDefault();enter(0);return;}if(e.key.toLowerCase()==='n'){e.preventDefault();setNotes(v=>!v);return;}let index=selected<0?0:selected;const row=Math.floor(index/9),col=index%9;if(e.key==='ArrowUp'&&row>0)index-=9;else if(e.key==='ArrowDown'&&row<8)index+=9;else if(e.key==='ArrowLeft'&&col>0)index--;else if(e.key==='ArrowRight'&&col<8)index++;else return;e.preventDefault();setSelected(index);begin();e.currentTarget.querySelector<HTMLButtonElement>(`[data-cell="${index}"]`)?.focus({preventScroll:true});}}>
+ {Array.from({length:81},(_,i)=>{const value=game?.values[i]??0,given=Boolean(game?.givens[i]),wrong=value&&value!==game?.solution[i];return <button key={i} type="button" data-cell={i} tabIndex={selected===i||selected<0&&i===0?0:-1} disabled={!game||paused} aria-label={`Row ${Math.floor(i/9)+1}, column ${i%9+1}, ${given?'given ':''}${value||'empty'}${game?.notes[i].length?', notes '+game.notes[i].join(' '):''}`} aria-pressed={selected===i} className={[s.cell,given?s.given:'',wrong?s.errorCell:'',selected===i?s.selected:'',selected>=0&&sudokuPeers(selected,i)?s.related:'',selectedValue&&value===selectedValue?s.same:''].filter(Boolean).join(' ')} onClick={()=>{setSelected(i);begin();}}>{value||<span className={s.pencils} aria-hidden="true">{[1,2,3,4,5,6,7,8,9].map(n=><i key={n}>{game?.notes[i].includes(n)?n:''}</i>)}</span>}</button>;})}</div>
+ {loading&&<div className={s.cover} role="status"><span className={s.spinner}/><p>Creating your puzzle…</p></div>}{paused&&<div className={s.cover}><p>A little pause is part of focus.</p><button className={s.primary} onClick={togglePause}>Resume puzzle</button></div>}
+ </div>
+ <div className={s.controls}><div className={s.tools}><button disabled={!history.length||paused||complete} onClick={undo}>Undo</button><button aria-pressed={notes} disabled={paused||complete} onClick={()=>setNotes(v=>!v)}>Pencil {notes?'on':'off'}</button><button disabled={!game||paused||complete||(game?.hints??0)>=3} onClick={hint}>Hint ({3-(game?.hints??0)})</button></div><div className={s.numpad} aria-label="Number controls">{[1,2,3,4,5,6,7,8,9].map(n=><button key={n} disabled={!game||paused||complete} aria-label={`Enter ${n}`} onClick={()=>enter(n)}>{n}<small>{Math.max(0,9-(game?.values.filter(v=>v===n).length??0))} left</small></button>)}<button disabled={!game||paused||complete} aria-label="Erase selected cell" onClick={()=>enter(0)}>⌫<small>Erase</small></button></div></div>
+ <p className={s.status} role="status">{notice}</p>{error&&<div className={s.storage} role="status"><p>{error}</p>{!game&&!loading&&<button onClick={()=>startNew(level)}>Retry puzzle</button>}</div>}
+ {complete&&<section className={s.result}><h2>One puzzle, worked out.</h2><p>{format(elapsed)} · {game?.errors} mistakes · {game?.hints} hints. Your result is saved.</p><button className={s.primary} onClick={()=>startNew(level)}>Next puzzle</button></section>}
+ <details className={s.help}><summary>How to make the next move</summary><p>Every row, column and 3×3 box needs 1–9, with no repeats. Select a cell, then choose a number. Pencil mode keeps possible numbers; a correct entry removes that number from related pencil marks. Arrow keys navigate, 1–9 enter, N toggles pencil mode, and Delete clears. New puzzles have one solution; levels vary the number of clues, rather than guaranteeing a particular solving technique.</p><p>Your timer waits for the first board interaction, pauses when this tab is hidden, and stops on completion. Progress stays in this browser. Hints are recorded, and only games without hints update your best time.</p></details>
+ </div></main>;
 }

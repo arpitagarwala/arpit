@@ -1,82 +1,40 @@
+import VisitorAnalytics from '@/components/analytics/VisitorAnalytics';
 import type { Metadata } from 'next';
 import '@/styles/globals.css';
+import '@/styles/controls.css';
+import {getSite} from '@/lib/site-server';
+import {siteDefaults,sitePathEnabled} from '@/lib/site-config';
+import {personalPhotos,photoUrl} from '@/lib/personal-photos';
+import {SiteFeatures} from '@/components/SiteFeatures';
+import {GameTimeTracker} from '@/components/training/GameTime';
+import {ProductivityProvider} from '@/components/productivity/ProductivityProvider';
+import {SuiteNavigationProvider} from '@/components/productivity/SuiteNavigation';
 
-export const metadata: Metadata = {
-  metadataBase: new URL('https://arpitagarwala.online'),
-  title: {
-    default: 'Arpit Agarwala – Portfolio | BCom Student, CA Aspirant & Web Creator',
-    template: '%s | Arpit Agarwala',
-  },
-  description:
-    'Official portfolio of Arpit Agarwala – BCom (Hons) student, aspiring Chartered Accountant (CA aspirant) from Kolkata, financial tool developer, and creator. Explore custom SIP calculators, parcel trackers, Bhagavad Gita shlokas, and interactive web tools.',
-  keywords: [
-    'Arpit Agarwala',
-    'Arpit Agarwala portfolio',
-    'Arpit Agarwala Kolkata',
-    'Arpit Agarwala CA aspirant',
-    'Arpit Agarwala BCom',
-    'Chartered Accountant aspirant India',
-    'web developer Kolkata',
-    'finance tools developer',
-    'SIP calculator online',
-    'budget tracker app',
-    'universal parcel tracker',
-    'Bhagavad Gita Sanskrit shloka English',
-    'Hindu Panchang live',
-    'financial literacy games',
-    'react nextjs developer kolkata',
-  ],
-  authors: [{ name: 'Arpit Agarwala', url: 'https://arpitagarwala.online/' }],
-  creator: 'Arpit Agarwala',
-  publisher: 'Arpit Agarwala',
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-  openGraph: {
-    type: 'website',
-    siteName: 'Arpit Agarwala Portfolio',
-    locale: 'en_IN',
-    url: 'https://arpitagarwala.online/',
-    title: 'Arpit Agarwala – Portfolio | BCom Student, CA Aspirant & Web Creator',
-    description:
-      'Explore projects, financial calculators, Bhagavad Gita portal, parcel tracker, and web applications built by Arpit Agarwala.',
-    images: [
-      {
-        url: '/assets/images/my-miniature.png',
-        width: 1200,
-        height: 630,
-        alt: 'Arpit Agarwala – BCom Student, CA Aspirant & Web Creator',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Arpit Agarwala – Portfolio | BCom Student, CA Aspirant & Web Creator',
-    description:
-      'Official portfolio of Arpit Agarwala from Kolkata. Financial tools, Bhagavad Gita portal, and web projects.',
-    images: ['/assets/images/my-miniature.png'],
-    creator: '@arpit_agarwala_',
-  },
-  alternates: {
-    canonical: 'https://arpitagarwala.online/',
-  },
+const defaultMetadata: Metadata = {
+  metadataBase: new URL('https://arpitagarwala.com'),
+  title: { default: 'Arpit Agarwala – Finance, Technology & Projects', template: '%s | Arpit Agarwala' },
+  description: 'Explore Arpit Agarwala’s portfolio, finance tools, logic games and connected study productivity workspace. Based in Kolkata, India.',
+  authors: [{ name: 'Arpit Agarwala', url: 'https://arpitagarwala.com/' }],
+  creator: 'Arpit Agarwala', publisher: 'Arpit Agarwala',
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1, 'max-video-preview': -1 } },
+  openGraph: { type: 'website', siteName: 'Arpit Agarwala', locale: 'en_IN', images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'Arpit Agarwala — Finance, Technology & Projects' }] },
+  twitter: { card: 'summary_large_image', images: ['/opengraph-image'] },
 };
 
-export default function RootLayout({
+// Keep the sign-in shell usable during a settings-service outage. Public pages
+// still fail closed in the proxy and load their content through getSite().
+async function shellSite(){try{return await getSite();}catch{return siteDefaults();}}
+export async function generateMetadata():Promise<Metadata>{const site=await shellSite();return{...defaultMetadata,authors:[{name:site.profile.name,url:'https://arpitagarwala.com/'}],creator:site.profile.name,publisher:site.profile.name,title:{default:site.seo.title,template:`%s | ${site.profile.name}`},description:site.seo.description,openGraph:{...defaultMetadata.openGraph,siteName:site.profile.name+' Portfolio',title:site.seo.title,description:site.seo.description,images:[{url:'/opengraph-image',width:1200,height:630,alt:site.profile.name+' — Finance, Technology & Projects'}]},twitter:{...defaultMetadata.twitter,title:site.seo.title,description:site.seo.description,images:['/opengraph-image']}};}
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const site=await shellSite();
+  const photos=sitePathEnabled(site,'/gallery')?personalPhotos(site.gallery.photos):[];
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <head>
         {/* RemixIcon CDN */}
         <link
@@ -115,72 +73,45 @@ export default function RootLayout({
               '@graph': [
                 {
                   '@type': 'WebSite',
-                  '@id': 'https://arpitagarwala.online/#website',
-                  url: 'https://arpitagarwala.online/',
-                  name: 'Arpit Agarwala Portfolio',
-                  description:
-                    'Official portfolio of Arpit Agarwala – BCom (Hons) student, CA aspirant from Kolkata, and web developer.',
+                  '@id': 'https://arpitagarwala.com/#website',
+                  url: 'https://arpitagarwala.com/',
+                  name: site.profile.name+' Portfolio',
+                  description: site.seo.description,
                   publisher: {
-                    '@id': 'https://arpitagarwala.online/#person',
+                    '@id': 'https://arpitagarwala.com/#person',
                   },
                   inLanguage: 'en-IN',
                 },
                 {
                   '@type': 'Person',
-                  '@id': 'https://arpitagarwala.online/#person',
-                  name: 'Arpit Agarwala',
-                  url: 'https://arpitagarwala.online/',
-                  image: {
-                    '@type': 'ImageObject',
-                    url: 'https://arpitagarwala.online/assets/images/my-miniature.png',
-                  },
-                  jobTitle: 'BCom Student, CA Aspirant & Web Creator',
-                  description:
-                    'BCom (Hons) student and aspiring Chartered Accountant from Kolkata, India. Developer of financial calculators, Bhagavad Gita portal, and productivity tools.',
-                  email: 'arpitagarwalms@gmail.com',
+                  '@id': 'https://arpitagarwala.com/#person',
+                  name: site.profile.name,
+                  url: 'https://arpitagarwala.com/',
+                  alternateName: site.profile.name==='Arpit Agarwala'?'arpitagarwala':undefined,
+                  image: photos.length?photos.map(photo=>({
+                    '@type':'ImageObject',
+                    '@id':photoUrl(photo)+'#image',
+                    url:photoUrl(photo),
+                    contentUrl:photoUrl(photo),
+                    caption:`${site.profile.name} — ${photo.alt||photo.title}`,
+                    about:{'@id':'https://arpitagarwala.com/#person'},
+                  })):undefined,
+                  jobTitle: site.profile.role,
+                  description: site.profile.bio,
+                  email: site.home.email,
                   address: {
                     '@type': 'PostalAddress',
-                    addressLocality: 'Kolkata',
-                    addressRegion: 'West Bengal',
-                    addressCountry: 'IN',
+                    addressLocality: site.profile.location,
                   },
-                  knowsAbout: [
-                    'Chartered Accountancy',
-                    'Direct Taxation',
-                    'Indirect Taxation GST',
-                    'Financial Management',
-                    'Accounting Standards',
-                    'React',
-                    'Next.js',
-                    'TypeScript',
-                    'Web Development',
-                    'Financial Calculators',
-                    'Bhagavad Gita',
-                  ],
-                  sameAs: [
-                    'https://www.linkedin.com/in/arpitagarwala/',
-                    'https://www.instagram.com/arpit.agarwala/',
-                    'https://github.com/arpitagarwala',
-                  ],
-                },
-                {
-                  '@type': 'ProfilePage',
-                  '@id': 'https://arpitagarwala.online/#profilepage',
-                  url: 'https://arpitagarwala.online/',
-                  name: 'Arpit Agarwala – Portfolio',
-                  isPartOf: {
-                    '@id': 'https://arpitagarwala.online/#website',
-                  },
-                  about: {
-                    '@id': 'https://arpitagarwala.online/#person',
-                  },
+                  knowsAbout: site.about.tags,
+                  sameAs: site.about.connect.filter(c=>c.enabled&&c.href.startsWith('https:')).map(c=>c.href),
                 },
               ],
-            }),
+            }).replace(/</g,'\\u003c'),
           }}
         />
       </head>
-      <body>{children}</body>
+      <body><SiteFeatures features={{...site.features,'games.progress':site.features['games.progress']!==false&&sitePathEnabled(site,'/games/progress'),'games.math-sprint':sitePathEnabled(site,'/games/math-sprint'),'productivity.quiet':sitePathEnabled(site,'/productivity/rain'),'productivity.focus':sitePathEnabled(site,'/productivity/pomodoro'),'productivity.tasks':sitePathEnabled(site,'/productivity/todo'),'productivity.analysis':sitePathEnabled(site,'/productivity/analysis')}} footer={site.footer}><SuiteNavigationProvider><ProductivityProvider tools={site.productivity.filter(t=>t.enabled&&sitePathEnabled(site,t.href)).map(t=>({href:t.href,title:t.title,sub:t.sub,icon:t.icon}))}>{children}</ProductivityProvider></SuiteNavigationProvider><GameTimeTracker/><VisitorAnalytics/></SiteFeatures></body>
     </html>
   );
 }

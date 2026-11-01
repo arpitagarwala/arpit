@@ -1,0 +1,24 @@
+.scope {
+  min-height: 100vh;
+  background: #100f0e;
+  color: #f3eee7;
+  color-scheme: dark;
+  accent-color: #e5c293;
+}
+
+.scope :is(button, a, input, select, textarea, summary):focus-visible {
+  outline: 2px solid #e5c293 !important;
+  outline-offset: 4px;
+}
+
+.scope input[type='checkbox']:not([role='switch']) {
+  background-color: #211c17 !important;
+  border-color: #9d886b !important;
+}
+
+.scope input[type='checkbox']:not([role='switch']):is(:checked, :indeterminate) {
+  background-color: #e5c293 !important;
+  border-color: #e5c293 !important;
+}
+
+.scope input[type='range'] { accent-color: #e5c293; }

@@ -108,37 +108,37 @@ export default function AiAssistantClient() {
     setShowSuggestions(true);
   };
 
-  if (!isClient) return <div className="h-screen w-full bg-[#0a0e1a]"></div>;
+  if (!isClient) return <div className="h-screen w-full bg-[#100e0d]"></div>;
 
   return (
-    <div className={`h-screen w-full flex flex-col sm:flex-row items-center justify-center sm:p-4 md:p-6 overflow-hidden relative bg-[#0a0e1a] text-slate-100 font-sans`}>
+    <div className={`h-screen w-full flex flex-col sm:flex-row items-center justify-center sm:p-4 md:p-6 overflow-hidden relative bg-[#100e0d] text-stone-100 font-sans`}>
       
       <BackButton />
 
       {/* Background Effect */}
       <div className={`fixed inset-0 z-0 pointer-events-none opacity-50 flex flex-wrap gap-1 content-start overflow-hidden ${styles.bgMesh}`}>
-        <div className="w-full h-full absolute inset-0 bg-gradient-to-t from-[#0a0e1a] via-transparent to-[#0a0e1a] z-10"></div>
-        <div className="w-full h-full text-[10px] sm:text-xs text-indigo-500/20 font-mono tracking-widest absolute inset-0 z-0 animate-pulse">
+        <div className="w-full h-full absolute inset-0 bg-gradient-to-t from-[#100e0d] via-transparent to-[#100e0d] z-10"></div>
+        <div className="w-full h-full text-[14px] sm:text-sm text-orange-500/20 font-mono tracking-widest absolute inset-0 z-0 animate-pulse">
           {/* Binary rain placeholder if we wanted */}
         </div>
       </div>
 
       {/* Main Container */}
-      <div className="z-10 w-full h-full sm:h-[90vh] sm:max-w-4xl bg-slate-900/80 backdrop-blur-xl border-0 sm:border border-indigo-400/20 sm:rounded-[2rem] shadow-2xl flex flex-col overflow-hidden relative">
+      <div className="z-10 w-full h-full sm:h-[90vh] sm:max-w-4xl bg-stone-900/80 backdrop-blur-xl border-0 sm:border border-orange-400/20 sm:rounded-[2rem] shadow-2xl flex flex-col overflow-hidden relative">
         
-        <header className="px-4 sm:px-6 py-4 sm:py-5 border-b border-indigo-500/10 flex items-center justify-between bg-slate-900/90 shadow-sm z-20 shrink-0">
+        <header className="px-4 sm:px-6 pt-16 pb-4 sm:py-5 border-b border-orange-500/10 flex items-center justify-between bg-stone-900/90 shadow-sm z-20 shrink-0">
           <div className="flex items-center gap-3 sm:gap-4">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-slate-800 flex items-center justify-center shadow-[0_0_20px_rgba(79,70,229,0.4)] border border-indigo-400/30 overflow-hidden">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-stone-800 flex items-center justify-center shadow-[0_0_20px_rgba(111,94,71,0.4)] border border-orange-400/30 overflow-hidden">
               <img src="https://res.cloudinary.com/dxsja3wy5/image/upload/w_100,h_100,c_fill,q_auto,f_png/v1772863840/tab-icon.png" alt="Arpit" className="w-full h-full object-cover" />
             </div>
             <div>
               <h1 className="text-lg sm:text-xl font-bold tracking-tight text-white leading-tight">Arpit's AI Avatar</h1>
-              <p className="text-[10px] sm:text-[12px] text-indigo-300/80 font-mono tracking-wide">Ask about Arpit's profile, projects & skills</p>
+              <p className="text-[14px] sm:text-[14px] text-orange-300/80 font-mono tracking-wide">Ask about Arpit's profile, projects & skills</p>
             </div>
           </div>
           
           <div className="flex items-center gap-1 sm:gap-2">
-            <button onClick={clearChat} className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-xl text-slate-400 hover:text-red-400 hover:bg-red-400/10 transition">
+            <button onClick={clearChat} className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-xl text-stone-300 hover:text-red-400 hover:bg-red-400/10 transition">
               <i className="ri-delete-bin-line text-lg"></i>
             </button>
           </div>
@@ -148,10 +148,10 @@ export default function AiAssistantClient() {
           
           {/* Welcome Message */}
           <div className={`flex items-end gap-2.5 ${styles.msgIn}`}>
-            <div className="w-7 h-7 rounded-full bg-slate-800 shrink-0 flex items-center justify-center overflow-hidden border border-indigo-500/30">
+            <div className="w-7 h-7 rounded-full bg-stone-800 shrink-0 flex items-center justify-center overflow-hidden border border-orange-500/30">
               <img src="https://res.cloudinary.com/dxsja3wy5/image/upload/w_100,h_100,c_fill,q_auto,f_png/v1772863840/tab-icon.png" alt="Arpit" className="w-full h-full object-cover" />
             </div>
-            <div className={`bg-slate-800/80 text-slate-200 px-4 py-3 rounded-2xl rounded-bl-none max-w-[85%] shadow-md border border-white/5 text-[13px] leading-relaxed ${styles.botMsg}`}>
+            <div className={`bg-stone-800/80 text-stone-200 px-4 py-3 rounded-2xl rounded-bl-none max-w-[85%] shadow-md border border-white/5 text-[14px] leading-relaxed ${styles.botMsg}`}>
               <p>Hey! 👋 I'm <strong>Arpit's AI Avatar</strong>. I can answer questions about Arpit's projects, skills, experience, education, and anything on his portfolio. Feel free to ask!</p>
             </div>
           </div>
@@ -163,7 +163,7 @@ export default function AiAssistantClient() {
                 <button 
                   key={i} 
                   onClick={() => sendMessage(s)} 
-                  className="text-[11px] px-3 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/5 text-indigo-300 hover:bg-indigo-500/15 hover:border-indigo-400/50 transition font-medium"
+                  className="text-[14px] px-3 py-1.5 rounded-full border border-orange-500/30 bg-orange-500/5 text-orange-300 hover:bg-orange-500/15 hover:border-orange-400/50 transition font-medium"
                 >
                   {s}
                 </button>
@@ -176,17 +176,17 @@ export default function AiAssistantClient() {
             if (msg.role === 'user') {
               return (
                 <div key={idx} className={`flex flex-row-reverse items-end gap-2.5 ${styles.msgIn}`}>
-                  <div className="bg-indigo-600 text-white px-4 py-3 rounded-2xl rounded-br-none max-w-[85%] shadow-md text-[13px] leading-relaxed" 
+                  <div className="bg-orange-600 text-white px-4 py-3 rounded-2xl rounded-br-none max-w-[85%] shadow-md text-[14px] leading-relaxed" 
                        dangerouslySetInnerHTML={{ __html: escapeHtml(msg.text).replace(/\n/g, '<br>') }} />
                 </div>
               );
             } else {
               return (
                 <div key={idx} className={`flex items-end gap-2.5 ${styles.msgIn}`}>
-                  <div className="w-7 h-7 rounded-full bg-slate-800 shrink-0 flex items-center justify-center overflow-hidden border border-indigo-500/30">
+                  <div className="w-7 h-7 rounded-full bg-stone-800 shrink-0 flex items-center justify-center overflow-hidden border border-orange-500/30">
                     <img src="https://res.cloudinary.com/dxsja3wy5/image/upload/w_100,h_100,c_fill,q_auto,f_png/v1772863840/tab-icon.png" alt="Arpit" className="w-full h-full object-cover" />
                   </div>
-                  <div className={`bg-slate-800/80 text-slate-200 px-4 py-3 rounded-2xl rounded-bl-none max-w-[85%] shadow-md border border-white/5 text-[13px] leading-relaxed w-full overflow-x-auto ${styles.botMsg}`} 
+                  <div className={`bg-stone-800/80 text-stone-200 px-4 py-3 rounded-2xl rounded-bl-none max-w-[85%] shadow-md border border-white/5 text-[14px] leading-relaxed w-full overflow-x-auto ${styles.botMsg}`} 
                        dangerouslySetInnerHTML={{ __html: marked.parse(msg.text) as string }} />
                 </div>
               );
@@ -197,20 +197,20 @@ export default function AiAssistantClient() {
           {isProcessing && (
             <div className="px-4 pb-2">
               <div className={`flex items-end gap-2.5 ${styles.msgIn}`}>
-                <div className="w-7 h-7 rounded-full bg-slate-800 shrink-0 flex items-center justify-center overflow-hidden border border-indigo-500/30">
+                <div className="w-7 h-7 rounded-full bg-stone-800 shrink-0 flex items-center justify-center overflow-hidden border border-orange-500/30">
                   <img src="https://res.cloudinary.com/dxsja3wy5/image/upload/w_100,h_100,c_fill,q_auto,f_png/v1772863840/tab-icon.png" alt="Arpit" className="w-full h-full object-cover" />
                 </div>
-                <div className="bg-slate-800/80 px-4 py-3 rounded-2xl rounded-bl-none shadow-md border border-white/5 flex gap-1.5 items-center">
-                  <div className={`w-1.5 h-1.5 bg-indigo-400 rounded-full ${styles.dotBounce}`}></div>
-                  <div className={`w-1.5 h-1.5 bg-indigo-400 rounded-full ${styles.dotBounce}`}></div>
-                  <div className={`w-1.5 h-1.5 bg-indigo-400 rounded-full ${styles.dotBounce}`}></div>
+                <div className="bg-stone-800/80 px-4 py-3 rounded-2xl rounded-bl-none shadow-md border border-white/5 flex gap-1.5 items-center">
+                  <div className={`w-1.5 h-1.5 bg-orange-400 rounded-full ${styles.dotBounce}`}></div>
+                  <div className={`w-1.5 h-1.5 bg-orange-400 rounded-full ${styles.dotBounce}`}></div>
+                  <div className={`w-1.5 h-1.5 bg-orange-400 rounded-full ${styles.dotBounce}`}></div>
                 </div>
               </div>
             </div>
           )}
         </main>
 
-        <footer className="px-4 py-3.5 bg-slate-900/40 backdrop-blur shrink-0 border-t border-white/8">
+        <footer className="px-4 py-3.5 bg-stone-900/40 backdrop-blur shrink-0 border-t border-white/8">
           <form onSubmit={handleFormSubmit} className="relative flex items-center gap-2">
             <input 
               ref={inputRef}
@@ -218,23 +218,24 @@ export default function AiAssistantClient() {
               value={inputValue}
               onChange={e => setInputValue(e.target.value)}
               placeholder="Ask about Arpit's projects, skills…"
-              className={`flex-1 bg-slate-800/70 border border-slate-700/60 rounded-xl pl-4 pr-4 py-3 text-slate-100 placeholder-slate-500 text-sm transition shadow-inner ${styles.chatInput}`}
+              className={`flex-1 bg-stone-800/70 border border-stone-700/60 rounded-xl pl-4 pr-4 py-3 text-stone-100 placeholder-stone-500 text-base transition shadow-inner ${styles.chatInput}`}
               autoComplete="off" 
             />
             <button 
               type="submit" 
               disabled={isProcessing || !inputValue.trim()}
-              className="w-10 h-10 rounded-xl bg-indigo-500 hover:bg-indigo-400 disabled:opacity-40 disabled:cursor-not-allowed text-white flex items-center justify-center transition shadow-lg shrink-0"
+              className="w-10 h-10 rounded-xl bg-[#e5c293] hover:bg-[#efd6b5] disabled:opacity-40 disabled:cursor-not-allowed text-stone-900 flex items-center justify-center transition shadow-lg shrink-0"
             >
               <i className="ri-send-plane-fill text-base"></i>
             </button>
           </form>
           <div className="flex items-center justify-center gap-1.5 mt-2.5">
-            <span className="text-[9px] text-slate-600 font-medium tracking-wide">Powered by</span>
-            <span className="text-[9px] text-indigo-400 font-bold tracking-wide">AI + RAG</span>
+            <span className="text-[14px] text-stone-600 font-medium tracking-wide">Powered by</span>
+            <span className="text-[14px] text-orange-400 font-bold tracking-wide">AI + RAG</span>
           </div>
         </footer>
       </div>
     </div>
   );
 }
+

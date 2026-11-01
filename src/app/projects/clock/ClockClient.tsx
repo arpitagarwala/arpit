@@ -1,252 +1,47 @@
 'use client';
-
-import React, { useState, useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import BackButton from '@/components/BackButton/BackButton';
 import styles from './clock.module.css';
-
+const ZONES = [{ name: 'Kolkata', zone: 'Asia/Kolkata' }, { name: 'London', zone: 'Europe/London' }, { name: 'New York', zone: 'America/New_York' }, { name: 'Tokyo', zone: 'Asia/Tokyo' }, { name: 'Sydney', zone: 'Australia/Sydney' }, { name: 'Dubai', zone: 'Asia/Dubai' }];
+type Preferences = { analog: boolean; hour12: boolean; seconds: boolean; zone: string };
+const DEFAULTS: Preferences = { analog: false, hour12: true, seconds: true, zone: 'local' };
 export default function ClockClient() {
-  const [isClient, setIsClient] = useState(false);
-  const [now, setNow] = useState(new Date());
-
-  // Settings state
-  const [showSettings, setShowSettings] = useState(false);
-  const [isAnalog, setIsAnalog] = useState(false);
-  const [is12h, setIs12h] = useState(true);
-  const [showSeconds, setShowSeconds] = useState(true);
-  const [nightIndicator, setNightIndicator] = useState(true);
-  const [showWorldClocks, setShowWorldClocks] = useState(false);
-  const [timezoneName, setTimezoneName] = useState('Detecting...');
-
-  const settingsPanelRef = useRef<HTMLDivElement>(null);
-  const settingsBtnRef = useRef<HTMLButtonElement>(null);
-
-  // Load and mount
+  const [now, setNow] = useState<Date | null>(null);
+  const [prefs, setPrefs] = useState(DEFAULTS);
+  const [localZone, setLocalZone] = useState('UTC');
+  const [settings, setSettings] = useState(false);
+  const [zen, setZen] = useState(false);
+  const [storageNote, setStorageNote] = useState('');
   useEffect(() => {
-    setIsClient(true);
-    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    setTimezoneName(tz.replace(/_/g, ' '));
-    
-    // Timer loop
-    const timer = setInterval(() => {
+    const load = setTimeout(() => {
+      setLocalZone(Intl.DateTimeFormat().resolvedOptions().timeZone);
+      try {
+        const raw = JSON.parse(localStorage.getItem('clock-preferences-v1') || 'null');
+        if (raw && typeof raw === 'object') setPrefs({ analog: typeof raw.analog === 'boolean' ? raw.analog : false, hour12: typeof raw.hour12 === 'boolean' ? raw.hour12 : true, seconds: typeof raw.seconds === 'boolean' ? raw.seconds : true, zone: ZONES.some(z => z.zone === raw.zone) ? raw.zone : 'local' });
+      } catch { /* Defaults remain available. */ }
       setNow(new Date());
-    }, 1000);
-
-    // Outside click handler for settings
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        settingsPanelRef.current && 
-        !settingsPanelRef.current.contains(event.target as Node) &&
-        settingsBtnRef.current &&
-        !settingsBtnRef.current.contains(event.target as Node)
-      ) {
-        setShowSettings(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      clearInterval(timer);
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    }, 0);
+    const tick = () => setNow(new Date());
+    const timer = setInterval(tick, 250);
+    document.addEventListener('visibilitychange', tick);
+    return () => { clearTimeout(load); clearInterval(timer); document.removeEventListener('visibilitychange', tick); };
   }, []);
-
-  // Time calculations
-  const h = now.getHours();
-  const m = now.getMinutes();
-  const s = now.getSeconds();
-  
-  const h12 = h % 12 || 12;
-  const hDisp = is12h ? String(h12).padStart(2, '0') : String(h).padStart(2, '0');
-  const mDisp = String(m).padStart(2, '0');
-  const sDisp = String(s).padStart(2, '0');
-  const isNight = h < 6 || h >= 19;
-  const ampm = h < 12 ? 'AM' : 'PM';
-
-  const dateStr = now.toLocaleDateString('en-US', {
-    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
-  });
-
-  const secDeg = s * 6;
-  const minDeg = m * 6 + s * 0.1;
-  const hourDeg = (h % 12) * 30 + m * 0.5;
-
-  const worldTime = (tz: string) => {
-    return now.toLocaleTimeString('en-US', {
-      timeZone: tz, hour: '2-digit', minute: '2-digit', hour12: is12h
-    });
-  };
-
-  // Build analog ticks
-  const ticks: React.ReactNode[] = [];
-  const nums: React.ReactNode[] = [];
-  const cx = 140, cy = 140, r = 136;
-  
-  if (isClient && isAnalog) {
-    for (let i = 0; i < 60; i++) {
-      const isHour = i % 5 === 0;
-      const angleRad = (i * 6 - 90) * Math.PI / 180;
-      const outerR = r - 6;
-      const innerR = isHour ? outerR - 14 : outerR - 7;
-      const x1 = cx + Math.cos(angleRad) * outerR;
-      const y1 = cy + Math.sin(angleRad) * outerR;
-      const x2 = cx + Math.cos(angleRad) * innerR;
-      const y2 = cy + Math.sin(angleRad) * innerR;
-      ticks.push(
-        <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} strokeWidth={isHour ? "2.5" : "1"} strokeLinecap="round" className={isHour ? styles.tickHour : styles.tickMin} />
-      );
-    }
-    
-    const clockNums = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-    clockNums.forEach((num, i) => {
-      const angleRad = (i * 30 - 90) * Math.PI / 180;
-      const numR = r - 32;
-      const x = cx + Math.cos(angleRad) * numR;
-      const y = cy + Math.sin(angleRad) * numR;
-      nums.push(
-        <text key={`n${num}`} x={x} y={y} textAnchor="middle" dominantBaseline="central" fontSize="11" fontWeight="600" fontFamily="Inter, sans-serif" className={styles.numLabel}>
-          {num}
-        </text>
-      );
-    });
-  }
-
-  if (!isClient) return <div className="min-h-screen bg-slate-900"></div>;
-
-  return (
-    <div className={`min-h-screen transition-colors duration-300 flex flex-col bg-slate-900 text-slate-100 ${styles.clockWrapper}`}>
-      <BackButton />
-
-      {/* Settings Button */}
-      <div className="fixed top-4 right-4 z-50">
-        <button 
-          ref={settingsBtnRef}
-          onClick={() => setShowSettings(!showSettings)}
-          className="p-2 rounded-full shadow-md border hover:shadow-lg transition-all duration-100 bg-slate-700 text-slate-200 border-slate-600 hover:border-cyan-400"
-        >
-          <i className="ri-settings-3-line text-xl"></i>
-        </button>
-      </div>
-
-      <div className="flex-1 flex flex-col items-center justify-center px-4 py-20 gap-5">
-        
-        {/* Date */}
-        <div className={`${styles.fadeUp} text-xs font-semibold uppercase tracking-[0.2em] text-slate-400`}>
-          {dateStr}
-        </div>
-
-        {/* Digital Clock */}
-        {!isAnalog && (
-          <div className={`${styles.fadeUp} text-center`}>
-            <div className={`flex items-baseline justify-center gap-0 select-none ${styles.digitalTime}`}>
-              <span className="text-[13vw] sm:text-[10vw] md:text-[8rem] font-bold tabular-nums leading-none text-slate-100">
-                {hDisp}:{mDisp}
-              </span>
-              {showSeconds && (
-                <>
-                  <span className={`${styles.colonPulse} text-[13vw] sm:text-[10vw] md:text-[8rem] font-bold leading-none text-cyan-400`}>:</span>
-                  <span className="text-[7vw] sm:text-[5vw] md:text-[4.5rem] font-bold tabular-nums leading-none self-end mb-2 text-slate-400">
-                    {sDisp}
-                  </span>
-                </>
-              )}
-            </div>
-            
-            <div className="flex items-center justify-center gap-3 mt-3">
-              {is12h && (
-                <span className="text-xs font-bold px-3 py-1 rounded-full bg-cyan-500/15 border border-cyan-500/25 tracking-wider text-cyan-300">
-                  {ampm}
-                </span>
-              )}
-              {nightIndicator && isNight && (
-                <span className="text-xs font-medium text-indigo-300">🌙 Night time</span>
-              )}
-            </div>
-            <div className="mt-2 text-xs tracking-wide text-slate-500">
-              Timezone: {timezoneName}
-            </div>
-          </div>
-        )}
-
-        {/* Analog Clock */}
-        {isAnalog && (
-          <div className={`${styles.fadeUp}`}>
-            <svg width="280" height="280" viewBox="0 0 280 280" className="drop-shadow-[0_10px_40px_rgba(0,0,0,0.4)]">
-              <circle className={styles.clockFaceRing} cx="140" cy="140" r="137" fill="none" strokeWidth="2"/>
-              <circle className={styles.clockFaceBg} cx="140" cy="140" r="136"/>
-              <g>{ticks}</g>
-              <g>{nums}</g>
-              <line className={styles.svgSec} x1="140" y1="160" x2="140" y2="40" strokeWidth="1.5" strokeLinecap="round" transform={`rotate(${secDeg}, 140, 140)`} style={{ display: showSeconds ? 'block' : 'none' }}/>
-              <line className={styles.svgMin} x1="140" y1="140" x2="140" y2="52" strokeWidth="3.5" strokeLinecap="round" transform={`rotate(${minDeg}, 140, 140)`}/>
-              <line className={styles.svgHour} x1="140" y1="140" x2="140" y2="78" strokeWidth="5.5" strokeLinecap="round" transform={`rotate(${hourDeg}, 140, 140)`}/>
-              <circle className={styles.svgCapOuter} cx="140" cy="140" r="7"/>
-              <circle className={styles.svgCapInner} cx="140" cy="140" r="3.5"/>
-            </svg>
-            <div className="text-center mt-3 text-xs tracking-wide text-slate-500">
-              Timezone: {timezoneName}
-            </div>
-          </div>
-        )}
-
-        {/* World Clocks */}
-        {showWorldClocks && (
-          <div className={`${styles.fadeUpDelay2} grid grid-cols-3 gap-3 w-full max-w-xs mt-4`}>
-            <div className="rounded-xl p-3 text-center border shadow-sm bg-slate-800 border-slate-700/50">
-              <p className="text-xs mb-1 text-slate-400">🗽 New York</p>
-              <p className={`${styles.wcTime} text-sm font-bold tabular-nums text-cyan-400`}>{worldTime('America/New_York')}</p>
-            </div>
-            <div className="rounded-xl p-3 text-center border shadow-sm bg-slate-800 border-slate-700/50">
-              <p className="text-xs mb-1 text-slate-400">🇬🇧 London</p>
-              <p className={`${styles.wcTime} text-sm font-bold tabular-nums text-cyan-400`}>{worldTime('Europe/London')}</p>
-            </div>
-            <div className="rounded-xl p-3 text-center border shadow-sm bg-slate-800 border-slate-700/50">
-              <p className="text-xs mb-1 text-slate-400">🇯🇵 Tokyo</p>
-              <p className={`${styles.wcTime} text-sm font-bold tabular-nums text-cyan-400`}>{worldTime('Asia/Tokyo')}</p>
-            </div>
-          </div>
-        )}
-
-      </div>
-
-      {/* Settings Panel */}
-      <div 
-        ref={settingsPanelRef}
-        className={`fixed top-16 right-4 border rounded-2xl p-5 w-72 shadow-2xl z-50 bg-slate-800 border-slate-700/50 ${styles.settingsPanel} ${!showSettings ? styles.panelClosed : ''}`}
-      >
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-sm font-bold flex items-center gap-2 text-slate-100">
-            <i className="ri-settings-3-line text-cyan-400"></i> Clock Settings
-          </h2>
-          <button onClick={() => setShowSettings(false)} className="transition-colors text-slate-400 hover:text-slate-200">
-            <i className="ri-close-line text-xl"></i>
-          </button>
-        </div>
-        <div className="rounded-xl p-3 mb-4 bg-slate-700/60">
-          <p className="text-xs font-semibold uppercase tracking-wider mb-1 text-slate-400">📍 Your Timezone</p>
-          <p className="text-sm font-medium text-slate-200">{timezoneName}</p>
-        </div>
-        <div className="space-y-3">
-          <label className="flex items-center justify-between cursor-pointer">
-            <span className="text-sm text-slate-300">Analog Clock</span>
-            <input type="checkbox" checked={isAnalog} onChange={e => setIsAnalog(e.target.checked)} className="w-4 h-4 accent-cyan-400 cursor-pointer" />
-          </label>
-          <label className="flex items-center justify-between cursor-pointer">
-            <span className="text-sm text-slate-300">12-hour Format</span>
-            <input type="checkbox" checked={is12h} onChange={e => setIs12h(e.target.checked)} className="w-4 h-4 accent-cyan-400 cursor-pointer" />
-          </label>
-          <label className="flex items-center justify-between cursor-pointer">
-            <span className="text-sm text-slate-300">Show Seconds</span>
-            <input type="checkbox" checked={showSeconds} onChange={e => setShowSeconds(e.target.checked)} className="w-4 h-4 accent-cyan-400 cursor-pointer" />
-          </label>
-          <label className="flex items-center justify-between cursor-pointer">
-            <span className="text-sm text-slate-300">Night Indicator</span>
-            <input type="checkbox" checked={nightIndicator} onChange={e => setNightIndicator(e.target.checked)} className="w-4 h-4 accent-cyan-400 cursor-pointer" />
-          </label>
-          <label className="flex items-center justify-between cursor-pointer">
-            <span className="text-sm text-slate-300">World Clocks</span>
-            <input type="checkbox" checked={showWorldClocks} onChange={e => setShowWorldClocks(e.target.checked)} className="w-4 h-4 accent-cyan-400 cursor-pointer" />
-          </label>
-        </div>
-      </div>
-    </div>
-  );
+  const update = (next: Preferences) => { setPrefs(next); try { localStorage.setItem('clock-preferences-v1', JSON.stringify(next)); } catch { setStorageNote('Browser storage is unavailable. Settings last for this visit.'); } };
+  const zone = prefs.zone === 'local' ? localZone : prefs.zone;
+  if (!now) return <main className={styles.page}><p>Setting your clock…</p></main>;
+  const parts = Object.fromEntries(new Intl.DateTimeFormat('en-GB', { timeZone: zone, hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' }).formatToParts(now).map(p => [p.type, p.value]));
+  const h = Number(parts.hour), m = Number(parts.minute), s = Number(parts.second);
+  const date = new Intl.DateTimeFormat('en-US', { timeZone: zone, weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }).format(now);
+  const format = (tz: string) => new Intl.DateTimeFormat('en-US', { timeZone: tz, hour: '2-digit', minute: '2-digit', hour12: prefs.hour12 }).format(now);
+  return <main className={`${styles.page} ${zen ? styles.zen : ''}`}><BackButton /><div className={styles.shell}>
+    <header className={styles.header}><div><p className={styles.eyebrow}>A MOMENT, WELL SPENT</p><h1>Clock<span>.</span></h1></div><div className={styles.controls}><button onClick={() => setZen(!zen)}>{zen ? 'Show world clocks' : 'Quiet view'}</button><button aria-expanded={settings} aria-controls="clock-settings" onClick={() => setSettings(!settings)}>Settings</button></div></header>
+    {settings && <section id="clock-settings" className={styles.settings} aria-label="Clock settings"><label>Display timezone<select value={prefs.zone} onChange={e => update({ ...prefs, zone: e.target.value })}><option value="local">Your timezone ({localZone.replace(/_/g, ' ')})</option>{ZONES.map(z => <option key={z.zone} value={z.zone}>{z.name}</option>)}</select></label><label><input type="checkbox" checked={prefs.analog} onChange={e => update({ ...prefs, analog: e.target.checked })} /> Analog display</label><label><input type="checkbox" checked={prefs.hour12} onChange={e => update({ ...prefs, hour12: e.target.checked })} /> 12-hour format</label><label><input type="checkbox" checked={prefs.seconds} onChange={e => update({ ...prefs, seconds: e.target.checked })} /> Show seconds</label></section>}
+    <section className={styles.hero} aria-label="Current time"><p className={styles.date}>{date}</p>
+      {prefs.analog ? <svg className={styles.analog} viewBox="0 0 300 300" role="img" aria-label={`Analog clock: ${format(zone)}`}><circle cx="150" cy="150" r="143" fill="#25221d" stroke="#574938" />{Array.from({ length: 60 }, (_, i) => <line key={i} x1="150" y1="17" x2="150" y2={i % 5 === 0 ? 29 : 22} stroke={i % 5 === 0 ? '#ecddc8' : '#6d5c46'} strokeWidth={i % 5 === 0 ? 3 : 1} transform={`rotate(${i * 6} 150 150)`} />)}{[12, 3, 6, 9].map((n, i) => <text key={n} x={150 + Math.sin(i * Math.PI / 2) * 105} y={155 - Math.cos(i * Math.PI / 2) * 105} textAnchor="middle" fill="#d9b990" fontSize="15">{n}</text>)}<line x1="150" y1="150" x2="150" y2="78" stroke="#faf6f0" strokeWidth="6" strokeLinecap="round" transform={`rotate(${h % 12 * 30 + m * .5 + s / 120} 150 150)`} /><line x1="150" y1="150" x2="150" y2="46" stroke="#d1ab7a" strokeWidth="4" strokeLinecap="round" transform={`rotate(${m * 6 + s * .1} 150 150)`} />{prefs.seconds && <line x1="150" y1="172" x2="150" y2="38" stroke="#e1c7a7" strokeWidth="2" transform={`rotate(${s * 6} 150 150)`} />}<circle cx="150" cy="150" r="6" fill="#e1c7a7" /></svg> : <div className={styles.digital} role="timer" aria-label={format(zone)}><span>{String(prefs.hour12 ? h % 12 || 12 : h).padStart(2, '0')}</span><span className={styles.colon}>:</span><span>{parts.minute}</span>{prefs.seconds && <span className={styles.seconds}>{parts.second}</span>}</div>}
+      <div className={styles.meta}>{prefs.hour12 && <span className={styles.badge}>{h < 12 ? 'AM' : 'PM'}</span>}<span>{zone.replace(/_/g, ' ')}</span><span>{h >= 6 && h < 19 ? 'Daytime' : 'After hours'}</span></div>
+    </section>
+    <section className={styles.world} aria-label="World clocks"><div className={styles.worldHeading}><h2>Same moment. Different places.</h2><p>Live time around the world</p></div><div className={styles.grid}>{ZONES.map(z => { const hour = Number(new Intl.DateTimeFormat('en-GB', { timeZone: z.zone, hour: '2-digit', hourCycle: 'h23' }).format(now)); return <button key={z.zone} aria-pressed={prefs.zone === z.zone} onClick={() => update({ ...prefs, zone: z.zone })}><div><h3>{z.name}</h3><span>{hour >= 6 && hour < 19 ? '☀ Day' : '☾ Night'}</span></div><strong>{format(z.zone)}</strong><small>{new Intl.DateTimeFormat('en-US', { timeZone: z.zone, weekday: 'short', month: 'short', day: 'numeric' }).format(now)}</small></button>; })}</div></section>
+    <p className={styles.footer}>{storageNote || 'Synced to your device clock · Preferences saved on this browser'}</p>
+  </div></main>;
 }
+

@@ -26,16 +26,19 @@
   transition: background-color 0.15s ease, transform 0.1s ease, border-color 0.15s ease;
   border-radius: 0.875rem;
   border: 1.5px solid rgba(255, 255, 255, 0.07);
-  background: rgba(17, 24, 39, 0.8);
+  background: rgba(22, 17, 39, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
   aspect-ratio: 1;
 }
+.cell[data-expiring]{border:2px dashed #ad9bcf;opacity:.65}
+.cell:disabled{cursor:default}
+.rules{font-size:14px;line-height:1.7;color:#c4b9d8;text-align:center}
 
 .cell:hover:not(.taken) {
-  background: rgba(34, 211, 238, 0.08);
-  border-color: rgba(34, 211, 238, 0.3);
+  background: rgba(198, 180, 245, 0.08);
+  border-color: rgba(198, 180, 245, 0.3);
 }
 
 .cell:active:not(.taken) {
@@ -43,18 +46,18 @@
 }
 
 .winCell {
-  background: rgba(34, 211, 238, 0.12) !important;
-  border-color: rgba(34, 211, 238, 0.5) !important;
-  box-shadow: 0 0 18px rgba(34, 211, 238, 0.15);
+  background: rgba(198, 180, 245, 0.12) !important;
+  border-color: rgba(198, 180, 245, 0.5) !important;
+  box-shadow: 0 0 18px rgba(198, 180, 245, 0.15);
 }
 
 .modePill {
   transition: all 0.15s ease;
 }
 .modePillActive {
-  background: #22d3ee;
-  color: #0f172a;
-  border-color: #22d3ee;
+  background: #c6b4f5;
+  color: #160f2a;
+  border-color: #c6b4f5;
 }
 
 @keyframes scorePop {
@@ -108,3 +111,6 @@
 .pulse {
   animation: pulse 1.2s ease infinite;
 }
+
+/* Shared Logic Games identity; gameplay colors remain distinct. */
+.page{background:radial-gradient(ellipse at 85% 0,#49347d40,transparent 52%),#0a0c19;color:#eceaf6}

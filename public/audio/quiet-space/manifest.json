@@ -1,0 +1,35 @@
+{
+  "upstreamCommit": "775f2a767230a9681850d1b1e085be58656f1382",
+  "files": [
+    {
+      "id": "rain",
+      "url": "https://raw.githubusercontent.com/rafaelmardojai/blanket/775f2a767230a9681850d1b1e085be58656f1382/data/resources/sounds/rain.ogg",
+      "bytes": 3133874,
+      "sha256": "b84c1daf259a24283be40b7663656d17676df4eb60c1e0332820570db891848a"
+    },
+    {
+      "id": "forest",
+      "url": "https://raw.githubusercontent.com/rafaelmardojai/blanket/775f2a767230a9681850d1b1e085be58656f1382/data/resources/sounds/birds.ogg",
+      "bytes": 3063230,
+      "sha256": "e59b19c2a377d5835d07e7ec8f8c876b9f40ae7f703738b55d616ef96a1638b2"
+    },
+    {
+      "id": "wind",
+      "url": "https://raw.githubusercontent.com/rafaelmardojai/blanket/775f2a767230a9681850d1b1e085be58656f1382/data/resources/sounds/wind.ogg",
+      "bytes": 289537,
+      "sha256": "cfdc81be69cd5f434ebfeb708bdf094725f3052d76691f550ff0e10eee3e32d2"
+    },
+    {
+      "id": "water",
+      "url": "https://raw.githubusercontent.com/rafaelmardojai/blanket/775f2a767230a9681850d1b1e085be58656f1382/data/resources/sounds/stream.ogg",
+      "bytes": 5025476,
+      "sha256": "ce372c5db561168636647dd7d4aac39ef1785ae5d415ad0e589186ce1b7c5796"
+    },
+    {
+      "id": "cafe",
+      "url": "https://raw.githubusercontent.com/rafaelmardojai/blanket/775f2a767230a9681850d1b1e085be58656f1382/data/resources/sounds/coffee-shop.ogg",
+      "bytes": 265612,
+      "sha256": "397b5d95f06df69ba2989147cf9c37a417b2dc5950c1a16fbe6be6fa372d25ef"
+    }
+  ]
+}

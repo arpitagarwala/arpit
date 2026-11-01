@@ -1,10 +1,4 @@
+'use client';
+import {useSiteFooter} from '@/components/SiteFeatures';
 import styles from './Footer.module.css';
-
-export default function Footer() {
-  return (
-    <footer className={styles.footer}>
-      &copy; 2026 Arpit Agarwala. Engineered with{' '}
-      <span className={styles.heart}>&#10084;&#65039;</span>
-    </footer>
-  );
-}
+export default function Footer(){const footer=useSiteFooter();return footer.enabled?<footer className={styles.footer}>{footer.text}</footer>:null;}

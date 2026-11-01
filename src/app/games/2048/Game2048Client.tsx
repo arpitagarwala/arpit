@@ -1,279 +1,38 @@
 'use client';
-
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import {useState,useRef,useEffect,useCallback,type CSSProperties} from 'react';
 import BackButton from '@/components/BackButton/BackButton';
-import styles from './2048.module.css';
-
-type Board = number[][];
-
-export default function Game2048Client() {
-  const [board, setBoard] = useState<Board>(Array.from({ length: 4 }, () => Array(4).fill(0)));
-  const [score, setScore] = useState(0);
-  const [best, setBest] = useState(0);
-  const [history, setHistory] = useState<{ board: Board; score: number }[]>([]);
-  const [won, setWon] = useState(false);
-  const [gameOver, setGameOver] = useState(false);
-  const [showWinBanner, setShowWinBanner] = useState(false);
-  const [newPos, setNewPos] = useState<[number, number] | null>(null);
-  const [toastMsg, setToastMsg] = useState('');
-  const [showToast, setShowToast] = useState(false);
-
-  const toastTimeout = useRef<NodeJS.Timeout | null>(null);
-  const touchStart = useRef<{ x: number; y: number } | null>(null);
-
-  useEffect(() => {
-    const savedBest = parseInt(localStorage.getItem('2048-best') || '0');
-    setBest(savedBest);
-    
-    const saved = JSON.parse(localStorage.getItem('2048-save') || 'null');
-    if (saved && saved.board && saved.board.some((r: number[]) => r.some(v => v > 0))) {
-      // Prompt logic shouldn't block render, but we can auto-resume for better UX or use a confirm
-      // For Next.js client component, window.confirm during mount can be jarring. Let's auto-resume.
-      setBoard(saved.board);
-      setScore(saved.score);
-      setWon(saved.won || false);
-      setHistory([]);
-    } else {
-      newGame();
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const save = (b: Board, s: number, w: boolean) => {
-    localStorage.setItem('2048-save', JSON.stringify({ board: b, score: s, won: w }));
-    if (s > best) {
-      setBest(s);
-      localStorage.setItem('2048-best', s.toString());
-    }
-  };
-
-  const addTile = (b: Board): [number, number] | null => {
-    const empties: [number, number][] = [];
-    b.forEach((row, r) => row.forEach((v, c) => { if (!v) empties.push([r, c]); }));
-    if (!empties.length) return null;
-    const [r, c] = empties[Math.floor(Math.random() * empties.length)];
-    b[r][c] = Math.random() < 0.9 ? 2 : 4;
-    return [r, c];
-  };
-
-  const newGame = () => {
-    let newBoard = Array.from({ length: 4 }, () => Array(4).fill(0));
-    addTile(newBoard);
-    addTile(newBoard);
-    setBoard(newBoard);
-    setScore(0);
-    setWon(false);
-    setGameOver(false);
-    setShowWinBanner(false);
-    setHistory([]);
-    setNewPos(null);
-    save(newBoard, 0, false);
-  };
-
-  const triggerToast = (msg: string) => {
-    setToastMsg(msg);
-    setShowToast(true);
-    if (toastTimeout.current) clearTimeout(toastTimeout.current);
-    toastTimeout.current = setTimeout(() => setShowToast(false), 2000);
-  };
-
-  const undoMove = () => {
-    if (!history.length) { triggerToast('Nothing to undo!'); return; }
-    const last = history[history.length - 1];
-    setBoard(last.board);
-    setScore(last.score);
-    setHistory(prev => prev.slice(0, -1));
-    setNewPos(null);
-    save(last.board, last.score, won);
-  };
-
-  const isGameOver = (b: Board) => {
-    for (let r = 0; r < 4; r++) {
-      for (let c = 0; c < 4; c++) {
-        if (!b[r][c]) return false;
-        if (c < 3 && b[r][c] === b[r][c + 1]) return false;
-        if (r < 3 && b[r][c] === b[r + 1][c]) return false;
-      }
-    }
-    return true;
-  };
-
-  const slideRow = (row: number[], currentScore: { val: number }, wState: { won: boolean }): number[] => {
-    let arr = row.filter(v => v);
-    let merged = Array(arr.length).fill(false);
-    for (let i = 0; i < arr.length - 1; i++) {
-      if (arr[i] === arr[i + 1] && !merged[i] && !merged[i + 1]) {
-        arr[i] *= 2;
-        currentScore.val += arr[i];
-        arr.splice(i + 1, 1);
-        merged.splice(i + 1, 1);
-        merged[i] = true;
-        if (arr[i] === 2048 && !wState.won) {
-          wState.won = true;
-          setShowWinBanner(true);
-          setTimeout(() => setShowWinBanner(false), 4000);
-        }
-      }
-    }
-    while (arr.length < 4) arr.push(0);
-    return arr;
-  };
-
-  const rotateBoard = (b: Board) => {
-    return b[0].map((_, i) => b.map(r => r[i]).reverse());
-  };
-
-  const move = useCallback((dir: number) => {
-    if (gameOver) return;
-
-    let b = board.map(r => [...r]);
-    const prevHistory = { board: board.map(r => [...r]), score };
-
-    let rotations = [0, 0, 3, 1][dir];
-    for (let i = 0; i < rotations; i++) b = rotateBoard(b);
-
-    const scoreState = { val: score };
-    const winState = { won };
-
-    if (dir === 1) {
-      b = b.map(r => slideRow([...r].reverse(), scoreState, winState).reverse());
-    } else {
-      b = b.map(r => slideRow(r, scoreState, winState));
-    }
-
-    for (let i = 0; i < rotations; i++) b = rotateBoard(rotateBoard(rotateBoard(b)));
-
-    const changed = JSON.stringify(b) !== JSON.stringify(board);
-    if (changed) {
-      const addedPos = addTile(b);
-      setBoard(b);
-      setScore(scoreState.val);
-      setWon(winState.won);
-      setNewPos(addedPos);
-      
-      const newHistory = [...history, prevHistory];
-      if (newHistory.length > 5) newHistory.shift();
-      setHistory(newHistory);
-
-      save(b, scoreState.val, winState.won);
-
-      if (isGameOver(b)) {
-        setTimeout(() => setGameOver(true), 300);
-      }
-    }
-  }, [board, score, won, gameOver, history]);
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Prevent default scrolling for arrow keys
-      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
-        e.preventDefault();
-      }
-      const dirMap: Record<string, number> = { 
-        ArrowLeft: 0, a: 0, 
-        ArrowRight: 1, d: 1, 
-        ArrowUp: 2, w: 2, 
-        ArrowDown: 3, s: 3 
-      };
-      if (dirMap[e.key] !== undefined) {
-        move(dirMap[e.key]);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown, { passive: false });
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [move]);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (!touchStart.current) return;
-    const dx = e.changedTouches[0].clientX - touchStart.current.x;
-    const dy = e.changedTouches[0].clientY - touchStart.current.y;
-    if (Math.abs(dx) < 20 && Math.abs(dy) < 20) return;
-    if (Math.abs(dx) > Math.abs(dy)) move(dx > 0 ? 1 : 0);
-    else move(dy > 0 ? 3 : 2);
-    touchStart.current = null;
-  };
-
-  const getColorClass = (v: number) => {
-    if (!v) return styles.tileEmpty;
-    if (v === 2) return styles.tile2;
-    if (v === 4) return styles.tile4;
-    if (v === 8) return styles.tile8;
-    if (v === 16) return styles.tile16;
-    if (v === 32) return styles.tile32;
-    if (v === 64) return styles.tile64;
-    if (v === 128) return styles.tile128;
-    if (v === 256) return styles.tile256;
-    if (v === 512) return styles.tile512;
-    if (v === 1024) return styles.tile1024;
-    if (v === 2048) return styles.tile2048;
-    return styles.tileHigh;
-  };
-
-  return (
-    <div 
-      className="min-h-screen bg-[#0c0f1a] text-slate-100 flex flex-col items-center justify-center py-16 px-4 touch-none select-none"
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-    >
-      <div className="fixed top-4 left-4 z-50 pointer-events-auto">
-        <BackButton />
-      </div>
-
-      <div className={`${styles.winBanner} ${showWinBanner ? styles.winBannerShow : ''}`}>
-        🎉 You reached 2048! Keep going!
-      </div>
-
-      <div className={styles.header}>
-        <h1 className={styles.title}>2048</h1>
-        <div className={styles.scoreRow}>
-          <div className={styles.scoreBox}>
-            <div className={styles.scoreLabel}>Score</div>
-            <div className={styles.scoreVal}>{score}</div>
-          </div>
-          <div className={styles.scoreBox}>
-            <div className={styles.scoreLabel}>Best</div>
-            <div className={styles.scoreVal}>{best}</div>
-          </div>
-        </div>
-      </div>
-
-      <div className={styles.btnRow}>
-        <button className={styles.actionBtn} onClick={newGame}>New Game</button>
-        <button className={styles.actionBtn} onClick={undoMove}>Undo</button>
-      </div>
-
-      <div className={styles.board}>
-        {board.map((row, r) => row.map((v, c) => (
-          <div 
-            key={`${r}-${c}`} 
-            className={`${styles.tile} ${getColorClass(v)} ${newPos && newPos[0] === r && newPos[1] === c ? styles.tileNew : ''}`}
-          >
-            {v || ''}
-          </div>
-        )))}
-      </div>
-      
-      <div className={styles.hint}>Arrow Keys / WASD / Swipe to slide tiles</div>
-
-      {gameOver && (
-        <div className={`${styles.over} ${styles.overShow}`}>
-          <div className={styles.overBox}>
-            <div className={styles.overTitle}>💀 Game Over</div>
-            <div className={styles.overSub}>No more moves available</div>
-            <div style={{ fontSize: '.7rem', color: 'rgba(251,191,36,0.45)', textTransform: 'uppercase', letterSpacing: '.1em' }}>Score</div>
-            <div className={styles.overScore}>{score}</div>
-            <button className={styles.overBtn} onClick={newGame}>Play Again</button>
-          </div>
-        </div>
-      )}
-
-      <div className={`${styles.toast} ${showToast ? styles.toastShow : ''}`}>
-        {toastMsg}
-      </div>
-    </div>
-  );
+import {emptyCapture,gameAction,gameResult} from '@/lib/game-capture';
+import {new2048,move2048,slide2048,blocked2048,valid2048,type Round2048,type Direction} from '@/lib/game-2048';
+import s from './2048.module.css';
+type Motion={from:number;to:number;value:number};
+export default function Game2048Client(){
+ const [round,setRound]=useState<Round2048|null>(null),ref=useRef<Round2048|null>(null),[best,setBest]=useState(0),bestRef=useRef(0),[history,setHistory]=useState<Round2048[]>([]),historyRef=useRef<Round2048[]>([]);
+ const [motion,setMotion]=useState<Motion[]|null>(null),[spawn,setSpawn]=useState(-1),[merged,setMerged]=useState<number[]>([]),[notice,setNotice]=useState(''),[storageError,setStorageError]=useState(''),[confirm,setConfirm]=useState(false),confirmRef=useRef(false),[gain,setGain]=useState(0);
+ const animating=useRef(false),pending=useRef<Direction[]>([]),timeout=useRef<ReturnType<typeof setTimeout>|null>(null),raf=useRef(0),capture=useRef(emptyCapture()),reported=useRef(false),gesture=useRef<{x:number;y:number;id:number}|null>(null),performRef=useRef<(d:Direction)=>void>(()=>{});
+ const persist=useCallback((next:Round2048)=>{try{localStorage.setItem('2048-save',JSON.stringify({...next,history:historyRef.current}));if(next.score>bestRef.current){bestRef.current=next.score;setBest(next.score);localStorage.setItem('2048-best',String(next.score));}setStorageError('');}catch{setStorageError('Auto-save is unavailable in this browser. This game still works for this visit.');}},[]);
+ const cancel=useCallback(()=>{if(timeout.current)clearTimeout(timeout.current);cancelAnimationFrame(raf.current);pending.current=[];animating.current=false;gesture.current=null;},[]);
+ const reset=useCallback(()=>{cancel();const next=new2048();ref.current=next;historyRef.current=[];capture.current=emptyCapture();reported.current=false;setRound(next);setHistory([]);setMotion(null);setSpawn(-1);setMerged([]);setGain(0);setConfirm(false);confirmRef.current=false;setNotice('A fresh board. Every move is a new decision.');persist(next);},[cancel,persist]);
+ useEffect(()=>{const frame=requestAnimationFrame(()=>{let saved:Round2048|null=null;try{const b=Number(localStorage.getItem('2048-best'));if(Number.isSafeInteger(b)&&b>=0){bestRef.current=b;setBest(b);}const raw=localStorage.getItem('2048-save');if(raw){const parsed=JSON.parse(raw),savedHistory=parsed?.history;if(valid2048(parsed)&&parsed.board.flat().some(Boolean)){saved={board:parsed.board,score:parsed.score,won:parsed.won||parsed.board.flat().some((n:number)=>n>=2048),moves:parsed.moves??0};historyRef.current=Array.isArray(savedHistory)?savedHistory.filter(valid2048).slice(-20):[];setHistory(historyRef.current);setNotice('Your board is ready to continue.');}else setNotice('Your saved board could not be restored. A new board is ready.');}}catch{setStorageError('Saved progress could not be read. You can still play.');}const next=saved??new2048();ref.current=next;setRound(next);});return()=>{cancelAnimationFrame(frame);cancel();};},[cancel]);
+ const perform=useCallback((direction:Direction)=>{const before=ref.current;if(!before||confirmRef.current||blocked2048(before.board))return;if(animating.current){if(pending.current.length<4)pending.current.push(direction);return;}const next=move2048(before,direction);if(next.round===before)return;
+  historyRef.current=[...historyRef.current,before].slice(-20);setHistory(historyRef.current);ref.current=next.round;gameAction(capture.current);if(next.round.won&&!before.won&&!reported.current){reported.current=true;gameResult(capture.current,'2048');}
+  persist(next.round);animating.current=true;setMotion(slide2048(before.board,direction).motions);setSpawn(-1);setMerged([]);
+  timeout.current=setTimeout(()=>{setRound(next.round);setMotion(null);setSpawn(next.index);setMerged(next.positions);setGain(next.gain);setNotice(next.round.won&&!before.won?'2048 reached. Keep going at your own pace.':next.gain?'Merged tiles · +'+next.gain:'Tiles moved.');const queued=pending.current.shift();if(queued)raf.current=requestAnimationFrame(()=>{animating.current=false;performRef.current(queued);});else animating.current=false;},115);
+ },[persist]);
+ useEffect(()=>{performRef.current=perform;},[perform]);
+ const undo=()=>{const previous=historyRef.current.at(-1);if(!previous)return;cancel();ref.current=previous;historyRef.current=historyRef.current.slice(0,-1);setHistory(historyRef.current);setRound(previous);setMotion(null);setSpawn(-1);setMerged([]);setGain(0);capture.current.undos++;persist(previous);setNotice('Last move undone.');};
+ const requestNew=()=>{if((ref.current?.moves??0)>0||(ref.current?.score??0)>0||(ref.current?.board.flat().filter(Boolean).length??0)>2){confirmRef.current=true;setConfirm(true);}else reset();};
+ const highest=round?Math.max(...round.board.flat()):2,over=Boolean(round&&blocked2048(round.board));
+ function tileStyle(index:number):CSSProperties{return {'--col':index%4,'--row':Math.floor(index/4)} as CSSProperties;}
+ return <main className={s.page} onKeyDown={event=>{if(event.altKey||event.ctrlKey||event.metaKey||confirmRef.current)return;const key:Record<string,Direction>={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',a:'left',s:'down',d:'right'};const direction=key[event.key];if(direction){event.preventDefault();perform(direction);}}}>
+ <BackButton/><div className={s.shell}><header className={s.header}><div><p className={s.eyebrow}>A LITTLE SPACE. A BETTER MOVE.</p><h1>2048<span>.</span></h1></div><div className={s.scores}><div><span>Score</span><strong>{round?.score??0}</strong></div><div><span>Best</span><strong>{best}</strong></div></div></header>
+ <p className={s.lead}>Join equal tiles. Make room for your next move.</p><div className={s.toolbar}><button className={s.primary} onClick={requestNew}>New game</button><button disabled={!history.length} onClick={undo}>Undo <span>{history.length?`(${history.length})`:''}</span></button><span className={s.moves}>{round?.moves??0} moves {gain>0&&<b>+{gain}</b>}</span></div>
+ {confirm&&<section className={s.confirm} aria-label="Start a new game?"><p>Replace this board? Your best score stays.</p><div><button className={s.primary} onClick={reset}>Start fresh</button><button onClick={()=>{confirmRef.current=false;setConfirm(false);}}>Keep playing</button></div></section>}
+ <div className={s.board} tabIndex={0} role="group" aria-label="2048 board. Swipe here or use the arrow controls." onPointerDown={e=>{if(e.pointerType==='mouse'&&e.button!==0)return;if(!e.isPrimary){gesture.current=null;return;}gesture.current={x:e.clientX,y:e.clientY,id:e.pointerId};e.currentTarget.setPointerCapture(e.pointerId);e.currentTarget.focus({preventScroll:true});}} onPointerCancel={()=>{gesture.current=null;}} onPointerUp={e=>{const start=gesture.current;gesture.current=null;if(!start||e.pointerId!==start.id)return;const dx=e.clientX-start.x,dy=e.clientY-start.y;if(Math.max(Math.abs(dx),Math.abs(dy))<24)return;perform(Math.abs(dx)>Math.abs(dy)?dx>0?'right':'left':dy>0?'down':'up');}}>
+ <div className={s.arena}><div className={s.slots} aria-hidden="true">{Array.from({length:16},(_,i)=><div key={i}/>)}</div>{motion?motion.map((tile,i)=><div key={`m${i}`} aria-hidden="true" className={`${s.tile} ${s.sliding}`} data-value={tile.value} style={{...tileStyle(tile.from),'--dx':tile.to%4-tile.from%4,'--dy':Math.floor(tile.to/4)-Math.floor(tile.from/4)} as CSSProperties}>{tile.value}</div>):round?.board.flat().map((value,i)=>value?<div key={`v${round.moves}-${i}`} className={`${s.tile} ${spawn===i||merged.includes(i)?s.pop:''}`} data-value={value} style={tileStyle(i)} aria-label={`Row ${Math.floor(i/4)+1}, column ${i%4+1}: ${value}`}>{value}</div>:null)}</div></div>
+ <div className={s.goal}><span>Highest <b>{highest}</b></span><span>{highest>=2048?'Keep exploring':'Target 2048'}</span><progress value={Math.min(11,Math.log2(highest||2))} max={11} aria-label="Progress toward a 2048 tile"/></div>
+ {over&&<section className={s.result} role="status"><h2>No moves left.</h2><p>You reached {highest} with {round?.score} points. Undo a move or try a fresh board.</p><button onClick={undo} disabled={!history.length}>Undo last move</button><button className={s.primary} onClick={reset}>New board</button></section>}
+ {!over&&round?.won&&<p className={s.won}>2048 reached. You can keep building this board.</p>}
+ <div className={s.dpad} aria-label="Move controls"><button aria-label="Move up" onClick={()=>perform('up')}>↑</button><div><button aria-label="Move left" onClick={()=>perform('left')}>←</button><button aria-label="Move down" onClick={()=>perform('down')}>↓</button><button aria-label="Move right" onClick={()=>perform('right')}>→</button></div></div>
+ <p className={s.fine}>Swipe on the board, use these arrows, or press arrow keys / WASD. The rest of the page scrolls normally.</p><p className={s.status} role="status">{storageError||notice||'Two tiles. No clock. Take your time.'}</p><details className={s.help}><summary>A good move starts with space.</summary><p>Equal tiles join once per move. A valid move adds one new tile; a move that changes nothing adds none. Try keeping your largest tile in a corner and leave room to rearrange. Your last 20 moves can be undone.</p></details>
+ </div></main>;
 }

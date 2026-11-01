@@ -1,15 +1,5 @@
-import SipClient from './SipClient';
-import type { Metadata } from 'next';
+import {pageMetadata} from '@/lib/page-metadata';
+import { redirect } from 'next/navigation';
+export const metadata = pageMetadata("/projects/sip", { title: 'Investment Lab', description: 'Model SIPs, step-ups, costs, inflation, and goal funding.', alternates: { canonical: '/projects/finance/sip' } });
+export default function SipPage() { redirect('/projects/finance/sip'); }
 
-export const metadata: Metadata = {
-  title: 'SIP Calculator – Arpit Agarwala',
-  description: 'Plan your mutual fund investments and visualise wealth growth.',
-};
-
-export default function SipPage() {
-  return (
-    <main className="min-h-screen relative p-4 sm:p-8 pt-20">
-      <SipClient />
-    </main>
-  );
-}

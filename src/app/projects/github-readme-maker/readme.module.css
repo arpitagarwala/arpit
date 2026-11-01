@@ -1,38 +1,89 @@
-.markdownBody {
-  font-family: 'Inter', sans-serif;
-  color: #f1f5f9;
+.page {
+  min-height: 100vh;
+  padding: 90px 24px 48px;
+  color: #f6efe5;
+  background: radial-gradient(ellipse at 20% 0%, #2a2721 0, transparent 45%), #13110f;
 }
-.markdownBody h1 { 
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1); 
-  padding-bottom: 0.5rem; 
-  margin-bottom: 1rem; 
-  font-size: 2rem; 
-  font-weight: bold; 
-}
-.markdownBody h2 { 
-  font-size: 1.5rem; 
-  font-weight: bold; 
-  margin-top: 1.5rem; 
-  margin-bottom: 1rem; 
-}
-.markdownBody p { 
-  margin-bottom: 1rem; 
-  line-height: 1.6; 
-}
-.markdownBody img { 
-  max-width: 100%; 
-  display: inline-block; 
-  margin-right: 5px; 
-}
+.shell { max-width: 1450px; margin: auto; }
+.header { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-bottom: 24px; }
+.header h1 { font-size: clamp(30px,4vw,46px); font-weight: 750; letter-spacing: -1.8px; margin: 8px 0; }
+.header h1 span { color: #d6b487; }
+.header p:not(.eyebrow) { font-size: 14px; color: #ecdcc6; line-height: 1.8; }
+.eyebrow { color: #d6b487; font-size: 14px; font-weight: 700; letter-spacing: 2px; }
+.headerActions { display: flex; flex-wrap: wrap; gap: 10px; }
+.primary, .secondary { padding: 11px 17px; border-radius: 9px; font-size: 14px; font-weight: 650; }
+.primary { background: #d6b487; color: #27231f; }
+.secondary { border: 1px solid #62533f; color: #ead9c3; }
+.status { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; color: #ecdcc6; font-size: 14px; }
+.notice { min-height: 22px; font-size: 14px; line-height: 1.8; color: #e1c7a7; margin: 12px 0; }
+.layout { display: grid; grid-template-columns: 365px minmax(0,1fr); gap: 24px; align-items: start; }
+.builder, .document { background: #1e1c18; border: 1px solid #3f3931; border-radius: 18px; }
+.builder { padding: 24px; }
+.builder h2 { font-size: 17px; font-weight: 650; }
+.templates { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin: 18px 0; }
+.templates button { border: 1px solid #564837; background: #27231f; padding: 12px 8px; font-size: 14px; line-height: 1.6; border-radius: 10px; }
+.templates button[aria-pressed=true] { color: #ead8c2; border-color: #cea56f; background: #38332c; }
+.field { display: block; margin: 16px 0; }
+.field>span { display: block; font-size: 14px; font-weight: 600; margin-bottom: 7px; }
+.field input, .field textarea { width: 100%; background: #151310; border: 1px solid #584a38; border-radius: 8px; padding: 10px 12px; font-size: 14px; line-height: 1.6; }
+.field textarea { resize: vertical; min-height: 80px; }
+.field small { display: block; color: #ecdcc6; font-size: 14px; line-height: 1.7; margin-top: 6px; }
+.identity { border: 0; min-width: 0; }
+.importButton { width: 100%; border: 1px solid #726049; color: #e2caab; background: #2c2822; border-radius: 8px; padding: 10px; font-size: 14px; }
+.help { color: #ecdcc6; font-size: 14px; line-height: 1.8; margin: 10px 0; }
+.details { border-top: 1px solid #3f3931; margin-top: 22px; padding-top: 18px; }
+.details summary { color: #e7d4ba; font-size: 14px; font-weight: 650; cursor: pointer; }
+.check { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.page input[type=checkbox] { accent-color: #d6b487; }
+.project { border: 1px solid #514534; border-radius: 10px; padding: 0 14px 14px; margin: 14px 0; }
+.remove { color: #d3af80; font-size: 14px; }
+.sections { list-style: none; margin-top: 14px; }
+.sections li { display: flex; align-items: center; gap: 12px; padding: 10px 0; font-size: 14px; }
+.sections label { flex: 1; display: flex; align-items: center; gap: 8px; }
+.sections button { color: #d6b487; font-size: 15px; }
+.saved { list-style: none; margin: 12px 0; }
+.saved li { display: flex; justify-content: space-between; gap: 14px; padding: 10px 0; font-size: 14px; }
+.saved button:first-child { overflow-wrap: anywhere; text-align: left; }
+.backups { display: flex; gap: 12px; flex-wrap: wrap; font-size: 14px; color: #d6b487; border-top: 1px solid #3f3931; padding-top: 14px; }
+.fileLabel { cursor: pointer; }
+.fileLabel input { display: block; width: 100%; margin-top: 8px; font-size: 14px; max-width: 270px; color: #ecdcc6; }
+.manualNote { border: 1px solid #857055; background: #342f28; color: #e5cfb3; padding: 12px; border-radius: 8px; font-size: 14px; line-height: 1.8; }
+.document { overflow: hidden; position: sticky; top: 24px; }
+.previewToolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px; border-bottom: 1px solid #3f3931; }
+.tabs { display: flex; flex-wrap: wrap; gap: 5px; }
+.tabs button { padding: 9px 12px; font-size: 14px; color: #ecdcc6; border-radius: 8px; }
+.tabs button[aria-pressed=true] { color: #ecddc8; background: #342f29; }
+.themeButton { font-size: 14px; color: #d9ba91; }
+.previewHint { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: 14px; color: #ecdcc6; padding: 12px 20px; border-bottom: 1px solid #3f3931; }
+.previewHint label { display: flex; align-items: center; gap: 6px; }
+.preview { display: block; width: 100%; height: 670px; border: 0; background: #12110e; }
+.checklist { padding: 16px 22px; background: #332e28; color: #e3ccad; border-bottom: 1px solid #574938; font-size: 14px; line-height: 1.8; }
+.checklist h3 { font-size: 14px; font-weight: 650; }
+.checklist ul { padding-left: 18px; margin-top: 5px; }
+.codePanel { padding: 20px; }
+.codeToolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 15px; font-size: 14px; color: #ecdcc6; }
+.codeToolbar button { color: #dfc5a2; text-decoration: underline; }
+.codePanel textarea { background: #12110e; border: 1px solid #584a38; border-radius: 10px; width: 100%; height: 600px; resize: vertical; padding: 20px; font: 12px/1.9 ui-monospace,monospace; tab-size: 2; }
+.publish { padding: 32px; }
+.publish h2 { font-size: 24px; font-weight: 650; margin: 16px 0 24px; }
+.publish :is(ol,ul) { padding-left: 22px; font-size: 14px; color: #dbbe97; line-height: 2; }
+.publish li { margin-bottom: 12px; }
+.publish h3 { margin: 24px 0 15px; font-size: 16px; font-weight: 650; }
+.publish code { padding: 3px 6px; background: #2c2822; border-radius: 4px; }
+.publish a { color: #d6b487; display: inline-block; margin: 20px 0; text-decoration: underline; font-size: 14px; }
+.page button { cursor: pointer; }
+.page button:disabled { opacity: .45; cursor: default; }
+.page :is(input,textarea,button,a,summary):focus-visible { outline: 2px solid #d6b487; outline-offset: 4px; }
+@media(max-width:1000px) { .layout { grid-template-columns: 310px minmax(0,1fr); gap: 18px; } .builder { padding: 20px; } .header { align-items: flex-start; } }
+@media(max-width:780px) { .page { padding: 85px 16px 32px; } .layout { grid-template-columns: 1fr; } .document { position: static; } .header { flex-direction: column; gap: 16px; } .previewToolbar { padding: 12px; flex-wrap: wrap; } .preview { height: 550px; } .publish { padding: 22px; } .codePanel textarea { padding: 14px; } }
+.jump { display: none; }
+.document { scroll-margin-top: 25px; }
+@media(max-width:780px) { .jump { display: inline-block; margin: 0 0 20px; color: #d6b487; font-size: 14px; text-decoration: underline; } }
 
-/* Scrollbar specific to sidebar/main in this app if needed, though Tailwind handles overflow */
-.customScroll::-webkit-scrollbar { 
-  width: 6px; 
-}
-.customScroll::-webkit-scrollbar-track {
-  background: transparent;
-}
-.customScroll::-webkit-scrollbar-thumb { 
-  background: #334155; 
-  border-radius: 4px; 
-}
+.page { font-size: 16px; line-height: 1.7; }
+.header p:not(.eyebrow), .help, .notice, .field>span, .field input, .field textarea, .details summary, .primary, .secondary, .tabs button, .publish :is(ol,ul), .importButton { font-size: 16px; }
+.field small, .previewHint, .status, .eyebrow, .templates button, .codeToolbar { font-size: 14px; color: #ebd9c3; }
+.builder h2, .publish h3 { font-size: 22px; }
+.previewToolbar { flex-wrap: wrap; }
+.codePanel textarea { font-size: 15px; }
+@media(max-width:1050px) { .layout { grid-template-columns: 1fr; } .document { position: static; } }
