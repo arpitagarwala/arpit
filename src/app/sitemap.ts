@@ -33,7 +33,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const excluded = new Set(['/coming-soon', '/games/progress', '/productivity/analysis', '/markets', '/workspace', '/projects/finance/markets', '/projects/finance/workspace', '/projects/finance', '/tools', '/projects/pomodoro', '/games/asmr-rain', '/projects/finance/compound-growth']);
   const canonical = new Set([...paths].map(path => path === '/methodology' ? '/projects/finance/methodology' : path === '/projects/sip' ? '/projects/finance/sip' : path));
   const pages = [...canonical]
-    .filter(path => !excluded.has(path) && !/^\/(?:admin|login|api)(?:\/|$)/.test(path) && path.startsWith('/') && !path.startsWith('//') && sitePathEnabled(site, new URL(path, baseUrl).pathname))
+    .filter(path => !excluded.has(path) && !/^\/(?:admin|owner|login|api)(?:\/|$)/.test(path) && path.startsWith('/') && !path.startsWith('//') && sitePathEnabled(site, new URL(path, baseUrl).pathname))
     .map<MetadataRoute.Sitemap[number]>(path => ({
       url: new URL(path, baseUrl).href,
       changeFrequency: path === '/' ? 'weekly' : 'monthly',

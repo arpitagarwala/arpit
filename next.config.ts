@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [{ source: '/admin/:path*', destination: '/owner/:path*', permanent: true }];
+  },
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'substackcdn.com' },
