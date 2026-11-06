@@ -4,6 +4,7 @@ import { useRef, useState, type CSSProperties, type FormEvent } from 'react';
 import { BUILT_APPS } from '@/data/apps';
 import { appEnquiryLinks, ENQUIRY_INTENTS, type EnquiryIntent } from '@/lib/app-enquiry';
 import s from './page.module.css';
+import AppThumbnail from './AppThumbnail';
 
 const categories = ['All apps', 'Study', 'Business', 'Lifestyle', 'Finance', 'Personal'] as const;
 const tileRotations = [-12, 8, -5, 6, -9, 12];
@@ -54,7 +55,7 @@ export default function AppsClient({ email, whatsapp }: { email: string; whatsap
       <div className={s.filters} role="group" aria-label="Filter apps by category">{categories.map(item => <button type="button" key={item} aria-pressed={category === item} onClick={() => setCategory(item)}>{item}{item === 'All apps' && <span>{BUILT_APPS.length}</span>}</button>)}</div>
       <p className={s.srOnly} role="status">Showing {visible.length} {visible.length === 1 ? 'app' : 'apps'}</p>
       <div className={s.appGrid}>{visible.map(item => <article key={item.id} className={s.appCard} style={{ '--app-color': item.color } as CSSProperties}>
-        <div className={s.cardArt} aria-hidden="true"><span className={s.cardNumber}>/{String(BUILT_APPS.indexOf(item) + 1).padStart(2, '0')}</span><div className={s.artLines} /><div className={s.cardSymbol}><i className={item.icon} /><span>{item.monogram}</span></div><span className={s.artLabel}>{item.category.toUpperCase()} / BY ARPIT</span></div>
+        <div className={s.cardArt} aria-hidden="true"><AppThumbnail id={item.id}/></div>
         <div className={s.cardBody}><span className={s.category}>{item.category}</span><h3>{item.name}</h3><p className={s.tagline}>{item.line}</p><p className={s.description}>{item.description}</p><div className={s.cardActions}>{item.href ? <a href={item.href} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${item.name} (opens in a new tab)`}>Visit app <span aria-hidden="true">↗</span></a> : <span className={s.pending}>Public link coming soon</span>}<button type="button" onClick={() => enquire(item.name)} aria-label={`Enquire about ${item.name}`}>Enquire <span aria-hidden="true">↗</span></button></div></div>
       </article>)}</div>
     </section>
