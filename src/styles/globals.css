@@ -21,6 +21,37 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Leave a little breathing room at same-page destinations. */
+:where(main [id]) {
+  scroll-margin-block-start: 1.75rem;
+}
+
+/* Small details, with no continuous movement or layout changes. */
+@media (prefers-reduced-motion: no-preference) {
+  :where(a, button, summary) {
+    transition: color 180ms ease, background-color 180ms ease,
+                border-color 180ms ease, box-shadow 180ms ease;
+  }
+
+  :where(nav a, .nav-link, .connect-row) > i,
+  .nav-icon {
+    transition: translate 200ms ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    :where(nav a, .nav-link, .connect-row):hover > i:first-child,
+    .nav-link:hover .nav-icon {
+      translate: 0 -1px;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html, :where(main, section, nav, [role='region']) {
+    scroll-behavior: auto !important;
+  }
+}
+
 button, input, select, textarea {
   background: transparent;
   border: none;
