@@ -7,6 +7,7 @@ export default function AppThumbnail({id}:{id:string}) {
     'ca-bhaiya':['#e9e1ff','#c7b2f0','#7652b5'],
     gurukul:['#e7eddf','#b6c99f','#50673e'],
     'vertex-suite':['#183858','#0b172b','#6db9ff'],
+    bluecave:['#dceeff','#98bfdc','#3272b6'],
     gita:['#f3d7ac','#ce8955','#804e2f'],
     panchang:['#27213e','#51405c','#edc3a8'],
     informedecision:['#0d302f','#183e48','#6ae1b5'],
@@ -47,6 +48,18 @@ export default function AppThumbnail({id}:{id:string}) {
       <rect x="121" y="163" width="159" height="74" rx="7" fill="#16324c"/>
       {[20,34,27,44,37,52,61].map((h,i)=><rect key={i} x={133+i*20} y={229-h} width="11" height={h} rx="2" fill={i===6?'#85c5fa':'#365f80'}/>)}
       <rect x="292" y="163" width="92" height="74" rx="7" fill="#1d3a55"/><circle cx="338" cy="200" r="23" fill="none" stroke="#315472" strokeWidth="8"/><circle cx="338" cy="200" r="23" fill="none" stroke="#91c8ef" strokeWidth="8" strokeDasharray="91 145" transform="rotate(-90 338 200)"/>
+    </>;break;
+    case 'bluecave':scene=<>
+      <circle cx="93" cy="74" r="47" fill="#f5fbff" opacity=".55"/>
+      <path d="M0 226Q100 188 216 222T440 212V250H0" fill="#699bc0" opacity=".3"/>
+      <rect x="44" y="91" width="105" height="140" rx="7" fill="#f2f8ff"/><rect x="62" y="58" width="69" height="36" rx="5" fill="#d3e5f5"/>
+      {[0,1,2,3,4,5,6,7,8].map(i=><rect key={i} x={59+i%3*27} y={107+Math.floor(i/3)*29} width="20" height="19" rx="3" fill={i===4?accent:'#b6d4ed'}/>)}
+      <rect x="84" y="199" width="26" height="32" rx="4" fill={accent}/>
+      <rect x="177" y="28" width="220" height="205" rx="12" fill="#f8fbff" stroke="#c2d9eb"/>
+      <text x="195" y="56" fontSize="15" fontWeight="700" fill="#245b91">BlueCave</text><text x="195" y="74" fontSize="8" fill="#6c89a3">Your community, connected.</text>
+      <rect x="195" y="89" width="184" height="48" rx="7" fill="#e5f0fa"/><circle cx="214" cy="111" r="9" fill={accent}/><path d="m210 111 3 3 5-6" fill="none" stroke="white" strokeWidth="1.5"/>
+      <text x="232" y="108" fontSize="9" fontWeight="600" fill="#345f83">Visitor approvals</text><text x="232" y="123" fontSize="8" fill="#7692ab">A warmer welcome.</text>
+      {['Community updates','Bills & receipts'].map((label,i)=><g key={label}><rect x="195" y={148+i*35} width="184" height="27" rx="6" fill="#eef5fc"/><rect x="205" y={157+i*35} width="10" height="10" rx="3" fill="#a5c9e9"/><text x="225" y={165+i*35} fontSize="9" fill="#4c7192">{label}</text><path d={`m364 ${158+i*35} 4 4-4 4`} fill="none" stroke="#7399b9"/></g>)}
     </>;break;
     case 'gita':scene=<>
       <circle cx="341" cy="76" r="82" fill="#ffe9bd" opacity=".45"/><path d="M0 213Q95 155 195 213T440 207V250H0" fill="#b57d53" opacity=".3"/>
