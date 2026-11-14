@@ -12,7 +12,7 @@ export default function VisitorAnalytics(){
  const path=usePathname(),enabled=useSiteFeature('analytics.collection'),[choice,setChoice]=useState<Choice>('pending'),[protectedBrowser,setProtectedBrowser]=useState(false),[message,setMessage]=useState(''),[busy,setBusy]=useState(false);
  const [target,setTarget]=useState<HTMLElement|null>(null);
  const permission=useRef(false);
- const privatePage=/^\/(admin|owner|login|api)(\/|$)/.test(path),trackable=!!analyticsPath(path);
+ const privatePage=/^\/(account|admin|owner|login|api)(\/|$)/.test(path),trackable=!!analyticsPath(path);
  useEffect(()=>{
   if(path!=='/privacy')return;
   const timer=setTimeout(()=>setTarget(document.getElementById('analytics-preferences')),0);

@@ -1,4 +1,5 @@
 'use client';
+import {toolStorage} from '@/lib/account-storage';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styles from './calculator.module.css';
@@ -46,7 +47,7 @@ export default function CalculatorClient() {
 
   // Load history
   useEffect(() => {
-    const saved = localStorage.getItem('calcHistory');
+    const saved = toolStorage.getItem('calcHistory');
     if (saved) setHistoryList(JSON.parse(saved));
   }, []);
 
@@ -73,7 +74,7 @@ export default function CalculatorClient() {
     setHistoryList(prev => {
       const nw = [{ calc, result: resStr }, ...prev];
       if (nw.length > MAX_HISTORY) nw.pop();
-      localStorage.setItem('calcHistory', JSON.stringify(nw));
+      toolStorage.setItem('calcHistory', JSON.stringify(nw));
       return nw;
     });
   };
@@ -464,7 +465,7 @@ export default function CalculatorClient() {
               <span className="font-bold text-base flex items-center gap-2"><i className="ri-history-line"></i> History</span>
               <div className="flex gap-3">
                 <button onClick={() => { navigator.clipboard.writeText(historyList.map(h => `${h.calc} = ${h.result}`).join('\n')); showToast('📋 Copied!'); }} className="text-sm font-semibold hover:underline text-[#e5c293]">Copy All</button>
-                <button onClick={() => { setHistoryList([]); localStorage.removeItem('calcHistory'); showToast('🗑️ Cleared'); }} className="text-sm font-semibold hover:underline text-rose-400">Clear</button>
+                <button onClick={() => { setHistoryList([]); toolStorage.removeItem('calcHistory'); showToast('🗑️ Cleared'); }} className="text-sm font-semibold hover:underline text-rose-400">Clear</button>
               </div>
             </div>
             <div className={`flex-1 overflow-y-auto pr-1 flex flex-col gap-1 ${styles.customScroll}`}>

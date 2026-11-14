@@ -1,4 +1,5 @@
 'use client';
+import {toolStorage} from '@/lib/account-storage';
 
 import React, { useState, useEffect, useRef } from 'react';
 
@@ -55,8 +56,8 @@ export default function ExpenseSplitterClient() {
   // Init
   useEffect(() => {
     setIsClient(true);
-    const p = JSON.parse(localStorage.getItem('splitter-people') || '[]');
-    const t = JSON.parse(localStorage.getItem('splitter-transactions') || '[]');
+    const p = JSON.parse(toolStorage.getItem('splitter-people') || '[]');
+    const t = JSON.parse(toolStorage.getItem('splitter-transactions') || '[]');
     setPeople(p);
     setTransactions(t);
   }, []);
@@ -64,8 +65,8 @@ export default function ExpenseSplitterClient() {
   // Save
   useEffect(() => {
     if (isClient) {
-      localStorage.setItem('splitter-people', JSON.stringify(people));
-      localStorage.setItem('splitter-transactions', JSON.stringify(transactions));
+      toolStorage.setItem('splitter-people', JSON.stringify(people));
+      toolStorage.setItem('splitter-transactions', JSON.stringify(transactions));
     }
   }, [people, transactions, isClient]);
 

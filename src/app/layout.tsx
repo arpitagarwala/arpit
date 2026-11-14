@@ -1,3 +1,4 @@
+import AccountProvider from '@/components/account/AccountProvider';
 import VisitorAnalytics from '@/components/analytics/VisitorAnalytics';
 import type { Metadata } from 'next';
 import '@/styles/globals.css';
@@ -111,7 +112,7 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body><SiteFeatures features={{...site.features,'games.progress':site.features['games.progress']!==false&&sitePathEnabled(site,'/games/progress'),'games.math-sprint':sitePathEnabled(site,'/games/math-sprint'),'productivity.quiet':sitePathEnabled(site,'/productivity/rain'),'productivity.focus':sitePathEnabled(site,'/productivity/pomodoro'),'productivity.tasks':sitePathEnabled(site,'/productivity/todo'),'productivity.analysis':sitePathEnabled(site,'/productivity/analysis')}} footer={site.footer}><SuiteNavigationProvider><ProductivityProvider tools={site.productivity.filter(t=>t.enabled&&sitePathEnabled(site,t.href)).map(t=>({href:t.href,title:t.title,sub:t.sub,icon:t.icon}))}>{children}</ProductivityProvider></SuiteNavigationProvider><GameTimeTracker/><VisitorAnalytics/></SiteFeatures></body>
+      <body><SiteFeatures features={{...site.features,'games.progress':site.features['games.progress']!==false&&sitePathEnabled(site,'/games/progress'),'games.math-sprint':sitePathEnabled(site,'/games/math-sprint'),'productivity.quiet':sitePathEnabled(site,'/productivity/rain'),'productivity.focus':sitePathEnabled(site,'/productivity/pomodoro'),'productivity.tasks':sitePathEnabled(site,'/productivity/todo'),'productivity.analysis':sitePathEnabled(site,'/productivity/analysis')}} footer={site.footer}><AccountProvider><SuiteNavigationProvider><ProductivityProvider tools={site.productivity.filter(t=>t.enabled&&sitePathEnabled(site,t.href)).map(t=>({href:t.href,title:t.title,sub:t.sub,icon:t.icon}))}>{children}</ProductivityProvider></SuiteNavigationProvider><GameTimeTracker/></AccountProvider><VisitorAnalytics/></SiteFeatures></body>
     </html>
   );
 }

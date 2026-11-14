@@ -1,4 +1,5 @@
 'use client';
+import {toolStorage} from '@/lib/account-storage';
 import { useEffect, useState } from 'react';
 import BackButton from '@/components/BackButton/BackButton';
 import styles from './clock.module.css';
@@ -16,7 +17,7 @@ export default function ClockClient() {
     const load = setTimeout(() => {
       setLocalZone(Intl.DateTimeFormat().resolvedOptions().timeZone);
       try {
-        const raw = JSON.parse(localStorage.getItem('clock-preferences-v1') || 'null');
+        const raw = JSON.parse(toolStorage.getItem('clock-preferences-v1') || 'null');
         if (raw && typeof raw === 'object') setPrefs({ analog: typeof raw.analog === 'boolean' ? raw.analog : false, hour12: typeof raw.hour12 === 'boolean' ? raw.hour12 : true, seconds: typeof raw.seconds === 'boolean' ? raw.seconds : true, zone: ZONES.some(z => z.zone === raw.zone) ? raw.zone : 'local' });
       } catch { /* Defaults remain available. */ }
       setNow(new Date());
@@ -26,7 +27,7 @@ export default function ClockClient() {
     document.addEventListener('visibilitychange', tick);
     return () => { clearTimeout(load); clearInterval(timer); document.removeEventListener('visibilitychange', tick); };
   }, []);
-  const update = (next: Preferences) => { setPrefs(next); try { localStorage.setItem('clock-preferences-v1', JSON.stringify(next)); } catch { setStorageNote('Browser storage is unavailable. Settings last for this visit.'); } };
+  const update = (next: Preferences) => { setPrefs(next); try { toolStorage.setItem('clock-preferences-v1', JSON.stringify(next)); } catch { setStorageNote('Browser storage is unavailable. Settings last for this visit.'); } };
   const zone = prefs.zone === 'local' ? localZone : prefs.zone;
   if (!now) return <main className={styles.page}><p>Setting your clock…</p></main>;
   const parts = Object.fromEntries(new Intl.DateTimeFormat('en-GB', { timeZone: zone, hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' }).formatToParts(now).map(p => [p.type, p.value]));

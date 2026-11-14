@@ -1,6 +1,7 @@
 import { validateVisuals, type TradeVisuals } from './trade-visuals';
+import { toolStorageNamespace } from './account-storage';
 const practice=new Map<string,TradeVisuals>();
-async function database():Promise<IDBDatabase>{return new Promise((resolve,reject)=>{const request=indexedDB.open('arpit.trade-visuals',1);request.onupgradeneeded=()=>request.result.createObjectStore('visuals',{keyPath:'id'});request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(new Error('Visual storage is unavailable. Your trade records are separate; try downloading a backup.'));});}
+async function database():Promise<IDBDatabase>{const account=toolStorageNamespace();return new Promise((resolve,reject)=>{const request=indexedDB.open(account?'arpit.trade-visuals:'+account:'arpit.trade-visuals',1);request.onupgradeneeded=()=>request.result.createObjectStore('visuals',{keyPath:'id'});request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(new Error('Visual storage is unavailable. Your trade records are separate; try downloading a backup.'));});}
 export async function readVisuals(id:string,sample=false):Promise<TradeVisuals>{
   if(sample)return practice.get(id)??{id,images:[]};const db=await database();
   try{return await new Promise((resolve,reject)=>{const tx=db.transaction('visuals','readonly'),r=tx.objectStore('visuals').get(id);r.onsuccess=()=>resolve(r.result?validateVisuals(r.result):{id,images:[]});r.onerror=()=>reject(new Error('Could not load this trade’s visuals.'));});}finally{db.close();}

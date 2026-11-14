@@ -1,0 +1,37 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function owns(uid) {
+      return request.auth != null && request.auth.uid == uid
+        && request.auth.token.firebase.sign_in_provider == 'google.com';
+    }
+
+    function supported(tool) {
+      return tool in ['study', 'quiet', 'training', 'gameTime', 'game2048', 'sudoku',
+        'memory', 'journal', 'expenses', 'calculator', 'clock', 'readme',
+        'puzzle-keen', 'puzzle-unequal', 'puzzle-towers', 'puzzle-bridges',
+        'puzzle-lightup', 'puzzle-tents', 'puzzle-net', 'puzzle-loopy',
+        'puzzle-dominosa', 'puzzle-pattern', 'puzzle-fifteen', 'puzzle-untangle'];
+    }
+
+    match /accounts/{uid}/tools/{tool} {
+      allow get: if owns(uid) && supported(tool);
+      allow list: if owns(uid);
+      allow create, update: if owns(uid) && supported(tool)
+        && request.resource.data.keys().hasOnly(['revision', 'count', 'updatedAt'])
+        && request.resource.data.revision is string
+        && request.resource.data.revision.matches('[a-f0-9-]{36}')
+        && request.resource.data.count is int
+        && request.resource.data.count >= 1 && request.resource.data.count <= 20
+        && request.resource.data.updatedAt == request.time;
+
+      match /chunks/{chunk} {
+        allow get, delete: if owns(uid) && supported(tool) && chunk.matches('[0-9]|1[0-9]');
+        allow create, update: if owns(uid) && supported(tool) && chunk.matches('[0-9]|1[0-9]')
+          && request.resource.data.keys().hasOnly(['payload'])
+          && request.resource.data.payload is bytes
+          && request.resource.data.payload.size() <= 500000;
+      }
+    }
+  }
+}

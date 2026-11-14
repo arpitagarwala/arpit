@@ -1,4 +1,5 @@
 'use client';
+import {ACCOUNT_DATA_RESTORED,toolStorage} from '@/lib/account-storage';
 import {createContext,useContext,useEffect,useRef,useState} from 'react';
 import Link from '@/components/productivity/SuiteNavigation';
 import {usePathname} from 'next/navigation';
@@ -19,7 +20,7 @@ export function ProductivityProvider({children,tools}:{children:React.ReactNode;
  const engine=useRef<QuietAudio|null>(null),release=useRef<(()=>void)|null>(null),playingRef=useRef(false),generation=useRef(0),loadedRef=useRef(false),settingsRef=useRef(settings),endRef=useRef(audioEnd);
  useEffect(()=>{settingsRef.current=settings;endRef.current=audioEnd;},[settings,audioEnd,study]);
  function pause(){generation.current++;playingRef.current=false;setPlaying(false);setLoading(false);engine.current?.pause();if(endRef.current!==null)setAudioRemaining(Math.max(0,(endRef.current-Date.now())/1000));setAudioEnd(null);release.current?.();release.current=null;}
- function configure(change:(s:QuietSettings)=>QuietSettings){try{if(!loadedRef.current)throw new Error('Saved sound settings are unavailable. Existing data has been kept.');const next=change(settingsRef.current);if(next.linkFocus!==settingsRef.current.linkFocus){setAudioEnd(null);setAudioRemaining(null);}restoreQuiet(JSON.stringify(next));localStorage.setItem(QUIET_KEY,JSON.stringify(next));settingsRef.current=next;setSettings(next);setError('');return true;}catch(e){setError(e instanceof Error?e.message:'Settings could not be saved.');return false;}}
+ function configure(change:(s:QuietSettings)=>QuietSettings){try{if(!loadedRef.current)throw new Error('Saved sound settings are unavailable. Existing data has been kept.');const next=change(settingsRef.current);if(next.linkFocus!==settingsRef.current.linkFocus){setAudioEnd(null);setAudioRemaining(null);}restoreQuiet(JSON.stringify(next));toolStorage.setItem(QUIET_KEY,JSON.stringify(next));settingsRef.current=next;setSettings(next);setError('');return true;}catch(e){setError(e instanceof Error?e.message:'Settings could not be saved.');return false;}}
  async function acquire(){if(release.current||!navigator.locks)return;await new Promise<void>((resolve,reject)=>{void navigator.locks.request('quiet-space-audio',{ifAvailable:true},async lock=>{if(!lock){reject(new Error('Quiet Space is playing in another tab. Pause it there before starting here.'));return;}await new Promise<void>(unlock=>{release.current=unlock;resolve();});}).catch(reject);});}
  async function play(){
   if(playingRef.current||loading||!loaded||!quietEnabled)return;
@@ -35,10 +36,16 @@ export function ProductivityProvider({children,tools}:{children:React.ReactNode;
  }
  async function toggleFocus(){try{await updateStudy(s=>toggleStudy(s,Date.now(),crypto.randomUUID()));setNow(Date.now());}catch{setError('Your focus session could not be saved. Existing history has been kept.');}}
  useEffect(()=>{
-  const load=setTimeout(()=>{void initializeStudy().catch(()=>setError('Study history is unavailable. Existing data has been kept.'));try{const next=restoreQuiet(localStorage.getItem(QUIET_KEY));settingsRef.current=next;setSettings(next);loadedRef.current=true;setLoaded(true);}catch(e){setError(e instanceof Error?e.message:'Sound settings are unavailable.');}setNow(Date.now());},0);
+  const load=setTimeout(()=>{void initializeStudy().catch(()=>setError('Study history is unavailable. Existing data has been kept.'));try{const next=restoreQuiet(toolStorage.getItem(QUIET_KEY));settingsRef.current=next;setSettings(next);loadedRef.current=true;setLoaded(true);}catch(e){setError(e instanceof Error?e.message:'Sound settings are unavailable.');}setNow(Date.now());},0);
   const tick=()=>{const time=Date.now();setNow(time);let completed=false;void updateStudy(state=>{const next=finish(state,time);completed=next!==state;return next;}).then(()=>{if(completed){setStatus('Session complete. Your next break or focus session is ready.');if(playingRef.current&&settingsRef.current.linkFocus&&settingsRef.current.chime)engine.current?.chime();}}).catch(()=>setError('Focus progress could not be saved. Existing history has been kept. Please check browser storage before continuing.'));if(endRef.current!==null&&time>=endRef.current){engine.current?.pause(settingsRef.current.chime?1800:650);if(settingsRef.current.chime)engine.current?.chime();playingRef.current=false;setPlaying(false);setAudioEnd(null);setAudioRemaining(null);release.current?.();release.current=null;setStatus('Your listening session has ended. Take a moment before the next thing.');}};
+  const restoreSettings=(event:Event)=>{
+   const values=(event as CustomEvent<Record<string,string|null>>).detail;
+   if(!Object.hasOwn(values,QUIET_KEY))return;
+   try{const next=restoreQuiet(values[QUIET_KEY]);settingsRef.current=next;setSettings(next);}catch{setError('Synced sound settings could not be loaded.');}
+  };
+  window.addEventListener(ACCOUNT_DATA_RESTORED,restoreSettings);
   const timer=setInterval(tick,1000);document.addEventListener('visibilitychange',tick);
-  return()=>{clearTimeout(load);clearInterval(timer);document.removeEventListener('visibilitychange',tick);release.current?.();void engine.current?.close();engine.current=null;};
+  return()=>{window.removeEventListener(ACCOUNT_DATA_RESTORED,restoreSettings);clearTimeout(load);clearInterval(timer);document.removeEventListener('visibilitychange',tick);release.current?.();void engine.current?.close();engine.current=null;};
  },[]);
  useEffect(()=>{
   if(!playing||!engine.current)return;

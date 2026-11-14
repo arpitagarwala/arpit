@@ -1,4 +1,5 @@
 'use client';
+import {toolStorage} from '@/lib/account-storage';
 
 import {useState,useEffect,useCallback,useRef} from 'react';
 import BackButton from '@/components/BackButton/BackButton';
@@ -17,7 +18,7 @@ export default function MemoryClient(){
   const later=(fn:()=>void,ms:number)=>{const timer=setTimeout(()=>{timeouts.current.delete(timer);fn();},ms);timeouts.current.add(timer);};
   const initGame=useCallback((difficulty:Difficulty='easy')=>{
     clearTimers();const next=newMemoryRound(difficulty);roundRef.current=next;setRound(next);trainingCapture.current=emptyCapture();setSeconds(0);setShowWin(false);setShowComboBadge(false);setIsNewBest(false);
-    try{const raw=localStorage.getItem('memBest_'+difficulty),value=raw===null?NaN:Number(raw);setBestTime(Number.isFinite(value)&&value>=0?value:null);setStorageError('');}catch{setBestTime(null);setStorageError('Personal bests cannot be saved in this browser. You can still play.');}
+    try{const raw=toolStorage.getItem('memBest_'+difficulty),value=raw===null?NaN:Number(raw);setBestTime(Number.isFinite(value)&&value>=0?value:null);setStorageError('');}catch{setBestTime(null);setStorageError('Personal bests cannot be saved in this browser. You can still play.');}
   },[clearTimers]);
   useEffect(()=>{const frame=requestAnimationFrame(()=>initGame('easy'));return()=>{cancelAnimationFrame(frame);clearTimers();};},[initGame,clearTimers]);
   useEffect(()=>{const key=(e:KeyboardEvent)=>{if(e.key.toLowerCase()==='r'&&!e.ctrlKey&&!e.metaKey)initGame(roundRef.current?.difficulty??'easy');if(e.key==='Escape')setShowWin(false);};window.addEventListener('keydown',key);return()=>window.removeEventListener('keydown',key);},[initGame]);
@@ -32,7 +33,7 @@ export default function MemoryClient(){
     if(next.endedAt!==null){
       if(timerRef.current)clearInterval(timerRef.current);timerRef.current=null;
       const elapsed=Math.floor(memoryElapsed(next,next.endedAt)/1000);setSeconds(elapsed);gameResult(trainingCapture.current,'memory-'+next.difficulty);
-      try{const raw=localStorage.getItem('memBest_'+next.difficulty),previous=raw===null?Infinity:Number(raw);const best=!Number.isFinite(previous)||elapsed<previous;setIsNewBest(best);if(best){localStorage.setItem('memBest_'+next.difficulty,String(elapsed));setBestTime(elapsed);}}catch{setStorageError('Round completed. Your personal best could not be saved.');}
+      try{const raw=toolStorage.getItem('memBest_'+next.difficulty),previous=raw===null?Infinity:Number(raw);const best=!Number.isFinite(previous)||elapsed<previous;setIsNewBest(best);if(best){toolStorage.setItem('memBest_'+next.difficulty,String(elapsed));setBestTime(elapsed);}}catch{setStorageError('Round completed. Your personal best could not be saved.');}
       later(()=>setShowWin(true),450);
     }
   };

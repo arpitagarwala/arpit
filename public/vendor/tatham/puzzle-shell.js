@@ -2,7 +2,9 @@
 (()=>{
  const slug=document.body.dataset.puzzle,canvas=document.getElementById('puzzlecanvas'),puzzle=document.getElementById('puzzle'),status=document.getElementById('save-status');
  let started=false,mark=false,timer,telemetry=()=>{};
- const storageKey='logic-room:'+slug+':v1';
+ const profile=parent!==window&&/^arpit-puzzle:([\w-]{1,128})$/.exec(window.name);
+ const prefix=profile?'arpit.account:'+profile[1]+':':'';
+ const storageKey=prefix+'logic-room:'+slug+':v1';
  function height(){parent.postMessage({type:'puzzle-height',slug,height:document.documentElement.scrollHeight},location.origin);}
  new ResizeObserver(height).observe(document.body);
  function initialize(){

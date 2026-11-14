@@ -16,6 +16,7 @@
     "astronomy-engine": "^2.1.19",
     "chart.js": "^4.5.1",
     "date-fns": "^4.4.0",
+    "firebase": "^13.3.0",
     "framer-motion": "^12.42.2",
     "lightweight-charts": "^5.2.1",
     "marked": "^18.0.4",

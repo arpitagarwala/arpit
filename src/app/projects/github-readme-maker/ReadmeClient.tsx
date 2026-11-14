@@ -1,4 +1,5 @@
 'use client';
+import {toolStorage} from '@/lib/account-storage';
 
 import { useEffect, useMemo, useState } from 'react';
 import { marked } from 'marked';
@@ -21,9 +22,9 @@ export default function ReadmeClient() {
   useEffect(() => {
     const timer = setTimeout(() => {
       try {
-        const raw = localStorage.getItem('readme-studio:current');
+        const raw = toolStorage.getItem('readme-studio:current');
         if (raw) setDraft(restoreReadme(JSON.parse(raw)));
-        const records: unknown = JSON.parse(localStorage.getItem('readme-studio:saved') || '[]');
+        const records: unknown = JSON.parse(toolStorage.getItem('readme-studio:saved') || '[]');
         if (Array.isArray(records)) setSaved(records.slice(0, 20).flatMap(s => { try { return s && typeof s.id === 'string' && typeof s.name === 'string' ? [{ id: s.id, name: s.name.slice(0,80), draft: restoreReadme(s.draft) }] : []; } catch { return []; } }));
         setStorageNotice('Draft autosaves in this browser');
       } catch { setStorageNotice('Could not read saved work. You can still build and download a README.'); }
@@ -33,7 +34,7 @@ export default function ReadmeClient() {
   }, []);
   useEffect(() => {
     if (!ready) return;
-    const persist = () => { try { localStorage.setItem('readme-studio:current', JSON.stringify(draft)); setStorageNotice('Draft autosaved in this browser'); } catch { setStorageNotice('Browser storage is unavailable or full. Download a draft backup to keep your work.'); } };
+    const persist = () => { try { toolStorage.setItem('readme-studio:current', JSON.stringify(draft)); setStorageNotice('Draft autosaved in this browser'); } catch { setStorageNotice('Browser storage is unavailable or full. Download a draft backup to keep your work.'); } };
     const timer = setTimeout(persist, 300);
     window.addEventListener('pagehide', persist);
     return () => { clearTimeout(timer); window.removeEventListener('pagehide', persist); };
@@ -61,7 +62,7 @@ export default function ReadmeClient() {
   function saveDraft() {
     if (saved.length >= 20) { setNotice('You have 20 saved drafts. Remove a saved draft before adding another.'); return; }
     const next = [{ id: crypto.randomUUID(), name: draftName.trim() || draft.title || 'Untitled draft', draft: { ...draft } }, ...saved];
-    try { localStorage.setItem('readme-studio:saved', JSON.stringify(next)); setSaved(next); setNotice('Named draft saved in this browser.'); } catch { setNotice('Could not save. Download a JSON backup instead.'); }
+    try { toolStorage.setItem('readme-studio:saved', JSON.stringify(next)); setSaved(next); setNotice('Named draft saved in this browser.'); } catch { setNotice('Could not save. Download a JSON backup instead.'); }
   }
   async function importGithub() {
     if (!validUsername(draft.username)) { setNotice('Enter a valid GitHub username first.'); return; }
@@ -105,7 +106,7 @@ export default function ReadmeClient() {
       <details className={styles.details}><summary>Links & optional image</summary>{field('portfolio','Portfolio or live demo URL','Full https:// URL.')}{field('contact','Contact or social URL','Link to your preferred contact page.')}{field('card','Optional image card URL','Bring your own hosted card. No hosted stats service is assumed.')}</details>
       {draft.mode === 'repository' && <details className={styles.details} open><summary>Help someone use your project</summary>{field('install','Installation commands','Example commands: replace them with steps verified for your project.',true)}{field('usage','Usage commands','Explain how to run the project.',true)}{field('contributing','Contribution guidance',undefined,true)}<label className={styles.field}><span>License label</span><input value={draft.license} maxLength={100} onChange={e => change('license',e.target.value)} /><small>Use None to omit. This label does not create a license file; choose terms you are authorized to apply.</small></label></details>}
       <details className={styles.details}><summary>Sections & reading order</summary><p className={styles.help}>Include only what helps your reader. Move sections to tell the right story.</p><ol className={styles.sections}>{draft.order.map((section,index) => <li key={section}><label><input type="checkbox" checked={draft.enabled.includes(section)} onChange={e => change('enabled',e.target.checked ? [...draft.enabled,section] : draft.enabled.filter(s => s!==section))} />{SECTION_NAMES[section]}</label><button disabled={index===0} aria-label={`Move ${SECTION_NAMES[section]} up`} onClick={() => move(section,-1)}>↑</button><button disabled={index===draft.order.length-1} aria-label={`Move ${SECTION_NAMES[section]} down`} onClick={() => move(section,1)}>↓</button></li>)}</ol></details>
-      <details className={styles.details}><summary>Reusable drafts & backups</summary><label className={styles.field}><span>Draft name</span><input value={draftName} maxLength={80} onChange={e => setDraftName(e.target.value)} /></label><button className={styles.secondary} onClick={saveDraft}>Save named draft</button><ul className={styles.saved}>{saved.map(s => <li key={s.id}><button onClick={() => { setDraft(restoreReadme(s.draft));setDraftName(s.name);setNotice(`Loaded ${s.name}.`); }}>{s.name}</button><button aria-label={`Remove saved draft ${s.name}`} onClick={() => { const next=saved.filter(d => d.id!==s.id);try { localStorage.setItem('readme-studio:saved',JSON.stringify(next));setSaved(next);setNotice('Saved copy removed. Your current document is unchanged.'); } catch { setNotice('Could not update saved drafts.'); } }}>×</button></li>)}</ul><div className={styles.backups}><button onClick={() => download(JSON.stringify(draft,null,2),'readme-draft.json','application/json')}>Export draft JSON</button><label className={styles.fileLabel}>Import draft JSON<input type="file" accept="application/json,.json" onChange={async e => { const file=e.target.files?.[0];if(!file)return; if(file.size>300000){setNotice('Choose a draft smaller than 300 KB.');return;}try{setDraft(restoreReadme(JSON.parse(await file.text())));setNotice('Draft imported.');}catch(error){setNotice(error instanceof Error?error.message:'Invalid draft file.');} e.target.value=''; }} /></label></div></details>
+      <details className={styles.details}><summary>Reusable drafts & backups</summary><label className={styles.field}><span>Draft name</span><input value={draftName} maxLength={80} onChange={e => setDraftName(e.target.value)} /></label><button className={styles.secondary} onClick={saveDraft}>Save named draft</button><ul className={styles.saved}>{saved.map(s => <li key={s.id}><button onClick={() => { setDraft(restoreReadme(s.draft));setDraftName(s.name);setNotice(`Loaded ${s.name}.`); }}>{s.name}</button><button aria-label={`Remove saved draft ${s.name}`} onClick={() => { const next=saved.filter(d => d.id!==s.id);try { toolStorage.setItem('readme-studio:saved',JSON.stringify(next));setSaved(next);setNotice('Saved copy removed. Your current document is unchanged.'); } catch { setNotice('Could not update saved drafts.'); } }}>×</button></li>)}</ul><div className={styles.backups}><button onClick={() => download(JSON.stringify(draft,null,2),'readme-draft.json','application/json')}>Export draft JSON</button><label className={styles.fileLabel}>Import draft JSON<input type="file" accept="application/json,.json" onChange={async e => { const file=e.target.files?.[0];if(!file)return; if(file.size>300000){setNotice('Choose a draft smaller than 300 KB.');return;}try{setDraft(restoreReadme(JSON.parse(await file.text())));setNotice('Draft imported.');}catch(error){setNotice(error instanceof Error?error.message:'Invalid draft file.');} e.target.value=''; }} /></label></div></details>
     </aside><section className={styles.document} id="readme-output" aria-label="README output"><div className={styles.previewToolbar}><div className={styles.tabs}>{(['preview','markdown','publish'] as const).map(v => <button key={v} aria-pressed={view===v} onClick={() => setView(v)}>{({preview:'Preview',markdown:'Markdown',publish:'Use on GitHub'})[v]}</button>)}</div>{view==='preview' && <button className={styles.themeButton} aria-pressed={light} onClick={() => setLight(!light)}>{light ? 'Dark preview' : 'Light preview'}</button>}</div>
       {!!issues.length && <div className={styles.checklist} role="status"><h3>Before you export</h3><ul>{issues.map(issue => <li key={issue}>{issue}</li>)}</ul></div>}
       {view === 'preview' && <><div className={styles.previewHint}><p>GitHub-style preview. Images stay off until you enable them; links are inactive here.</p><label><input type="checkbox" checked={images} onChange={e => setImages(e.target.checked)} /> Load external images</label></div><iframe title="README preview" sandbox="" referrerPolicy="no-referrer" srcDoc={preview} className={styles.preview} /></>}
