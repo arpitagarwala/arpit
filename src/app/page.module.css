@@ -285,6 +285,27 @@
   gap: 1.25rem;
 }
 
+.connectColumn {
+  display: flex;
+  flex-direction: column;
+  gap: .85rem;
+}
+
+.accountLink {
+  align-self: center;
+  padding: .4rem .65rem;
+  color: #a5b8cc;
+  font-size: .8rem;
+  line-height: 1.6;
+  text-align: center;
+  text-underline-offset: .25em;
+  transition: color 160ms ease;
+}
+
+.accountLink:hover { color: #67e8f9; text-decoration: underline; }
+.accountLink:focus-visible { outline: 2px solid #67e8f9; outline-offset: 3px; border-radius: .35rem; }
+@media (prefers-reduced-motion: reduce) { .accountLink { transition: none; } }
+
 .emailRow {
   display: flex;
   align-items: center;

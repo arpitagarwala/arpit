@@ -12,11 +12,4 @@
 .heart {
   color: #f87171;
 }
-.account {
-  display: table;
-  margin: .5rem auto 0;
-  color: #a5e9df;
-  text-decoration: underline;
-  text-underline-offset: .23em;
-}
 .links{display:flex;gap:18px;justify-content:center;margin-top:10px;color:#adbdcf;font-size:13px}.links a:hover{color:#67e8f9}
