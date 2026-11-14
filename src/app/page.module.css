@@ -285,14 +285,12 @@
   gap: 1.25rem;
 }
 
-.connectColumn {
-  display: flex;
-  flex-direction: column;
-  gap: .85rem;
-}
-
 .accountLink {
   align-self: center;
+  margin-top: auto;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
   padding: .4rem .65rem;
   color: #a5b8cc;
   font-size: .8rem;
