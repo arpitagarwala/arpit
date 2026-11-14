@@ -1,9 +1,9 @@
 'use client';
-import {toolStorage} from './account-storage';
+import {ACCOUNT_DATA_RESTORED,toolStorage} from './account-storage';
 import {useMemo,useSyncExternalStore} from 'react';
 import {freshTime,readTime,TIME_KEY,TIME_EVENT,type GameTime} from './game-time';
 const EMPTY=JSON.stringify(freshTime());
-function subscribe(fn:()=>void){window.addEventListener('storage',fn);window.addEventListener(TIME_EVENT,fn);return()=>{window.removeEventListener('storage',fn);window.removeEventListener(TIME_EVENT,fn);};}
+function subscribe(fn:()=>void){window.addEventListener('storage',fn);window.addEventListener(ACCOUNT_DATA_RESTORED,fn);window.addEventListener(TIME_EVENT,fn);return()=>{window.removeEventListener('storage',fn);window.removeEventListener(ACCOUNT_DATA_RESTORED,fn);window.removeEventListener(TIME_EVENT,fn);};}
 function snapshot(){try{return toolStorage.getItem(TIME_KEY)??EMPTY;}catch{return EMPTY;}}
 export function useGameTime(){const raw=useSyncExternalStore(subscribe,snapshot,()=>EMPTY);return useMemo(()=>{try{return{data:readTime(raw),error:''};}catch(e){return{data:freshTime(),error:e instanceof Error?e.message:'Screen-time history is unavailable.'};}},[raw]);}
 export async function updateGameTime(change:(s:GameTime)=>GameTime){
