@@ -6,13 +6,35 @@ import {useSiteFeature} from '@/components/SiteFeatures';
 import {ANALYTICS_ACTIONS,analyticsPath,analyticsSection,safeDomain,type AnalyticsPayload} from '@/lib/web-analytics';
 import s from './privacy.module.css';
 const CHOICE='website-analytics-choice-v1',VISITOR='website-analytics-visitor-v1',SESSION='website-analytics-session-v1';
+const PRIVACY_PROMPT_HANDLED='website-analytics-prompt-handled-v1';
 type Choice='pending'|'ask'|'allow'|'decline';
 const optedOut=()=>('globalPrivacyControl' in navigator&&navigator.globalPrivacyControl===true)||navigator.doNotTrack==='1';
 export default function VisitorAnalytics(){
  const path=usePathname(),enabled=useSiteFeature('analytics.collection'),[choice,setChoice]=useState<Choice>('pending'),[open,setOpen]=useState(false),[protectedBrowser,setProtectedBrowser]=useState(false),[reason,setReason]=useState(''),[message,setMessage]=useState(''),[busy,setBusy]=useState(false);
+ const [promptPath,setPromptPath]=useState<string|null>(null);
  const permission=useRef(false),feedback=useRef<((value:'helpful'|'needs-work',reason:string)=>Promise<boolean>)|null>(null),panel=useRef<HTMLDivElement>(null),trigger=useRef<HTMLButtonElement>(null);
- const privatePage=/^\/(admin|login|api)(\/|$)/.test(path),trackable=!!analyticsPath(path);
+ const privatePage=/^\/(admin|owner|login|api)(\/|$)/.test(path),trackable=!!analyticsPath(path);
  useEffect(()=>{const load=()=>{try{const stored=localStorage.getItem(CHOICE);permission.current=stored==='allow'&&!optedOut();setChoice(optedOut()?'decline':stored==='allow'?'allow':stored==='decline'?'decline':'ask');setProtectedBrowser(optedOut());}catch{setChoice('decline');permission.current=false;}};const timer=setTimeout(load,0);window.addEventListener('storage',load);return()=>{clearTimeout(timer);window.removeEventListener('storage',load);};},[]);
+ useEffect(()=>{
+  const timer=setTimeout(()=>{
+   if(privatePage||!enabled||protectedBrowser||choice==='pending'){
+    setPromptPath(null);
+    return;
+   }
+   try{
+    // Use the first eligible page even if the visitor already allowed analytics.
+    if(!sessionStorage.getItem(PRIVACY_PROMPT_HANDLED)){
+     sessionStorage.setItem(PRIVACY_PROMPT_HANDLED,'1');
+     setPromptPath(choice==='allow'?null:path);
+     return;
+    }
+   }catch{}
+   setPromptPath(null);
+  },0);
+  const restore=(event:PageTransitionEvent)=>{if(event.persisted)setPromptPath(null);};
+  window.addEventListener('pageshow',restore);
+  return()=>{clearTimeout(timer);window.removeEventListener('pageshow',restore);};
+ },[choice,enabled,path,privatePage,protectedBrowser]);
  useEffect(()=>{if(!open)return;const first=panel.current?.querySelector<HTMLButtonElement>('button');first?.focus();const close=(e:KeyboardEvent)=>{if(e.key==='Escape'){setOpen(false);trigger.current?.focus();}};window.addEventListener('keydown',close);return()=>window.removeEventListener('keydown',close);},[open]);
  useEffect(()=>{
   if(choice!=='allow'||!enabled||!trackable||privatePage||optedOut())return;
@@ -52,10 +74,11 @@ export default function VisitorAnalytics(){
   void flush();for(const event of ['pointerdown','keydown','scroll','touchstart'])window.addEventListener(event,interact,{passive:true});window.addEventListener('click',click);window.addEventListener('website-action',action);window.addEventListener('error',problem,true);window.addEventListener('unhandledrejection',problem);window.addEventListener('pagehide',leave);document.addEventListener('visibilitychange',hide);
   return()=>{tick();saveSession();void flush(true);stopped=true;feedback.current=null;clearInterval(ticker);clearInterval(heartbeat);for(const event of ['pointerdown','keydown','scroll','touchstart'])window.removeEventListener(event,interact);window.removeEventListener('click',click);window.removeEventListener('website-action',action);window.removeEventListener('error',problem,true);window.removeEventListener('unhandledrejection',problem);window.removeEventListener('pagehide',leave);document.removeEventListener('visibilitychange',hide);};
  },[choice,enabled,trackable,privatePage,path]);
- function choose(value:'allow'|'decline'){permission.current=value==='allow'&&!optedOut();try{localStorage.setItem(CHOICE,value);}catch{}setChoice(value);setOpen(false);setMessage('');}
+ function choose(value:'allow'|'decline'){permission.current=value==='allow'&&!optedOut();try{localStorage.setItem(CHOICE,value);}catch{}setChoice(value);setPromptPath(null);setOpen(false);setMessage('');}
  async function forget(){setBusy(true);setMessage('');choose('decline');setOpen(true);try{const saved=JSON.parse(localStorage.getItem(VISITOR)??'null');if(saved?.id){const r=await fetch('/api/analytics',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({forget:true,visitor:saved.id})});if(!r.ok)throw Error();}localStorage.removeItem(VISITOR);sessionStorage.removeItem(SESSION);sessionStorage.removeItem('website-analytics-source-v1');setMessage('Tracking stopped. Analytics linked to this browser token have been deleted.');}catch{setMessage('Tracking is stopped, but deletion could not complete. Keep this browser token and retry.');}finally{setBusy(false);}}
  async function send(value:'helpful'|'needs-work'){setBusy(true);const ok=await feedback.current?.(value,value==='helpful'?'':reason);setMessage(ok?'Thank you. Your page feedback was sent.':'Could not send yet. Please try again in a moment.');setBusy(false);}
  if(privatePage||choice==='pending')return null;
- const expanded=open||choice==='ask'&&enabled;
- return <aside className={s.root} aria-label="Privacy and page feedback">{expanded&&<div ref={panel} className={s.panel} role="region" aria-label="Privacy preferences"><header><span>YOUR VISIT, YOUR CHOICE</span><button aria-label="Close privacy preferences" onClick={()=>{if(choice==='ask')choose('decline');else setOpen(false);}}>×</button></header><h2>{choice==='ask'?'Help make this space better.':'Privacy & page feedback'}</h2><p>Optional first-party analytics measures page visits, active time and feature use. It never reads your tasks, trade details, screenshots or form entries. <Link href="/privacy">See what is collected ↗</Link></p>{protectedBrowser&&<p>Your browser’s privacy signal is respected. Optional tracking stays off.</p>}{!enabled&&<p>Optional analytics is currently disabled by the owner.</p>}<div className={s.actions}>{enabled&&!protectedBrowser&&<button className={s.primary} onClick={()=>choose('allow')}>{choice==='allow'?'Keep analytics on':'Allow optional analytics'}</button>}<button onClick={()=>choose('decline')}>{choice==='allow'?'Stop analytics':'No thanks'}</button></div>{choice==='allow'&&trackable&&<div className={s.feedback}><h3>How was this page?</h3><select aria-label="Reason for page feedback" value={reason} onChange={e=>setReason(e.target.value)}><option value="">Choose a reason · optional</option><option value="confusing">Hard to understand</option><option value="bug">Something did not work</option><option value="missing-feature">A feature is missing</option><option value="slow">It felt slow</option><option value="other">Something else</option></select><div className={s.actions}><button disabled={busy} onClick={()=>void send('helpful')}>Helpful</button><button disabled={busy} onClick={()=>void send('needs-work')}>Needs work</button></div></div>}<button className={s.erase} disabled={busy} onClick={()=>void forget()}>Stop & delete this browser’s analytics</button>{message&&<p role="status">{message}</p>}</div>}<button ref={trigger} className={s.trigger} aria-expanded={expanded} onClick={()=>{setOpen(!expanded);if(choice==='ask')choose('decline');}}>Privacy{choice==='allow'&&trackable?' & feedback':''}</button></aside>;
+ const showPrompt=enabled&&!protectedBrowser&&choice!=='allow'&&promptPath===path;
+ const expanded=open||showPrompt;
+ return <aside className={s.root} aria-label="Privacy and page feedback">{expanded&&<div ref={panel} className={s.panel} role="region" aria-label="Privacy preferences"><header><span>YOUR VISIT, YOUR CHOICE</span><button aria-label="Close privacy preferences" onClick={()=>{if(showPrompt)choose('decline');else setOpen(false);}}>×</button></header><h2>{showPrompt?'Help make this space better.':'Privacy & page feedback'}</h2><p>Optional first-party analytics measures page visits, active time and feature use. It never reads your tasks, trade details, screenshots or form entries. <Link href="/privacy">See what is collected ↗</Link></p>{protectedBrowser&&<p>Your browser’s privacy signal is respected. Optional tracking stays off.</p>}{!enabled&&<p>Optional analytics is currently disabled by the owner.</p>}<div className={s.actions}>{enabled&&!protectedBrowser&&<button className={s.primary} onClick={()=>choose('allow')}>{choice==='allow'?'Keep analytics on':'Allow optional analytics'}</button>}<button onClick={()=>choose('decline')}>{choice==='allow'?'Stop analytics':'No thanks'}</button></div>{choice==='allow'&&trackable&&<div className={s.feedback}><h3>How was this page?</h3><select aria-label="Reason for page feedback" value={reason} onChange={e=>setReason(e.target.value)}><option value="">Choose a reason · optional</option><option value="confusing">Hard to understand</option><option value="bug">Something did not work</option><option value="missing-feature">A feature is missing</option><option value="slow">It felt slow</option><option value="other">Something else</option></select><div className={s.actions}><button disabled={busy} onClick={()=>void send('helpful')}>Helpful</button><button disabled={busy} onClick={()=>void send('needs-work')}>Needs work</button></div></div>}<button className={s.erase} disabled={busy} onClick={()=>void forget()}>Stop & delete this browser’s analytics</button>{message&&<p role="status">{message}</p>}</div>}<button ref={trigger} className={s.trigger} aria-expanded={expanded} onClick={()=>{if(showPrompt)choose('decline');else setOpen(!expanded);}}>Privacy{choice==='allow'&&trackable?' & feedback':''}</button></aside>;
 }
