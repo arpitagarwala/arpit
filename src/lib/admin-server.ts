@@ -1,4 +1,5 @@
 import 'server-only';
+import {publicContact} from './public-contact.server';
 import {cookies} from 'next/headers';
 import {redirect} from 'next/navigation';
 import {createHmac,randomUUID} from 'node:crypto';
@@ -11,5 +12,5 @@ export async function adminCall<T>(payload:Record<string,unknown>):Promise<T>{co
 export async function currentOwner(){const token=(await cookies()).get(OWNER_COOKIE)?.value;if(!token||!/^[a-f0-9]{64}$/.test(token))return null;try{const result=await adminCall<{owner:{email:string}}>({action:'auth.session',session:sessionDigest(token)});return result.owner;}catch(e){if(e instanceof AdminError&&e.status===401)return null;throw e;}}
 export async function requireOwner(){const owner=await currentOwner();if(!owner)redirect('/login');return owner;}
 export async function ownerSession(){const token=(await cookies()).get(OWNER_COOKIE)?.value;if(!token||!/^[a-f0-9]{64}$/.test(token))throw new AdminError('Sign in to continue.',401);const session=sessionDigest(token);await adminCall({action:'auth.session',session});return session;}
-export async function publicEntries(){const {url}=backendConfig();const r=await fetch(`${url}/public/entries`,{cache:'no-store',signal:AbortSignal.timeout(15000)});if(!r.ok)throw new AdminError('Published updates are temporarily unavailable.',503);return(await r.json()).entries as ContentEntry[];}
-export async function publicEntry(id:string){const {url}=backendConfig();const r=await fetch(`${url}/public/entries/${encodeURIComponent(id)}`,{cache:'no-store',signal:AbortSignal.timeout(15000)});if(r.status===404)return null;if(!r.ok)throw new AdminError('This update is temporarily unavailable.',503);return(await r.json()).entry as ContentEntry;}
+export async function publicEntries(){const {url}=backendConfig();const r=await fetch(`${url}/public/entries`,{cache:'no-store',signal:AbortSignal.timeout(15000)});if(!r.ok)throw new AdminError('Published updates are temporarily unavailable.',503);return publicContact((await r.json()).entries) as ContentEntry[];}
+export async function publicEntry(id:string){const {url}=backendConfig();const r=await fetch(`${url}/public/entries/${encodeURIComponent(id)}`,{cache:'no-store',signal:AbortSignal.timeout(15000)});if(r.status===404)return null;if(!r.ok)throw new AdminError('This update is temporarily unavailable.',503);return publicContact((await r.json()).entry) as ContentEntry;}
