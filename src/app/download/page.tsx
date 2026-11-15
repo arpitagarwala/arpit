@@ -11,19 +11,18 @@ export default async function DownloadPage() {
       <div className={s.shell} style={{maxWidth: 850}}>
         <header className={s.header}>
           <Link href="/" className={s.brand}>
-            Arpit Agarwala<span>App & widgets</span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/app-icons/brand-192.png" width="42" height="42" alt="" />
+            <span>
+              Arpit Agarwala<small>App & widgets</small>
+            </span>
           </Link>
           <Link href="/widgets" className={s.link}>
             Open widgets ↗
           </Link>
         </header>
         <div className={s.intro}>
-          <p className={s.eyebrow}>A PLACE ON YOUR HOME SCREEN</p>
-          <h1>
-            Your everyday tools.
-            <br />
-            <em>One tap away.</em>
-          </h1>
+          <h1>Install the app</h1>
           <p>
             Install the full website, or keep a clock, focus timer and
             calculator close at hand.
@@ -59,18 +58,19 @@ export default async function DownloadPage() {
             home screen, choose Widgets, then find Arpit Agarwala.
           </p>
           <p>
-            Add the Clock, Focus timer, Calculator or Tic Tac Toe widget. Native
-            companion widgets work offline. Their timer and game are saved on
-            the phone. Website account sync applies to the tools inside the web
-            app.
+            Add the Clock, Focus timer, Calculator or Tic Tac Toe widget. Press
+            and hold a widget to resize it. Tap its ⋮ button to customize its
+            theme, text size and settings. Native companion widgets work
+            offline. Their timer and game are saved on the phone. Website
+            account sync applies to the tools inside the web app.
           </p>
           <div className={s.actions}>
             <a
               className={s.primary}
-              href="/downloads/Arpit-Agarwala.apk"
+              href="/downloads/Arpit-Agarwala.apk?v=1.1"
               download
             >
-              Download Android app
+              Download Android app · 1.1
             </a>
           </div>
         </section>
@@ -84,7 +84,7 @@ export default async function DownloadPage() {
           <div className={s.actions}>
             <a
               className={s.primary}
-              href="/downloads/Arpit-Agarwala.exe"
+              href="/downloads/Arpit-Agarwala.exe?v=1.1"
               download
             >
               Download Windows launcher

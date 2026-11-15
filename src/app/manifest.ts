@@ -12,15 +12,15 @@ export default function manifest(): MetadataRoute.Manifest {
     background_color: '#0f172a',
     theme_color: '#0f172a',
     shortcuts: [
-      {name: 'Widgets', url: '/widgets', icons: [{src:'/app-icons/icon-192.png',sizes:'192x192'}]},
-      {name: 'Focus timer', url: '/widgets/focus', icons: [{src:'/app-icons/icon-192.png',sizes:'192x192'}]},
-      {name: 'Calculator', url: '/widgets/calculator', icons: [{src:'/app-icons/icon-192.png',sizes:'192x192'}]},
-      {name: 'Games', url: '/games', icons: [{src:'/app-icons/icon-192.png',sizes:'192x192'}]},
+      {name: 'Widgets', url: '/widgets', icons: [{src:'/app-icons/brand-192.png',sizes:'192x192'}]},
+      {name: 'Focus timer', url: '/widgets/focus', icons: [{src:'/app-icons/brand-192.png',sizes:'192x192'}]},
+      {name: 'Calculator', url: '/widgets/calculator', icons: [{src:'/app-icons/brand-192.png',sizes:'192x192'}]},
+      {name: 'Games', url: '/games', icons: [{src:'/app-icons/brand-192.png',sizes:'192x192'}]},
     ],
     icons: [
-      {src: '/app-icons/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any'},
-      {src: '/app-icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any'},
-      {src: '/app-icons/maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable'},
+      {src: '/app-icons/brand-192.png', sizes: '192x192', type: 'image/png', purpose: 'any'},
+      {src: '/app-icons/brand-512.png', sizes: '512x512', type: 'image/png', purpose: 'any'},
+      {src: '/app-icons/brand-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable'},
     ],
   };
 }

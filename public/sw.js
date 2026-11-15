@@ -65,8 +65,12 @@ async function savePack(id, port, resources) {
   const pack = await caches.open(packCache(id));
   const staged = [];
   const assets = new Set([
-    '/app-icons/icon-192.png',
-    '/app-icons/icon-512.png',
+    '/app-icons/brand-192.png',
+    '/app-icons/brand-512.png',
+    '/app-icons/brand-maskable-512.png',
+    '/app-icons/brand-touch-180.png',
+    '/app-icons/brand-32.png',
+    '/app-icons/brand-16.png',
   ]);
   for (const resource of (Array.isArray(resources) ? resources : []).slice(
     0,
@@ -201,7 +205,10 @@ self.addEventListener('fetch', (event) => {
         }
       })(),
     );
-  } else if (url.pathname.startsWith('/_next/static/')) {
+  } else if (
+    url.pathname.startsWith('/_next/static/') ||
+    url.pathname.startsWith('/app-icons/')
+  ) {
     event.respondWith(
       (async () => {
         const cache = await caches.open(assetsCache);

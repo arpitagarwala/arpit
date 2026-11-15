@@ -4,41 +4,114 @@
   margin: auto;
   padding: clamp(1.25rem, 5vw, 2rem);
   overflow: auto;
-  border: 1px solid #30475a;
-  border-radius: 1.25rem;
-  color: #e7eff6;
-  background: #101c2b;
+  border: 1px solid #41484e;
+  border-radius: 12px;
+  color: #eeeae2;
+  background: #1a1e21;
   box-shadow: 0 18px 70px #0009;
 }
-.dialog[open] { animation: enter 180ms ease-out; }
-.dialog::backdrop { background: #030913bf; }
-.heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-.heading h2 { font-size: 1.35rem; font-weight: 650; }
-.dialog p { margin: .65rem 0; color: #bfcedb; line-height: 1.55; }
-.close, .primary, .secondary { min-height: 44px; cursor: pointer; border-radius: .6rem; }
-.close { min-width: 44px; color: #e7eff6; font-size: 1.5rem; }
-.primary, .secondary {
+.dialog[open] {
+  animation: enter 180ms ease-out;
+}
+.dialog::backdrop {
+  background: #080a0dcc;
+}
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.heading h2 {
+  font-size: 1.35rem;
+  font-weight: 650;
+}
+.dialog p {
+  margin: 0.65rem 0;
+  color: #b4bcc2;
+  line-height: 1.55;
+}
+.close,
+.primary,
+.secondary {
+  min-height: 44px;
+  cursor: pointer;
+  border-radius: 0.6rem;
+}
+.close {
+  min-width: 44px;
+  color: #eeeae2;
+  font-size: 1.5rem;
+}
+.primary,
+.secondary {
   width: fit-content;
   display: flex;
   align-items: center;
-  margin-top: .85rem;
-  padding: .6rem 1rem;
-  border: 1px solid #405d72;
+  margin-top: 0.85rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid #48545d;
   font-weight: 600;
-  transition: background-color 150ms ease, transform 150ms ease;
+  transition:
+    background-color 150ms ease,
+    transform 150ms ease;
 }
-.primary { color: #092b30; background: #a7e4d9; }
-.primary:hover { background: #cdf4ec; }
-.secondary { background: #1b3448; color: #e9f7fb; }
-.secondary:hover, .close:hover { background: #274a5f; }
-.primary:active, .secondary:active { transform: scale(.98); }
-.dialog :is(a,button):focus-visible { outline: 2px solid #97e1de; outline-offset: 3px; }
-.instructions { margin: 1rem 0; font-size: .9rem; }
-.detail, .support { font-size: .8rem; }
-.support { display: flex; flex-wrap: wrap; gap: 1rem; border-top: 1px solid #30475a; }
-.support a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: .2em; }
-@keyframes enter { from { opacity: 0; transform: translateY(8px); } }
+.primary {
+  color: #15232d;
+  background: #bdcbd5;
+}
+.primary:hover {
+  background: #d8e1e7;
+}
+.secondary {
+  background: #262e34;
+  color: #e5e9ec;
+}
+.secondary:hover,
+.close:hover {
+  background: #34414a;
+}
+.primary:active,
+.secondary:active {
+  transform: scale(0.98);
+}
+.dialog :is(a, button):focus-visible {
+  outline: 2px solid #a9c1d4;
+  outline-offset: 3px;
+}
+.instructions {
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+.detail,
+.support {
+  font-size: 0.8rem;
+}
+.support {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  border-top: 1px solid #41484e;
+}
+.support a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
-  .dialog[open] { animation: none; }
-  .primary, .secondary { transition: none; }
+  .dialog[open] {
+    animation: none;
+  }
+  .primary,
+  .secondary {
+    transition: none;
+  }
 }

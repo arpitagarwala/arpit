@@ -76,8 +76,8 @@ export function AppDownload({className, email}: {className?: string; email: stri
           <p><strong>Android</strong> · In Chrome, open the menu and choose Install app or Add to Home screen.</p>
           <p><strong>Desktop</strong> · Use Install in Chrome or Edge, or File → Add to Dock in Safari.</p>
         </section>}
-      <a className={styles.secondary} href="/downloads/Arpit-Agarwala.exe" download>Download for Windows</a>
-      <a className={styles.secondary} href="/downloads/Arpit-Agarwala.apk" download>Android app with widgets</a>
+      <a className={styles.secondary} href="/downloads/Arpit-Agarwala.exe?v=1.1" download>Download for Windows</a>
+      <a className={styles.secondary} href="/downloads/Arpit-Agarwala.apk?v=1.1" download>Android app with widgets</a>
       <p><Link href="/widgets">Open your widgets ↗</Link> · <Link href="/download">Installation guide ↗</Link></p>
       <p className={styles.detail}>The portable launcher uses Microsoft Edge. Windows may show a warning because the launcher is unsigned.</p>
       <footer className={styles.support}><a href={'mailto:' + email}>Email support</a><a href="https://arpitagarwala.com">Website</a></footer>

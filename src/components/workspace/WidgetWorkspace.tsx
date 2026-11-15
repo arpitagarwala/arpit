@@ -1,6 +1,12 @@
 'use client';
 
-import {useEffect, useRef, useState} from 'react';
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type PointerEvent,
+} from 'react';
 import Link from 'next/link';
 import {
   WIDGETS,
@@ -20,6 +26,14 @@ import {FullscreenButton} from '@/components/install/FullscreenButton';
 import OfflinePacks from './OfflinePacks';
 import RecoveryHistory from './RecoveryHistory';
 import s from './widgets.module.css';
+import {
+  defaultLayout,
+  LAYOUT_KEY,
+  readLayout,
+  minimumHeight,
+  type WidgetAppearance,
+  type WidgetLayout,
+} from '@/lib/widget-layout';
 
 export default function WidgetWorkspace({
   tools,
@@ -43,7 +57,19 @@ export default function WidgetWorkspace({
   const [answer, setAnswer] = useState('');
   const [board, setBoard] = useState<string[]>(Array(9).fill(''));
   const [turn, setTurn] = useState('X');
-  const [large, setLarge] = useState<WidgetId | null>(null);
+  const [layout, setLayout] = useState<WidgetLayout>(defaultLayout);
+  const layoutRef = useRef(layout);
+  const [customizing, setCustomizing] = useState<WidgetId>('clock');
+  const customizeDialog = useRef<HTMLDialogElement>(null);
+  const grid = useRef<HTMLDivElement>(null);
+  const drag = useRef<{
+    id: WidgetId;
+    x: number;
+    pointerId: number;
+    y: number;
+    width: number;
+    height: number;
+  } | null>(null);
   const popup = useRef<Window | null>(null);
   const time = now ? new Date(now) : null;
 
@@ -60,13 +86,99 @@ export default function WidgetWorkspace({
               .slice(0, 12),
           );
         setRecent(localStorage.getItem('workspace-last-tool') ?? '');
+        const savedLayout = readLayout(localStorage.getItem(LAYOUT_KEY));
+        layoutRef.current = savedLayout;
+        setLayout(savedLayout);
       } catch {
-        setMessage('Your saved shortcuts could not load.');
+        setMessage('Your saved workspace settings could not load.');
       }
       setSettingsReady(true);
     }, 0);
-    return () => clearTimeout(timer);
+    const changed = (event: StorageEvent) => {
+      if (event.key !== LAYOUT_KEY) return;
+      try {
+        const saved = readLayout(event.newValue);
+        layoutRef.current = saved;
+        setLayout(saved);
+      } catch {
+        setMessage('Updated widget settings could not be loaded.');
+      }
+    };
+    window.addEventListener('storage', changed);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('storage', changed);
+    };
   }, []);
+
+  function persistLayout() {
+    try {
+      localStorage.setItem(LAYOUT_KEY, JSON.stringify(layoutRef.current));
+    } catch {
+      setMessage('Your layout could not be saved on this device.');
+    }
+  }
+
+  function appearance(
+    id: WidgetId,
+    change: Partial<WidgetAppearance>,
+    persist = true,
+  ) {
+    const next = {
+      ...layoutRef.current,
+      [id]: {...layoutRef.current[id], ...change},
+    };
+    layoutRef.current = next;
+    setLayout(next);
+    if (persist) persistLayout();
+  }
+
+  function startResize(event: PointerEvent<HTMLButtonElement>, id: WidgetId) {
+    if (!event.isPrimary || event.button !== 0) return;
+    event.preventDefault();
+    const bounds = event.currentTarget
+      .closest('section')!
+      .getBoundingClientRect();
+    drag.current = {
+      id,
+      pointerId: event.pointerId,
+      x: event.clientX,
+      y: event.clientY,
+      width: bounds.width,
+      height: bounds.height,
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  }
+
+  function resize(event: PointerEvent<HTMLButtonElement>) {
+    const current = drag.current;
+    if (!current || current.pointerId !== event.pointerId) return;
+    const maximum = Math.min(1200, grid.current?.clientWidth ?? 1200);
+    appearance(
+      current.id,
+      {
+        width: Math.round(
+          Math.max(
+            Math.min(240, maximum),
+            Math.min(maximum, current.width + event.clientX - current.x),
+          ),
+        ),
+        height: Math.round(
+          Math.max(
+            minimumHeight[current.id],
+            Math.min(900, current.height + event.clientY - current.y),
+          ),
+        ),
+      },
+      false,
+    );
+  }
+
+  function finishResize() {
+    if (!drag.current) return;
+    drag.current = null;
+    persistLayout();
+  }
 
   function favorite(href: string) {
     const next = favorites.includes(href)
@@ -142,7 +254,11 @@ export default function WidgetWorkspace({
       const api = (window as PipWindow).documentPictureInPicture;
       if (api) {
         popup.current?.close();
-        const view = await api.requestWindow({width: 380, height: 490});
+        const preferences = layoutRef.current[id];
+        const view = await api.requestWindow({
+          width: Math.min(preferences.width + 28, screen.availWidth - 40),
+          height: Math.min(preferences.height + 154, screen.availHeight - 40),
+        });
         popup.current = view;
         const frame = view.document.createElement('iframe');
         frame.src = url;
@@ -154,7 +270,15 @@ export default function WidgetWorkspace({
         view.document.body.append(frame);
         return;
       }
-      window.open(url, 'arpit-' + id, 'popup,width=390,height=520');
+      const preferences = layoutRef.current[id];
+      window.open(
+        url,
+        'arpit-' + id,
+        'popup,width=' +
+          (preferences.width + 28) +
+          ',height=' +
+          (preferences.height + 154),
+      );
     } catch {
       setMessage('Open the widget using its link below.');
     }
@@ -179,7 +303,11 @@ export default function WidgetWorkspace({
       <div className={s.shell}>
         <header className={s.header}>
           <Link href="/" className={s.brand}>
-            Arpit Agarwala<span>Personal workspace</span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/app-icons/brand-192.png" width="42" height="42" alt="" />
+            <span>
+              Arpit Agarwala<small>Workspace</small>
+            </span>
           </Link>
           <div className={s.actions}>
             {!compact && <AccountLink className={s.link} />}
@@ -190,14 +318,10 @@ export default function WidgetWorkspace({
         {!compact && (
           <>
             <div className={s.intro}>
-              <p className={s.eyebrow}>MAKE ROOM FOR WHAT MATTERS</p>
-              <h1>
-                A little space.
-                <br />
-                <em>Your everyday essentials.</em>
-              </h1>
+              <h1>Your workspace</h1>
               <p>
-                Keep time, focus on one task, and pick up where you left off.
+                Adjust each widget to fit the way you work. Drag its lower-right
+                corner, or open its settings.
               </p>
             </div>
             <section className={s.shortcuts} aria-label="Quick launch">
@@ -235,30 +359,43 @@ export default function WidgetWorkspace({
             </section>
           </>
         )}
-        <div className={s.grid}>
+        <div className={s.grid} ref={grid}>
           {selection.map((widget) => (
             <section
               key={widget.id}
-              className={s.card + ' ' + (large === widget.id ? s.wide : '')}
+              className={s.card}
               data-widget={widget.id}
+              data-theme={layout[widget.id].theme}
+              data-density={
+                layout[widget.id].height < 300 ? 'compact' : 'comfortable'
+              }
+              style={
+                {
+                  '--widget-width': layout[widget.id].width + 'px',
+                  '--widget-height': layout[widget.id].height + 'px',
+                  '--text-scale': layout[widget.id].textSize / 100,
+                } as CSSProperties
+              }
             >
               <div className={s.cardHeader}>
                 <h2>
                   <i className={widget.icon} aria-hidden="true" />
                   {widget.title}
                 </h2>
-                {!compact && (
-                  <div>
-                    <button
-                      className={s.iconButton}
-                      onClick={() =>
-                        setLarge(large === widget.id ? null : widget.id)
-                      }
-                      aria-label={'Resize ' + widget.title}
-                      aria-pressed={large === widget.id}
-                    >
-                      <i className="ri-layout-line" aria-hidden="true" />
-                    </button>
+                <div>
+                  <button
+                    className={s.iconButton}
+                    onClick={() => {
+                      setCustomizing(widget.id);
+                      customizeDialog.current?.showModal();
+                    }}
+                    aria-label={'Customize ' + widget.title}
+                    aria-haspopup="dialog"
+                    title="Size and appearance"
+                  >
+                    <i className="ri-settings-3-line" aria-hidden="true" />
+                  </button>
+                  {!compact && (
                     <button
                       className={s.iconButton}
                       onClick={() => void popOut(widget.id)}
@@ -269,8 +406,8 @@ export default function WidgetWorkspace({
                         aria-hidden="true"
                       />
                     </button>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
               {widget.id === 'clock' && (
                 <div className={s.clock}>
@@ -285,19 +422,22 @@ export default function WidgetWorkspace({
                     {time?.toLocaleTimeString(undefined, {
                       hour: '2-digit',
                       minute: '2-digit',
-                      hour12: false,
+                      hour12: layout.clock.hour12,
                     }) ?? '—:—'}
                   </time>
-                  <span>
-                    {time?.toLocaleTimeString(undefined, {second: '2-digit'}) ??
-                      '—'}{' '}
-                    seconds ·{' '}
-                    {time
-                      ? Intl.DateTimeFormat()
-                          .resolvedOptions()
-                          .timeZone.replace(/_/g, ' ')
-                      : 'Device timezone'}
-                  </span>
+                  {layout.clock.seconds && (
+                    <span>
+                      {time?.toLocaleTimeString(undefined, {
+                        second: '2-digit',
+                      }) ?? '—'}{' '}
+                      seconds ·{' '}
+                      {time
+                        ? Intl.DateTimeFormat()
+                            .resolvedOptions()
+                            .timeZone.replace(/_/g, ' ')
+                        : 'Device timezone'}
+                    </span>
+                  )}
                 </div>
               )}
               {widget.id === 'focus' && (
@@ -329,7 +469,7 @@ export default function WidgetWorkspace({
                     <span>:</span>
                     {String(seconds % 60).padStart(2, '0')}
                   </time>
-                  <p>{study.activeTask || 'Give one thing your attention.'}</p>
+                  <p>{study.activeTask || 'No task selected'}</p>
                   <button
                     className={s.primary}
                     disabled={!ready}
@@ -355,7 +495,7 @@ export default function WidgetWorkspace({
                       <span>{task.title}</span>
                     </label>
                   ))}
-                  {!tasks.length && <p>Choose your next small step.</p>}
+                  {!tasks.length && <p>No tasks planned for today.</p>}
                   <form onSubmit={newTask}>
                     <input
                       aria-label="New task"
@@ -456,7 +596,7 @@ export default function WidgetWorkspace({
                 <div className={s.game}>
                   <p role="status">
                     {winner === 'draw'
-                      ? 'A thoughtful draw.'
+                      ? 'Draw.'
                       : winner
                         ? winner + ' wins this round.'
                         : turn + ' to play · pass and play'}
@@ -500,9 +640,207 @@ export default function WidgetWorkspace({
                 {compact ? 'All widgets' : 'Open ' + widget.title}
                 <span aria-hidden="true">↗</span>
               </Link>
+              {!compact && (
+                <button
+                  className={s.resizeHandle}
+                  aria-label={'Resize ' + widget.title}
+                  title="Drag to resize. Arrow keys adjust width and height."
+                  onPointerDown={(event) => startResize(event, widget.id)}
+                  onPointerMove={resize}
+                  onPointerUp={finishResize}
+                  onPointerCancel={finishResize}
+                  onLostPointerCapture={finishResize}
+                  onKeyDown={(event) => {
+                    if (
+                      ![
+                        'ArrowLeft',
+                        'ArrowRight',
+                        'ArrowUp',
+                        'ArrowDown',
+                      ].includes(event.key)
+                    )
+                      return;
+                    event.preventDefault();
+                    const step = event.shiftKey ? 40 : 10;
+                    const item = layoutRef.current[widget.id];
+                    const shownWidth = event.currentTarget
+                      .closest('section')!
+                      .getBoundingClientRect().width;
+                    const horizontal =
+                      event.key === 'ArrowLeft' || event.key === 'ArrowRight';
+                    const delta =
+                      event.key === 'ArrowLeft' || event.key === 'ArrowUp'
+                        ? -step
+                        : step;
+                    appearance(
+                      widget.id,
+                      horizontal
+                        ? {
+                            width: Math.max(
+                              240,
+                              Math.min(1200, shownWidth + delta),
+                            ),
+                          }
+                        : {
+                            height: Math.max(
+                              minimumHeight[widget.id],
+                              Math.min(900, item.height + delta),
+                            ),
+                          },
+                    );
+                  }}
+                >
+                  <span className={s.grip} aria-hidden="true" />
+                </button>
+              )}
             </section>
           ))}
         </div>
+        <dialog
+          ref={customizeDialog}
+          className={s.customizeDialog}
+          aria-labelledby="widget-settings-title"
+        >
+          <div className={s.dialogHeader}>
+            <h2 id="widget-settings-title">
+              {WIDGETS.find((widget) => widget.id === customizing)?.title}{' '}
+              settings
+            </h2>
+            <form method="dialog">
+              <button
+                className={s.iconButton}
+                aria-label="Close widget settings"
+              >
+                ×
+              </button>
+            </form>
+          </div>
+          <p>
+            Changes are saved on this device. Width fits the available screen
+            space.
+          </p>
+          <div className={s.sizePresets} aria-label="Widget size presets">
+            {[
+              {
+                name: 'Compact',
+                width: 280,
+                height: customizing === 'calculator' ? 440 : 260,
+              },
+              {
+                name: 'Standard',
+                width: 370,
+                height: defaultLayout()[customizing].height,
+              },
+              {name: 'Expanded', width: 760, height: 540},
+            ].map((preset) => (
+              <button
+                key={preset.name}
+                aria-pressed={
+                  layout[customizing].width === preset.width &&
+                  layout[customizing].height === preset.height
+                }
+                onClick={() =>
+                  appearance(customizing, {
+                    width: preset.width,
+                    height: preset.height,
+                  })
+                }
+              >
+                {preset.name}
+              </button>
+            ))}
+          </div>
+          <label>
+            Width <output>{layout[customizing].width} px</output>
+            <input
+              type="range"
+              aria-label="Widget width"
+              min="240"
+              max="1200"
+              step="1"
+              value={layout[customizing].width}
+              onChange={(event) =>
+                appearance(customizing, {width: Number(event.target.value)})
+              }
+            />
+          </label>
+          <label>
+            Height <output>{layout[customizing].height} px</output>
+            <input
+              type="range"
+              aria-label="Widget height"
+              min={minimumHeight[customizing]}
+              max="900"
+              step="1"
+              value={layout[customizing].height}
+              onChange={(event) =>
+                appearance(customizing, {height: Number(event.target.value)})
+              }
+            />
+          </label>
+          <label>
+            Text size <output>{layout[customizing].textSize}%</output>
+            <input
+              type="range"
+              aria-label="Widget text size"
+              min="80"
+              max="130"
+              step="5"
+              value={layout[customizing].textSize}
+              onChange={(event) =>
+                appearance(customizing, {textSize: Number(event.target.value)})
+              }
+            />
+          </label>
+          <label>
+            Appearance
+            <select
+              aria-label="Appearance"
+              value={layout[customizing].theme}
+              onChange={(event) =>
+                appearance(customizing, {
+                  theme: event.target.value as WidgetAppearance['theme'],
+                })
+              }
+            >
+              <option value="graphite">Graphite</option>
+              <option value="slate">Slate</option>
+              <option value="paper">Paper</option>
+            </select>
+          </label>
+          {customizing === 'clock' && (
+            <>
+              <label className={s.checkSetting}>
+                <input
+                  type="checkbox"
+                  checked={layout.clock.hour12}
+                  onChange={(event) =>
+                    appearance('clock', {hour12: event.target.checked})
+                  }
+                />
+                12-hour clock
+              </label>
+              <label className={s.checkSetting}>
+                <input
+                  type="checkbox"
+                  checked={layout.clock.seconds}
+                  onChange={(event) =>
+                    appearance('clock', {seconds: event.target.checked})
+                  }
+                />
+                Show seconds and timezone
+              </label>
+            </>
+          )}
+          <button
+            className={s.secondary}
+            onClick={() =>
+              appearance(customizing, defaultLayout()[customizing])
+            }
+          >
+            Reset widget settings
+          </button>
+        </dialog>
         {(error || message) && (
           <p role="status" className={s.notice}>
             {message || error}

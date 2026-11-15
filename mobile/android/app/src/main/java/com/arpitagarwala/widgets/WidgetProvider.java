@@ -9,6 +9,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.SystemClock;
+import android.os.Bundle;
+import android.content.res.Configuration;
+import android.util.TypedValue;
+import android.view.View;
 import android.widget.RemoteViews;
 
 public class WidgetProvider extends AppWidgetProvider {
@@ -20,6 +24,22 @@ public class WidgetProvider extends AppWidgetProvider {
 
     @Override public void onUpdate(Context context,AppWidgetManager manager,int[] ids) {
         for (int id : ids) render(context,manager,id);
+    }
+    @Override public void onAppWidgetOptionsChanged(Context context,AppWidgetManager manager,int id,Bundle options) {
+        render(context,manager,id);
+    }
+    static void refresh(Context context,int id) {
+        AppWidgetManager manager=AppWidgetManager.getInstance(context);
+        AppWidgetProviderInfo info=manager.getAppWidgetInfo(id);
+        if(info==null||!info.provider.getPackageName().equals(context.getPackageName()))return;
+        String name=info.provider.getClassName();
+        WidgetProvider provider;
+        if(name.equals(ClockWidget.class.getName()))provider=new ClockWidget();
+        else if(name.equals(FocusWidget.class.getName()))provider=new FocusWidget();
+        else if(name.equals(CalculatorWidget.class.getName()))provider=new CalculatorWidget();
+        else if(name.equals(GameWidget.class.getName()))provider=new GameWidget();
+        else return;
+        provider.render(context,manager,id);
     }
     @Override public void onDeleted(Context context,int[] ids) {
         for (int id : ids) {
@@ -52,13 +72,15 @@ public class WidgetProvider extends AppWidgetProvider {
     private void focus(Context context,int id,SharedPreferences state,String operation) {
         long now=System.currentTimeMillis();
         boolean shortBreak=state.getBoolean("break",false);
-        long duration=shortBreak?300000:1500000;
+        long focusDuration=state.getInt("focusMinutes",25)*60000L;
+        long breakDuration=state.getInt("breakMinutes",5)*60000L;
+        long duration=shortBreak?breakDuration:focusDuration;
         long deadline=state.getLong("deadline",0);
         long left=deadline>0?Math.max(0,deadline-now):state.getLong("remaining",duration);
         SharedPreferences.Editor edit=state.edit();
         AlarmManager alarms=context.getSystemService(AlarmManager.class);
         alarms.cancel(action(context,id,"finish"));
-        if ("mode".equals(operation)) edit.putBoolean("break",!shortBreak).putLong("remaining",shortBreak?1500000:300000).putLong("deadline",0);
+        if ("mode".equals(operation)) edit.putBoolean("break",!shortBreak).putLong("remaining",shortBreak?focusDuration:breakDuration).putLong("deadline",0);
         else if ("reset".equals(operation)) edit.putLong("remaining",duration).putLong("deadline",0);
         else if ("finish".equals(operation) && deadline>now) {
             alarms.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,deadline,action(context,id,"finish"));
@@ -115,17 +137,19 @@ public class WidgetProvider extends AppWidgetProvider {
         } else if(this instanceof FocusWidget) {
             views=new RemoteViews(context.getPackageName(),R.layout.widget_focus);
             boolean shortBreak=state.getBoolean("break",false);
+            long duration=state.getInt(shortBreak?"breakMinutes":"focusMinutes",shortBreak?5:25)*60000L;
             long deadline=state.getLong("deadline",0);
-            long left=deadline>0?Math.max(0,deadline-System.currentTimeMillis()):state.getLong("remaining",shortBreak?300000:1500000);
+            long left=deadline>0?Math.max(0,deadline-System.currentTimeMillis()):state.getLong("remaining",duration);
             boolean running=deadline>System.currentTimeMillis();
             if(running) context.getSystemService(AlarmManager.class).setAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,deadline,action(context,id,"finish"));
             else if(deadline>0) state.edit().putLong("deadline",0).putLong("remaining",0).apply();
-            views.setTextViewText(R.id.title,(shortBreak?"SHORT BREAK":"FOCUS")+" · ON THIS PHONE");
+            views.setTextViewText(R.id.widget_label,shortBreak?"BREAK":"FOCUS");
             views.setChronometerCountDown(R.id.timer,true);
             views.setChronometer(R.id.timer,SystemClock.elapsedRealtime()+left,null,running);
             if(!running) views.setTextViewText(R.id.timer,String.format(java.util.Locale.ROOT,"%02d:%02d",left/60000,(left/1000)%60));
-            views.setTextViewText(R.id.toggle,running?"Pause":left==0||left==(shortBreak?300000:1500000)?"Start":"Resume");
+            views.setTextViewText(R.id.toggle,running?"Pause":left==0||left==duration?"Start":"Resume");
+            views.setTextViewText(R.id.reset,"Reset");
             views.setTextViewText(R.id.mode,shortBreak?"Focus":"Break");
             views.setOnClickPendingIntent(R.id.toggle,action(context,id,"toggle"));
             views.setOnClickPendingIntent(R.id.reset,action(context,id,"reset"));
@@ -139,7 +163,7 @@ public class WidgetProvider extends AppWidgetProvider {
             views=new RemoteViews(context.getPackageName(),R.layout.widget_game);
             String board=state.getString("board","         ");
             String result=winner(board);
-            views.setTextViewText(R.id.game_status,result.equals("draw")?"A thoughtful draw.":!result.isEmpty()?result+" wins":state.getString("turn","X")+" to play · pass and play");
+            views.setTextViewText(R.id.game_status,result.equals("draw")?"Draw.":!result.isEmpty()?result+" wins":state.getString("turn","X")+" to play · pass and play");
             for(int i=0;i<CELLS.length;i++) {
                 String value=String.valueOf(board.charAt(i));
                 views.setTextViewText(CELLS[i],value);
@@ -148,6 +172,72 @@ public class WidgetProvider extends AppWidgetProvider {
             }
             views.setOnClickPendingIntent(R.id.new_game,action(context,id,"new"));
         }
+        if(this instanceof ClockWidget)views.setTextViewText(R.id.widget_label,"CLOCK");
+        if(this instanceof CalculatorWidget)views.setTextViewText(R.id.widget_label,"CALCULATOR");
+        if(this instanceof GameWidget)views.setTextViewText(R.id.widget_label,"TIC TAC TOE");
+        Intent configure=new Intent(context,ConfigureActivity.class)
+            .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,id)
+            .setData(android.net.Uri.parse("arpit-widget://settings/"+id));
+        views.setOnClickPendingIntent(R.id.widget_settings,PendingIntent.getActivity(context,id,configure,
+            PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE));
+        applyStyle(context,manager,id,state,views);
         manager.updateAppWidget(id,views);
+    }
+
+    private void applyStyle(Context context,AppWidgetManager manager,int id,SharedPreferences state,RemoteViews views) {
+        int theme=Math.max(0,Math.min(2,state.getInt("theme",0)));
+        boolean translucent=state.getBoolean("translucent",false);
+        int[][] backgrounds={
+            {R.drawable.widget_background,R.drawable.widget_graphite_translucent},
+            {R.drawable.widget_slate,R.drawable.widget_slate_translucent},
+            {R.drawable.widget_paper,R.drawable.widget_paper_translucent}
+        };
+        int[] keys={R.drawable.key_background,R.drawable.key_slate,R.drawable.key_paper};
+        int ink=theme==2?0xff24282b:0xffeeeae2;
+        int muted=theme==2?0xff575f63:0xffa3a9ae;
+        views.setInt(R.id.widget_root,"setBackgroundResource",backgrounds[theme][translucent?1:0]);
+        views.setTextColor(R.id.widget_label,muted);
+        views.setTextColor(R.id.widget_settings,muted);
+        Bundle options=manager.getAppWidgetOptions(id);
+        boolean landscape=context.getResources().getConfiguration().orientation==Configuration.ORIENTATION_LANDSCAPE;
+        int width=options.getInt(landscape?AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH:AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH,240);
+        int height=options.getInt(landscape?AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT:AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT,250);
+        if(width<=0)width=240;
+        if(height<=0)height=250;
+        float scale=Math.max(80,Math.min(130,state.getInt("textSize",100)))/100f;
+        int padding=StudioUi.dp(context,width<200?8:12);
+        views.setViewPadding(R.id.widget_root,padding,StudioUi.dp(context,6),padding,StudioUi.dp(context,6));
+        if(this instanceof ClockWidget) {
+            boolean hour12=state.getBoolean("hour12",false);
+            String format=hour12?"h:mm a":"HH:mm";
+            views.setCharSequence(R.id.clock_time,"setFormat12Hour",format);
+            views.setCharSequence(R.id.clock_time,"setFormat24Hour",format);
+            float clockText=Math.min(Math.min(48,Math.max(20,width*(hour12?.14f:.19f)))*scale,Math.max(18,(height-44)/1.3f));
+            views.setTextViewTextSize(R.id.clock_time,TypedValue.COMPLEX_UNIT_SP,clockText);
+            views.setTextViewTextSize(R.id.clock_date,TypedValue.COMPLEX_UNIT_SP,12*scale);
+            views.setTextColor(R.id.clock_time,ink);views.setTextColor(R.id.clock_date,muted);
+            views.setViewVisibility(R.id.clock_date,state.getBoolean("showDate",true)&&height>=105?View.VISIBLE:View.GONE);
+        } else if(this instanceof FocusWidget) {
+            views.setTextColor(R.id.timer,ink);
+            float timerText=Math.min(Math.min(46,Math.max(24,height*.22f))*scale,Math.max(18,(height-84)/1.3f));
+            views.setTextViewTextSize(R.id.timer,TypedValue.COMPLEX_UNIT_SP,timerText);
+            for(int viewId:new int[]{R.id.toggle,R.id.reset,R.id.mode})styleKey(views,viewId,keys[theme],ink,12*scale);
+        } else if(this instanceof CalculatorWidget) {
+            views.setTextColor(R.id.display,ink);
+            views.setTextViewTextSize(R.id.display,TypedValue.COMPLEX_UNIT_SP,Math.min(26,Math.max(16,width*.09f))*scale);
+            float keyText=Math.min(Math.min(20,height<260?15:18)*scale,Math.max(12,(height-126)/5.2f));
+            for(int viewId:CALC_IDS)styleKey(views,viewId,keys[theme],ink,keyText);
+            styleKey(views,R.id.equals,keys[theme],ink,18*scale);
+        } else {
+            views.setTextColor(R.id.game_status,muted);
+            float cellText=Math.min(Math.min(32,Math.max(18,height*.1f))*scale,Math.max(16,(height-110)/3.9f));
+            for(int viewId:CELLS)styleKey(views,viewId,keys[theme],ink,cellText);
+            styleKey(views,R.id.new_game,keys[theme],ink,12*scale);
+        }
+    }
+    private void styleKey(RemoteViews views,int id,int background,int color,float size) {
+        views.setInt(id,"setBackgroundResource",background);
+        views.setTextColor(id,color);
+        views.setTextViewTextSize(id,TypedValue.COMPLEX_UNIT_SP,size);
     }
 }

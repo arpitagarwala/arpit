@@ -54,18 +54,18 @@ export default async function RootLayout({
           rel="icon"
           type="image/png"
           sizes="32x32"
-          href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_32,h_32,c_fill,q_auto,f_png/v1772863840/tab-icon.png"
+          href="/app-icons/brand-32.png"
         />
         <link
           rel="icon"
           type="image/png"
           sizes="16x16"
-          href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_16,h_16,c_fill,q_auto,f_png/v1772863840/tab-icon.png"
+          href="/app-icons/brand-16.png"
         />
         <link
           rel="apple-touch-icon"
           sizes="180x180"
-          href="/app-icons/apple-touch-180.png"
+          href="/app-icons/brand-touch-180.png"
         />
         {/* JSON-LD Rich @graph Schema for SEO & AI Search */}
         <script
