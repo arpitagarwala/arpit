@@ -1,5 +1,7 @@
 .wrap {
   position: fixed;
+  display: flex;
+  gap: .45rem;
   top: 1rem;
   left: 1rem;
   z-index: 50;
@@ -48,3 +50,6 @@
 }
 
 @media print{.wrap{display:none}}
+@media (prefers-reduced-motion: reduce) {
+  .btn { transition: none; }
+}

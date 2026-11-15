@@ -1,6 +1,6 @@
 'use client';
 
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import Link from 'next/link';
 import {useAccount} from './AccountProvider';
 import {accountConfigured} from '@/lib/account-config';
@@ -13,26 +13,17 @@ export default function AccountPanel() {
   const [error, setError] = useState('');
   const user = account?.user;
 
-  useEffect(() => {
-    if (user) void account?.run('download');
-    // Refresh from the server when arriving at this screen.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
-
   async function authAction() {
     setWorking(true);
     setError('');
     try {
-      const [{accountFirebase}, {GoogleAuthProvider, signInWithPopup, signOut}] = await Promise.all([
-        import('@/lib/account-firebase'), import('firebase/auth'),
-      ]);
-      const {auth} = accountFirebase();
       if (user) {
-        // Attempt to flush local changes before releasing the account session.
-        await account?.run('download');
-        await signOut(auth);
+        await account.signOut();
       } else {
-        await signInWithPopup(auth, new GoogleAuthProvider());
+        const [{accountFirebase}, {GoogleAuthProvider, signInWithPopup}] = await Promise.all([
+          import('@/lib/account-firebase'), import('firebase/auth'),
+        ]);
+        await signInWithPopup(accountFirebase().auth, new GoogleAuthProvider());
       }
     } catch (failure) {
       const code = (failure as {code?: string})?.code;
@@ -47,7 +38,7 @@ export default function AccountPanel() {
   }
 
   if (!accountConfigured) return <p>Account sync is currently unavailable. You can keep using the tools on this device.</p>;
-  const busy = Boolean(account?.busy || working);
+  const busy = Boolean(account?.busy || account?.signingOut || working);
   return <>
     {user ? <p>Signed in as <strong>{user.email ?? user.displayName ?? 'Google user'}</strong>.</p>
       : <p>Sign in to use your saved tasks, game progress and tool data on your other devices.</p>}
@@ -90,6 +81,7 @@ export default function AccountPanel() {
     <section className={styles.section}>
       <h2>What syncs</h2>
       <p>Tasks, focus history, Quiet Space settings, saved games and records, trade journal entries, expenses, calculator history, clock settings and README drafts. Trade screenshots are stored on the device. <Link href="/privacy">Privacy details</Link></p>
+      <p>While you’re online, saved changes sync automatically. If a newer save arrives for an open game or editor, leave the tool to load it safely.</p>
     </section>
   </>;
 }

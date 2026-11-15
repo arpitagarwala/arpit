@@ -1,10 +1,11 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './BackButton.module.css';
 import {useSuiteNavigation} from '@/components/productivity/SuiteNavigation';
+import {FullscreenButton} from '@/components/install/FullscreenButton';
 
 const subscribe = () => () => {};
 const clientSnapshot = () => true;
@@ -12,6 +13,7 @@ const serverSnapshot = () => false;
 
 export default function BackButton() {
   const router = useRouter();
+  const path = usePathname();
   const suite = useSuiteNavigation();
   const mounted = useSyncExternalStore(subscribe, clientSnapshot, serverSnapshot);
 
@@ -33,6 +35,7 @@ export default function BackButton() {
       >
         <i className="ri-arrow-left-line" aria-hidden="true" />
       </button>
+      {/^\/(games|productivity)(\/|$)/.test(path) && <FullscreenButton className={styles.btn}/>}
     </div>,
     document.body
   );

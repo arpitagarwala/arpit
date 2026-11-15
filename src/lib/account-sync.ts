@@ -1,5 +1,5 @@
 import {
-  Bytes, collection, doc, getDocsFromServer, runTransaction, serverTimestamp,
+  Bytes, collection, doc, getDocsFromServer, onSnapshot, runTransaction, serverTimestamp,
   type Firestore,
 } from 'firebase/firestore';
 import {
@@ -13,11 +13,23 @@ const encoder = new TextEncoder();
 const empty = (values: DatasetValues) => Object.values(values).every(value => value === null);
 
 type Manifest = {revision: string; count: number};
+type Manifests = ReadonlyMap<string, Manifest>;
 type Baseline = {revision: string | null; hash: string};
 export type Conflict = {dataset: Dataset; source: 'device' | 'browser'; revision: string | null};
-type SyncMode = 'download' | 'upload' | 'import';
+type SyncMode = 'download' | 'import';
 type Resolution = Omit<Conflict, 'source'> & {source: Conflict['source'] | 'cloud'};
-type Result = {conflicts: Conflict[]; errors: Dataset[]; pending: boolean};
+type Result = {conflicts: Conflict[]; errors: Dataset[]; pending: boolean; deferred: boolean};
+type CanReplace = (dataset: Dataset) => boolean | Promise<boolean>;
+
+function manifests(docs: {id: string; data(): unknown}[]): Manifests {
+  return new Map(docs.map(item => [item.id, item.data() as Manifest]));
+}
+
+export function watchAccount(db: Firestore, uid: string, receive: (cloud: Manifests) => void, failed: () => void) {
+  return onSnapshot(collection(db, 'accounts', uid, 'tools'), {includeMetadataChanges: true}, snapshot => {
+    if (!snapshot.metadata.fromCache && !snapshot.metadata.hasPendingWrites) receive(manifests(snapshot.docs));
+  }, failed);
+}
 
 async function digest(raw: string) {
   const bytes = await crypto.subtle.digest('SHA-256', encoder.encode(raw));
@@ -39,21 +51,25 @@ class LocalChanged extends Error {}
 
 export async function syncAccount(
   db: Firestore, uid: string, mode: SyncMode, signal: AbortSignal,
-  resolution?: Resolution, canReplaceDevice = () => true,
+  resolution?: Resolution, canReplaceDevice: CanReplace = () => true,
+  observedCloud?: Manifests,
 ): Promise<Result> {
   const tools = collection(db, 'accounts', uid, 'tools');
-  // Uploads only check dirty tools to keep daily reads low.
-  const list = mode === 'upload' ? null : await getDocsFromServer(tools);
+  const list = observedCloud ?? manifests((await getDocsFromServer(tools)).docs);
   signal.throwIfAborted();
-  const result: Result = {conflicts: [], errors: [], pending: false};
+  const result: Result = {conflicts: [], errors: [], pending: false, deferred: false};
 
   for (const dataset of resolution ? [resolution.dataset] : datasetNames) {
     const metadataKey = accountKey(uid, `sync:${dataset}`);
     const manifestRef = doc(tools, dataset);
     const chunkRef = (index: number) => doc(manifestRef, 'chunks', String(index));
-    const cloud = (list?.docs.find(item => item.id === dataset)?.data() ?? null) as Manifest | null;
+    const cloud = list.get(dataset) ?? null;
 
     async function download(expected: Manifest | null) {
+      if (!(await canReplaceDevice(dataset))) {
+        result.deferred = true;
+        return;
+      }
       const raw = await runTransaction(db, async transaction => {
         signal.throwIfAborted();
         const current = (await transaction.get(manifestRef)).data() as Manifest | undefined;
@@ -68,8 +84,12 @@ export async function syncAccount(
       });
       const values = decodeDataset(dataset, raw);
       const hash = await digest(JSON.stringify(values));
+      if (!(await canReplaceDevice(dataset))) {
+        result.deferred = true;
+        return;
+      }
       signal.throwIfAborted();
-      if (!canReplaceDevice() || JSON.stringify(readDataset(uid, dataset)) !== deviceRaw) throw new LocalChanged();
+      if (JSON.stringify(readDataset(uid, dataset)) !== deviceRaw) throw new LocalChanged();
       writeDataset(uid, values);
       saveBaseline(expected?.revision ?? null, hash);
     }
@@ -97,7 +117,7 @@ export async function syncAccount(
     const deviceValues = readDataset(uid, dataset);
     const deviceRaw = JSON.stringify(deviceValues);
     let source: Conflict['source'] = 'device';
-    let observedRevision = cloud?.revision ?? null;
+    const observedRevision = cloud?.revision ?? null;
     try {
       signal.throwIfAborted();
       if (resolution && resolution.revision !== (cloud?.revision ?? null)) {
@@ -121,27 +141,29 @@ export async function syncAccount(
           continue;
         }
         if (browserRaw === deviceRaw && !resolution) continue;
-        if (!canReplaceDevice() || JSON.stringify(readDataset(uid, dataset)) !== deviceRaw) throw new LocalChanged();
+        if (!(await canReplaceDevice(dataset))) {
+          result.deferred = true;
+          continue;
+        }
+        signal.throwIfAborted();
+        if (JSON.stringify(readDataset(uid, dataset)) !== deviceRaw) throw new LocalChanged();
         const browserHash = await digest(browserRaw);
         const revision = await upload(browserRaw, cloud?.revision ?? null);
-        if (!canReplaceDevice() || JSON.stringify(readDataset(uid, dataset)) !== deviceRaw) throw new LocalChanged();
+        if (!(await canReplaceDevice(dataset)) || JSON.stringify(readDataset(uid, dataset)) !== deviceRaw) throw new LocalChanged();
+        signal.throwIfAborted();
         writeDataset(uid, browserValues);
         saveBaseline(revision, browserHash);
       } else if (resolution?.source === 'device') {
         saveBaseline(await upload(deviceRaw, cloud?.revision ?? null), hash);
       } else if (deviceChanged) {
-        if (mode !== 'upload' && cloudChanged) result.conflicts.push({dataset, source, revision: observedRevision});
-        else {
-          observedRevision = mode === 'upload' ? baseline?.revision ?? null : observedRevision;
-          saveBaseline(await upload(deviceRaw, baseline?.revision ?? null), hash);
-        }
-      } else if (mode !== 'upload' && cloudChanged) {
+        if (cloudChanged) result.conflicts.push({dataset, source, revision: observedRevision});
+        else saveBaseline(await upload(deviceRaw, baseline?.revision ?? null), hash);
+      } else if (cloudChanged) {
         await download(cloud);
       }
     } catch (error) {
       signal.throwIfAborted();
-      if (error instanceof RemoteChanged) result.conflicts.push({dataset, source, revision: observedRevision});
-      else if (error instanceof LocalChanged) result.pending = true;
+      if (error instanceof RemoteChanged || error instanceof LocalChanged) result.pending = true;
       else result.errors.push(dataset);
     }
   }

@@ -1,4 +1,5 @@
 import AccountProvider from '@/components/account/AccountProvider';
+import {AppInstallProvider} from '@/components/install/AppInstall';
 import VisitorAnalytics from '@/components/analytics/VisitorAnalytics';
 import type { Metadata } from 'next';
 import '@/styles/globals.css';
@@ -63,7 +64,7 @@ export default async function RootLayout({
         <link
           rel="apple-touch-icon"
           sizes="180x180"
-          href="https://res.cloudinary.com/dxsja3wy5/image/upload/w_180,h_180,c_fill,q_auto,f_png/v1772863840/tab-icon.png"
+          href="/app-icons/apple-touch-180.png"
         />
         {/* JSON-LD Rich @graph Schema for SEO & AI Search */}
         <script
@@ -112,7 +113,7 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body><SiteFeatures features={{...site.features,'games.progress':site.features['games.progress']!==false&&sitePathEnabled(site,'/games/progress'),'games.math-sprint':sitePathEnabled(site,'/games/math-sprint'),'productivity.quiet':sitePathEnabled(site,'/productivity/rain'),'productivity.focus':sitePathEnabled(site,'/productivity/pomodoro'),'productivity.tasks':sitePathEnabled(site,'/productivity/todo'),'productivity.analysis':sitePathEnabled(site,'/productivity/analysis')}} footer={site.footer}><AccountProvider><SuiteNavigationProvider><ProductivityProvider tools={site.productivity.filter(t=>t.enabled&&sitePathEnabled(site,t.href)).map(t=>({href:t.href,title:t.title,sub:t.sub,icon:t.icon}))}>{children}</ProductivityProvider></SuiteNavigationProvider><GameTimeTracker/></AccountProvider><VisitorAnalytics/></SiteFeatures></body>
+      <body><AppInstallProvider><SiteFeatures features={{...site.features,'games.progress':site.features['games.progress']!==false&&sitePathEnabled(site,'/games/progress'),'games.math-sprint':sitePathEnabled(site,'/games/math-sprint'),'productivity.quiet':sitePathEnabled(site,'/productivity/rain'),'productivity.focus':sitePathEnabled(site,'/productivity/pomodoro'),'productivity.tasks':sitePathEnabled(site,'/productivity/todo'),'productivity.analysis':sitePathEnabled(site,'/productivity/analysis')}} footer={site.footer}><AccountProvider><SuiteNavigationProvider><ProductivityProvider tools={site.productivity.filter(t=>t.enabled&&sitePathEnabled(site,t.href)).map(t=>({href:t.href,title:t.title,sub:t.sub,icon:t.icon}))}>{children}</ProductivityProvider></SuiteNavigationProvider><GameTimeTracker/></AccountProvider><VisitorAnalytics/></SiteFeatures></AppInstallProvider></body>
     </html>
   );
 }

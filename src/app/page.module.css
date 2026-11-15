@@ -285,9 +285,15 @@
   gap: 1.25rem;
 }
 
-.accountLink {
-  align-self: center;
+.accountActions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  column-gap: .75rem;
   margin-top: auto;
+}
+
+.accountLink {
   min-height: 44px;
   display: inline-flex;
   align-items: center;
@@ -296,11 +302,13 @@
   font-size: .8rem;
   line-height: 1.6;
   text-align: center;
+  cursor: pointer;
   text-underline-offset: .25em;
   transition: color 160ms ease;
 }
 
 .accountLink:hover { color: #67e8f9; text-decoration: underline; }
+.accountLink:disabled { opacity: .6; cursor: wait; }
 .accountLink:focus-visible { outline: 2px solid #67e8f9; outline-offset: 3px; border-radius: .35rem; }
 @media (prefers-reduced-motion: reduce) { .accountLink { transition: none; } }
 
