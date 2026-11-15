@@ -286,28 +286,40 @@
 }
 
 .accountActions {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  column-gap: .75rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .5rem;
   margin-top: auto;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(51,65,85,0.5);
 }
+
+.accountActions:has(> a[href="/account"]):not(:has(> button:not([aria-haspopup]))) > a[href="/widgets"] {
+  grid-column: 1 / -1;
+}
+
+.accountActions > [role="alert"] { grid-column: 1 / -1; }
 
 .accountLink {
   min-height: 44px;
+  min-width: 0;
   display: inline-flex;
   align-items: center;
-  padding: .4rem .65rem;
+  justify-content: center;
+  padding: .5rem .375rem;
+  border: 1px solid rgba(51,65,85,0.5);
+  border-radius: .5rem;
   color: #a5b8cc;
   font-size: .8rem;
   line-height: 1.6;
   text-align: center;
   cursor: pointer;
   text-underline-offset: .25em;
-  transition: color 160ms ease;
+  transition: color 160ms ease, border-color 160ms ease, transform 160ms ease;
 }
 
-.accountLink:hover { color: #67e8f9; text-decoration: underline; }
+.accountLink:hover { color: #67e8f9; border-color: #64748b; transform: translateY(-1px); }
+.accountLink:active { transform: translateY(0); }
 .accountLink:disabled { opacity: .6; cursor: wait; }
 .accountLink:focus-visible { outline: 2px solid #67e8f9; outline-offset: 3px; border-radius: .35rem; }
 @media (prefers-reduced-motion: reduce) { .accountLink { transition: none; } }
