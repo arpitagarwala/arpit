@@ -1,0 +1,55 @@
+name: ArpitWidgets
+options:
+  bundleIdPrefix: com.arpitagarwala
+  deploymentTarget:
+    iOS: "17.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    CODE_SIGN_STYLE: Automatic
+    CURRENT_PROJECT_VERSION: 1
+    MARKETING_VERSION: "1.0"
+targets:
+  ArpitWidgets:
+    type: application
+    platform: iOS
+    sources:
+      - App
+      - Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.arpitagarwala.widgets
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Arpit Agarwala
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+    entitlements:
+      path: App/App.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.arpitagarwala.widgets
+    dependencies:
+      - target: ArpitWidgetExtension
+  ArpitWidgetExtension:
+    type: app-extension
+    platform: iOS
+    info:
+      path: Extension/Info.plist
+      properties:
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    sources:
+      - Extension
+      - Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.arpitagarwala.widgets.extension
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_KEY_CFBundleDisplayName: Arpit Widgets
+        APPLICATION_EXTENSION_API_ONLY: YES
+        SKIP_INSTALL: YES
+    entitlements:
+      path: Extension/Extension.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.arpitagarwala.widgets

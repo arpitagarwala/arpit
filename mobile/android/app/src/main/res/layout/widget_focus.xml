@@ -1,0 +1,9 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@drawable/widget_background">
+  <TextView android:id="@+id/title" style="@style/WidgetText" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="11sp"/>
+  <Chronometer android:id="@+id/timer" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:gravity="center" android:textColor="#E5F5E9" android:textSize="40sp"/>
+  <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="44dp">
+    <Button android:id="@+id/toggle" style="@style/WidgetKey" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:textSize="14sp"/>
+    <Button android:id="@+id/reset" style="@style/WidgetKey" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:text="Reset" android:textSize="14sp"/>
+    <Button android:id="@+id/mode" style="@style/WidgetKey" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:text="Break" android:textSize="14sp"/>
+  </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,26 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'com.arpitagarwala.widgets'
+    compileSdk 35
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    defaultConfig {
+        applicationId 'com.arpitagarwala.widgets'
+        minSdk 26
+        targetSdk 35
+        versionCode 1
+        versionName '1.0'
+    }
+    signingConfigs {
+        release {
+            storeFile file(System.getenv('ARPIT_WIDGET_KEYSTORE') ?: 'missing-keystore')
+            storePassword System.getenv('ARPIT_WIDGET_KEY_PASSWORD')
+            keyAlias 'arpit-widgets'
+            keyPassword System.getenv('ARPIT_WIDGET_KEY_PASSWORD')
+        }
+    }
+    buildTypes { release { signingConfig signingConfigs.release; minifyEnabled false } }
+}

@@ -2,6 +2,7 @@
 
 import {createContext, useContext, useEffect, useRef, useState, type ReactNode} from 'react';
 import styles from './app-install.module.css';
+import Link from 'next/link';
 
 type InstallPrompt = Event & {
   prompt(): Promise<{outcome: 'accepted' | 'dismissed'}>;
@@ -76,6 +77,8 @@ export function AppDownload({className, email}: {className?: string; email: stri
           <p><strong>Desktop</strong> · Use Install in Chrome or Edge, or File → Add to Dock in Safari.</p>
         </section>}
       <a className={styles.secondary} href="/downloads/Arpit-Agarwala.exe" download>Download for Windows</a>
+      <a className={styles.secondary} href="/downloads/Arpit-Agarwala.apk" download>Android app with widgets</a>
+      <p><Link href="/widgets">Open your widgets ↗</Link> · <Link href="/download">Installation guide ↗</Link></p>
       <p className={styles.detail}>The portable launcher uses Microsoft Edge. Windows may show a warning because the launcher is unsigned.</p>
       <footer className={styles.support}><a href={'mailto:' + email}>Email support</a><a href="https://arpitagarwala.com">Website</a></footer>
     </dialog>

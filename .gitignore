@@ -49,3 +49,9 @@ next-env.d.ts
 /artifacts/emsdk/
 /artifacts/puzzle-engine-source/
 /artifacts/puzzle-engine-build/
+
+/mobile/android/.gradle/
+/mobile/android/**/build/
+/mobile/android/local.properties
+/mobile/apple/*.xcodeproj/
+/mobile/apple/*.xcworkspace/

@@ -46,6 +46,7 @@ function routeForDataset(dataset: Dataset) {
 }
 
 function isOpen(dataset: Dataset, path: string) {
+  if (dataset === 'calculator' && (path === '/widgets' || path === '/widgets/calculator')) return true;
   if (dataset === 'journal') return path.startsWith('/projects/finance');
   return routeForDataset(dataset) === path;
 }
@@ -56,7 +57,7 @@ function activeToolLock(uid: string, dataset: Dataset) {
 
 function ConnectedAccount({children}: {children: ReactNode}) {
   const path = usePathname();
-  const needsAccountState = /^\/(account|games|productivity|projects)(\/|$)/.test(path);
+  const needsAccountState = /^\/(account|games|productivity|projects|widgets)(\/|$)/.test(path);
   const [ready, setReady] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [busy, setBusy] = useState(false);

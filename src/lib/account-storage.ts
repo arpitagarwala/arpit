@@ -1,4 +1,5 @@
 import {PUZZLES} from '../data/puzzles';
+import {rememberVersion} from './recovery-store';
 
 const puzzleDatasets = Object.fromEntries(PUZZLES.map(({slug, title}) => [`puzzle-${slug}`, {
   label: title, keys: [`logic-room:${slug}:v1`, `logic-room:${slug}:v1:metrics`],
@@ -60,12 +61,14 @@ export const toolStorage = {
   setItem(key: string, value: string) {
     const scoped = scopedKey(key);
     if (localStorage.getItem(scoped) === value) return;
+    checkpoint(key, 'edit');
     localStorage.setItem(scoped, value);
     if (activeAccount) window.dispatchEvent(new CustomEvent(ACCOUNT_STORAGE_CHANGE, {detail: key}));
   },
   removeItem(key: string) {
     const scoped = scopedKey(key);
     if (localStorage.getItem(scoped) === null) return;
+    checkpoint(key, 'edit');
     localStorage.removeItem(scoped);
     if (activeAccount) window.dispatchEvent(new CustomEvent(ACCOUNT_STORAGE_CHANGE, {detail: key}));
   },
@@ -89,9 +92,11 @@ export function decodeDataset(dataset: Dataset, raw: string): DatasetValues {
   return Object.fromEntries(keys.map(key => [key, values[key] as string | null]));
 }
 
-export function writeDataset(uid: string, values: DatasetValues) {
+export function writeDataset(uid: string | null, values: DatasetValues) {
+  const first = Object.keys(values)[0];
+  if (first) checkpoint(first, 'cloud');
   const previous = Object.fromEntries(Object.keys(values).map(key => {
-    const scoped = accountKey(uid, key);
+    const scoped = uid ? accountKey(uid, key) : key;
     return [scoped, localStorage.getItem(scoped)];
   }));
   function write(key: string, value: string | null) {
@@ -101,11 +106,52 @@ export function writeDataset(uid: string, values: DatasetValues) {
   try {
     // Remove the old values first so a replacement can use the same available space.
     Object.keys(previous).forEach(key => localStorage.removeItem(key));
-    Object.entries(values).forEach(([key, value]) => write(accountKey(uid, key), value));
+    Object.entries(values).forEach(([key, value]) => write(uid ? accountKey(uid, key) : key, value));
   } catch (error) {
     Object.keys(previous).forEach(key => localStorage.removeItem(key));
     Object.entries(previous).forEach(([key, value]) => write(key, value));
     throw error;
   }
   window.dispatchEvent(new CustomEvent(ACCOUNT_DATA_RESTORED, {detail: values}));
+}
+
+function checkpoint(key: string, reason: string) {
+  const dataset = datasetNames.find(name => (datasets[name].keys as readonly string[]).includes(key));
+  if (dataset === undefined || dataset === 'gameTime') return;
+  void rememberVersion(activeAccount ?? 'guest', dataset, readDataset(activeAccount, dataset), reason).catch(() => {});
+}
+
+export async function restoreVersion(dataset: Dataset, raw: string, capturedAt = Date.now()) {
+  const values = decodeDataset(dataset, raw);
+  if (dataset === 'study' && values['study-room-v1']) {
+    const current = JSON.parse(toolStorage.getItem('study-room-v1') ?? '{}');
+    if (current.sessionId) throw new Error('End your current focus session before restoring study history.');
+    const restored = JSON.parse(values['study-room-v1']);
+    if (typeof restored.deadline === 'number') {
+      restored.remaining = Math.max(0,Math.ceil((restored.deadline-capturedAt)/1000));
+      restored.deadline = null;
+      restored.startedAt = null;
+      values['study-room-v1'] = JSON.stringify(restored);
+    }
+  }
+  const profile = activeAccount;
+  const restore = async () => {
+    if (activeAccount !== profile) throw new Error('Your account changed. Reload before restoring.');
+    if (dataset === 'study' && JSON.parse(toolStorage.getItem('study-room-v1') ?? '{}').sessionId) {
+      throw new Error('End your current focus session before restoring study history.');
+    }
+    await rememberVersion(profile ?? 'guest', dataset, readDataset(profile, dataset), 'restore');
+    if (activeAccount !== profile) throw new Error('Your account changed. Reload before restoring.');
+    writeDataset(profile,values);
+    window.dispatchEvent(new CustomEvent(ACCOUNT_STORAGE_CHANGE, {detail: datasets[dataset].keys[0]}));
+  };
+  const guardedRestore = () => dataset === 'study' && navigator.locks
+    ? navigator.locks.request('study-room-v1',restore)
+    : restore();
+  if (!navigator.locks) return guardedRestore();
+  return navigator.locks.request('arpit-active-tool:' + profile + ':' + dataset, {ifAvailable: true}, async lock => {
+    if (!lock) throw new Error('Close this tool in your other tabs before restoring.');
+    if (profile) return navigator.locks.request('arpit-sync:' + profile, guardedRestore);
+    return guardedRestore();
+  });
 }

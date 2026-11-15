@@ -1,0 +1,5 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/widget_root" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center_vertical" android:background="@drawable/widget_background">
+  <TextView style="@style/WidgetText" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="ARPIT AGARWALA · CLOCK" android:textSize="10sp"/>
+  <TextClock android:layout_width="match_parent" android:layout_height="wrap_content" android:format12Hour="h:mm a" android:format24Hour="HH:mm" android:textColor="#E5F5E9" android:textSize="44sp"/>
+  <TextClock android:layout_width="match_parent" android:layout_height="wrap_content" android:format12Hour="EEEE, d MMMM" android:format24Hour="EEEE, d MMMM" android:textColor="#A6C4B0" android:textSize="13sp"/>
+</LinearLayout>

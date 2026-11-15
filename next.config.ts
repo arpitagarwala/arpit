@@ -19,6 +19,14 @@ const nextConfig: NextConfig = {
           {key: 'X-Content-Type-Options', value: 'nosniff'},
         ],
       },
+      {
+        source: '/downloads/Arpit-Agarwala.apk',
+        headers: [
+          {key: 'Content-Disposition', value: 'attachment; filename="Arpit-Agarwala.apk"'},
+          {key: 'Content-Type', value: 'application/vnd.android.package-archive'},
+          {key: 'X-Content-Type-Options', value: 'nosniff'},
+        ],
+      },
     ];
   },
   async redirects() {
