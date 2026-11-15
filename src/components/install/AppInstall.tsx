@@ -78,7 +78,7 @@ export function AppDownload({className, email}: {className?: string; email: stri
         </section>}
       <a className={styles.secondary} href="/downloads/Arpit-Agarwala.exe?v=1.1" download>Download for Windows</a>
       <a className={styles.secondary} href="/downloads/Arpit-Agarwala.apk?v=1.1" download>Android app with widgets</a>
-      <p><Link href="/widgets">Open your widgets ↗</Link> · <Link href="/download">Installation guide ↗</Link></p>
+      <p><Link href="/download">Installation guide & phone widgets ↗</Link></p>
       <p className={styles.detail}>The portable launcher uses Microsoft Edge. Windows may show a warning because the launcher is unsigned.</p>
       <footer className={styles.support}><a href={'mailto:' + email}>Email support</a><a href="https://arpitagarwala.com">Website</a></footer>
     </dialog>

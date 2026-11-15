@@ -294,7 +294,7 @@
   border-top: 1px solid rgba(51,65,85,0.5);
 }
 
-.accountActions:has(> a[href="/account"]):not(:has(> button:not([aria-haspopup]))) > a[href="/widgets"] {
+.accountActions:has(> button:not([aria-haspopup])) > a[href="/account"] {
   grid-column: 1 / -1;
 }
 
